@@ -3,7 +3,7 @@
 
 <MudContainer>
     <MudGrid>
-        <MudItem xs="12" sm="12" md="12">
+        @* <MudItem xs="12" sm="12" md="12">
             <div class="d-flex justify-center mt-4">
                  <img src="full-stack-hero-logo.png" Style="height:250px" />
             </div>
@@ -28,11 +28,14 @@
                 <MudButton DropShadow="false" Variant="Variant.Filled" Color="Color.Primary" Href="https://fullstackhero.net/basics/getting-started/" Target="_blank" StartIcon="@Icons.Material.Filled.Rocket">Get Started</MudButton>
                 <MudButton DropShadow="false" Variant="Variant.Outlined" Style="margin-left:5px" Color="Color.Default" Href="https://github.com/fullstackhero/dotnet-starter-kit/" Target="_blank" StartIcon="@Icons.Custom.Brands.GitHub">Star on GitHub</MudButton>
             </div>
+        </MudItem> *@
+        <MudItem xs="12" sm="12" md="12">
+            <MudText Align="Align.Center" Typo="Typo.h2">RandomRanch</MudText>
         </MudItem>
         <MudItem xs="12" sm="12" md="12">
-             <MudText Align="Align.Center">Version 2.0</MudText>
+             <MudText Align="Align.Center">Version 0.1</MudText>
         </MudItem>
-        <MudItem xs="12" sm="12" md="12">
+ @*        <MudItem xs="12" sm="12" md="12">
             <MudExpansionPanels>
                 <MudExpansionPanel Class="mud-table-outlined" Text="Getting Started" MaxHeight="150">
                     In case you are stuck anywhere or have any queries regarding this implementation, I have compiled a Quick Start Guide for you reference.
@@ -74,10 +77,10 @@
             </MudList>
                 </MudExpansionPanel>
             </MudExpansionPanels>
-        </MudItem>
-        <MudItem  xs="12" sm="12" md="12">
+        </MudItem> *@
+@*         <MudItem  xs="12" sm="12" md="12">
             <MudAlert Style="margin-top:10px;justify-content:center" Severity="Severity.Info"><MudLink Href="https://github.com/fullstackhero/blazor-wasm-boilerplate">Liked this Boilerplate? Star us on Github!</MudLink></MudAlert>
-        </MudItem>
+        </MudItem> *@
     </MudGrid>
 </MudContainer>
 

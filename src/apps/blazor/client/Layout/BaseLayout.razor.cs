@@ -18,17 +18,17 @@ public partial class BaseLayout
         if (_themePreference == null) _themePreference = new ClientPreference();
         SetCurrentTheme(_themePreference);
 
-        Toast.Add("Like this project? ", Severity.Info, config =>
+        Toast.Add("Welcome to RandomRanch!", Severity.Info, config =>
         {
             config.BackgroundBlurred = true;
-            config.Icon = Icons.Custom.Brands.GitHub;
-            config.Action = "Star us on Github!";
+            //config.Icon = Icons.Custom.Brands.GitHub;
+            //config.Action = "Get started with simulation!";
             config.ActionColor = Color.Info;
-            config.Onclick = snackbar =>
-            {
-                Navigation.NavigateTo("https://github.com/fullstackhero/dotnet-starter-kit");
-                return Task.CompletedTask;
-            };
+            //config.Onclick = snackbar =>
+            //{
+            //    Navigation.NavigateTo("https://github.com/fullstackhero/dotnet-starter-kit");
+            //    return Task.CompletedTask;
+            //};
         });
     }
 

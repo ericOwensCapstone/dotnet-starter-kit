@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>FSH.Starter.WebApi.RationCatalog.Domain</RootNamespace>
+    <AssemblyName>FSH.Starter.WebApi.RationCatalog.Domain</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
+  </ItemGroup>
+</Project>
+

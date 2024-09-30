@@ -6,6 +6,7 @@ using FSH.Starter.WebApi.Catalog.Application;
 using FSH.Starter.WebApi.Catalog.Infrastructure;
 using FSH.Starter.WebApi.Todo;
 using FSH.Starter.WebApi.RationCatalog.Infrastructure;
+using FSH.Starter.WebApi.RationCatalog.Application;
 
 namespace FSH.Starter.WebApi.Host;
 
@@ -15,15 +16,28 @@ public static class Extensions
     {
         ArgumentNullException.ThrowIfNull(builder);
 
+        //TODO register new modules
         //define module assemblies
         var assemblies = new Assembly[]
         {
             typeof(CatalogMetadata).Assembly,
+            typeof(RationCatalogMetadata).Assembly,
             typeof(TodoModule).Assembly
         };
 
         //register validators
         builder.Services.AddValidatorsFromAssemblies(assemblies);
+
+
+
+
+        //register module services
+        builder.RegisterCatalogServices();
+        builder.RegisterTodoServices();
+        builder.RegisterRationCatalogServices();
+
+
+
 
         //register mediatr
         builder.Services.AddMediatR(cfg =>
@@ -31,10 +45,7 @@ public static class Extensions
             cfg.RegisterServicesFromAssemblies(assemblies);
         });
 
-        //register module services
-        builder.RegisterCatalogServices();
-        builder.RegisterTodoServices();
-        builder.RegisterRationCatalogServices();
+
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>

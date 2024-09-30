@@ -1,6 +1,12 @@
+using FSH.Framework.Core.Paging;
 using FSH.Framework.Infrastructure;
 using FSH.Framework.Infrastructure.Logging.Serilog;
+using FSH.Starter.WebApi.Catalog.Application.Products.Get.v1;
+using FSH.Starter.WebApi.Catalog.Application.Products.Search.v1;
 using FSH.Starter.WebApi.Host;
+using FSH.Starter.WebApi.RationCatalog.Application.Rations.Get.v1;
+using FSH.Starter.WebApi.RationCatalog.Application.Rations.Search.v1;
+using MediatR;
 using Serilog;
 
 StaticLogger.EnsureInitialized();
@@ -12,6 +18,11 @@ try
     builder.RegisterModules();
 
     var app = builder.Build();
+
+    //TODO this is just for debug:
+    //var serviceProvider = app.Services;
+    //var productHandlers = serviceProvider.GetServices(typeof(IRequestHandler<SearchProductsCommand, PagedList<ProductResponse>>));
+    //var rationHandlers = serviceProvider.GetServices(typeof(IRequestHandler<SearchRationsCommand, PagedList<RationResponse>>));
 
     app.UseFshFramework();
     app.UseModules();

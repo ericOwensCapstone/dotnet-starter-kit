@@ -27,6 +27,7 @@ public static class FshResource
     public const string Products = nameof(Products);
     public const string Todos = nameof(Todos);
     public const string AuditTrails = nameof(AuditTrails);
+    public const string Rations = nameof(Rations);
 }
 
 public static class FshPermissions
@@ -62,6 +63,14 @@ public static class FshPermissions
         new("Update Products", FshAction.Update, FshResource.Products),
         new("Delete Products", FshAction.Delete, FshResource.Products),
         new("Export Products", FshAction.Export, FshResource.Products),
+
+        //products
+        new("View Rations", FshAction.View, FshResource.Rations, IsBasic: true),
+        new("Search Rations", FshAction.Search, FshResource.Rations, IsBasic: true),
+        new("Create Rations", FshAction.Create, FshResource.Rations),
+        new("Update Rations", FshAction.Update, FshResource.Rations),
+        new("Delete Rations", FshAction.Delete, FshResource.Rations),
+        new("Export Rations", FshAction.Export, FshResource.Rations),
 
         //todos
         new("View Todos", FshAction.View, FshResource.Todos, IsBasic: true),

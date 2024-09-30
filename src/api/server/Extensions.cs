@@ -5,6 +5,7 @@ using FluentValidation;
 using FSH.Starter.WebApi.Catalog.Application;
 using FSH.Starter.WebApi.Catalog.Infrastructure;
 using FSH.Starter.WebApi.Todo;
+using FSH.Starter.WebApi.RationCatalog.Infrastructure;
 
 namespace FSH.Starter.WebApi.Host;
 
@@ -33,12 +34,14 @@ public static class Extensions
         //register module services
         builder.RegisterCatalogServices();
         builder.RegisterTodoServices();
+        builder.RegisterRationCatalogServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
         {
             config.WithModule<CatalogModule.Endpoints>();
             config.WithModule<TodoModule.Endpoints>();
+            config.WithModule<RationCatalogModule.Endpoints>();
         });
 
         return builder;
@@ -51,6 +54,7 @@ public static class Extensions
         //register modules
         app.UseCatalogModule();
         app.UseTodoModule();
+        app.UseRationCatalogModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()

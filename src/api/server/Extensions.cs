@@ -54,7 +54,7 @@ public static class Extensions
         //register modules
         app.UseCatalogModule();
         app.UseTodoModule();
-        //TODO 
+        //TODO register new modules
         app.UseRationCatalogModule();
 
         //register api versions

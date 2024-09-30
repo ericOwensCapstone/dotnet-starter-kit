@@ -14,8 +14,10 @@ public static class Extensions
         opt.AddPolicy(CorsPolicy, policy =>
             policy.AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowCredentials()
-                .WithOrigins(corsOptions.AllowedOrigins.ToArray())));
+                //.AllowCredentials()
+                .AllowAnyOrigin()));
+        //TODO  below and above restore for non local running
+                //.WithOrigins(corsOptions.AllowedOrigins.ToArray())));
     }
 
     internal static IApplicationBuilder UseCorsPolicy(this IApplicationBuilder app)

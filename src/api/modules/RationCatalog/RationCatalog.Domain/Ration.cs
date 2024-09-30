@@ -7,7 +7,7 @@ public class Ration : AuditableEntity, IAggregateRoot
 {
     public string Name { get; private set; } = default!;
     public string? Description { get; private set; }
-    public decimal Price { get; private set; }
+    public decimal DollarsPerHeadPerDay { get; private set; }
 
     public static Ration Create(string name, string? description, decimal price)
     {
@@ -15,7 +15,7 @@ public class Ration : AuditableEntity, IAggregateRoot
 
         ration.Name = name;
         ration.Description = description;
-        ration.Price = price;
+        ration.DollarsPerHeadPerDay = price;
 
         ration.QueueDomainEvent(new RationCreated() { Ration = ration });
 
@@ -26,7 +26,7 @@ public class Ration : AuditableEntity, IAggregateRoot
     {
         if (name is not null && Name?.Equals(name, StringComparison.OrdinalIgnoreCase) is not true) Name = name;
         if (description is not null && Description?.Equals(description, StringComparison.OrdinalIgnoreCase) is not true) Description = description;
-        if (price.HasValue && Price != price) Price = price.Value;
+        if (price.HasValue && DollarsPerHeadPerDay != price) DollarsPerHeadPerDay = price.Value;
 
         this.QueueDomainEvent(new RationUpdated() { Ration = this });
         return this;
@@ -39,7 +39,7 @@ public class Ration : AuditableEntity, IAggregateRoot
             Id = id,
             Name = name,
             Description = description,
-            Price = price
+            DollarsPerHeadPerDay = price
         };
 
         ration.QueueDomainEvent(new RationUpdated() { Ration = ration });

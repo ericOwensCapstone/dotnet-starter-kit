@@ -19,9 +19,9 @@ internal sealed class RationCatalogDbInitializer(
 
     public async Task SeedAsync(CancellationToken cancellationToken)
     {
-        const string Name = "Keychron V6 QMK Custom Wired Mechanical Keyboard";
-        const string Description = "A full-size layout QMK/VIA custom mechanical keyboard";
-        const decimal Price = 79;
+        const string Name = "Ration1";
+        const string Description = "Ration1";
+        const decimal Price = 0.10m;
         if (await context.Rations.FirstOrDefaultAsync(t => t.Name == Name, cancellationToken).ConfigureAwait(false) is null)
         {
             var ration = Ration.Create(Name, Description, Price);

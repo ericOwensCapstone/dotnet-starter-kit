@@ -30,7 +30,7 @@ public static class Extensions
 
 
 
-
+        // TODO register new module
         //register module services
         builder.RegisterCatalogServices();
         builder.RegisterTodoServices();
@@ -46,7 +46,7 @@ public static class Extensions
         });
 
 
-
+        // TODO Add Carter module
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
         {

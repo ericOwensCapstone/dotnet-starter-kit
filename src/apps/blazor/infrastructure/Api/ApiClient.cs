@@ -5484,7 +5484,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string? Name { get; set; } = "Sample Product";
 
-        [System.Text.Json.Serialization.JsonPropertyName("dollarsPerHeadPerDay")]
+        [System.Text.Json.Serialization.JsonPropertyName("price")]
         public double Price { get; set; } = 10D;
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
@@ -5682,7 +5682,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string? Description { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("dollarsPerHeadPerDay")]
+        [System.Text.Json.Serialization.JsonPropertyName("price")]
         public double Price { get; set; } = default!;
 
     }
@@ -5982,7 +5982,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string? Name { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("dollarsPerHeadPerDay")]
+        [System.Text.Json.Serialization.JsonPropertyName("price")]
         public double Price { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]

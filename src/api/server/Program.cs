@@ -19,11 +19,6 @@ try
 
     var app = builder.Build();
 
-    //TODO this is just for debug:
-    //var serviceProvider = app.Services;
-    //var productHandlers = serviceProvider.GetServices(typeof(IRequestHandler<SearchProductsCommand, PagedList<ProductResponse>>));
-    //var rationHandlers = serviceProvider.GetServices(typeof(IRequestHandler<SearchRationsCommand, PagedList<RationResponse>>));
-
     app.UseFshFramework();
     app.UseModules();
     await app.RunAsync();

@@ -14,9 +14,9 @@ public static class Extensions
         opt.AddPolicy(CorsPolicy, policy =>
             policy.AllowAnyHeader()
                 .AllowAnyMethod()
+                //TODO  for proper CORS restore for the below for non local running
                 //.AllowCredentials()
                 .AllowAnyOrigin()));
-        //TODO  below and above restore for non local running
                 //.WithOrigins(corsOptions.AllowedOrigins.ToArray())));
     }
 

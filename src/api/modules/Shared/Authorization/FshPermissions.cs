@@ -64,7 +64,7 @@ public static class FshPermissions
         new("Delete Products", FshAction.Delete, FshResource.Products),
         new("Export Products", FshAction.Export, FshResource.Products),
 
-        //products
+        //rations
         new("View Rations", FshAction.View, FshResource.Rations, IsBasic: true),
         new("Search Rations", FshAction.Search, FshResource.Rations, IsBasic: true),
         new("Create Rations", FshAction.Create, FshResource.Rations),

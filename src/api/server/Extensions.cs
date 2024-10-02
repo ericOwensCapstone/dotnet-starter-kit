@@ -7,6 +7,8 @@ using FSH.Starter.WebApi.Catalog.Infrastructure;
 using FSH.Starter.WebApi.Todo;
 using FSH.Starter.WebApi.RationCatalog.Infrastructure;
 using FSH.Starter.WebApi.RationCatalog.Application;
+using FSH.Starter.WebApi.GrowthTreatmentCatalog.Application;
+using FSH.Starter.WebApi.GrowthTreatmentCatalog.Infrastructure;
 
 namespace FSH.Starter.WebApi.Host;
 
@@ -16,12 +18,13 @@ public static class Extensions
     {
         ArgumentNullException.ThrowIfNull(builder);
 
-        //TODO register new modules
+        //TODO NEWMODULE register new modules
         //define module assemblies
         var assemblies = new Assembly[]
         {
             typeof(CatalogMetadata).Assembly,
             typeof(RationCatalogMetadata).Assembly,
+            typeof(GrowthTreatmentCatalogMetadata).Assembly,
             typeof(TodoModule).Assembly
         };
 
@@ -30,11 +33,12 @@ public static class Extensions
 
 
 
-        // TODO register new module
+        // TODO MORENEWMODULE register new module
         //register module services
         builder.RegisterCatalogServices();
         builder.RegisterTodoServices();
         builder.RegisterRationCatalogServices();
+        builder.RegisterGrowthTreatmentCatalogServices();
 
 
 
@@ -46,13 +50,14 @@ public static class Extensions
         });
 
 
-        // TODO Add Carter module
+        // TODO EVENMORENEWMODULE Add Carter module
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
         {
             config.WithModule<CatalogModule.Endpoints>();
             config.WithModule<TodoModule.Endpoints>();
             config.WithModule<RationCatalogModule.Endpoints>();
+            config.WithModule<GrowthTreatmentCatalogModule.Endpoints>();
         });
 
         return builder;

@@ -27,7 +27,9 @@ public static class FshResource
     public const string Products = nameof(Products);
     public const string Todos = nameof(Todos);
     public const string AuditTrails = nameof(AuditTrails);
+    //TODO FSHRESOURCES
     public const string Rations = nameof(Rations);
+    public const string GrowthTreatments = nameof(GrowthTreatments);
 }
 
 public static class FshPermissions
@@ -64,6 +66,7 @@ public static class FshPermissions
         new("Delete Products", FshAction.Delete, FshResource.Products),
         new("Export Products", FshAction.Export, FshResource.Products),
 
+        // TODO FSHPERMISSIONS
         //rations
         new("View Rations", FshAction.View, FshResource.Rations, IsBasic: true),
         new("Search Rations", FshAction.Search, FshResource.Rations, IsBasic: true),
@@ -71,6 +74,14 @@ public static class FshPermissions
         new("Update Rations", FshAction.Update, FshResource.Rations),
         new("Delete Rations", FshAction.Delete, FshResource.Rations),
         new("Export Rations", FshAction.Export, FshResource.Rations),
+
+        //growthtreatments
+        new("View GrowthTreatments", FshAction.View, FshResource.GrowthTreatments, IsBasic: true),
+        new("Search GrowthTreatments", FshAction.Search, FshResource.GrowthTreatments, IsBasic: true),
+        new("Create GrowthTreatments", FshAction.Create, FshResource.GrowthTreatments),
+        new("Update GrowthTreatments", FshAction.Update, FshResource.GrowthTreatments),
+        new("Delete GrowthTreatments", FshAction.Delete, FshResource.GrowthTreatments),
+        new("Export GrowthTreatments", FshAction.Export, FshResource.GrowthTreatments),
 
         //todos
         new("View Todos", FshAction.View, FshResource.Todos, IsBasic: true),

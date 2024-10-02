@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>FSH.Starter.WebApi.GrowthTreatmentCatalog.Application</RootNamespace>
+    <AssemblyName>FSH.Starter.WebApi.GrowthTreatmentCatalog.Application</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
+    <ProjectReference Include="..\GrowthTreatmentCatalog.Domain\GrowthTreatmentCatalog.Domain.csproj" />
+  </ItemGroup>
+</Project>
+

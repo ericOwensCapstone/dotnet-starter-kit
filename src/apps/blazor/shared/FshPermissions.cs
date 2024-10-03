@@ -28,7 +28,8 @@ public static class FshResource
     public const string Todos = nameof(Todos);
     public const string AuditTrails = nameof(AuditTrails);
     public const string Rations = nameof(Rations);
-
+    // TODO BLAZORFSHRESOURCES
+    public const string GrowthTreatments = nameof(GrowthTreatments);
 }
 
 public static class FshPermissions
@@ -72,6 +73,15 @@ public static class FshPermissions
         new("Update Rations", FshAction.Update, FshResource.Rations),
         new("Delete Rations", FshAction.Delete, FshResource.Rations),
         new("Export Rations", FshAction.Export, FshResource.Rations),
+
+        new("View GrowthTreatments", FshAction.View, FshResource.GrowthTreatments, IsBasic: true),
+        new("Search GrowthTreatments", FshAction.Search, FshResource.GrowthTreatments, IsBasic: true),
+        new("Create GrowthTreatments", FshAction.Create, FshResource.GrowthTreatments),
+        new("Update GrowthTreatments", FshAction.Update, FshResource.GrowthTreatments),
+        new("Delete GrowthTreatments", FshAction.Delete, FshResource.GrowthTreatments),
+        new("Export GrowthTreatments", FshAction.Export, FshResource.GrowthTreatments),
+
+        // TODO BLAZORFSHPERMISSIONS
 
         //todos
         new("View Todos", FshAction.View, FshResource.Todos, IsBasic: true),

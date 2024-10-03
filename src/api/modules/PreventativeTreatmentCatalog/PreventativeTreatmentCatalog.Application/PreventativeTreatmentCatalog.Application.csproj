@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>FSH.Starter.WebApi.PreventativeTreatmentCatalog.Application</RootNamespace>
+    <AssemblyName>FSH.Starter.WebApi.PreventativeTreatmentCatalog.Application</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
+    <ProjectReference Include="..\PreventativeTreatmentCatalog.Domain\PreventativeTreatmentCatalog.Domain.csproj" />
+  </ItemGroup>
+</Project>
+

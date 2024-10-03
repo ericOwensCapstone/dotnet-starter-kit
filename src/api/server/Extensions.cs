@@ -9,6 +9,8 @@ using FSH.Starter.WebApi.RationCatalog.Infrastructure;
 using FSH.Starter.WebApi.RationCatalog.Application;
 using FSH.Starter.WebApi.GrowthTreatmentCatalog.Application;
 using FSH.Starter.WebApi.GrowthTreatmentCatalog.Infrastructure;
+using FSH.Starter.WebApi.PreventativeTreatmentCatalog.Application;
+using FSH.Starter.WebApi.PreventativeTreatmentCatalog.Infrastructure;
 
 namespace FSH.Starter.WebApi.Host;
 
@@ -25,6 +27,7 @@ public static class Extensions
             typeof(CatalogMetadata).Assembly,
             typeof(RationCatalogMetadata).Assembly,
             typeof(GrowthTreatmentCatalogMetadata).Assembly,
+            typeof(PreventativeTreatmentCatalogMetadata).Assembly,
             typeof(TodoModule).Assembly
         };
 
@@ -39,6 +42,7 @@ public static class Extensions
         builder.RegisterTodoServices();
         builder.RegisterRationCatalogServices();
         builder.RegisterGrowthTreatmentCatalogServices();
+        builder.RegisterPreventativeTreatmentCatalogServices();
 
 
 
@@ -58,6 +62,7 @@ public static class Extensions
             config.WithModule<TodoModule.Endpoints>();
             config.WithModule<RationCatalogModule.Endpoints>();
             config.WithModule<GrowthTreatmentCatalogModule.Endpoints>();
+            config.WithModule<PreventativeTreatmentCatalogModule.Endpoints>();
         });
 
         return builder;

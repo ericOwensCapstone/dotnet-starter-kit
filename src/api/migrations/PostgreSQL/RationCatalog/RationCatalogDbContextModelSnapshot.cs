@@ -39,7 +39,7 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.RationCatalog
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
-                    b.Property<decimal>("DollarsPerHeadPerDay")
+                    b.Property<decimal>("DollarsPerPound")
                         .HasColumnType("numeric");
 
                     b.Property<DateTimeOffset>("LastModified")

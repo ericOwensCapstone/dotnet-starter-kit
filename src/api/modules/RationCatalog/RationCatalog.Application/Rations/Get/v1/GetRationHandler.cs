@@ -20,7 +20,7 @@ public sealed class GetRationHandler(
             {
                 var rationItem = await repository.GetByIdAsync(request.Id, cancellationToken);
                 if (rationItem == null) throw new RationNotFoundException(request.Id);
-                return new RationResponse(rationItem.Id, rationItem.Name, rationItem.Description, rationItem.DollarsPerHeadPerDay);
+                return new RationResponse(rationItem.Id, rationItem.Name, rationItem.Description, rationItem.DollarsPerPound);
             },
             cancellationToken: cancellationToken);
         return item!;

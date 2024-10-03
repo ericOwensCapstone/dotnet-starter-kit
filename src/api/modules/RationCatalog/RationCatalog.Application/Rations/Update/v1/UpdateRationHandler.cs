@@ -16,7 +16,7 @@ public sealed class UpdateRationHandler(
         ArgumentNullException.ThrowIfNull(request);
         var ration = await repository.GetByIdAsync(request.Id, cancellationToken);
         _ = ration ?? throw new RationNotFoundException(request.Id);
-        var updatedRation = ration.Update(request.Name, request.Description, request.DollarsPerHeadPerDay);
+        var updatedRation = ration.Update(request.Name, request.Description, request.DollarsPerPound);
         await repository.UpdateAsync(updatedRation, cancellationToken);
         logger.LogInformation("ration with id : {RationId} updated.", ration.Id);
         return new UpdateRationResponse(ration.Id);

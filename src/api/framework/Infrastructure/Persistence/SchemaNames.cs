@@ -7,4 +7,5 @@ public static class SchemaNames
     public const string Tenant = "tenant";
     public const string RationCatalog = "rationcatalog";
     public const string GrowthTreatmentCatalog = "growthtreatmentcatalog";
+    public const string PreventativeTreatmentCatalog = "preventativetreatmentcatalog";
 }

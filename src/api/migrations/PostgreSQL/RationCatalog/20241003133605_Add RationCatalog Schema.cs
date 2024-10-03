@@ -22,7 +22,7 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.RationCatalog
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    DollarsPerHeadPerDay = table.Column<decimal>(type: "numeric", nullable: false),
+                    DollarsPerPound = table.Column<decimal>(type: "numeric", nullable: false),
                     TenantId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),

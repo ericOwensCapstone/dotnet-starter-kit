@@ -30,6 +30,7 @@ public static class FshResource
     //TODO FSHRESOURCES
     public const string Rations = nameof(Rations);
     public const string GrowthTreatments = nameof(GrowthTreatments);
+    public const string PreventativeTreatments = nameof(PreventativeTreatments);
 }
 
 public static class FshPermissions
@@ -82,6 +83,14 @@ public static class FshPermissions
         new("Update GrowthTreatments", FshAction.Update, FshResource.GrowthTreatments),
         new("Delete GrowthTreatments", FshAction.Delete, FshResource.GrowthTreatments),
         new("Export GrowthTreatments", FshAction.Export, FshResource.GrowthTreatments),
+
+        //preventativetreatments
+        new("View PreventativeTreatments", FshAction.View, FshResource.PreventativeTreatments, IsBasic: true),
+        new("Search PreventativeTreatments", FshAction.Search, FshResource.PreventativeTreatments, IsBasic: true),
+        new("Create PreventativeTreatments", FshAction.Create, FshResource.PreventativeTreatments),
+        new("Update PreventativeTreatments", FshAction.Update, FshResource.PreventativeTreatments),
+        new("Delete PreventativeTreatments", FshAction.Delete, FshResource.PreventativeTreatments),
+        new("Export PreventativeTreatments", FshAction.Export, FshResource.PreventativeTreatments),
 
         //todos
         new("View Todos", FshAction.View, FshResource.Todos, IsBasic: true),

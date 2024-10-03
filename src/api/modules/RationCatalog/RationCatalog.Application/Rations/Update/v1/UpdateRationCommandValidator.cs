@@ -6,7 +6,7 @@ public class UpdateRationCommandValidator : AbstractValidator<UpdateRationComman
     public UpdateRationCommandValidator()
     {
         RuleFor(p => p.Name).NotEmpty().MinimumLength(2).MaximumLength(75);
-        RuleFor(p => p.DollarsPerHeadPerDay).GreaterThan(0);
+        RuleFor(p => p.DollarsPerPound).GreaterThan(0);
     }
 }
 

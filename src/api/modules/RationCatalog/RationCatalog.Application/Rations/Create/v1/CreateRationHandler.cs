@@ -13,7 +13,7 @@ public sealed class CreateRationHandler(
     public async Task<CreateRationResponse> Handle(CreateRationCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var ration = Ration.Create(request.Name!, request.Description, request.DollarsPerHeadPerDay);
+        var ration = Ration.Create(request.Name!, request.Description, request.DollarsPerPound);
         await repository.AddAsync(ration, cancellationToken);
         logger.LogInformation("ration created {RationId}", ration.Id);
         return new CreateRationResponse(ration.Id);

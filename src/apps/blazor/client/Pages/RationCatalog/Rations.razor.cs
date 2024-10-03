@@ -25,7 +25,7 @@ public partial class Rations
                 new(prod => prod.Id,"Id", "Id"),
                 new(prod => prod.Name,"Name", "Name"),
                 new(prod => prod.Description, "Description", "Description"),
-                new(prod => prod.DollarsPerHeadPerDay, "DollarsPerHeadPerDay", "DollarsPerHeadPerDay")
+                new(prod => prod.DollarsPerPound, "DollarsPerPound", "DollarsPerPound")
             },
             enableAdvancedSearch: true,
             idFunc: prod => prod.Id!.Value,

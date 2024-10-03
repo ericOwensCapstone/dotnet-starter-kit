@@ -30,6 +30,7 @@ public static class FshResource
     public const string Rations = nameof(Rations);
     // TODO BLAZORFSHRESOURCES
     public const string GrowthTreatments = nameof(GrowthTreatments);
+    public const string PreventativeTreatments = nameof(PreventativeTreatments);
 }
 
 public static class FshPermissions
@@ -74,12 +75,21 @@ public static class FshPermissions
         new("Delete Rations", FshAction.Delete, FshResource.Rations),
         new("Export Rations", FshAction.Export, FshResource.Rations),
 
+        //growthtreatments
         new("View GrowthTreatments", FshAction.View, FshResource.GrowthTreatments, IsBasic: true),
         new("Search GrowthTreatments", FshAction.Search, FshResource.GrowthTreatments, IsBasic: true),
         new("Create GrowthTreatments", FshAction.Create, FshResource.GrowthTreatments),
         new("Update GrowthTreatments", FshAction.Update, FshResource.GrowthTreatments),
         new("Delete GrowthTreatments", FshAction.Delete, FshResource.GrowthTreatments),
         new("Export GrowthTreatments", FshAction.Export, FshResource.GrowthTreatments),
+
+        //preventativetreatments
+        new("View PreventativeTreatments", FshAction.View, FshResource.PreventativeTreatments, IsBasic: true),
+        new("Search PreventativeTreatments", FshAction.Search, FshResource.PreventativeTreatments, IsBasic: true),
+        new("Create PreventativeTreatments", FshAction.Create, FshResource.PreventativeTreatments),
+        new("Update PreventativeTreatments", FshAction.Update, FshResource.PreventativeTreatments),
+        new("Delete PreventativeTreatments", FshAction.Delete, FshResource.PreventativeTreatments),
+        new("Export PreventativeTreatments", FshAction.Export, FshResource.PreventativeTreatments),
 
         // TODO BLAZORFSHPERMISSIONS
 

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>FSH.Starter.WebApi.PreventativeTreatmentCatalog.Infrastructure</RootNamespace>
+    <AssemblyName>FSH.Starter.WebApi.PreventativeTreatmentCatalog.Infrastructure</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Persistence\Repositories\**" />
+    <EmbeddedResource Remove="Persistence\Repositories\**" />
+    <None Remove="Persistence\Repositories\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\framework\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\PreventativeTreatmentCatalog.Application\PreventativeTreatmentCatalog.Application.csproj" />
+  </ItemGroup>
+</Project>
+

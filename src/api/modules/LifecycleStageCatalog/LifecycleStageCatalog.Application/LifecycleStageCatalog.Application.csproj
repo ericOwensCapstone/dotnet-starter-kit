@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>FSH.Starter.WebApi.LifecycleStageCatalog.Application</RootNamespace>
+    <AssemblyName>FSH.Starter.WebApi.LifecycleStageCatalog.Application</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
+    <ProjectReference Include="..\LifecycleStageCatalog.Domain\LifecycleStageCatalog.Domain.csproj" />
+  </ItemGroup>
+</Project>
+

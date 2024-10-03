@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>FSH.Starter.WebApi.LifecycleStageCatalog.Infrastructure</RootNamespace>
+    <AssemblyName>FSH.Starter.WebApi.LifecycleStageCatalog.Infrastructure</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Persistence\Repositories\**" />
+    <EmbeddedResource Remove="Persistence\Repositories\**" />
+    <None Remove="Persistence\Repositories\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\framework\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\LifecycleStageCatalog.Application\LifecycleStageCatalog.Application.csproj" />
+  </ItemGroup>
+</Project>
+

@@ -31,6 +31,7 @@ public static class FshResource
     public const string Rations = nameof(Rations);
     public const string GrowthTreatments = nameof(GrowthTreatments);
     public const string PreventativeTreatments = nameof(PreventativeTreatments);
+    public const string LifecycleStages = nameof(LifecycleStages);
 }
 
 public static class FshPermissions
@@ -91,6 +92,14 @@ public static class FshPermissions
         new("Update PreventativeTreatments", FshAction.Update, FshResource.PreventativeTreatments),
         new("Delete PreventativeTreatments", FshAction.Delete, FshResource.PreventativeTreatments),
         new("Export PreventativeTreatments", FshAction.Export, FshResource.PreventativeTreatments),
+
+        //lifecycleStages
+        new("View LifecycleStages", FshAction.View, FshResource.LifecycleStages, IsBasic: true),
+        new("Search LifecycleStages", FshAction.Search, FshResource.LifecycleStages, IsBasic: true),
+        new("Create LifecycleStages", FshAction.Create, FshResource.LifecycleStages),
+        new("Update LifecycleStages", FshAction.Update, FshResource.LifecycleStages),
+        new("Delete LifecycleStages", FshAction.Delete, FshResource.LifecycleStages),
+        new("Export LifecycleStages", FshAction.Export, FshResource.LifecycleStages),
 
         //todos
         new("View Todos", FshAction.View, FshResource.Todos, IsBasic: true),

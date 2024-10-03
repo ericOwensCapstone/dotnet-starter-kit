@@ -11,6 +11,8 @@ using FSH.Starter.WebApi.GrowthTreatmentCatalog.Application;
 using FSH.Starter.WebApi.GrowthTreatmentCatalog.Infrastructure;
 using FSH.Starter.WebApi.PreventativeTreatmentCatalog.Application;
 using FSH.Starter.WebApi.PreventativeTreatmentCatalog.Infrastructure;
+using FSH.Starter.WebApi.LifecycleStageCatalog.Application;
+using FSH.Starter.WebApi.LifecycleStageCatalog.Infrastructure;
 
 namespace FSH.Starter.WebApi.Host;
 
@@ -28,6 +30,7 @@ public static class Extensions
             typeof(RationCatalogMetadata).Assembly,
             typeof(GrowthTreatmentCatalogMetadata).Assembly,
             typeof(PreventativeTreatmentCatalogMetadata).Assembly,
+            typeof(LifecycleStageCatalogMetadata).Assembly,
             typeof(TodoModule).Assembly
         };
 
@@ -43,6 +46,7 @@ public static class Extensions
         builder.RegisterRationCatalogServices();
         builder.RegisterGrowthTreatmentCatalogServices();
         builder.RegisterPreventativeTreatmentCatalogServices();
+        builder.RegisterLifecycleStageCatalogServices();
 
 
 
@@ -63,6 +67,7 @@ public static class Extensions
             config.WithModule<RationCatalogModule.Endpoints>();
             config.WithModule<GrowthTreatmentCatalogModule.Endpoints>();
             config.WithModule<PreventativeTreatmentCatalogModule.Endpoints>();
+            config.WithModule<LifecycleStageCatalogModule.Endpoints>();
         });
 
         return builder;
@@ -75,8 +80,12 @@ public static class Extensions
         //register modules
         app.UseCatalogModule();
         app.UseTodoModule();
-        //TODO register new modules
+
+        //TODO REGISTERMODULES
         app.UseRationCatalogModule();
+        app.UseGrowthTreatmentCatalogModule();
+        app.UsePreventativeTreatmentCatalogModule();
+        app.UseLifecycleStageCatalogModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()

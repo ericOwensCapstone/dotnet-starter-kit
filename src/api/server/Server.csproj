@@ -21,6 +21,7 @@
     <ProjectReference Include="..\migrations\PostgreSQL\PostgreSQL.csproj" />
     <ProjectReference Include="..\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\GrowthTreatmentCatalog\GrowthTreatmentCatalog.Infrastructure\GrowthTreatmentCatalog.Infrastructure.csproj" />
+    <ProjectReference Include="..\modules\LifecycleStageCatalog\LifecycleStageCatalog.Infrastructure\LifecycleStageCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\PreventativeTreatmentCatalog\PreventativeTreatmentCatalog.Infrastructure\PreventativeTreatmentCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\RationCatalog\RationCatalog.Infrastructure\RationCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\Todo\Todo.csproj" />

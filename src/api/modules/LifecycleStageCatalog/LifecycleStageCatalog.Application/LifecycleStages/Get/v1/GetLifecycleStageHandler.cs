@@ -20,7 +20,15 @@ public sealed class GetLifecycleStageHandler(
             {
                 var lifecycleStageItem = await repository.GetByIdAsync(request.Id, cancellationToken);
                 if (lifecycleStageItem == null) throw new LifecycleStageNotFoundException(request.Id);
-                return new LifecycleStageResponse(lifecycleStageItem.Id, lifecycleStageItem.Name, lifecycleStageItem.Description, lifecycleStageItem.Rating);
+                return new LifecycleStageResponse(
+                    lifecycleStageItem.Id, 
+                    lifecycleStageItem.Name, 
+                    lifecycleStageItem.Description, 
+                    lifecycleStageItem.Rating, 
+                    lifecycleStageItem.Ration,
+                    lifecycleStageItem.GrowthTreatment,
+                    lifecycleStageItem.PreventativeTreatment
+                );
             },
             cancellationToken: cancellationToken);
         return item!;

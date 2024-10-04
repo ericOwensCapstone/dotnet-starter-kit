@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.RationCatalog
 {
     [DbContext(typeof(RationCatalogDbContext))]
-    [Migration("20241003133605_Add RationCatalog Schema")]
+    [Migration("20241003184820_Add RationCatalog Schema")]
     partial class AddRationCatalogSchema
     {
         /// <inheritdoc />

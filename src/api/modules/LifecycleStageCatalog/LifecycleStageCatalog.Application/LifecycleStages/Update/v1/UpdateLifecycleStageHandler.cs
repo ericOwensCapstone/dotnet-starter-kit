@@ -16,7 +16,7 @@ public sealed class UpdateLifecycleStageHandler(
         ArgumentNullException.ThrowIfNull(request);
         var lifecycleStage = await repository.GetByIdAsync(request.Id, cancellationToken);
         _ = lifecycleStage ?? throw new LifecycleStageNotFoundException(request.Id);
-        var updatedLifecycleStage = lifecycleStage.Update(request.Name, request.Description, request.Rating);
+        var updatedLifecycleStage = lifecycleStage.Update(request.Name, request.Description, request.Rating, request.Ration, request.GrowthTreatment, request.PreventativeTreatment);
         await repository.UpdateAsync(updatedLifecycleStage, cancellationToken);
         logger.LogInformation("lifecycleStage with id : {LifecycleStageId} updated.", lifecycleStage.Id);
         return new UpdateLifecycleStageResponse(lifecycleStage.Id);

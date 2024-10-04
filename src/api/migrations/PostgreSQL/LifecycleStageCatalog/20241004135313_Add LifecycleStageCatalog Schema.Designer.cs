@@ -3,6 +3,7 @@ using System;
 using FSH.Starter.WebApi.LifecycleStageCatalog.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.LifecycleStageCatalog
 {
     [DbContext(typeof(LifecycleStageCatalogDbContext))]
-    partial class LifecycleStageCatalogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241004135313_Add LifecycleStageCatalog Schema")]
+    partial class AddLifecycleStageCatalogSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -2,7 +2,10 @@ using Finbuckle.MultiTenant.Abstractions;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
 using FSH.Framework.Infrastructure.Tenant;
+using FSH.Starter.WebApi.GrowthTreatmentCatalog.Domain;
 using FSH.Starter.WebApi.LifecycleStageCatalog.Domain;
+using FSH.Starter.WebApi.PreventativeTreatmentCatalog.Domain;
+using FSH.Starter.WebApi.RationCatalog.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -15,6 +18,9 @@ public sealed class LifecycleStageCatalogDbContext : FshDbContext
         : base(multiTenantContextAccessor, options, publisher, settings)
     {
     }
+    public DbSet<Ration> Rations { get; set; } = null!;
+    public DbSet<GrowthTreatment> GrowthTreatments { get; set; } = null!;
+    public DbSet<PreventativeTreatment> PreventativeTreatments { get; set; } = null!;
 
     public DbSet<LifecycleStage> LifecycleStages { get; set; } = null!;
 

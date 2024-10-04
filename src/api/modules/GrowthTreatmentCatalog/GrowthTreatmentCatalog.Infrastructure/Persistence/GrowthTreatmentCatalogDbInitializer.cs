@@ -22,12 +22,23 @@ internal sealed class GrowthTreatmentCatalogDbInitializer(
         const string Name = "GrowthTreatment1";
         const string Description = "Growth Treatment 1";
         const decimal DollarsPerHead = 1;
-        if (await context.GrowthTreatments.FirstOrDefaultAsync(t => t.Name == Name, cancellationToken).ConfigureAwait(false) is null)
+        try
         {
-            var growthTreatment = GrowthTreatment.Create(Name, Description, DollarsPerHead);
-            await context.GrowthTreatments.AddAsync(growthTreatment, cancellationToken);
-            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-            logger.LogInformation("[{Tenant}] seeding default growthTreatmentcatalog data", context.TenantInfo!.Identifier);
+            if (await context.GrowthTreatments.FirstOrDefaultAsync(t => t.Name == Name, cancellationToken).ConfigureAwait(false) is null)
+            {
+                var growthTreatment = GrowthTreatment.Create(Name, Description, DollarsPerHead);
+                await context.GrowthTreatments.AddAsync(growthTreatment, cancellationToken);
+                await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+                logger.LogInformation("[{Tenant}] seeding default growthTreatmentcatalog data", context.TenantInfo!.Identifier);
+            }
+            else
+            {
+                var dw = 4;
+            }
+        }
+        catch (Exception ex)
+        {
+            var wd = 40;
         }
     }
 }

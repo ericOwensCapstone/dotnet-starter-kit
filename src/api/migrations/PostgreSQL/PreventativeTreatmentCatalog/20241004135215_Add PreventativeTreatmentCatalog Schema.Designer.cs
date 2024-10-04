@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.PreventativeTreatmentCatalog
 {
     [DbContext(typeof(PreventativeTreatmentCatalogDbContext))]
-    [Migration("20241003124735_Add PreventativeTreatmentCatalog Schema")]
+    [Migration("20241004135215_Add PreventativeTreatmentCatalog Schema")]
     partial class AddPreventativeTreatmentCatalogSchema
     {
         /// <inheritdoc />

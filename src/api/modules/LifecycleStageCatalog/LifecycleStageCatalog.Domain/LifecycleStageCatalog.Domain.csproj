@@ -5,6 +5,9 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
+    <ProjectReference Include="..\..\GrowthTreatmentCatalog\GrowthTreatmentCatalog.Domain\GrowthTreatmentCatalog.Domain.csproj" />
+    <ProjectReference Include="..\..\PreventativeTreatmentCatalog\PreventativeTreatmentCatalog.Domain\PreventativeTreatmentCatalog.Domain.csproj" />
+    <ProjectReference Include="..\..\RationCatalog\RationCatalog.Domain\RationCatalog.Domain.csproj" />
   </ItemGroup>
 </Project>
 

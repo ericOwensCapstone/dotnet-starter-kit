@@ -22,6 +22,19 @@ public class PreventativeTreatment : AuditableEntity, IAggregateRoot
         return preventativeTreatment;
     }
 
+    public static PreventativeTreatment CreateWithGuid(Guid id, string name, string? description, decimal dollarsperhead)
+    {
+        var preventativeTreatment = new PreventativeTreatment
+        {
+            Id = id,
+            Name = name,
+            Description = description,
+            DollarsPerHead = dollarsperhead
+        };
+
+        return preventativeTreatment;
+    }
+
     public PreventativeTreatment Update(string? name, string? description, decimal? dollarsperhead)
     {
         if (name is not null && Name?.Equals(name, StringComparison.OrdinalIgnoreCase) is not true) Name = name;

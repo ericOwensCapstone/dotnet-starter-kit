@@ -22,6 +22,19 @@ public class GrowthTreatment : AuditableEntity, IAggregateRoot
         return growthTreatment;
     }
 
+    public static GrowthTreatment CreateWithGuid(Guid id, string name, string? description, decimal dollarsperhead)
+    {
+        var growthTreatment = new GrowthTreatment
+        {
+            Id = id,
+            Name = name,
+            Description = description,
+            DollarsPerHead = dollarsperhead
+        };
+
+        return growthTreatment;
+    }
+
     public GrowthTreatment Update(string? name, string? description, decimal? dollarsperhead)
     {
         if (name is not null && Name?.Equals(name, StringComparison.OrdinalIgnoreCase) is not true) Name = name;

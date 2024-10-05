@@ -22,6 +22,19 @@ public class Ration : AuditableEntity, IAggregateRoot
         return ration;
     }
 
+    public static Ration CreateWithGuid(Guid id, string name, string? description, decimal dollarsPerPound)
+    {
+        var ration = new Ration
+        {
+            Id = id,
+            Name = name,
+            Description = description,
+            DollarsPerPound = dollarsPerPound
+        };
+
+        return ration;
+    }
+
     public Ration Update(string? name, string? description, decimal? dollarsPerPound)
     {
         if (name is not null && Name?.Equals(name, StringComparison.OrdinalIgnoreCase) is not true) Name = name;

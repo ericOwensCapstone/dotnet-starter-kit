@@ -10,9 +10,9 @@ public class LifecycleStage : AuditableEntity, IAggregateRoot
 {
     public string Name { get; private set; } = default!;
     public string? Description { get; private set; }
-    public Ration? Ration { get; private set; }
-    public GrowthTreatment? GrowthTreatment { get; private set; }
-    public PreventativeTreatment? PreventativeTreatment { get; private set; }
+    public Ration Ration { get; private set; }
+    public GrowthTreatment GrowthTreatment { get; private set; }
+    public PreventativeTreatment PreventativeTreatment { get; private set; }
 
     public decimal Rating { get; private set; }
 
@@ -21,9 +21,9 @@ public class LifecycleStage : AuditableEntity, IAggregateRoot
         string name, 
         string? description, 
         decimal rating,
-        Ration? ration,
-        GrowthTreatment? growthTreatment,
-        PreventativeTreatment? preventativeTreatment
+        Ration ration,
+        GrowthTreatment growthTreatment,
+        PreventativeTreatment preventativeTreatment
     )
     {
         var lifecycleStage = new LifecycleStage();
@@ -41,15 +41,14 @@ public class LifecycleStage : AuditableEntity, IAggregateRoot
         return lifecycleStage;
     }
 
-    //TODO nullables
     public LifecycleStage Update
     (
         string name,
         string? description,
         decimal? rating,
-        Ration? ration,
+        Ration ration,
         GrowthTreatment growthTreatment,
-        PreventativeTreatment? preventativeTreatment
+        PreventativeTreatment preventativeTreatment
     )
     {
         if (name is not null && Name?.Equals(name, StringComparison.OrdinalIgnoreCase) is not true) Name = name;

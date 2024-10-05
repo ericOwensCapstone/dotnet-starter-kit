@@ -22,7 +22,7 @@ public class Ration : AuditableEntity, IAggregateRoot
         return ration;
     }
 
-    public static Ration CreateWithGuid(Guid id, string name, string? description, decimal dollarsPerPound)
+    public static Ration Create(Guid id, string name, string? description, decimal dollarsPerPound)
     {
         var ration = new Ration
         {
@@ -60,4 +60,60 @@ public class Ration : AuditableEntity, IAggregateRoot
         return ration;
     }
 }
+
+//using System;
+
+//public class Ration : IEquatable<Ration>
+//{
+//    public Guid Id { get; set; }
+//    public string Name { get; set; }
+//    public string Description { get; set; }
+
+//    public override bool Equals(object obj)
+//    {
+//        if (obj is Ration other)
+//        {
+//            return Equals(other);
+//        }
+//        return false;
+//    }
+
+//    public bool Equals(Ration other)
+//    {
+//        if (other == null)
+//        {
+//            return false;
+//        }
+
+//        return Id == other.Id &&
+//               Name == other.Name &&
+//               Description == other.Description;
+//    }
+
+//    public override int GetHashCode()
+//    {
+//        return HashCode.Combine(Id, Name, Description);
+//    }
+
+//    public static bool operator ==(Ration left, Ration right)
+//    {
+//        if (ReferenceEquals(left, right))
+//        {
+//            return true;
+//        }
+
+//        if (left is null || right is null)
+//        {
+//            return false;
+//        }
+
+//        return left.Equals(right);
+//    }
+
+//    public static bool operator !=(Ration left, Ration right)
+//    {
+//        return !(left == right);
+//    }
+//}
+
 

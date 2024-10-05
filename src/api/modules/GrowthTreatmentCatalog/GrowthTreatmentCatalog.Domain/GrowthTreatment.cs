@@ -22,7 +22,7 @@ public class GrowthTreatment : AuditableEntity, IAggregateRoot
         return growthTreatment;
     }
 
-    public static GrowthTreatment CreateWithGuid(Guid id, string name, string? description, decimal dollarsperhead)
+    public static GrowthTreatment Create(Guid id, string name, string? description, decimal dollarsperhead)
     {
         var growthTreatment = new GrowthTreatment
         {

@@ -22,7 +22,7 @@ public class PreventativeTreatment : AuditableEntity, IAggregateRoot
         return preventativeTreatment;
     }
 
-    public static PreventativeTreatment CreateWithGuid(Guid id, string name, string? description, decimal dollarsperhead)
+    public static PreventativeTreatment Create(Guid id, string name, string? description, decimal dollarsperhead)
     {
         var preventativeTreatment = new PreventativeTreatment
         {

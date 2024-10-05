@@ -17,16 +17,65 @@ public sealed class CreateLifecycleStageHandler(
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        await repository.GetAndAttach<Ration>(request.UpdateRationCommand.Id, cancellationToken);
-        await repository.GetAndAttach<GrowthTreatment>(request.UpdateGrowthTreatmentCommand.Id, cancellationToken);
-        await repository.GetAndAttach<PreventativeTreatment>(request.UpdatePreventativeTreatmentCommand.Id, cancellationToken);
+        Ration ration = null;
+        GrowthTreatment growthTreatment = null;
+        PreventativeTreatment preventativeTreatment = null;
 
-        var ration = Ration.CreateWithGuid(request.UpdateRationCommand.Id, request.UpdateRationCommand.Name!, request.UpdateRationCommand.Description, request.UpdateRationCommand.DollarsPerPound);
-        var growthTreatment = GrowthTreatment.CreateWithGuid(request.UpdateGrowthTreatmentCommand.Id, request.UpdateGrowthTreatmentCommand.Name!, request.UpdateGrowthTreatmentCommand.Description, request.UpdateGrowthTreatmentCommand.DollarsPerHead);
-        var preventativeTreatment = PreventativeTreatment.CreateWithGuid(request.UpdatePreventativeTreatmentCommand.Id, request.UpdatePreventativeTreatmentCommand.Name!, request.UpdatePreventativeTreatmentCommand.Description, request.UpdatePreventativeTreatmentCommand.DollarsPerHead);
+        var existingRation = await repository.Get<Ration>(request.UpdateRationCommand.Id, cancellationToken);
+        var existingGrowthTreatment = await repository.Get<GrowthTreatment>(request.UpdateGrowthTreatmentCommand.Id, cancellationToken);
+        var existingPreventativeTreatment = await repository.Get<PreventativeTreatment>(request.UpdatePreventativeTreatmentCommand.Id, cancellationToken);
+
+        var incomingRation = Ration.Create(request.UpdateRationCommand.Id, request.UpdateRationCommand.Name!, request.UpdateRationCommand.Description, request.UpdateRationCommand.DollarsPerPound);
+        var incomingGrowthTreatment = GrowthTreatment.Create(request.UpdateGrowthTreatmentCommand.Id, request.UpdateGrowthTreatmentCommand.Name!, request.UpdateGrowthTreatmentCommand.Description, request.UpdateGrowthTreatmentCommand.DollarsPerHead);
+        var incomingPreventativeTreatment = PreventativeTreatment.Create(request.UpdatePreventativeTreatmentCommand.Id, request.UpdatePreventativeTreatmentCommand.Name!, request.UpdatePreventativeTreatmentCommand.Description, request.UpdatePreventativeTreatmentCommand.DollarsPerHead);
+
+        //TODO the only problem below is when the incomingRation is an updated version of a ration that already exists in the database
+        //We need to check if the incoming ration is an updated version of an existing ration
+        //and if so, we need to update the existing ration with the incoming ration
+        //before we can use the existing ration
+        // all of this implies we have an implementation of an equals method in the ration class
+        // see the commented out code at the bottom of the Ration class
+
+        if (existingRation != null)
+        {
+            ration = existingRation;
+            await repository.Attach<Ration>(request.UpdateRationCommand.Id, cancellationToken);
+        }
+        else
+        {
+            ration = incomingRation;
+        }
+
+        if(existingGrowthTreatment != null)
+        {
+            growthTreatment = existingGrowthTreatment;
+            await repository.Attach<GrowthTreatment>(request.UpdateGrowthTreatmentCommand.Id, cancellationToken);
+        }
+        else
+        {
+            growthTreatment = incomingGrowthTreatment;
+        }
+
+        if(existingPreventativeTreatment != null)
+        {
+            preventativeTreatment = existingPreventativeTreatment;
+            await repository.Attach<PreventativeTreatment>(request.UpdatePreventativeTreatmentCommand.Id, cancellationToken);
+        }
+        else
+        {
+            preventativeTreatment = incomingPreventativeTreatment;
+        }
+
+
 
         var lifecycleStage = LifecycleStage.Create(request.Name!, request.Description, request.Rating, ration, growthTreatment, preventativeTreatment);
-        await repository.AddAsync(lifecycleStage, cancellationToken);
+        try
+        {
+            await repository.AddAsync(lifecycleStage, cancellationToken);
+        } catch(Exception ex)
+        {
+            var wd = 40;
+        }
         logger.LogInformation("lifecycleStage created {LifecycleStageId}", lifecycleStage.Id);
         return new CreateLifecycleStageResponse(lifecycleStage.Id);
     }

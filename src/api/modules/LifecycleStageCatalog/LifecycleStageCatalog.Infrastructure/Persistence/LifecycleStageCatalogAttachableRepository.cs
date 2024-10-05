@@ -15,7 +15,7 @@ internal sealed class LifecycleStageCatalogAttachableRepository<T> : LifecycleSt
         _context = context;
     }
 
-    public async Task GetAndAttach<Tp>(Guid id, CancellationToken cancellationToken) where Tp : class
+    public async Task Attach<Tp>(Guid id, CancellationToken cancellationToken) where Tp : class
     {
         var temp = await _context.Set<Tp>().FindAsync(new object[] { id }, cancellationToken);
         if(temp != null)
@@ -23,6 +23,13 @@ internal sealed class LifecycleStageCatalogAttachableRepository<T> : LifecycleSt
             _context.Attach<Tp>(temp);
         }
     }
+
+    public async Task<Tp> Get<Tp>(Guid id, CancellationToken cancellationToken) where Tp : class
+    {
+        return await _context.Set<Tp>().FindAsync(new object[] { id }, cancellationToken);
+    }
+
+
 
 
 }

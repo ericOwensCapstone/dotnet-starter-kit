@@ -5,8 +5,11 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
+    <ProjectReference Include="..\..\GrowthTreatmentCatalog\GrowthTreatmentCatalog.Application\GrowthTreatmentCatalog.Application.csproj" />
     <ProjectReference Include="..\..\GrowthTreatmentCatalog\GrowthTreatmentCatalog.Domain\GrowthTreatmentCatalog.Domain.csproj" />
+    <ProjectReference Include="..\..\PreventativeTreatmentCatalog\PreventativeTreatmentCatalog.Application\PreventativeTreatmentCatalog.Application.csproj" />
     <ProjectReference Include="..\..\PreventativeTreatmentCatalog\PreventativeTreatmentCatalog.Domain\PreventativeTreatmentCatalog.Domain.csproj" />
+    <ProjectReference Include="..\..\RationCatalog\RationCatalog.Application\RationCatalog.Application.csproj" />
     <ProjectReference Include="..\..\RationCatalog\RationCatalog.Domain\RationCatalog.Domain.csproj" />
     <ProjectReference Include="..\LifecycleStageCatalog.Domain\LifecycleStageCatalog.Domain.csproj" />
   </ItemGroup>

@@ -22,7 +22,7 @@
         <MudItem xs="12">
             <MudTextField Label="Password" Variant="Variant.Outlined" @bind-Value="_tokenRequest.Password"
                           For="@(() => _tokenRequest.Password)" InputType="@_passwordInput" Adornment="Adornment.End"
-                          AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
+                          AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="TogglePasswordVisibility"  />
         </MudItem>
         <MudItem xs="12">
             <MudTextField T="string" Label="Tenant" Variant="Variant.Outlined" @bind-Value="TenantId"

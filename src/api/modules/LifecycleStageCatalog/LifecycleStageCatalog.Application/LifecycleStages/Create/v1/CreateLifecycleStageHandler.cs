@@ -13,7 +13,9 @@ public sealed class CreateLifecycleStageHandler(
     public async Task<CreateLifecycleStageResponse> Handle(CreateLifecycleStageCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var lifecycleStage = LifecycleStage.Create(request.Name!, request.Description, request.Rating, request.Ration, request.GrowthTreatment, request.PreventativeTreatment);
+        //TODO restore
+        //var lifecycleStage = LifecycleStage.Create(request.Name!, request.Description, request.Rating, request.Ration, request.GrowthTreatment, request.PreventativeTreatment);
+        var lifecycleStage = LifecycleStage.Create(request.Name!, request.Description, request.Rating, null, null, null);
         await repository.AddAsync(lifecycleStage, cancellationToken);
         logger.LogInformation("lifecycleStage created {LifecycleStageId}", lifecycleStage.Id);
         return new CreateLifecycleStageResponse(lifecycleStage.Id);

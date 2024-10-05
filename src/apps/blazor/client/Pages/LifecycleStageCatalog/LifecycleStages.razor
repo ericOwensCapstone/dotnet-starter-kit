@@ -23,6 +23,34 @@
             <MudTextField Label="Description" For="@(() => context.Description)"
                 @bind-Value="context.Description" />
         </MudItem>
+
+
+        <MudItem xs="12" md="6">
+            <MudSelect T="RationResponse" Label="Ration" @bind-Value="context.Ration">
+                @foreach (var ration in Rations)
+                {
+                    <MudSelectItem Value="ration">@ration.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudSelect T="GrowthTreatmentResponse" Label="GrowthTreatment" @bind-Value="context.GrowthTreatment">
+                @foreach (var growthTreatment in GrowthTreatments)
+                {
+                    <MudSelectItem Value="growthTreatment">@growthTreatment.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudSelect T="PreventativeTreatmentResponse" Label="PreventativeTreatment" @bind-Value="context.PreventativeTreatment">
+                @foreach (var preventativeTreatment in PreventativeTreatments)
+                {
+                    <MudSelectItem Value="preventativeTreatment">@preventativeTreatment.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+
+
         <MudItem xs="12" md="6">
             <MudTextField Label="Rating" For="@(() => context.Rating)" @bind-Value="context.Rating" />
         </MudItem>

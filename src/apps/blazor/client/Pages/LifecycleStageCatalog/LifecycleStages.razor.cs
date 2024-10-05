@@ -15,8 +15,12 @@ public partial class LifecycleStages
 
     private EntityTable<LifecycleStageResponse, Guid, LifecycleStageViewModel> _table = default!;
 
-    protected override void OnInitialized() =>
-    
+    private List<RationResponse> Rations { get; set; } = new();
+    private List<GrowthTreatmentResponse> GrowthTreatments { get; set; } = new();
+    private List<PreventativeTreatmentResponse> PreventativeTreatments { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
         Context = new(
             entityName: "LifecycleStage",
             entityNamePlural: "LifecycleStages",
@@ -26,7 +30,11 @@ public partial class LifecycleStages
                 new(prod => prod.Id,"Id", "Id"),
                 new(prod => prod.Name,"Name", "Name"),
                 new(prod => prod.Description, "Description", "Description"),
-                new(prod => prod.Rating, "Rating", "Rating")
+                new(prod => prod.Ration.Name, "Ration", "Ration"),
+                new(prod => prod.GrowthTreatment.Name, "Growth Treatment", "Growth Treatment"),
+                new(prod => prod.PreventativeTreatment.Name, "Preventative Treatment", "Preventative Treatment"),
+
+                //new(prod => prod.Rating, "Rating", "Rating")
             },
             enableAdvancedSearch: true,
             idFunc: prod => prod.Id!.Value,
@@ -46,7 +54,47 @@ public partial class LifecycleStages
                 await _client.UpdateLifecycleStageEndpointAsync("1", id, prod.Adapt<UpdateLifecycleStageCommand>());
             },
             deleteFunc: async id => await _client.DeleteLifecycleStageEndpointAsync("1", id));
-    
+
+        Rations = await LoadRationsAsync();
+        GrowthTreatments = await LoadGrowthTreatmentsAsync();
+        PreventativeTreatments = await LoadPreventativeTreatmentsAsync();
+    }
+
+    private async Task<List<RationResponse>> LoadRationsAsync()
+    {
+        var filter = new PaginationFilter { PageSize = 1000 };
+
+        var result = await _client.SearchRationsEndpointAsync("1", filter);
+        if(result.Items == null)
+        {
+            return new();
+        }
+        return (List<RationResponse>)result.Items;
+    }
+
+    private async Task<List<GrowthTreatmentResponse>> LoadGrowthTreatmentsAsync()
+    {
+        var filter = new PaginationFilter { PageSize = 1000 };
+
+        var result = await _client.SearchGrowthTreatmentsEndpointAsync("1", filter);
+        if (result.Items == null)
+        {
+            return new();
+        }
+        return (List<GrowthTreatmentResponse>)result.Items;
+    }
+
+    private async Task<List<PreventativeTreatmentResponse>> LoadPreventativeTreatmentsAsync()
+    {
+        var filter = new PaginationFilter { PageSize = 1000 };
+
+        var result = await _client.SearchPreventativeTreatmentsEndpointAsync("1", filter);
+        if (result.Items == null)
+        {
+            return new();
+        }
+        return (List<PreventativeTreatmentResponse>)result.Items;
+    }
 
     // Advanced Search
 
@@ -86,4 +134,7 @@ public partial class LifecycleStages
 
 public class LifecycleStageViewModel : UpdateLifecycleStageCommand
 {
+    public RationResponse Ration { get; set; } = default!;
+    public GrowthTreatmentResponse GrowthTreatment { get; set; } = default!;
+    public PreventativeTreatmentResponse PreventativeTreatment { get; set; } = default!;
 }

@@ -20,18 +20,20 @@
  *@    
     @if (CanViewAdministrationGroup)
     {
-        <MudText Typo="Typo.subtitle2" Color="Color.Surface" Class="ml-4 my-3">Administration</MudText>
-        @if (_canViewUsers)
-        {
-            <MudNavLink Match="NavLinkMatch.Prefix" Href="/identity/users" Icon="@Icons.Material.Filled.PeopleAlt">Users</MudNavLink>
-        }
-        @if (_canViewRoles)
-        {
-            <MudNavLink Href="/identity/roles" Icon="@Icons.Material.Filled.EmojiPeople">Roles</MudNavLink>
-        }
-        @if (_canViewTenants)
-        {
-            <MudNavLink Href="/tenants" Icon="@Icons.Material.Filled.GroupWork" Disabled="!_canViewTenants">Tenants</MudNavLink>
-        }
+        <MudNavGroup Title="Administration" Icon="@Icons.Material.Filled.AddBox">
+            @*         <MudText Typo="Typo.subtitle2" Color="Color.Surface" Class="ml-4 my-3">Administration</MudText> *@
+          @if (_canViewUsers)
+            {
+                <MudNavLink Match="NavLinkMatch.Prefix" Href="/identity/users" Icon="@Icons.Material.Filled.PeopleAlt">Users</MudNavLink>
+            }
+            @if (_canViewRoles)
+            {
+                <MudNavLink Href="/identity/roles" Icon="@Icons.Material.Filled.EmojiPeople">Roles</MudNavLink>
+            }
+            @if (_canViewTenants)
+            {
+                <MudNavLink Href="/tenants" Icon="@Icons.Material.Filled.GroupWork" Disabled="!_canViewTenants">Tenants</MudNavLink>
+            }
+        </MudNavGroup>
     }
 </MudNavMenu>

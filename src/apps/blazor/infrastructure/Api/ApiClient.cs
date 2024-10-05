@@ -7381,13 +7381,13 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         public string? Description { get; set; } = "Descriptive Description";
 
         [System.Text.Json.Serialization.JsonPropertyName("ration")]
-        public Ration Ration { get; set; } = default!;
+        public UpdateRationCommand Ration { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("growthTreatment")]
-        public GrowthTreatment GrowthTreatment { get; set; } = default!;
+        public UpdateGrowthTreatmentCommand GrowthTreatment { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("preventativeTreatment")]
-        public PreventativeTreatment PreventativeTreatment { get; set; } = default!;
+        public UpdatePreventativeTreatmentCommand PreventativeTreatment { get; set; } = default!;
 
     }
 
@@ -8215,13 +8215,13 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         public double Rating { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("ration")]
-        public Ration Ration { get; set; } = default!;
+        public UpdateRationCommand Ration { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("growthTreatment")]
-        public GrowthTreatment GrowthTreatment { get; set; } = default!;
+        public UpdateGrowthTreatmentCommand GrowthTreatment { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("preventativeTreatment")]
-        public PreventativeTreatment PreventativeTreatment { get; set; } = default!;
+        public UpdatePreventativeTreatmentCommand PreventativeTreatment { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string? Description { get; set; } = default!;

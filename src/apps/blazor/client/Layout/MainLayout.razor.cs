@@ -20,7 +20,9 @@ public partial class MainLayout
     {
         if (await ClientPreferences.GetPreference() is ClientPreference preferences)
         {
-            _drawerOpen = preferences.IsDrawerOpen;
+            //TODO understand preferences
+            //_drawerOpen = preferences.IsDrawerOpen;
+            _drawerOpen = true;
             _isDarkMode = preferences.IsDarkMode;
         }
     }

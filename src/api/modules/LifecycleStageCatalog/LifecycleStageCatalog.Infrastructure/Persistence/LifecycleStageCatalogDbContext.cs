@@ -29,6 +29,21 @@ public sealed class LifecycleStageCatalogDbContext : FshDbContext
         ArgumentNullException.ThrowIfNull(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LifecycleStageCatalogDbContext).Assembly);
         modelBuilder.HasDefaultSchema(SchemaNames.LifecycleStageCatalog);
+
+        modelBuilder.Entity<Ration>()
+            .ToTable("Rations", schema: "rationcatalog")
+            .Metadata.SetIsTableExcludedFromMigrations(true);
+
+        modelBuilder.Entity<GrowthTreatment>()
+            .ToTable("GrowthTreatments", schema: "growthtreatmentcatalog")
+            .Metadata.SetIsTableExcludedFromMigrations(true);
+
+        modelBuilder.Entity<PreventativeTreatment>()
+            .ToTable("PreventativeTreatments", schema: "preventativetreatmentcatalog")
+            .Metadata.SetIsTableExcludedFromMigrations(true);
+
+        modelBuilder.Entity<LifecycleStage>()
+            .ToTable("LifecycleStages", schema: "lifecyclestagecatalog"); 
     }
 }
 

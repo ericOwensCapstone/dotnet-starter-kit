@@ -3,14 +3,17 @@ using Ardalis.Specification.EntityFrameworkCore;
 using FSH.Framework.Core.Domain.Contracts;
 using FSH.Framework.Core.Persistence;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace FSH.Starter.WebApi.LifecycleStageCatalog.Infrastructure.Persistence;
-internal class LifecycleStageCatalogRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>
+public class LifecycleStageCatalogRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>
     where T : class, IAggregateRoot
 {
+    private LifecycleStageCatalogDbContext _context;
     public LifecycleStageCatalogRepository(LifecycleStageCatalogDbContext context)
         : base(context)
     {
+        _context = context;
     }
 
     // We override the default behavior when mapping to a dto.

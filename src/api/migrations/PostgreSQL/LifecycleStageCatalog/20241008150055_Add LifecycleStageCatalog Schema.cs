@@ -15,63 +15,6 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.LifecycleStageCatalog
                 name: "lifecyclestagecatalog");
 
             migrationBuilder.CreateTable(
-                name: "GrowthTreatments",
-                schema: "lifecyclestagecatalog",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    DollarsPerHead = table.Column<decimal>(type: "numeric", nullable: false),
-                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GrowthTreatments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PreventativeTreatments",
-                schema: "lifecyclestagecatalog",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    DollarsPerHead = table.Column<decimal>(type: "numeric", nullable: false),
-                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PreventativeTreatments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Rations",
-                schema: "lifecyclestagecatalog",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    DollarsPerPound = table.Column<decimal>(type: "numeric", nullable: false),
-                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LifecycleStages",
                 schema: "lifecyclestagecatalog",
                 columns: table => new
@@ -95,21 +38,21 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.LifecycleStageCatalog
                     table.ForeignKey(
                         name: "FK_LifecycleStages_GrowthTreatments_GrowthTreatmentId",
                         column: x => x.GrowthTreatmentId,
-                        principalSchema: "lifecyclestagecatalog",
+                        principalSchema: "growthtreatmentcatalog",
                         principalTable: "GrowthTreatments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LifecycleStages_PreventativeTreatments_PreventativeTreatmen~",
                         column: x => x.PreventativeTreatmentId,
-                        principalSchema: "lifecyclestagecatalog",
+                        principalSchema: "preventativetreatmentcatalog",
                         principalTable: "PreventativeTreatments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LifecycleStages_Rations_RationId",
                         column: x => x.RationId,
-                        principalSchema: "lifecyclestagecatalog",
+                        principalSchema: "rationcatalog",
                         principalTable: "Rations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -139,18 +82,6 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.LifecycleStageCatalog
         {
             migrationBuilder.DropTable(
                 name: "LifecycleStages",
-                schema: "lifecyclestagecatalog");
-
-            migrationBuilder.DropTable(
-                name: "GrowthTreatments",
-                schema: "lifecyclestagecatalog");
-
-            migrationBuilder.DropTable(
-                name: "PreventativeTreatments",
-                schema: "lifecyclestagecatalog");
-
-            migrationBuilder.DropTable(
-                name: "Rations",
                 schema: "lifecyclestagecatalog");
         }
     }

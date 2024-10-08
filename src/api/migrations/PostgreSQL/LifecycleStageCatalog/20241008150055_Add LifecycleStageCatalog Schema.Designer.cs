@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.LifecycleStageCatalog
 {
     [DbContext(typeof(LifecycleStageCatalogDbContext))]
-    [Migration("20241004135313_Add LifecycleStageCatalog Schema")]
+    [Migration("20241008150055_Add LifecycleStageCatalog Schema")]
     partial class AddLifecycleStageCatalogSchema
     {
         /// <inheritdoc />
@@ -56,7 +56,10 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.LifecycleStageCatalog
 
                     b.HasKey("Id");
 
-                    b.ToTable("GrowthTreatments", "lifecyclestagecatalog");
+                    b.ToTable("GrowthTreatments", "growthtreatmentcatalog", t =>
+                        {
+                            t.ExcludeFromMigrations();
+                        });
                 });
 
             modelBuilder.Entity("FSH.Starter.WebApi.LifecycleStageCatalog.Domain.LifecycleStage", b =>
@@ -146,7 +149,10 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.LifecycleStageCatalog
 
                     b.HasKey("Id");
 
-                    b.ToTable("PreventativeTreatments", "lifecyclestagecatalog");
+                    b.ToTable("PreventativeTreatments", "preventativetreatmentcatalog", t =>
+                        {
+                            t.ExcludeFromMigrations();
+                        });
                 });
 
             modelBuilder.Entity("FSH.Starter.WebApi.RationCatalog.Domain.Ration", b =>
@@ -179,7 +185,10 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.LifecycleStageCatalog
 
                     b.HasKey("Id");
 
-                    b.ToTable("Rations", "lifecyclestagecatalog");
+                    b.ToTable("Rations", "rationcatalog", t =>
+                        {
+                            t.ExcludeFromMigrations();
+                        });
                 });
 
             modelBuilder.Entity("FSH.Starter.WebApi.LifecycleStageCatalog.Domain.LifecycleStage", b =>

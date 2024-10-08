@@ -14,10 +14,10 @@ public sealed record UpdateLifecycleStageCommand(
     decimal Rating,
     //TODO nullable?
     [property: JsonPropertyName("ration")]
-    UpdateRationCommand? Ration,
+    UpdateRationCommand? UpdateRationCommand,
     [property: JsonPropertyName("growthTreatment")]
-    UpdateGrowthTreatmentCommand? GrowthTreatment,
+    UpdateGrowthTreatmentCommand? UpdateGrowthTreatmentCommand,
     [property: JsonPropertyName("preventativeTreatment")]
-    UpdatePreventativeTreatmentCommand? PreventativeTreatment,
+    UpdatePreventativeTreatmentCommand? UpdatePreventativeTreatmentCommand,
     string? Description = null) : IRequest<UpdateLifecycleStageResponse>;
 

@@ -1,5 +1,8 @@
 using FSH.Framework.Core.Persistence;
+using FSH.Starter.WebApi.GrowthTreatmentCatalog.Domain;
 using FSH.Starter.WebApi.LifecycleStageCatalog.Domain;
+using FSH.Starter.WebApi.PreventativeTreatmentCatalog.Domain;
+using FSH.Starter.WebApi.RationCatalog.Domain;
 using FSH.Starter.WebApi.LifecycleStageCatalog.Domain.Exceptions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace FSH.Starter.WebApi.LifecycleStageCatalog.Application.LifecycleStages.Update.v1;
 public sealed class UpdateLifecycleStageHandler(
     ILogger<UpdateLifecycleStageHandler> logger,
-    [FromKeyedServices("lifecycleStagecatalog:lifecycleStages")] IRepository<LifecycleStage> repository)
+    [FromKeyedServices("lifecycleStagecatalog:lifecycleStages")] IComponentRepository<LifecycleStage> repository)
     : IRequestHandler<UpdateLifecycleStageCommand, UpdateLifecycleStageResponse>
 {
     public async Task<UpdateLifecycleStageResponse> Handle(UpdateLifecycleStageCommand request, CancellationToken cancellationToken)
@@ -16,9 +19,11 @@ public sealed class UpdateLifecycleStageHandler(
         ArgumentNullException.ThrowIfNull(request);
         var lifecycleStage = await repository.GetByIdAsync(request.Id, cancellationToken);
         _ = lifecycleStage ?? throw new LifecycleStageNotFoundException(request.Id);
-        //TODO restore
-        //var updatedLifecycleStage = lifecycleStage.Update(request.Name, request.Description, request.Rating, request.Ration, request.GrowthTreatment, request.PreventativeTreatment);
-        var updatedLifecycleStage = lifecycleStage.Update(request.Name, request.Description, request.Rating, null, null, null);
+
+        var foundRation = await repository.GetComponentByIdAsync<Ration>(request.UpdateRationCommand!.Id, cancellationToken);
+        var foundGrowthTreatment = await repository.GetComponentByIdAsync<GrowthTreatment>(request.UpdateGrowthTreatmentCommand!.Id, cancellationToken);
+        var foundPreventativeTreatment = await repository.GetComponentByIdAsync<PreventativeTreatment>(request.UpdatePreventativeTreatmentCommand!.Id, cancellationToken);
+        var updatedLifecycleStage = lifecycleStage.Update(request.Name, request.Description, request.Rating, foundRation, foundGrowthTreatment, foundPreventativeTreatment);
         await repository.UpdateAsync(updatedLifecycleStage, cancellationToken);
         logger.LogInformation("lifecycleStage with id : {LifecycleStageId} updated.", lifecycleStage.Id);
         return new UpdateLifecycleStageResponse(lifecycleStage.Id);

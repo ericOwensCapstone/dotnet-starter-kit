@@ -134,6 +134,27 @@ public partial class LifecycleStages
 
 public class LifecycleStageViewModel : UpdateLifecycleStageCommand
 {
+
+    //private RationResponse _ration = default!;
+
+    //public RationResponse Ration
+    //{
+    //    get => _ration;
+    //    set
+    //    {
+    //        if (_ration != value)
+    //        {
+    //            _ration = value;
+    //            OnRationChanged();
+    //        }
+    //    }
+    //}
+
+    //private void OnRationChanged()
+    //{
+    //    var wd = 40;
+    //}
+
     public RationResponse Ration { get; set; } = default!;
     public GrowthTreatmentResponse GrowthTreatment { get; set; } = default!;
     public PreventativeTreatmentResponse PreventativeTreatment { get; set; } = default!;

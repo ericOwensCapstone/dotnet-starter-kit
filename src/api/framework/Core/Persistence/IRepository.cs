@@ -5,7 +5,6 @@ namespace FSH.Framework.Core.Persistence;
 public interface IRepository<T> : IRepositoryBase<T>
     where T : class, IAggregateRoot
 {
-    //Task GetAndAttach<Tp>(Guid id, CancellationToken cancellationToken) where Tp : class;
 }
 
 public interface IReadRepository<T> : IReadRepositoryBase<T>

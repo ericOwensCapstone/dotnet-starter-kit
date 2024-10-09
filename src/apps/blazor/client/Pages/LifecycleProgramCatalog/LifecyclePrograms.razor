@@ -1,8 +1,8 @@
-﻿@page "/catalog/lifecyclestages"
+﻿@page "/catalog/lifecycleprograms"
 
-<PageHeader Title="LifecycleStages" Header="LifecycleStages" SubHeader="Manage your LifecycleStages." />
+<PageHeader Title="LifecyclePrograms" Header="LifecyclePrograms" SubHeader="Manage your LifecyclePrograms." />
 
-<EntityTable @ref="_table" TEntity="LifecycleStageResponse" TId="Guid" TRequest="LifecycleStageViewModel" Context="@Context">
+<EntityTable @ref="_table" TEntity="LifecycleProgramResponse" TId="Guid" TRequest="LifecycleProgramViewModel" Context="@Context">
 
     <AdvancedSearchContent>
         <MudSlider T="decimal" @bind-value="SearchMinimumRate" Min="0" Max="9999" Step="100">Minimum Rate: @_searchMinimumRate.ToString()</MudSlider>
@@ -13,7 +13,7 @@
         @if (!Context.AddEditModal.IsCreate)
         {
             <MudItem xs="12" md="6">
-                <MudTextField Value="context.Id" Underline=false ReadOnly Label="LifecycleStage Id" />
+                <MudTextField Value="context.Id" Underline=false ReadOnly Label="LifecycleProgram Id" />
             </MudItem>
         }
         <MudItem xs="12" md="6">
@@ -24,10 +24,10 @@
                 @bind-Value="context.Description" />
         </MudItem>
 
-
-        <MudItem xs="12" md="6">
-@*             ToStringFunc=@(x => x.Name) *@
-            <MudSelect T="RationResponse" Label="Ration" @bind-Value="context.Ration" ToStringFunc=@(x => x.Name)>
+ 
+@*         <MudItem xs="12" md="6">
+             ToStringFunc=@(x => x.Name) 
+            <MudSelect T="RationResponse" Label="Ration" @bind-Value="context.Ration" >
                 @foreach (var ration in Rations)
                 {
                     <MudSelectItem Value="ration">@ration.Name</MudSelectItem>
@@ -35,7 +35,7 @@
             </MudSelect>
         </MudItem>
         <MudItem xs="12" md="6">
-            <MudSelect T="GrowthTreatmentResponse" Label="GrowthTreatment" @bind-Value="context.GrowthTreatment" ToStringFunc=@(x => x.Name)>
+            <MudSelect T="GrowthTreatmentResponse" Label="GrowthTreatment" @bind-Value="context.GrowthTreatment" >
                 @foreach (var growthTreatment in GrowthTreatments)
                 {
                     <MudSelectItem Value="growthTreatment">@growthTreatment.Name</MudSelectItem>
@@ -43,13 +43,13 @@
             </MudSelect>
         </MudItem>
         <MudItem xs="12" md="6">
-            <MudSelect T="PreventativeTreatmentResponse" Label="PreventativeTreatment" @bind-Value="context.PreventativeTreatment" ToStringFunc=@(x => x.Name)>
+            <MudSelect T="PreventativeTreatmentResponse" Label="PreventativeTreatment" @bind-Value="context.PreventativeTreatment" >
                 @foreach (var preventativeTreatment in PreventativeTreatments)
                 {
                     <MudSelectItem Value="preventativeTreatment">@preventativeTreatment.Name</MudSelectItem>
                 }
             </MudSelect>
-        </MudItem>
+        </MudItem>  *@
 
 
         <MudItem xs="12" md="6">

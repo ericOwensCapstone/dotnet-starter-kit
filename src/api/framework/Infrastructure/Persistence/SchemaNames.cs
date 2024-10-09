@@ -9,4 +9,5 @@ public static class SchemaNames
     public const string GrowthTreatmentCatalog = "growthtreatmentcatalog";
     public const string PreventativeTreatmentCatalog = "preventativetreatmentcatalog";
     public const string LifecycleStageCatalog = "lifecyclestagecatalog";
+    public const string LifecycleProgramCatalog = "lifecycleprogramcatalog";
 }

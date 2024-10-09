@@ -15,5 +15,6 @@ public static class FshResources
     public const string GrowthTreatments = nameof(GrowthTreatments);
     public const string PreventativeTreatments = nameof(PreventativeTreatments);
     public const string LifecycleStages = nameof(LifecycleStages);
+    public const string LifecyclePrograms = nameof(LifecyclePrograms);
     //TODO MOREBLAZORFSHRESOURCES
 }

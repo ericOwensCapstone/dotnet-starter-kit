@@ -13,6 +13,8 @@ using FSH.Starter.WebApi.PreventativeTreatmentCatalog.Application;
 using FSH.Starter.WebApi.PreventativeTreatmentCatalog.Infrastructure;
 using FSH.Starter.WebApi.LifecycleStageCatalog.Application;
 using FSH.Starter.WebApi.LifecycleStageCatalog.Infrastructure;
+using FSH.Starter.WebApi.LifecycleProgramCatalog.Application;
+using FSH.Starter.WebApi.LifecycleProgramCatalog.Infrastructure;
 
 namespace FSH.Starter.WebApi.Host;
 
@@ -31,6 +33,7 @@ public static class Extensions
             typeof(GrowthTreatmentCatalogMetadata).Assembly,
             typeof(PreventativeTreatmentCatalogMetadata).Assembly,
             typeof(LifecycleStageCatalogMetadata).Assembly,
+            typeof(LifecycleProgramCatalogMetadata).Assembly,
             typeof(TodoModule).Assembly
         };
 
@@ -47,6 +50,7 @@ public static class Extensions
         builder.RegisterGrowthTreatmentCatalogServices();
         builder.RegisterPreventativeTreatmentCatalogServices();
         builder.RegisterLifecycleStageCatalogServices();
+        builder.RegisterLifecycleProgramCatalogServices();
 
 
 
@@ -68,6 +72,7 @@ public static class Extensions
             config.WithModule<GrowthTreatmentCatalogModule.Endpoints>();
             config.WithModule<PreventativeTreatmentCatalogModule.Endpoints>();
             config.WithModule<LifecycleStageCatalogModule.Endpoints>();
+            config.WithModule<LifecycleProgramCatalogModule.Endpoints>();
         });
 
         return builder;
@@ -86,6 +91,7 @@ public static class Extensions
         app.UseGrowthTreatmentCatalogModule();
         app.UsePreventativeTreatmentCatalogModule();
         app.UseLifecycleStageCatalogModule();
+        app.UseLifecycleProgramCatalogModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()

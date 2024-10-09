@@ -2,7 +2,11 @@ using Finbuckle.MultiTenant.Abstractions;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
 using FSH.Framework.Infrastructure.Tenant;
+using FSH.Starter.WebApi.GrowthTreatmentCatalog.Domain;
 using FSH.Starter.WebApi.LifecycleProgramCatalog.Domain;
+using FSH.Starter.WebApi.LifecycleStageCatalog.Domain;
+using FSH.Starter.WebApi.PreventativeTreatmentCatalog.Domain;
+using FSH.Starter.WebApi.RationCatalog.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -17,12 +21,35 @@ public sealed class LifecycleProgramCatalogDbContext : FshDbContext
     }
 
     public DbSet<LifecycleProgram> LifecyclePrograms { get; set; } = null!;
+    public DbSet<LifecycleStage> LifecycleStages { get; set; } = null;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LifecycleProgramCatalogDbContext).Assembly);
         modelBuilder.HasDefaultSchema(SchemaNames.LifecycleProgramCatalog);
+
+        modelBuilder.Entity<LifecycleStage>()
+            .ToTable("LifecycleStages", schema: "lifecyclestagecatalog")
+            .Metadata.SetIsTableExcludedFromMigrations(true);
+
+        modelBuilder.Entity<Ration>()
+            .ToTable("Rations", schema: "rationcatalog")
+            .Metadata.SetIsTableExcludedFromMigrations(true);
+
+        modelBuilder.Entity<GrowthTreatment>()
+            .ToTable("GrowthTreatments", schema: "growthtreatmentcatalog")
+            .Metadata.SetIsTableExcludedFromMigrations(true);
+
+        modelBuilder.Entity<PreventativeTreatment>()
+            .ToTable("PreventativeTreatments", schema: "preventativetreatmentcatalog")
+            .Metadata.SetIsTableExcludedFromMigrations(true);
+
+        modelBuilder.Entity<LifecycleProgram>()
+            .HasMany(p => p.LifecycleStages)
+            .WithOne()
+            .HasForeignKey("LifecycleProgramId")
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
 

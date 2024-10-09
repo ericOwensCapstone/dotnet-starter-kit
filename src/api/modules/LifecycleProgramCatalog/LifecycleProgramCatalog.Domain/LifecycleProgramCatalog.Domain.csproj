@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
+    <ProjectReference Include="..\..\LifecycleStageCatalog\LifecycleStageCatalog.Domain\LifecycleStageCatalog.Domain.csproj" />
   </ItemGroup>
 </Project>
 

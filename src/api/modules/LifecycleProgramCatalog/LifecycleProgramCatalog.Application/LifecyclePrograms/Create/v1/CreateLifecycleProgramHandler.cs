@@ -13,7 +13,7 @@ public sealed class CreateLifecycleProgramHandler(
     public async Task<CreateLifecycleProgramResponse> Handle(CreateLifecycleProgramCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var lifecycleProgram = LifecycleProgram.Create(request.Name!, request.Description, request.Rating);
+        var lifecycleProgram = LifecycleProgram.Create(request.Name!, request.Description, request.Rating, null);
         await repository.AddAsync(lifecycleProgram, cancellationToken);
         logger.LogInformation("lifecycleProgram created {LifecycleProgramId}", lifecycleProgram.Id);
         return new CreateLifecycleProgramResponse(lifecycleProgram.Id);

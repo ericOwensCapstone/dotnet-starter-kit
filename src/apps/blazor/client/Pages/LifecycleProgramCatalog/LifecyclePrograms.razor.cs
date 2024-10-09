@@ -15,9 +15,7 @@ public partial class LifecyclePrograms
 
     private EntityTable<LifecycleProgramResponse, Guid, LifecycleProgramViewModel> _table = default!;
 
-    //private List<RationResponse> Rations { get; set; } = new();
-    //private List<GrowthTreatmentResponse> GrowthTreatments { get; set; } = new();
-    //private List<PreventativeTreatmentResponse> PreventativeTreatments { get; set; } = new();
+    private List<LifecycleStageResponse> LifecycleStages { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -30,9 +28,6 @@ public partial class LifecyclePrograms
                 //new(prod => prod.Id,"Id", "Id"),
                 new(prod => prod.Name,"Name", "Name"),
                 new(prod => prod.Description, "Description", "Description"),
-                //new(prod => prod.Ration.Name, "Ration", "Ration"),
-                //new(prod => prod.GrowthTreatment.Name, "Growth Treatment", "Growth Treatment"),
-                //new(prod => prod.PreventativeTreatment.Name, "Preventative Treatment", "Preventative Treatment"),
 
                 new(prod => prod.Rating, "Rating", "Rating")
             },
@@ -55,46 +50,20 @@ public partial class LifecyclePrograms
             },
             deleteFunc: async id => await _client.DeleteLifecycleProgramEndpointAsync("1", id));
 
-        //Rations = await LoadRationsAsync();
-        //GrowthTreatments = await LoadGrowthTreatmentsAsync();
-        //PreventativeTreatments = await LoadPreventativeTreatmentsAsync();
+        LifecycleStages = await LoadLifecycleStagesAsync();
     }
 
-    //private async Task<List<RationResponse>> LoadRationsAsync()
-    //{
-    //    var filter = new PaginationFilter { PageSize = 1000 };
+    private async Task<List<LifecycleStageResponse>> LoadLifecycleStagesAsync()
+    {
+        var filter = new PaginationFilter { PageSize = 1000 };
 
-    //    var result = await _client.SearchRationsEndpointAsync("1", filter);
-    //    if(result.Items == null)
-    //    {
-    //        return new();
-    //    }
-    //    return (List<RationResponse>)result.Items;
-    //}
-
-    //private async Task<List<GrowthTreatmentResponse>> LoadGrowthTreatmentsAsync()
-    //{
-    //    var filter = new PaginationFilter { PageSize = 1000 };
-
-    //    var result = await _client.SearchGrowthTreatmentsEndpointAsync("1", filter);
-    //    if (result.Items == null)
-    //    {
-    //        return new();
-    //    }
-    //    return (List<GrowthTreatmentResponse>)result.Items;
-    //}
-
-    //private async Task<List<PreventativeTreatmentResponse>> LoadPreventativeTreatmentsAsync()
-    //{
-    //    var filter = new PaginationFilter { PageSize = 1000 };
-
-    //    var result = await _client.SearchPreventativeTreatmentsEndpointAsync("1", filter);
-    //    if (result.Items == null)
-    //    {
-    //        return new();
-    //    }
-    //    return (List<PreventativeTreatmentResponse>)result.Items;
-    //}
+        var result = await _client.SearchLifecycleStagesEndpointAsync("1", filter);
+        if (result.Items == null)
+        {
+            return new();
+        }
+        return (List<LifecycleStageResponse>)result.Items;
+    }
 
     // Advanced Search
 
@@ -134,28 +103,6 @@ public partial class LifecyclePrograms
 
 public class LifecycleProgramViewModel : UpdateLifecycleProgramCommand
 {
+    public List<LifecycleStageResponse> LifecycleStages { get; set; } = new();
 
-    //private RationResponse _ration = default!;
-
-    //public RationResponse Ration
-    //{
-    //    get => _ration;
-    //    set
-    //    {
-    //        if (_ration != value)
-    //        {
-    //            _ration = value;
-    //            OnRationChanged();
-    //        }
-    //    }
-    //}
-
-    //private void OnRationChanged()
-    //{
-    //    var wd = 40;
-    //}
-
-    //public RationResponse Ration { get; set; } = default!;
-    //public GrowthTreatmentResponse GrowthTreatment { get; set; } = default!;
-    //public PreventativeTreatmentResponse PreventativeTreatment { get; set; } = default!;
 }

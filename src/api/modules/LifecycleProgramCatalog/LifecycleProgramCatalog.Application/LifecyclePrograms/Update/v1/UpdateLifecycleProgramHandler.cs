@@ -16,7 +16,7 @@ public sealed class UpdateLifecycleProgramHandler(
         ArgumentNullException.ThrowIfNull(request);
         var lifecycleProgram = await repository.GetByIdAsync(request.Id, cancellationToken);
         _ = lifecycleProgram ?? throw new LifecycleProgramNotFoundException(request.Id);
-        var updatedLifecycleProgram = lifecycleProgram.Update(request.Name, request.Description, request.Rating);
+        var updatedLifecycleProgram = lifecycleProgram.Update(request.Name, request.Description, request.Rating, null);
         await repository.UpdateAsync(updatedLifecycleProgram, cancellationToken);
         logger.LogInformation("lifecycleProgram with id : {LifecycleProgramId} updated.", lifecycleProgram.Id);
         return new UpdateLifecycleProgramResponse(lifecycleProgram.Id);

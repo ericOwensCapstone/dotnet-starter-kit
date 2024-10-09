@@ -4,6 +4,7 @@ using FSH.Framework.Infrastructure.Persistence;
 using FSH.Starter.WebApi.LifecycleProgramCatalog.Domain;
 using FSH.Starter.WebApi.LifecycleProgramCatalog.Infrastructure.Endpoints.v1;
 using FSH.Starter.WebApi.LifecycleProgramCatalog.Infrastructure.Persistence;
+using FSH.Starter.WebApi.LifecycleStageCatalog.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -30,6 +31,7 @@ public static class LifecycleProgramCatalogModule
         ArgumentNullException.ThrowIfNull(builder);
         builder.Services.BindDbContext<LifecycleProgramCatalogDbContext>();
         builder.Services.AddScoped<IDbInitializer, LifecycleProgramCatalogDbInitializer>();
+        builder.Services.AddKeyedScoped<IComponentRepository<LifecycleProgram>, LifecycleProgramComponentRepository<LifecycleProgram>>("lifecycleProgramcatalog:lifecyclePrograms");
         builder.Services.AddKeyedScoped<IRepository<LifecycleProgram>, LifecycleProgramCatalogRepository<LifecycleProgram>>("lifecycleProgramcatalog:lifecyclePrograms");
         builder.Services.AddKeyedScoped<IReadRepository<LifecycleProgram>, LifecycleProgramCatalogRepository<LifecycleProgram>>("lifecycleProgramcatalog:lifecyclePrograms");
         return builder;

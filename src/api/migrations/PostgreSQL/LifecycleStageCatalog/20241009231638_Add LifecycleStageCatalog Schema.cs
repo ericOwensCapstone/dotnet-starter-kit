@@ -26,6 +26,7 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.LifecycleStageCatalog
                     GrowthTreatmentId = table.Column<Guid>(type: "uuid", nullable: false),
                     PreventativeTreatmentId = table.Column<Guid>(type: "uuid", nullable: false),
                     Rating = table.Column<decimal>(type: "numeric", nullable: false),
+                    LifecycleProgramId = table.Column<Guid>(type: "uuid", nullable: false),
                     TenantId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),

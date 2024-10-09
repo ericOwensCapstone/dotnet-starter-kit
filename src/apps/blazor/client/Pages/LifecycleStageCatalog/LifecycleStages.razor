@@ -26,7 +26,6 @@
 
 
         <MudItem xs="12" md="6">
-@*             ToStringFunc=@(x => x.Name) *@
             <MudSelect T="RationResponse" Label="Ration" @bind-Value="context.Ration" ToStringFunc=@(x => x.Name)>
                 @foreach (var ration in Rations)
                 {

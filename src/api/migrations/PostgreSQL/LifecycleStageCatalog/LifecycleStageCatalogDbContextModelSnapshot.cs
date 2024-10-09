@@ -84,6 +84,9 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.LifecycleStageCatalog
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("LifecycleProgramId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)

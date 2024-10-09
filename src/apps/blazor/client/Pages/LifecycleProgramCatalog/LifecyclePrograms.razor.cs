@@ -15,7 +15,7 @@ public partial class LifecyclePrograms
 
     private EntityTable<LifecycleProgramResponse, Guid, LifecycleProgramViewModel> _table = default!;
 
-    private List<LifecycleStageResponse> LifecycleStages { get; set; } = new();
+    private List<LifecycleStageResponse> LocalLifecycleStages { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -42,7 +42,23 @@ public partial class LifecyclePrograms
             },
             createFunc: async prod =>
             {
-                await _client.CreateLifecycleProgramEndpointAsync("1", prod.Adapt<CreateLifecycleProgramCommand>());
+                CreateLifecycleProgramCommand command = null;
+                try
+                {
+                    command = new CreateLifecycleProgramCommand
+                    {
+                        Name = prod.Name,
+                        Description = prod.Description,
+                        Rating = prod.Rating,
+                        LifecycleStages = LocalLifecycleStages.Select(x => x.Adapt<UpdateLifecycleStageCommand>()).ToList()
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                //await _client.CreateLifecycleProgramEndpointAsync("1", prod.Adapt<CreateLifecycleProgramCommand>());
+                await _client.CreateLifecycleProgramEndpointAsync("1", command);
             },
             updateFunc: async (id, prod) =>
             {
@@ -50,7 +66,7 @@ public partial class LifecyclePrograms
             },
             deleteFunc: async id => await _client.DeleteLifecycleProgramEndpointAsync("1", id));
 
-        LifecycleStages = await LoadLifecycleStagesAsync();
+        LocalLifecycleStages = await LoadLifecycleStagesAsync();
     }
 
     private async Task<List<LifecycleStageResponse>> LoadLifecycleStagesAsync()

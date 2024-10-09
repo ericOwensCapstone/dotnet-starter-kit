@@ -45,11 +45,30 @@ public sealed class LifecycleProgramCatalogDbContext : FshDbContext
             .ToTable("PreventativeTreatments", schema: "preventativetreatmentcatalog")
             .Metadata.SetIsTableExcludedFromMigrations(true);
 
+        modelBuilder.Entity<LifecycleStage>()
+            .Property<Guid>("LifecycleProgramId");
+
         modelBuilder.Entity<LifecycleProgram>()
             .HasMany(p => p.LifecycleStages)
             .WithOne()
             .HasForeignKey("LifecycleProgramId")
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<LifecycleProgram>()
+            .Navigation(p => p.LifecycleStages)
+            .AutoInclude();
+
+        modelBuilder.Entity<LifecycleStage>()
+            .Navigation(ls => ls.Ration)
+            .AutoInclude();
+
+        modelBuilder.Entity<LifecycleStage>()
+            .Navigation(ls => ls.GrowthTreatment)
+            .AutoInclude();
+
+        modelBuilder.Entity<LifecycleStage>()
+            .Navigation(ls => ls.PreventativeTreatment)
+            .AutoInclude();
     }
 }
 

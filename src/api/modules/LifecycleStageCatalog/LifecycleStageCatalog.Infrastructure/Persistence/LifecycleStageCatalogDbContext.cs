@@ -43,7 +43,10 @@ public sealed class LifecycleStageCatalogDbContext : FshDbContext
             .Metadata.SetIsTableExcludedFromMigrations(true);
 
         modelBuilder.Entity<LifecycleStage>()
-            .ToTable("LifecycleStages", schema: "lifecyclestagecatalog"); 
+            .ToTable("LifecycleStages", schema: "lifecyclestagecatalog");
+
+        modelBuilder.Entity<LifecycleStage>()
+            .Property<Guid>("LifecycleProgramId");
     }
 }
 

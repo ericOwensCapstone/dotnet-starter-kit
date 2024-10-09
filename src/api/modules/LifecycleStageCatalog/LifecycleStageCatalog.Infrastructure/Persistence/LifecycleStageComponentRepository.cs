@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FSH.Framework.Core.Domain.Contracts;
+﻿using FSH.Framework.Core.Domain.Contracts;
 using FSH.Framework.Core.Persistence;
 
 namespace FSH.Starter.WebApi.LifecycleStageCatalog.Infrastructure.Persistence;

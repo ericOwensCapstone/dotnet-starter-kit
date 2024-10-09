@@ -5,7 +5,7 @@ using FSH.Framework.Core.Persistence;
 using Mapster;
 
 namespace FSH.Starter.WebApi.LifecycleProgramCatalog.Infrastructure.Persistence;
-internal sealed class LifecycleProgramCatalogRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>
+public class LifecycleProgramCatalogRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>
     where T : class, IAggregateRoot
 {
     public LifecycleProgramCatalogRepository(LifecycleProgramCatalogDbContext context)

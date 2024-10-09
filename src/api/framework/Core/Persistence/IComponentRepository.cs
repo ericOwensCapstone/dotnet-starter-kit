@@ -11,4 +11,5 @@ public interface IComponentRepository<Tp> : IRepository<Tp>
     where Tp : class, IAggregateRoot
 {
     Task<Tn> GetComponentByIdAsync<Tn>(Guid id, CancellationToken cancellationToken = default) where Tn : class, IAggregateRoot;
+
 }

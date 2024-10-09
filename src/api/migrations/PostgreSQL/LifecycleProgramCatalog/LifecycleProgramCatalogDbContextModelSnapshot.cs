@@ -125,7 +125,7 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.LifecycleProgramCatalog
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("LifecycleProgramId")
+                    b.Property<Guid>("LifecycleProgramId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
@@ -240,7 +240,8 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.LifecycleProgramCatalog
                     b.HasOne("FSH.Starter.WebApi.LifecycleProgramCatalog.Domain.LifecycleProgram", null)
                         .WithMany("LifecycleStages")
                         .HasForeignKey("LifecycleProgramId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FSH.Starter.WebApi.PreventativeTreatmentCatalog.Domain.PreventativeTreatment", "PreventativeTreatment")
                         .WithMany()

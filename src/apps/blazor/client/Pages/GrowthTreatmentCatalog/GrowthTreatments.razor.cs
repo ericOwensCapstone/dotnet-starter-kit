@@ -23,7 +23,7 @@ public partial class GrowthTreatments
             entityResource: FshResources.GrowthTreatments,
             fields: new()
             {
-                new(prod => prod.Id,"Id", "Id"),
+                //new(prod => prod.Id,"Id", "Id"),
                 new(prod => prod.Name,"Name", "Name"),
                 new(prod => prod.Description, "Description", "Description"),
                 new(prod => prod.DollarsPerHead, "DollarsPerHead", "DollarsPerHead")

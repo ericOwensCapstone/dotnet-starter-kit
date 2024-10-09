@@ -22,7 +22,7 @@ public partial class Rations
             entityResource: FshResources.Rations,
             fields: new()
             {
-                new(prod => prod.Id,"Id", "Id"),
+                //new(prod => prod.Id,"Id", "Id"),
                 new(prod => prod.Name,"Name", "Name"),
                 new(prod => prod.Description, "Description", "Description"),
                 new(prod => prod.DollarsPerPound, "DollarsPerPound", "DollarsPerPound")

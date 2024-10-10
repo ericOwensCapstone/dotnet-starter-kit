@@ -20,7 +20,7 @@ public sealed class GetLifecycleProgramHandler(
             {
                 var lifecycleProgramItem = await repository.GetByIdAsync(request.Id, cancellationToken);
                 if (lifecycleProgramItem == null) throw new LifecycleProgramNotFoundException(request.Id);
-                return new LifecycleProgramResponse(lifecycleProgramItem.Id, lifecycleProgramItem.Name, lifecycleProgramItem.Description, lifecycleProgramItem.Rating);
+                return new LifecycleProgramResponse(lifecycleProgramItem.Id, lifecycleProgramItem.Name, lifecycleProgramItem.Description, lifecycleProgramItem.Rating, null);
             },
             cancellationToken: cancellationToken);
         return item!;

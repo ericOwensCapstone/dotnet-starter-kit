@@ -28,7 +28,6 @@ public partial class LifecyclePrograms
                 //new(prod => prod.Id,"Id", "Id"),
                 new(prod => prod.Name,"Name", "Name"),
                 new(prod => prod.Description, "Description", "Description"),
-
                 new(prod => prod.Rating, "Rating", "Rating")
             },
             enableAdvancedSearch: true,
@@ -42,23 +41,27 @@ public partial class LifecyclePrograms
             },
             createFunc: async prod =>
             {
-                CreateLifecycleProgramCommand command = null;
-                try
-                {
-                    command = new CreateLifecycleProgramCommand
-                    {
-                        Name = prod.Name,
-                        Description = prod.Description,
-                        Rating = prod.Rating,
-                        LifecycleStages = LocalLifecycleStages.Select(x => x.Adapt<UpdateLifecycleStageCommand>()).ToList()
-                    };
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                //await _client.CreateLifecycleProgramEndpointAsync("1", prod.Adapt<CreateLifecycleProgramCommand>());
-                await _client.CreateLifecycleProgramEndpointAsync("1", command);
+                //CreateLifecycleProgramCommand command = null;
+                ////TODO debug
+                //try
+                //{
+                //    command = new CreateLifecycleProgramCommand
+                //    {
+                //        Name = prod.Name,
+                //        Description = prod.Description,
+                //        Rating = prod.Rating,
+                //        LifecycleStages = LocalLifecycleStages.Select(x => x.Adapt<UpdateLifecycleStageCommand>()).ToList()
+                //    };
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine(ex.Message);
+                //}
+                //await _client.CreateLifecycleProgramEndpointAsync("1", command);
+                //TODO in lieu of actually selecting them for now
+                prod.LifecycleStages = LocalLifecycleStages.Select(x => x.Adapt<UpdateLifecycleStageCommand>()).ToList();
+                await _client.CreateLifecycleProgramEndpointAsync("1", prod.Adapt<CreateLifecycleProgramCommand>());
+
             },
             updateFunc: async (id, prod) =>
             {
@@ -119,6 +122,7 @@ public partial class LifecyclePrograms
 
 public class LifecycleProgramViewModel : UpdateLifecycleProgramCommand
 {
-    public List<LifecycleStageResponse> LifecycleStages { get; set; } = new();
+    //public List<LifecycleStageResponse> LifecycleStages { get; set; } = new();
+    public List<UpdateLifecycleStageCommand> LifecycleStages { get; set; } = new();
 
 }

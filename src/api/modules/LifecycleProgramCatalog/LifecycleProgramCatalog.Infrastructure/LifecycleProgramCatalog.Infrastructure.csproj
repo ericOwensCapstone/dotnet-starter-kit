@@ -10,7 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\framework\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\..\LifecycleStageCatalog\LifecycleStageCatalog.Domain\LifecycleStageCatalog.Domain.csproj" />
     <ProjectReference Include="..\LifecycleProgramCatalog.Application\LifecycleProgramCatalog.Application.csproj" />
   </ItemGroup>
 </Project>

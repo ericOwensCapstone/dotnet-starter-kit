@@ -17,34 +17,11 @@ public sealed class CreateLifecycleProgramHandler(
         var lifecycleStages = new List<LifecycleStage>();
         foreach(var command in request.LifecycleStages)
         {
-            try
-            {
-                var ls = await repository.GetComponentByIdAsync<LifecycleStage>(command.Id, cancellationToken);
-                lifecycleStages.Add(ls);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error getting lifecycle stage with id {LifecycleStageId}", command.Id);
-                throw;
-            }
-
-            //var newStage = LifecycleStage.Update(command.Id, command.Name, command.Description, command.Rating);
-            //lifecycleStages.Add(newStage);
+            var ls = await repository.GetComponentByIdAsync<LifecycleStage>(command.Id, cancellationToken);
+            lifecycleStages.Add(ls);
         }
-
-        LifecycleProgram lifecycleProgram = null;
-        try
-        {
-            lifecycleProgram = LifecycleProgram.Create(request.Name!, request.Description, request.Rating, lifecycleStages);
-            await repository.AddAsync(lifecycleProgram, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Error adding lifecycle program {LifecycleProgramId}", lifecycleProgram.Id);
-            throw;
-        }
-
-
+        var lifecycleProgram = LifecycleProgram.Create(request.Name!, request.Description, request.Rating, lifecycleStages);
+        await repository.AddAsync(lifecycleProgram, cancellationToken);
         logger.LogInformation("lifecycleProgram created {LifecycleProgramId}", lifecycleProgram.Id);
         return new CreateLifecycleProgramResponse(lifecycleProgram.Id);
     }

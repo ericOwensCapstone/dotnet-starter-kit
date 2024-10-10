@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
-    <ProjectReference Include="..\..\LifecycleStageCatalog\LifecycleStageCatalog.Domain\LifecycleStageCatalog.Domain.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.csproj" />
   </ItemGroup>
 </Project>
 

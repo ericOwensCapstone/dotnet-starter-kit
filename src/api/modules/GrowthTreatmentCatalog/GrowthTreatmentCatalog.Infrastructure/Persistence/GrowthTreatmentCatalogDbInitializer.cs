@@ -19,27 +19,7 @@ internal sealed class GrowthTreatmentCatalogDbInitializer(
 
     public async Task SeedAsync(CancellationToken cancellationToken)
     {
-        const string Name = "GrowthTreatment1";
-        const string Description = "Growth Treatment 1";
-        const decimal DollarsPerHead = 1;
-        try
-        {
-            if (await context.GrowthTreatments.FirstOrDefaultAsync(t => t.Name == Name, cancellationToken).ConfigureAwait(false) is null)
-            {
-                var growthTreatment = GrowthTreatment.Create(Name, Description, DollarsPerHead);
-                await context.GrowthTreatments.AddAsync(growthTreatment, cancellationToken);
-                await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                logger.LogInformation("[{Tenant}] seeding default growthTreatmentcatalog data", context.TenantInfo!.Identifier);
-            }
-            else
-            {
-                var dw = 4;
-            }
-        }
-        catch (Exception ex)
-        {
-            var wd = 40;
-        }
+        await Task.Delay(10, cancellationToken);
     }
 }
 

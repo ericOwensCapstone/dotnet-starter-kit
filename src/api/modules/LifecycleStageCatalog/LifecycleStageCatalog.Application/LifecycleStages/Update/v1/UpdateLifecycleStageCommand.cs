@@ -12,7 +12,6 @@ public sealed record UpdateLifecycleStageCommand(
     Guid Id,
     string? Name,
     decimal Rating,
-    //TODO nullable?
     [property: JsonPropertyName("ration")]
     UpdateRationCommand? UpdateRationCommand,
     [property: JsonPropertyName("growthTreatment")]

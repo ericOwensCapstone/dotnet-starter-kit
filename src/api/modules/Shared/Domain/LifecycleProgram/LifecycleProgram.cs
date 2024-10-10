@@ -9,7 +9,6 @@ public class LifecycleProgram : AuditableEntity, IAggregateRoot
     public string Name { get; private set; } = default!;
     public string? Description { get; private set; }
     public decimal Rating { get; private set; }
-
     public List<LifecycleStage>? LifecycleStages { get; private set; }
 
     public static LifecycleProgram Create(string name, string? description, decimal rating, List<LifecycleStage> lifecycleStages)
@@ -32,7 +31,6 @@ public class LifecycleProgram : AuditableEntity, IAggregateRoot
         if (description is not null && Description?.Equals(description, StringComparison.OrdinalIgnoreCase) is not true) Description = description;
         if (rating.HasValue && Rating != rating) Rating = rating.Value;
 
-        //TODO consider adding logic to see if updates are needed here
         if (lifecycleStages is not null)
         {
             LifecycleStages = lifecycleStages;

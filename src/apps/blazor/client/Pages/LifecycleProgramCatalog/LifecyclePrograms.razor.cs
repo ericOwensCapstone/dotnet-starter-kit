@@ -41,23 +41,6 @@ public partial class LifecyclePrograms
             },
             createFunc: async prod =>
             {
-                //CreateLifecycleProgramCommand command = null;
-                ////TODO debug
-                //try
-                //{
-                //    command = new CreateLifecycleProgramCommand
-                //    {
-                //        Name = prod.Name,
-                //        Description = prod.Description,
-                //        Rating = prod.Rating,
-                //        LifecycleStages = LocalLifecycleStages.Select(x => x.Adapt<UpdateLifecycleStageCommand>()).ToList()
-                //    };
-                //}
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine(ex.Message);
-                //}
-                //await _client.CreateLifecycleProgramEndpointAsync("1", command);
                 //TODO in lieu of actually selecting them for now
                 prod.LifecycleStages = LocalLifecycleStages.Select(x => x.Adapt<UpdateLifecycleStageCommand>()).ToList();
                 await _client.CreateLifecycleProgramEndpointAsync("1", prod.Adapt<CreateLifecycleProgramCommand>());
@@ -122,7 +105,5 @@ public partial class LifecyclePrograms
 
 public class LifecycleProgramViewModel : UpdateLifecycleProgramCommand
 {
-    //public List<LifecycleStageResponse> LifecycleStages { get; set; } = new();
     public List<UpdateLifecycleStageCommand> LifecycleStages { get; set; } = new();
-
 }

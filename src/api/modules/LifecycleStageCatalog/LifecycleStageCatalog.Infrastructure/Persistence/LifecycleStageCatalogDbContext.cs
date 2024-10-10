@@ -47,6 +47,18 @@ public sealed class LifecycleStageCatalogDbContext : FshDbContext
 
         modelBuilder.Entity<LifecycleStage>()
             .Property<Guid>("LifecycleProgramId");
+
+        modelBuilder.Entity<LifecycleStage>()
+            .Navigation(ls => ls.Ration)
+            .AutoInclude();
+
+        modelBuilder.Entity<LifecycleStage>()
+            .Navigation(ls => ls.GrowthTreatment)
+            .AutoInclude();
+
+        modelBuilder.Entity<LifecycleStage>()
+            .Navigation(ls => ls.PreventativeTreatment)
+            .AutoInclude();
     }
 }
 

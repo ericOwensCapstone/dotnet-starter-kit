@@ -16,7 +16,6 @@ public sealed record CreateLifecycleStageCommand(
     decimal Rating,
     [property: DefaultValue("Descriptive Description")] 
     string? Description = null,
-    //TODO nullable?
     [property: JsonPropertyName("ration")]
     UpdateRationCommand? UpdateRationCommand = null,
     [property: JsonPropertyName("growthTreatment")]

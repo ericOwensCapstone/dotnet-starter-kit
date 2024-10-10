@@ -15,10 +15,6 @@ public class LifecycleProgramComponentRepository<Tp> : LifecycleProgramCatalogRe
 
     async Task<Tn> IComponentRepository<Tp>.GetComponentByIdAsync<Tn>(Guid id, CancellationToken cancellationToken)
     {
-        var component = await _context.Set<Tn>().FindAsync([id], cancellationToken: cancellationToken);
-        //TODO: Check if this is needed
-        //_context.Attach(component);
-        //_context.Entry(component).State = EntityState.Unchanged;
-        return component;
+        return await _context.Set<Tn>().FindAsync([id], cancellationToken: cancellationToken);
     }
 }

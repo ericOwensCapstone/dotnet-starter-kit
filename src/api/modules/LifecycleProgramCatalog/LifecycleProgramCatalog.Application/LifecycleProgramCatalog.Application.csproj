@@ -6,7 +6,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
     <ProjectReference Include="..\..\LifecycleStageCatalog\LifecycleStageCatalog.Application\LifecycleStageCatalog.Application.csproj" />
-    <ProjectReference Include="..\LifecycleProgramCatalog.Domain\LifecycleProgramCatalog.Domain.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.csproj" />
   </ItemGroup>
 </Project>
 

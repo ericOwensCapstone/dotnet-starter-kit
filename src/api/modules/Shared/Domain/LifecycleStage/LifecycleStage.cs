@@ -14,6 +14,8 @@ public class LifecycleStage : AuditableEntity, IAggregateRoot
     public GrowthTreatment GrowthTreatment { get; private set; }
     public PreventativeTreatment PreventativeTreatment { get; private set; }
 
+
+
     public decimal Rating { get; private set; }
 
     public static LifecycleStage Create

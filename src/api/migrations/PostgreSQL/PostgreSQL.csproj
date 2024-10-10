@@ -11,6 +11,7 @@
     <ProjectReference Include="..\..\modules\LifecycleStageCatalog\LifecycleStageCatalog.Infrastructure\LifecycleStageCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\PreventativeTreatmentCatalog\PreventativeTreatmentCatalog.Infrastructure\PreventativeTreatmentCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\RationCatalog\RationCatalog.Infrastructure\RationCatalog.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\modules\Shared\Shared.csproj" />
     <ProjectReference Include="..\..\modules\Todo\Todo.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -33,7 +33,6 @@ public partial class LifecycleStages
                 new(prod => prod.Ration.Name, "Ration", "Ration"),
                 new(prod => prod.GrowthTreatment.Name, "Growth Treatment", "Growth Treatment"),
                 new(prod => prod.PreventativeTreatment.Name, "Preventative Treatment", "Preventative Treatment"),
-
                 //new(prod => prod.Rating, "Rating", "Rating")
             },
             enableAdvancedSearch: true,
@@ -134,27 +133,6 @@ public partial class LifecycleStages
 
 public class LifecycleStageViewModel : UpdateLifecycleStageCommand
 {
-
-    //private RationResponse _ration = default!;
-
-    //public RationResponse Ration
-    //{
-    //    get => _ration;
-    //    set
-    //    {
-    //        if (_ration != value)
-    //        {
-    //            _ration = value;
-    //            OnRationChanged();
-    //        }
-    //    }
-    //}
-
-    //private void OnRationChanged()
-    //{
-    //    var wd = 40;
-    //}
-
     public RationResponse Ration { get; set; } = default!;
     public GrowthTreatmentResponse GrowthTreatment { get; set; } = default!;
     public PreventativeTreatmentResponse PreventativeTreatment { get; set; } = default!;

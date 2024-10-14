@@ -9,7 +9,7 @@ public sealed record UpdateLifecycleProgramCommand
     string? Name,
     decimal Rating,
     string? Description = null,
-    [property: JsonPropertyName("lifecycleStages")] 
-    List<UpdateLifecycleStageCommand>? LifecycleStages = null
+    [property: JsonPropertyName("updateLifecycleProgramStageCommands")] 
+    List<UpdateLifecycleProgramStageCommand>? UpdateLifecycleProgramStageCommands = null
 ) : IRequest<UpdateLifecycleProgramResponse>;
 

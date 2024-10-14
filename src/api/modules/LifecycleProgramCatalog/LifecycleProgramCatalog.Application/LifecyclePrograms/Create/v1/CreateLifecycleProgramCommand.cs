@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Text.Json.Serialization;
+using FSH.Starter.WebApi.LifecycleProgramCatalog.Application.LifecyclePrograms.Update.v1;
 using FSH.Starter.WebApi.LifecycleStageCatalog.Application.LifecycleStages.Update.v1;
 using MediatR;
 
@@ -11,7 +12,7 @@ public sealed record CreateLifecycleProgramCommand(
     decimal Rating,
     [property: DefaultValue("Descriptive Description")] 
     string? Description = null,
-    [property: JsonPropertyName("lifecycleStages")] 
-    List<UpdateLifecycleStageCommand>? LifecycleStages = null
+    [property: JsonPropertyName("updateLifeycleProgramStageCommands")] 
+    List<UpdateLifecycleProgramStageCommand>? UpdateLifecycleProgramStageCommands = null
 ) : IRequest<CreateLifecycleProgramResponse>;
 

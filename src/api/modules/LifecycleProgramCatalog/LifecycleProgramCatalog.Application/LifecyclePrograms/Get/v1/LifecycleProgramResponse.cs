@@ -7,6 +7,6 @@ public sealed record LifecycleProgramResponse
     string Name, 
     string? Description, 
     decimal Rating,
-    List<LifecycleStageResponse>? LifecycleStages
+    List<LifecycleProgramStageResponse>? LifecycleProgramStages
 );
 

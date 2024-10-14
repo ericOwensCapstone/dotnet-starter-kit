@@ -30,7 +30,7 @@ namespace SharedDbContextProject
         public DbSet<PreventativeTreatment> PreventativeTreatments { get; set; } = null!;
         public DbSet<LifecycleStage> LifecycleStages { get; set; } = null!;
         public DbSet<LifecycleProgram> LifecyclePrograms { get; set; } = null!;
-
+        public DbSet<LifecycleProgramStage> LifecycleProgramStages { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,17 +50,27 @@ namespace SharedDbContextProject
                 .Navigation(ls => ls.PreventativeTreatment)
                 .AutoInclude();
 
-            modelBuilder.Entity<LifecycleProgram>()
-                .HasMany(lp => lp.LifecycleStages)
+            modelBuilder.Entity<LifecycleProgramStage>()
+                .HasKey(lps => new { lps.LifecycleProgramId, lps.LifecycleStageId });
+
+            modelBuilder.Entity<LifecycleProgramStage>()
+                .HasOne(lps => lps.LifecycleProgram)
+                .WithMany(lp => lp.LifecycleProgramStages)
+                .HasForeignKey(lps => lps.LifecycleProgramId);
+
+            modelBuilder.Entity<LifecycleProgramStage>()
+                .HasOne(lps => lps.LifecycleStage)
                 .WithMany()
-                .UsingEntity<Dictionary<string, object>>(
-                    "LifecycleProgramLifecycleStage",
-                    j => j.HasOne<LifecycleStage>().WithMany().HasForeignKey("LifecycleStageId"),
-                    j => j.HasOne<LifecycleProgram>().WithMany().HasForeignKey("LifecycleProgramId"));
+                .HasForeignKey(lps => lps.LifecycleStageId);
 
             modelBuilder.Entity<LifecycleProgram>()
-                .Navigation(lp => lp.LifecycleStages)
+                .Navigation(lp => lp.LifecycleProgramStages)
                 .AutoInclude();
+
+            modelBuilder.Entity<LifecycleProgramStage>()
+                .Navigation(lps => lps.LifecycleStage)
+                .AutoInclude();
+
         }
     }
 }

@@ -30,7 +30,6 @@ public static class LifecycleStageCatalogModule
     {
         ArgumentNullException.ThrowIfNull(builder);
         builder.Services.BindDbContext<SharedDbContext>();
-        builder.Services.AddScoped<IDbInitializer, LifecycleStageCatalogDbInitializer>();
         builder.Services.AddKeyedScoped<IComponentRepository<LifecycleStage>, LifecycleStageComponentRepository<LifecycleStage>>("lifecycleStagecatalog:lifecycleStages");
         builder.Services.AddKeyedScoped<IRepository<LifecycleStage>, LifecycleStageCatalogRepository<LifecycleStage>>("lifecycleStagecatalog:lifecycleStages");
         builder.Services.AddKeyedScoped<IReadRepository<LifecycleStage>, LifecycleStageCatalogRepository<LifecycleStage>>("lifecycleStagecatalog:lifecycleStages");

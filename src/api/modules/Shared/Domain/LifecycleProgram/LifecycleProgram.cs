@@ -9,15 +9,19 @@ public class LifecycleProgram : AuditableEntity, IAggregateRoot
     public string Name { get; private set; } = default!;
     public string? Description { get; private set; }
     public decimal Rating { get; private set; }
-    public List<LifecycleStage>? LifecycleStages { get; private set; }
+    public List<LifecycleProgramStage>? LifecycleProgramStages { get; private set; } = new();
 
-    public static LifecycleProgram Create(string name, string? description, decimal rating, List<LifecycleStage> lifecycleStages)
+    public static LifecycleProgram Create(string name, string? description, decimal rating, List<LifecycleProgramStage> lifecycleProgramStages)
     {
         var lifecycleProgram = new LifecycleProgram();
 
         lifecycleProgram.Name = name;
         lifecycleProgram.Description = description;
-        lifecycleProgram.LifecycleStages = lifecycleStages;
+        foreach(var lifecycleProgramStage in lifecycleProgramStages)
+        {
+            lifecycleProgramStage.LifecycleProgram = lifecycleProgram;
+        }
+        lifecycleProgram.LifecycleProgramStages = lifecycleProgramStages;
         lifecycleProgram.Rating = rating;
 
         lifecycleProgram.QueueDomainEvent(new LifecycleProgramCreated() { LifecycleProgram = lifecycleProgram });
@@ -25,22 +29,22 @@ public class LifecycleProgram : AuditableEntity, IAggregateRoot
         return lifecycleProgram;
     }
 
-    public LifecycleProgram Update(string? name, string? description, decimal? rating, List<LifecycleStage>? lifecycleStages)
+    public LifecycleProgram Update(string? name, string? description, decimal? rating, List<LifecycleProgramStage>? lifecycleProgramStages)
     {
         if (name is not null && Name?.Equals(name, StringComparison.OrdinalIgnoreCase) is not true) Name = name;
         if (description is not null && Description?.Equals(description, StringComparison.OrdinalIgnoreCase) is not true) Description = description;
         if (rating.HasValue && Rating != rating) Rating = rating.Value;
 
-        if (lifecycleStages is not null)
+        if (lifecycleProgramStages is not null)
         {
-            LifecycleStages = lifecycleStages;
+            LifecycleProgramStages = lifecycleProgramStages;
         }
 
         this.QueueDomainEvent(new LifecycleProgramUpdated() { LifecycleProgram = this });
         return this;
     }
 
-    public static LifecycleProgram Update(Guid id, string name, string? description, decimal rating, List<LifecycleStage>? lifecycleStages)
+    public static LifecycleProgram Update(Guid id, string name, string? description, decimal rating, List<LifecycleProgramStage>? lifecycleProgramStages)
     {
         var lifecycleProgram = new LifecycleProgram
         {
@@ -48,7 +52,7 @@ public class LifecycleProgram : AuditableEntity, IAggregateRoot
             Name = name,
             Description = description,
             Rating = rating,
-            LifecycleStages = lifecycleStages
+            LifecycleProgramStages = lifecycleProgramStages
         };
 
         lifecycleProgram.QueueDomainEvent(new LifecycleProgramUpdated() { LifecycleProgram = lifecycleProgram });

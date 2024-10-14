@@ -30,7 +30,6 @@ public static class GrowthTreatmentCatalogModule
     {
         ArgumentNullException.ThrowIfNull(builder);
         builder.Services.BindDbContext<SharedDbContext>();
-        builder.Services.AddScoped<IDbInitializer, GrowthTreatmentCatalogDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<GrowthTreatment>, GrowthTreatmentCatalogRepository<GrowthTreatment>>("growthTreatmentcatalog:growthTreatments");
         builder.Services.AddKeyedScoped<IReadRepository<GrowthTreatment>, GrowthTreatmentCatalogRepository<GrowthTreatment>>("growthTreatmentcatalog:growthTreatments");
         return builder;

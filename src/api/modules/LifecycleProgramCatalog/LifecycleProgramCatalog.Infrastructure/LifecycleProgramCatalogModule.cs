@@ -31,7 +31,6 @@ public static class LifecycleProgramCatalogModule
     {
         ArgumentNullException.ThrowIfNull(builder);
         builder.Services.BindDbContext<SharedDbContext>();
-        builder.Services.AddScoped<IDbInitializer, LifecycleProgramCatalogDbInitializer>();
         builder.Services.AddKeyedScoped<IComponentRepository<LifecycleProgram>, LifecycleProgramComponentRepository<LifecycleProgram>>("lifecycleProgramcatalog:lifecyclePrograms");
         builder.Services.AddKeyedScoped<IRepository<LifecycleProgram>, LifecycleProgramCatalogRepository<LifecycleProgram>>("lifecycleProgramcatalog:lifecyclePrograms");
         builder.Services.AddKeyedScoped<IReadRepository<LifecycleProgram>, LifecycleProgramCatalogRepository<LifecycleProgram>>("lifecycleProgramcatalog:lifecyclePrograms");

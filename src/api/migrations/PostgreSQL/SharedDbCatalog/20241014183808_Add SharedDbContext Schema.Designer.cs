@@ -12,7 +12,7 @@ using SharedDbContextProject;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.SharedDbCatalog
 {
     [DbContext(typeof(SharedDbContext))]
-    [Migration("20241014153448_Add SharedDbContext Schema")]
+    [Migration("20241014183808_Add SharedDbContext Schema")]
     partial class AddSharedDbContextSchema
     {
         /// <inheritdoc />
@@ -90,6 +90,24 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.SharedDbCatalog
                     b.HasKey("Id");
 
                     b.ToTable("LifecyclePrograms", "sharedcatalog");
+                });
+
+            modelBuilder.Entity("FSH.Starter.WebApi.LifecycleProgramCatalog.Domain.LifecycleProgramStage", b =>
+                {
+                    b.Property<Guid>("LifecycleProgramId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LifecycleStageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
+
+                    b.HasKey("LifecycleProgramId", "LifecycleStageId");
+
+                    b.HasIndex("LifecycleStageId");
+
+                    b.ToTable("LifecycleProgramStages", "sharedcatalog");
                 });
 
             modelBuilder.Entity("FSH.Starter.WebApi.LifecycleStageCatalog.Domain.LifecycleStage", b =>
@@ -206,19 +224,23 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.SharedDbCatalog
                     b.ToTable("Rations", "sharedcatalog");
                 });
 
-            modelBuilder.Entity("LifecycleProgramLifecycleStage", b =>
+            modelBuilder.Entity("FSH.Starter.WebApi.LifecycleProgramCatalog.Domain.LifecycleProgramStage", b =>
                 {
-                    b.Property<Guid>("LifecycleProgramId")
-                        .HasColumnType("uuid");
+                    b.HasOne("FSH.Starter.WebApi.LifecycleProgramCatalog.Domain.LifecycleProgram", "LifecycleProgram")
+                        .WithMany("LifecycleProgramStages")
+                        .HasForeignKey("LifecycleProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<Guid>("LifecycleStageId")
-                        .HasColumnType("uuid");
+                    b.HasOne("FSH.Starter.WebApi.LifecycleStageCatalog.Domain.LifecycleStage", "LifecycleStage")
+                        .WithMany()
+                        .HasForeignKey("LifecycleStageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasKey("LifecycleProgramId", "LifecycleStageId");
+                    b.Navigation("LifecycleProgram");
 
-                    b.HasIndex("LifecycleStageId");
-
-                    b.ToTable("LifecycleProgramLifecycleStage", "sharedcatalog");
+                    b.Navigation("LifecycleStage");
                 });
 
             modelBuilder.Entity("FSH.Starter.WebApi.LifecycleStageCatalog.Domain.LifecycleStage", b =>
@@ -248,19 +270,9 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.SharedDbCatalog
                     b.Navigation("Ration");
                 });
 
-            modelBuilder.Entity("LifecycleProgramLifecycleStage", b =>
+            modelBuilder.Entity("FSH.Starter.WebApi.LifecycleProgramCatalog.Domain.LifecycleProgram", b =>
                 {
-                    b.HasOne("FSH.Starter.WebApi.LifecycleProgramCatalog.Domain.LifecycleProgram", null)
-                        .WithMany()
-                        .HasForeignKey("LifecycleProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FSH.Starter.WebApi.LifecycleStageCatalog.Domain.LifecycleStage", null)
-                        .WithMany()
-                        .HasForeignKey("LifecycleStageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("LifecycleProgramStages");
                 });
 #pragma warning restore 612, 618
         }

@@ -30,7 +30,6 @@ public static class RationCatalogModule
     {
         ArgumentNullException.ThrowIfNull(builder);
         builder.Services.BindDbContext<SharedDbContext>();
-        builder.Services.AddScoped<IDbInitializer, RationCatalogDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<Ration>, RationCatalogRepository<Ration>>("rationcatalog:rations");
         builder.Services.AddKeyedScoped<IReadRepository<Ration>, RationCatalogRepository<Ration>>("rationcatalog:rations");
         return builder;

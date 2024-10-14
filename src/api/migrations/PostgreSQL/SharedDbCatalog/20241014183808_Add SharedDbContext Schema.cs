@@ -134,25 +134,26 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.SharedDbCatalog
                 });
 
             migrationBuilder.CreateTable(
-                name: "LifecycleProgramLifecycleStage",
+                name: "LifecycleProgramStages",
                 schema: "sharedcatalog",
                 columns: table => new
                 {
                     LifecycleProgramId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LifecycleStageId = table.Column<Guid>(type: "uuid", nullable: false)
+                    LifecycleStageId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Order = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LifecycleProgramLifecycleStage", x => new { x.LifecycleProgramId, x.LifecycleStageId });
+                    table.PrimaryKey("PK_LifecycleProgramStages", x => new { x.LifecycleProgramId, x.LifecycleStageId });
                     table.ForeignKey(
-                        name: "FK_LifecycleProgramLifecycleStage_LifecyclePrograms_LifecycleP~",
+                        name: "FK_LifecycleProgramStages_LifecyclePrograms_LifecycleProgramId",
                         column: x => x.LifecycleProgramId,
                         principalSchema: "sharedcatalog",
                         principalTable: "LifecyclePrograms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LifecycleProgramLifecycleStage_LifecycleStages_LifecycleSta~",
+                        name: "FK_LifecycleProgramStages_LifecycleStages_LifecycleStageId",
                         column: x => x.LifecycleStageId,
                         principalSchema: "sharedcatalog",
                         principalTable: "LifecycleStages",
@@ -161,9 +162,9 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.SharedDbCatalog
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_LifecycleProgramLifecycleStage_LifecycleStageId",
+                name: "IX_LifecycleProgramStages_LifecycleStageId",
                 schema: "sharedcatalog",
-                table: "LifecycleProgramLifecycleStage",
+                table: "LifecycleProgramStages",
                 column: "LifecycleStageId");
 
             migrationBuilder.CreateIndex(
@@ -189,7 +190,7 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.SharedDbCatalog
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LifecycleProgramLifecycleStage",
+                name: "LifecycleProgramStages",
                 schema: "sharedcatalog");
 
             migrationBuilder.DropTable(

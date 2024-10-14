@@ -30,7 +30,6 @@ public static class PreventativeTreatmentCatalogModule
     {
         ArgumentNullException.ThrowIfNull(builder);
         builder.Services.BindDbContext<SharedDbContext>();
-        builder.Services.AddScoped<IDbInitializer, PreventativeTreatmentCatalogDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<PreventativeTreatment>, PreventativeTreatmentCatalogRepository<PreventativeTreatment>>("preventativeTreatmentcatalog:preventativeTreatments");
         builder.Services.AddKeyedScoped<IReadRepository<PreventativeTreatment>, PreventativeTreatmentCatalogRepository<PreventativeTreatment>>("preventativeTreatmentcatalog:preventativeTreatments");
         return builder;

@@ -8007,8 +8007,8 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string? Description { get; set; } = "Descriptive Description";
 
-        [System.Text.Json.Serialization.JsonPropertyName("lifecycleStages")]
-        public System.Collections.Generic.ICollection<UpdateLifecycleStageCommand>? LifecycleStages { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonPropertyName("updateLifeycleProgramStageCommands")]
+        public System.Collections.Generic.ICollection<UpdateLifecycleProgramStageCommand>? UpdateLifeycleProgramStageCommands { get; set; } = default!;
 
     }
 
@@ -8364,8 +8364,8 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         [System.Text.Json.Serialization.JsonPropertyName("rating")]
         public double Rating { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("lifecycleStages")]
-        public System.Collections.Generic.ICollection<LifecycleStageResponse>? LifecycleStages { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonPropertyName("lifecycleProgramStages")]
+        public System.Collections.Generic.ICollection<LifecycleProgramStageResponse>? LifecycleProgramStages { get; set; } = default!;
 
     }
 
@@ -8393,6 +8393,66 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
 
         [System.Text.Json.Serialization.JsonPropertyName("hasNext")]
         public bool HasNext { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class LifecycleProgramStageResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("lifecycleProgramId")]
+        public System.Guid LifecycleProgramId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lifecycleStageId")]
+        public System.Guid LifecycleStageId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lifecycleStage")]
+        public LifecycleStage LifecycleStage { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("order")]
+        public int Order { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class LifecycleStage
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+        public System.Guid Id { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("domainEvents")]
+        public System.Collections.Generic.ICollection<DomainEvent>? DomainEvents { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("created")]
+        public System.DateTime Created { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("createdBy")]
+        public System.Guid CreatedBy { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastModified")]
+        public System.DateTime LastModified { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastModifiedBy")]
+        public System.Guid? LastModifiedBy { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string? Name { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("description")]
+        public string? Description { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ration")]
+        public Ration Ration { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("growthTreatment")]
+        public GrowthTreatment GrowthTreatment { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("preventativeTreatment")]
+        public PreventativeTreatment PreventativeTreatment { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("rating")]
+        public double Rating { get; set; } = default!;
 
     }
 
@@ -8919,8 +8979,8 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string? Description { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("lifecycleStages")]
-        public System.Collections.Generic.ICollection<UpdateLifecycleStageCommand>? LifecycleStages { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonPropertyName("updateLifecycleProgramStageCommands")]
+        public System.Collections.Generic.ICollection<UpdateLifecycleProgramStageCommand>? UpdateLifecycleProgramStageCommands { get; set; } = default!;
 
     }
 
@@ -8930,6 +8990,18 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
         public System.Guid? Id { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateLifecycleProgramStageCommand
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("lifecycleStageId")]
+        public System.Guid LifecycleStageId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("order")]
+        public int Order { get; set; } = default!;
 
     }
 

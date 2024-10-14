@@ -42,12 +42,52 @@ public partial class LifecyclePrograms
             createFunc: async prod =>
             {
                 //TODO in lieu of actually selecting them for now
-                prod.LifecycleStages = LocalLifecycleStages.Select(x => x.Adapt<UpdateLifecycleStageCommand>()).ToList();
-                await _client.CreateLifecycleProgramEndpointAsync("1", prod.Adapt<CreateLifecycleProgramCommand>());
+                //prod.LifecycleProgramStages = LocalLifecycleStages.Select(x => x.Adapt<UpdateLifecycleProgramStageCommand>()).ToList();
+
+                //var lifecycleProgram = new LifecycleProgram 
+                //{
+                //    Name = prod.Name,
+                //    Description = prod.Description,
+                //    Rating = prod.Rating
+                //};
+
+                List<UpdateLifecycleProgramStageCommand> commands = new List<UpdateLifecycleProgramStageCommand>();
+                var order = 0;
+                foreach(var lifecycleStage in LocalLifecycleStages)
+                {
+                    var updateProgramStageCommand = new UpdateLifecycleProgramStageCommand
+                    {
+                        LifecycleStageId = (Guid)lifecycleStage.Id,
+                        Order = order++
+                    };
+                    commands.Add(updateProgramStageCommand);
+                }
+                prod.UpdateLifecycleProgramStageCommands = commands;
+                var createCommand = prod.Adapt<CreateLifecycleProgramCommand>();
+                createCommand.UpdateLifeycleProgramStageCommands = commands;
+                
+
+
+                await _client.CreateLifecycleProgramEndpointAsync("1", createCommand);
 
             },
             updateFunc: async (id, prod) =>
             {
+                List<UpdateLifecycleProgramStageCommand> commands = new List<UpdateLifecycleProgramStageCommand>();
+                var order = 0;
+                foreach (var lifecycleStage in LocalLifecycleStages)
+                {
+                    var updateProgramStageCommand = new UpdateLifecycleProgramStageCommand
+                    {
+                        LifecycleStageId = (Guid)lifecycleStage.Id,
+                        Order = order++
+                    };
+                    commands.Add(updateProgramStageCommand);
+                }
+                prod.UpdateLifecycleProgramStageCommands = commands;
+                var updateCommand = prod.Adapt<UpdateLifecycleProgramCommand>();
+                updateCommand.UpdateLifecycleProgramStageCommands = commands;
+
                 await _client.UpdateLifecycleProgramEndpointAsync("1", id, prod.Adapt<UpdateLifecycleProgramCommand>());
             },
             deleteFunc: async id => await _client.DeleteLifecycleProgramEndpointAsync("1", id));
@@ -105,5 +145,5 @@ public partial class LifecyclePrograms
 
 public class LifecycleProgramViewModel : UpdateLifecycleProgramCommand
 {
-    public List<UpdateLifecycleStageCommand> LifecycleStages { get; set; } = new();
+    //public List<UpdateLifecycleProgramStageCommand> UpdateLifecycleProgramStageCommands { get; set; } = new();
 }

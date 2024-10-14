@@ -17,6 +17,8 @@ public partial class LifecyclePrograms
 
     private List<LifecycleStageResponse> LocalLifecycleStages { get; set; } = new();
 
+    public LifecycleStageResponse SelectedLifecycleStage { get; set; } = default!;
+
     protected override async Task OnInitializedAsync()
     {
         Context = new(
@@ -107,6 +109,13 @@ public partial class LifecyclePrograms
         return (List<LifecycleStageResponse>)result.Items;
     }
 
+    public void OnSelectionChanged(IEnumerable<LifecycleStageResponse> selections)
+    {
+        // Your logic here
+        //Console.WriteLine($"Selection changed to: {newValue}");
+        var wd = 40;
+    }
+
     // Advanced Search
 
     private Guid _searchBrandId;
@@ -143,7 +152,14 @@ public partial class LifecyclePrograms
     }
 }
 
+public class LifecycleStageSelection
+{
+    public LifecycleStageResponse LifecycleStage { get; set; } = default!;
+    public int Order { get; set; }
+}
 public class LifecycleProgramViewModel : UpdateLifecycleProgramCommand
 {
-    //public List<UpdateLifecycleProgramStageCommand> UpdateLifecycleProgramStageCommands { get; set; } = new();
+    public LifecycleStageResponse SelectedLifecycleStage { get; set; } = default!;
+
+    public List<LifecycleStageSelection> LifecycleStageSelections { get; set; } = new();
 }

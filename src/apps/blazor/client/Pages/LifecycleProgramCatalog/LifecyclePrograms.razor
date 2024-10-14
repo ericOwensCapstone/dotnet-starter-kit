@@ -23,38 +23,20 @@
             <MudTextField Label="Description" For="@(() => context.Description)"
                 @bind-Value="context.Description" />
         </MudItem>
-
- 
-@*         <MudItem xs="12" md="6">
-             ToStringFunc=@(x => x.Name) 
-            <MudSelect T="RationResponse" Label="Ration" @bind-Value="context.Ration" >
-                @foreach (var ration in Rations)
-                {
-                    <MudSelectItem Value="ration">@ration.Name</MudSelectItem>
-                }
-            </MudSelect>
-        </MudItem>
-        <MudItem xs="12" md="6">
-            <MudSelect T="GrowthTreatmentResponse" Label="GrowthTreatment" @bind-Value="context.GrowthTreatment" >
-                @foreach (var growthTreatment in GrowthTreatments)
-                {
-                    <MudSelectItem Value="growthTreatment">@growthTreatment.Name</MudSelectItem>
-                }
-            </MudSelect>
-        </MudItem>
-        <MudItem xs="12" md="6">
-            <MudSelect T="PreventativeTreatmentResponse" Label="PreventativeTreatment" @bind-Value="context.PreventativeTreatment" >
-                @foreach (var preventativeTreatment in PreventativeTreatments)
-                {
-                    <MudSelectItem Value="preventativeTreatment">@preventativeTreatment.Name</MudSelectItem>
-                }
-            </MudSelect>
-        </MudItem>  *@
-
-
         <MudItem xs="12" md="6">
             <MudTextField Label="Rating" For="@(() => context.Rating)" @bind-Value="context.Rating" />
         </MudItem>
+
+         <MudItem xs="12" md="6">
+            <MudSelect T="LifecycleStageResponse" Label="Lifecycle Stage" @bind-Value="context.SelectedLifecycleStage" SelectedValuesChanged="OnSelectionChanged" ToStringFunc=@(x => x.Name)>
+                @foreach (var lifecycleStage in LocalLifecycleStages)
+                {
+                    <MudSelectItem Value="lifecycleStage">@lifecycleStage.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+
+
         <MudItem xs="12" md="12">
             <MudItem>
                 <div>

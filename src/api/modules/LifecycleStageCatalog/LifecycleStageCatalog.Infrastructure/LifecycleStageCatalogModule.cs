@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using SharedDbContextProject;
 
 namespace FSH.Starter.WebApi.LifecycleStageCatalog.Infrastructure;
 public static class LifecycleStageCatalogModule
@@ -28,7 +29,7 @@ public static class LifecycleStageCatalogModule
     public static WebApplicationBuilder RegisterLifecycleStageCatalogServices(this WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        builder.Services.BindDbContext<LifecycleStageCatalogDbContext>();
+        builder.Services.BindDbContext<SharedDbContext>();
         builder.Services.AddScoped<IDbInitializer, LifecycleStageCatalogDbInitializer>();
         builder.Services.AddKeyedScoped<IComponentRepository<LifecycleStage>, LifecycleStageComponentRepository<LifecycleStage>>("lifecycleStagecatalog:lifecycleStages");
         builder.Services.AddKeyedScoped<IRepository<LifecycleStage>, LifecycleStageCatalogRepository<LifecycleStage>>("lifecycleStagecatalog:lifecycleStages");

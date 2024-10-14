@@ -3,12 +3,13 @@ using Ardalis.Specification.EntityFrameworkCore;
 using FSH.Framework.Core.Domain.Contracts;
 using FSH.Framework.Core.Persistence;
 using Mapster;
+using SharedDbContextProject;
 
 namespace FSH.Starter.WebApi.LifecycleProgramCatalog.Infrastructure.Persistence;
 public class LifecycleProgramCatalogRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>
     where T : class, IAggregateRoot
 {
-    public LifecycleProgramCatalogRepository(LifecycleProgramCatalogDbContext context)
+    public LifecycleProgramCatalogRepository(SharedDbContext context)
         : base(context)
     {
     }

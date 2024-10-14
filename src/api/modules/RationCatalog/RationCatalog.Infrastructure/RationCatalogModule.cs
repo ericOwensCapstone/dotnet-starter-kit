@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using SharedDbContextProject;
 
 namespace FSH.Starter.WebApi.RationCatalog.Infrastructure;
 public static class RationCatalogModule
@@ -28,7 +29,7 @@ public static class RationCatalogModule
     public static WebApplicationBuilder RegisterRationCatalogServices(this WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        builder.Services.BindDbContext<RationCatalogDbContext>();
+        builder.Services.BindDbContext<SharedDbContext>();
         builder.Services.AddScoped<IDbInitializer, RationCatalogDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<Ration>, RationCatalogRepository<Ration>>("rationcatalog:rations");
         builder.Services.AddKeyedScoped<IReadRepository<Ration>, RationCatalogRepository<Ration>>("rationcatalog:rations");

@@ -3,12 +3,13 @@ using Ardalis.Specification.EntityFrameworkCore;
 using FSH.Framework.Core.Domain.Contracts;
 using FSH.Framework.Core.Persistence;
 using Mapster;
+using SharedDbContextProject;
 
 namespace FSH.Starter.WebApi.RationCatalog.Infrastructure.Persistence;
 internal sealed class RationCatalogRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>
     where T : class, IAggregateRoot
 {
-    public RationCatalogRepository(RationCatalogDbContext context)
+    public RationCatalogRepository(SharedDbContext context)
         : base(context)
     {
     }

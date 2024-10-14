@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using SharedDbContextProject;
 
 namespace FSH.Starter.WebApi.LifecycleProgramCatalog.Infrastructure;
 public static class LifecycleProgramCatalogModule
@@ -29,7 +30,7 @@ public static class LifecycleProgramCatalogModule
     public static WebApplicationBuilder RegisterLifecycleProgramCatalogServices(this WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        builder.Services.BindDbContext<LifecycleProgramCatalogDbContext>();
+        builder.Services.BindDbContext<SharedDbContext>();
         builder.Services.AddScoped<IDbInitializer, LifecycleProgramCatalogDbInitializer>();
         builder.Services.AddKeyedScoped<IComponentRepository<LifecycleProgram>, LifecycleProgramComponentRepository<LifecycleProgram>>("lifecycleProgramcatalog:lifecyclePrograms");
         builder.Services.AddKeyedScoped<IRepository<LifecycleProgram>, LifecycleProgramCatalogRepository<LifecycleProgram>>("lifecycleProgramcatalog:lifecyclePrograms");

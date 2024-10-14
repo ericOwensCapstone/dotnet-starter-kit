@@ -4,6 +4,7 @@
     <AssemblyName>FSH.Starter.WebApi.Migrations.PostgreSQL</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SharedDbContextProject\SharedDbContextProject.csproj" />
     <ProjectReference Include="..\..\framework\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\GrowthTreatmentCatalog\GrowthTreatmentCatalog.Infrastructure\GrowthTreatmentCatalog.Infrastructure.csproj" />
@@ -13,8 +14,5 @@
     <ProjectReference Include="..\..\modules\RationCatalog\RationCatalog.Infrastructure\RationCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Shared\Shared.csproj" />
     <ProjectReference Include="..\..\modules\Todo\Todo.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GrowthTreatmentCatalog\" />
   </ItemGroup>
 </Project>

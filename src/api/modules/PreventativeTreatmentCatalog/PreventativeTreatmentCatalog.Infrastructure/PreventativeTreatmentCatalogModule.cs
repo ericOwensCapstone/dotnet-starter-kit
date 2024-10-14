@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using SharedDbContextProject;
 
 namespace FSH.Starter.WebApi.PreventativeTreatmentCatalog.Infrastructure;
 public static class PreventativeTreatmentCatalogModule
@@ -28,7 +29,7 @@ public static class PreventativeTreatmentCatalogModule
     public static WebApplicationBuilder RegisterPreventativeTreatmentCatalogServices(this WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        builder.Services.BindDbContext<PreventativeTreatmentCatalogDbContext>();
+        builder.Services.BindDbContext<SharedDbContext>();
         builder.Services.AddScoped<IDbInitializer, PreventativeTreatmentCatalogDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<PreventativeTreatment>, PreventativeTreatmentCatalogRepository<PreventativeTreatment>>("preventativeTreatmentcatalog:preventativeTreatments");
         builder.Services.AddKeyedScoped<IReadRepository<PreventativeTreatment>, PreventativeTreatmentCatalogRepository<PreventativeTreatment>>("preventativeTreatmentcatalog:preventativeTreatments");

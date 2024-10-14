@@ -3,12 +3,13 @@ using Ardalis.Specification.EntityFrameworkCore;
 using FSH.Framework.Core.Domain.Contracts;
 using FSH.Framework.Core.Persistence;
 using Mapster;
+using SharedDbContextProject;
 
 namespace FSH.Starter.WebApi.PreventativeTreatmentCatalog.Infrastructure.Persistence;
 internal sealed class PreventativeTreatmentCatalogRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>
     where T : class, IAggregateRoot
 {
-    public PreventativeTreatmentCatalogRepository(PreventativeTreatmentCatalogDbContext context)
+    public PreventativeTreatmentCatalogRepository(SharedDbContext context)
         : base(context)
     {
     }

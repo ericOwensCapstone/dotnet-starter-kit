@@ -9,6 +9,7 @@
     <None Remove="Persistence\Repositories\**" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\SharedDbContextProject\SharedDbContextProject.csproj" />
     <ProjectReference Include="..\..\..\framework\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\LifecycleProgramCatalog.Application\LifecycleProgramCatalog.Application.csproj" />
   </ItemGroup>

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using SharedDbContextProject;
 
 namespace FSH.Starter.WebApi.GrowthTreatmentCatalog.Infrastructure;
 public static class GrowthTreatmentCatalogModule
@@ -28,7 +29,7 @@ public static class GrowthTreatmentCatalogModule
     public static WebApplicationBuilder RegisterGrowthTreatmentCatalogServices(this WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        builder.Services.BindDbContext<GrowthTreatmentCatalogDbContext>();
+        builder.Services.BindDbContext<SharedDbContext>();
         builder.Services.AddScoped<IDbInitializer, GrowthTreatmentCatalogDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<GrowthTreatment>, GrowthTreatmentCatalogRepository<GrowthTreatment>>("growthTreatmentcatalog:growthTreatments");
         builder.Services.AddKeyedScoped<IReadRepository<GrowthTreatment>, GrowthTreatmentCatalogRepository<GrowthTreatment>>("growthTreatmentcatalog:growthTreatments");

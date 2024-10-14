@@ -1,6 +1,7 @@
 using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
 using FSH.Starter.WebApi.GrowthTreatmentCatalog.Domain;
+using FSH.Starter.WebApi.LifecycleProgramCatalog.Domain;
 using FSH.Starter.WebApi.LifecycleStageCatalog.Domain.Events;
 using FSH.Starter.WebApi.PreventativeTreatmentCatalog.Domain;
 using FSH.Starter.WebApi.RationCatalog.Domain;
@@ -13,8 +14,6 @@ public class LifecycleStage : AuditableEntity, IAggregateRoot
     public Ration Ration { get; private set; }
     public GrowthTreatment GrowthTreatment { get; private set; }
     public PreventativeTreatment PreventativeTreatment { get; private set; }
-
-
 
     public decimal Rating { get; private set; }
 

@@ -1,13 +1,14 @@
 ﻿using FSH.Framework.Core.Domain.Contracts;
 using FSH.Framework.Core.Persistence;
 using Microsoft.EntityFrameworkCore;
+using SharedDbContextProject;
 
 namespace FSH.Starter.WebApi.LifecycleProgramCatalog.Infrastructure.Persistence;
 public class LifecycleProgramComponentRepository<Tp> : LifecycleProgramCatalogRepository<Tp>, IComponentRepository<Tp>
     where Tp : class, IAggregateRoot
 {
-    private LifecycleProgramCatalogDbContext _context;
-    public LifecycleProgramComponentRepository(LifecycleProgramCatalogDbContext context)
+    private SharedDbContext _context;
+    public LifecycleProgramComponentRepository(SharedDbContext context)
         : base(context)
     {
         _context = context;

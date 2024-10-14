@@ -43,13 +43,15 @@ public static class Extensions
         where TContext : DbContext
     {
         ArgumentNullException.ThrowIfNull(services);
-
-        services.AddDbContext<TContext>((sp, options) =>
+        if (!services.Any(service => service.ServiceType == typeof(DbContextOptions<TContext>)))
         {
-            var dbConfig = sp.GetRequiredService<IOptions<DatabaseOptions>>().Value;
-            options.ConfigureDatabase(dbConfig.Provider, dbConfig.ConnectionString);
-            options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
-        });
+            services.AddDbContext<TContext>((sp, options) =>
+            {
+                var dbConfig = sp.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+                options.ConfigureDatabase(dbConfig.Provider, dbConfig.ConnectionString);
+                options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
+            });
+        }
         return services;
     }
 }

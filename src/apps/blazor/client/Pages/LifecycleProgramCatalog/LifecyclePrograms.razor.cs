@@ -74,19 +74,31 @@ public partial class LifecyclePrograms
             {
                 await Task.Delay(5);
                 var temp = Context.AddEditModal.RequestModel;
-                //var tableEntities = _table._entityList.Items;
+                var target = CurrentPage.FirstOrDefault(lp => lp.Id == temp.Id);
+                ApprovedLifecycleStages = new();
+                foreach (var item in target.LifecycleProgramStages)
+                {
+                    var newLifecycleStageSelection = new LifecycleStageSelection
+                    {
+                        LifecycleStage = item.LifecycleStage.Adapt<LifecycleStageResponse>(),
+                        Order = item.Order
+                    };
+                    ApprovedLifecycleStages.Add(newLifecycleStageSelection);
+                }
+                SortApprovedLifecycleStages();
+                Context.AddEditModal.ForceRender();
                 var wd = 40;
             },
             updateFunc: async (id, prod) =>
             {
                 List<UpdateLifecycleProgramStageCommand> commands = new List<UpdateLifecycleProgramStageCommand>();
                 var order = 0;
-                foreach (var lifecycleStage in LocalLifecycleStages)
+                foreach (var item in ApprovedLifecycleStages)
                 {
                     var updateProgramStageCommand = new UpdateLifecycleProgramStageCommand
                     {
-                        LifecycleStageId = (Guid)lifecycleStage.Id,
-                        Order = order++
+                        LifecycleStageId = (Guid)item.LifecycleStage.Id,
+                        Order = item.Order
                     };
                     commands.Add(updateProgramStageCommand);
                 }

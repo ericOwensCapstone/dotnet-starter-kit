@@ -5,3 +5,9 @@
 .mud-list {
     border: 1px solid var(--mud-palette-lines-default)
 }
+
+.custom-header {
+    text-align: center;
+    white-space: normal; /* Allows text to wrap */
+    word-wrap: break-word; /* Ensures long words break and wrap */
+}

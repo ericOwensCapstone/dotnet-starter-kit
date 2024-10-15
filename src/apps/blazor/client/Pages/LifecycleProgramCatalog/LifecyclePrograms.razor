@@ -10,12 +10,12 @@
     </AdvancedSearchContent>
 
     <EditFormContent>
-        @if (!Context.AddEditModal.IsCreate)
+@*         @if (!Context.AddEditModal.IsCreate)
         {
             <MudItem xs="12" md="6">
                 <MudTextField Value="context.Id" Underline=false ReadOnly Label="LifecycleProgram Id" />
             </MudItem>
-        }
+        } *@
         <MudItem xs="12" md="6">
             <MudTextField Label="Name" For="@(() => context.Name)" @bind-Value="context.Name" />
         </MudItem>
@@ -23,21 +23,54 @@
             <MudTextField Label="Description" For="@(() => context.Description)"
                 @bind-Value="context.Description" />
         </MudItem>
+@*         
         <MudItem xs="12" md="6">
             <MudTextField Label="Rating" For="@(() => context.Rating)" @bind-Value="context.Rating" />
         </MudItem>
-
-         <MudItem xs="12" md="6">
-            <MudSelect T="LifecycleStageResponse" Label="Lifecycle Stage" @bind-Value="context.SelectedLifecycleStage" SelectedValuesChanged="OnSelectionChanged" ToStringFunc=@(x => x.Name)>
+ *@
+         <MudItem xs="12" md="4">
+            <MudSelect T="LifecycleStageResponse" Label="Lifecycle Stage" @bind-Value="SelectedLifecycleStage" SelectedValuesChanged="OnSelectionChanged" ToStringFunc=@(x => x.Name)>
                 @foreach (var lifecycleStage in LocalLifecycleStages)
                 {
                     <MudSelectItem Value="lifecycleStage">@lifecycleStage.Name</MudSelectItem>
                 }
             </MudSelect>
         </MudItem>
-
-
+        <MudItem xs="12" md="4">
+            <MudNumericField T="int" Label="Stage Order" @bind-Value="SelectedLifecycleStageOrder" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudButton DropShadow="false" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" ButtonType="ButtonType.Button" Color="Color.Secondary" @onclick="AddToProgram">
+                Add to Program
+            </MudButton>
+        </MudItem>
         <MudItem xs="12" md="12">
+            <MudTable Items="@ApprovedLifecycleStages" Class="mt-4">
+                <HeaderContent>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Order</MudTh>
+                    <MudTh>Ration</MudTh>
+                    <MudTh>Growth Treatment</MudTh>
+                    <MudTh>Preventative Treatment</MudTh>
+                    <MudTh>Actions</MudTh>
+                </HeaderContent>
+                <RowTemplate Context="stagesContext">
+                    <MudTd>@stagesContext.LifecycleStage.Name</MudTd>
+                    <MudTd>@stagesContext.Order</MudTd>
+                    <MudTd>@stagesContext.LifecycleStage.Ration.Name</MudTd>
+                    <MudTd>@stagesContext.LifecycleStage.GrowthTreatment.Name</MudTd>
+                    <MudTd>@stagesContext.LifecycleStage.PreventativeTreatment.Name</MudTd>
+                    <MudTd>
+                        <MudButton DropShadow="false" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Remove" Color="Color.Error" Size="Size.Small" @onclick="() => DeleteFromProgram(stagesContext)">
+                            Remove
+                        </MudButton>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudItem>
+
+
+@*         <MudItem xs="12" md="12">
             <MudItem>
                 <div>
                     @if(!Context.AddEditModal.IsCreate)
@@ -54,7 +87,7 @@
                     }
                 </div>
             </MudItem>
-        </MudItem>
+        </MudItem> *@
     </EditFormContent>
 
 </EntityTable>

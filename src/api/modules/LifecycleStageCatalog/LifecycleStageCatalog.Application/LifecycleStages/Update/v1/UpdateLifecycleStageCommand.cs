@@ -10,13 +10,20 @@ using MediatR;
 namespace FSH.Starter.WebApi.LifecycleStageCatalog.Application.LifecycleStages.Update.v1;
 public sealed record UpdateLifecycleStageCommand(
     Guid Id,
-    string? Name,
-    decimal Rating,
+    double TargetWeight,
+    double TargetAdfi,
+    double AdfiStdDev,
+    double TargetWeightRangeForSort,
+    int MergeableDuration,
+    double MergeableWeightRange,
+    int MaxHead,
+    string? Name,   
     [property: JsonPropertyName("ration")]
     UpdateRationCommand? UpdateRationCommand,
     [property: JsonPropertyName("growthTreatment")]
     UpdateGrowthTreatmentCommand? UpdateGrowthTreatmentCommand,
     [property: JsonPropertyName("preventativeTreatment")]
     UpdatePreventativeTreatmentCommand? UpdatePreventativeTreatmentCommand,
-    string? Description = null) : IRequest<UpdateLifecycleStageResponse>;
+    string? Description = null
+) : IRequest<UpdateLifecycleStageResponse>;
 

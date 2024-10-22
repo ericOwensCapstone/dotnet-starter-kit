@@ -10,10 +10,15 @@ using MediatR;
 
 namespace FSH.Starter.WebApi.LifecycleStageCatalog.Application.LifecycleStages.Create.v1;
 public sealed record CreateLifecycleStageCommand(
+    double TargetWeight,
+    double TargetAdfi,
+    double AdfiStdDev,
+    double TargetWeightRangeForSort,
+    int MergeableDuration,
+    double MergeableWeightRange,
+    int MaxHead,
     [property: DefaultValue("Sample LifecycleStage")] 
     string? Name,
-    [property: DefaultValue(10)] 
-    decimal Rating,
     [property: DefaultValue("Descriptive Description")] 
     string? Description = null,
     [property: JsonPropertyName("ration")]

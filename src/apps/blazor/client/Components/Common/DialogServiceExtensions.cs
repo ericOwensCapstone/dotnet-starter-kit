@@ -13,7 +13,7 @@ public static class DialogServiceExtensions
         where TDialog : ComponentBase
     {
         //TODO Modal Dialog Width
-        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true, BackdropClick = false };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraLarge, FullWidth = true, BackdropClick = false };
 
         return dialogService.Show<TDialog>(string.Empty, parameters, options);
     }

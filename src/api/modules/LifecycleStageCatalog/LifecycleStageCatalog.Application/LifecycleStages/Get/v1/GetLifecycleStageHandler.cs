@@ -24,10 +24,16 @@ public sealed class GetLifecycleStageHandler(
                     lifecycleStageItem.Id, 
                     lifecycleStageItem.Name, 
                     lifecycleStageItem.Description, 
-                    lifecycleStageItem.Rating, 
                     lifecycleStageItem.Ration,
                     lifecycleStageItem.GrowthTreatment,
-                    lifecycleStageItem.PreventativeTreatment
+                    lifecycleStageItem.PreventativeTreatment,
+                    lifecycleStageItem.TargetWeight,
+                    lifecycleStageItem.TargetAdfi,
+                    lifecycleStageItem.AdfiStdDev,
+                    lifecycleStageItem.TargetWeightRangeForSort,
+                    lifecycleStageItem.MergeableDuration,
+                    lifecycleStageItem.MergeableWeightRange,
+                    lifecycleStageItem.MaxHead
                 );
             },
             cancellationToken: cancellationToken);

@@ -49,10 +49,26 @@
                 }
             </MudSelect>
         </MudItem>
-
-
-        <MudItem xs="12" md="6">
-            <MudTextField Label="Rating" For="@(() => context.Rating)" @bind-Value="context.Rating" />
+        <MudItem xs="12" md="4">
+            <MudNumericField T="double" Label="Target Weight" @bind-Value="context.TargetWeight" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudNumericField T="double" Label="Target Adfi" @bind-Value="context.TargetAdfi" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudNumericField T="double" Label="Adfi StdDev" @bind-Value="context.AdfiStdDev" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudNumericField T="double" Label="Sort Range" @bind-Value="context.TargetWeightRangeForSort" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudNumericField T="int" Label="Mergeable Duration" @bind-Value="context.MergeableDuration" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudNumericField T="double" Label="Mergeable Range" @bind-Value="context.MergeableWeightRange" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudNumericField T="int" Label="Max Head" @bind-Value="context.MaxHead" />
         </MudItem>
         <MudItem xs="12" md="12">
             <MudItem>

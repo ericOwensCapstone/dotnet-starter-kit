@@ -8025,11 +8025,29 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
     public partial class CreateLifecycleStageCommand
     {
 
+        [System.Text.Json.Serialization.JsonPropertyName("targetWeight")]
+        public double TargetWeight { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("targetAdfi")]
+        public double TargetAdfi { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("adfiStdDev")]
+        public double AdfiStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("targetWeightRangeForSort")]
+        public double TargetWeightRangeForSort { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("mergeableDuration")]
+        public int MergeableDuration { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("mergeableWeightRange")]
+        public double MergeableWeightRange { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("maxHead")]
+        public int MaxHead { get; set; } = default!;
+
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string? Name { get; set; } = "Sample LifecycleStage";
-
-        [System.Text.Json.Serialization.JsonPropertyName("rating")]
-        public double Rating { get; set; } = 10D;
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string? Description { get; set; } = "Descriptive Description";
@@ -8451,8 +8469,26 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         [System.Text.Json.Serialization.JsonPropertyName("preventativeTreatment")]
         public PreventativeTreatment PreventativeTreatment { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("rating")]
-        public double Rating { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonPropertyName("targetWeight")]
+        public double TargetWeight { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("targetAdfi")]
+        public double TargetAdfi { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("adfiStdDev")]
+        public double AdfiStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("targetWeightRangeForSort")]
+        public double TargetWeightRangeForSort { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("mergeableDuration")]
+        public int MergeableDuration { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("mergeableWeightRange")]
+        public double MergeableWeightRange { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("maxHead")]
+        public int MaxHead { get; set; } = default!;
 
     }
 
@@ -8469,9 +8505,6 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string? Description { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("rating")]
-        public double Rating { get; set; } = default!;
-
         [System.Text.Json.Serialization.JsonPropertyName("ration")]
         public Ration Ration { get; set; } = default!;
 
@@ -8480,6 +8513,27 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
 
         [System.Text.Json.Serialization.JsonPropertyName("preventativeTreatment")]
         public PreventativeTreatment PreventativeTreatment { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("targetWeight")]
+        public double TargetWeight { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("targetAdfi")]
+        public double TargetAdfi { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("adfiStdDev")]
+        public double AdfiStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("targetWeightRangeForSort")]
+        public double TargetWeightRangeForSort { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("mergeableDuration")]
+        public int MergeableDuration { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("mergeableWeightRange")]
+        public double MergeableWeightRange { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("maxHead")]
+        public int MaxHead { get; set; } = default!;
 
     }
 
@@ -9012,11 +9066,29 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         [System.Text.Json.Serialization.JsonPropertyName("id")]
         public System.Guid Id { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("targetWeight")]
+        public double TargetWeight { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("targetAdfi")]
+        public double TargetAdfi { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("adfiStdDev")]
+        public double AdfiStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("targetWeightRangeForSort")]
+        public double TargetWeightRangeForSort { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("mergeableDuration")]
+        public int MergeableDuration { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("mergeableWeightRange")]
+        public double MergeableWeightRange { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("maxHead")]
+        public int MaxHead { get; set; } = default!;
+
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string? Name { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("rating")]
-        public double Rating { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("ration")]
         public UpdateRationCommand Ration { get; set; } = default!;

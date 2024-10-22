@@ -48,12 +48,13 @@ public partial class LifecyclePrograms
                 var result = await _client.SearchLifecycleProgramsEndpointAsync("1", lifecycleProgramFilter);
                 CurrentPage = result.Items?.ToList<LifecycleProgramResponse>();
                 var adaptedResult = result.Adapt<PaginationResponse<LifecycleProgramResponse>>();
+                ApprovedLifecycleStages = new();
                 return adaptedResult;
             },
             createFunc: async prod =>
             {
                 List<UpdateLifecycleProgramStageCommand> commands = new List<UpdateLifecycleProgramStageCommand>();
-                foreach(var item in ApprovedLifecycleStages)
+                foreach (var item in ApprovedLifecycleStages)
                 {
                     var updateProgramStageCommand = new UpdateLifecycleProgramStageCommand
                     {
@@ -65,32 +66,41 @@ public partial class LifecyclePrograms
 
                 prod.UpdateLifecycleProgramStageCommands = commands;
                 var createCommand = prod.Adapt<CreateLifecycleProgramCommand>();
-                createCommand.Rating = 7;
                 createCommand.UpdateLifeycleProgramStageCommands = commands;
                 await _client.CreateLifecycleProgramEndpointAsync("1", createCommand);
-                ApprovedLifecycleStages = new();
+                //ApprovedLifecycleStages = new();
             },
             editFormInitializedFunc: async () =>
             {
-                await Task.Delay(5);
-                var temp = Context.AddEditModal.RequestModel;
-                var target = CurrentPage.FirstOrDefault(lp => lp.Id == temp.Id);
-                ApprovedLifecycleStages = new();
-                foreach (var item in target.LifecycleProgramStages)
+                try
                 {
-                    var newLifecycleStageSelection = new LifecycleStageSelection
+                    await Task.Delay(1);
+                    ApprovedLifecycleStages = new();
+                    var temp = Context.AddEditModal.RequestModel;
+                    var target = CurrentPage.FirstOrDefault(lp => lp.Id == temp.Id);
+                    if (target != null)
                     {
-                        LifecycleStage = item.LifecycleStage.Adapt<LifecycleStageResponse>(),
-                        Order = item.Order
-                    };
-                    ApprovedLifecycleStages.Add(newLifecycleStageSelection);
+                        foreach (var item in target.LifecycleProgramStages)
+                        {
+                            var newLifecycleStageSelection = new LifecycleStageSelection
+                            {
+                                LifecycleStage = item.LifecycleStage.Adapt<LifecycleStageResponse>(),
+                                Order = item.Order
+                            };
+                            ApprovedLifecycleStages.Add(newLifecycleStageSelection);
+                        }
+                        SortApprovedLifecycleStages();
+                    }
+                    Context.AddEditModal.ForceRender();
                 }
-                SortApprovedLifecycleStages();
-                Context.AddEditModal.ForceRender();
-                var wd = 40;
+                catch (Exception ex)
+                {
+                    var wd = 40;
+                }
             },
             updateFunc: async (id, prod) =>
             {
+                //ApprovedLifecycleStages = new();
                 List<UpdateLifecycleProgramStageCommand> commands = new List<UpdateLifecycleProgramStageCommand>();
                 var order = 0;
                 foreach (var item in ApprovedLifecycleStages)
@@ -107,9 +117,13 @@ public partial class LifecyclePrograms
                 updateCommand.UpdateLifecycleProgramStageCommands = commands;
 
                 await _client.UpdateLifecycleProgramEndpointAsync("1", id, prod.Adapt<UpdateLifecycleProgramCommand>());
-                ApprovedLifecycleStages = new();
+                //ApprovedLifecycleStages = new();
             },
-            deleteFunc: async id => await _client.DeleteLifecycleProgramEndpointAsync("1", id));
+            deleteFunc: async id =>
+            {
+                await _client.DeleteLifecycleProgramEndpointAsync("1", id);
+                //ApprovedLifecycleStages = new();
+            });
 
         LocalLifecycleStages = await LoadLifecycleStagesAsync();
     }
@@ -123,7 +137,7 @@ public partial class LifecyclePrograms
         {
             return new();
         }
-        return (List<LifecycleStageResponse>)result.Items;
+        return (List<LifecycleStageResponse>)result.Items.OrderBy(item => item.Name).ToList();
     }
 
     public void OnSelectionChanged(IEnumerable<LifecycleStageResponse> selections)

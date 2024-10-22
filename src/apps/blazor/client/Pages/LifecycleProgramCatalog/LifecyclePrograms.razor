@@ -52,6 +52,13 @@
                     <MudTh>Ration</MudTh>
                     <MudTh>Growth Treatment</MudTh>
                     <MudTh>Preventative Treatment</MudTh>
+                    <MudTh>Target Weight</MudTh>
+                    <MudTh>Target ADFI</MudTh>
+                    <MudTh>ADFI Std Dev</MudTh>
+                    <MudTh>Sort Range</MudTh>
+                    <MudTh>Mergeable Duration</MudTh>
+                    <MudTh>Mergeable Range</MudTh>
+                    <MudTh>Max Head</MudTh>
                     <MudTh>Actions</MudTh>
                 </HeaderContent>
                 <RowTemplate Context="stagesContext">
@@ -60,6 +67,13 @@
                     <MudTd>@stagesContext.LifecycleStage.Ration.Name</MudTd>
                     <MudTd>@stagesContext.LifecycleStage.GrowthTreatment.Name</MudTd>
                     <MudTd>@stagesContext.LifecycleStage.PreventativeTreatment.Name</MudTd>
+                    <MudTd>@stagesContext.LifecycleStage.TargetWeight</MudTd>
+                    <MudTd>@stagesContext.LifecycleStage.TargetAdfi</MudTd>
+                    <MudTd>@stagesContext.LifecycleStage.AdfiStdDev</MudTd>
+                    <MudTd>@stagesContext.LifecycleStage.TargetWeightRangeForSort</MudTd>
+                    <MudTd>@stagesContext.LifecycleStage.MergeableDuration</MudTd>
+                    <MudTd>@stagesContext.LifecycleStage.MergeableWeightRange</MudTd>
+                    <MudTd>@stagesContext.LifecycleStage.MaxHead</MudTd>
                     <MudTd>
                         <MudButton DropShadow="false" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Remove" Color="Color.Error" Size="Size.Small" @onclick="() => DeleteFromProgram(stagesContext)">
                             Remove

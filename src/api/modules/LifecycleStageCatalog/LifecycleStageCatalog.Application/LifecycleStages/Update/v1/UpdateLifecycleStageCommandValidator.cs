@@ -6,7 +6,6 @@ public class UpdateLifecycleStageCommandValidator : AbstractValidator<UpdateLife
     public UpdateLifecycleStageCommandValidator()
     {
         RuleFor(p => p.Name).NotEmpty().MinimumLength(2).MaximumLength(75);
-        RuleFor(p => p.Rating).GreaterThan(0);
     }
 }
 

@@ -113,6 +113,9 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.SharedDbCatalog
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<double>("AdfiStdDev")
+                        .HasColumnType("double precision");
+
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
 
@@ -131,6 +134,15 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.SharedDbCatalog
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("MaxHead")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MergeableDuration")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("MergeableWeightRange")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -138,11 +150,17 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.SharedDbCatalog
                     b.Property<Guid>("PreventativeTreatmentId")
                         .HasColumnType("uuid");
 
-                    b.Property<decimal>("Rating")
-                        .HasColumnType("numeric");
-
                     b.Property<Guid>("RationId")
                         .HasColumnType("uuid");
+
+                    b.Property<double>("TargetAdfi")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("TargetWeight")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("TargetWeightRangeForSort")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 

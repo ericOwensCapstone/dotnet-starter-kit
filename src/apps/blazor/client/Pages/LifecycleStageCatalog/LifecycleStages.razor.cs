@@ -32,7 +32,14 @@ public partial class LifecycleStages
                 new(prod => prod.Description, "Description", "Description"),
                 new(prod => prod.Ration.Name, "Ration", "Ration"),
                 new(prod => prod.GrowthTreatment.Name, "Growth Treatment", "Growth Treatment"),
-                new(prod => prod.PreventativeTreatment.Name, "Preventative Treatment", "Preventative Treatment"),
+                new(prod => prod.PreventativeTreatment.Name, "Preventive Treatment", "Preventive Treatment"),
+                new(prod => prod.TargetWeight, "Target Weight", "Target Weight"),
+                new(prod => prod.TargetAdfi, "Target ADFI", "Target ADFI"),
+                new(prod => prod.AdfiStdDev, "ADFI Std Dev", "ADFI Std Dev"),
+                new(prod => prod.TargetWeightRangeForSort, "Sort Range", "Sort Range"),
+                new(prod => prod.MergeableDuration, "Mergeable Duration", "Mergeable Duration"),
+                new(prod => prod.MergeableWeightRange, "Mergeable Range", "Mergeable Range"),
+                new(prod => prod.MaxHead, "Max Head", "Max Head")
                 //new(prod => prod.Rating, "Rating", "Rating")
             },
             enableAdvancedSearch: true,

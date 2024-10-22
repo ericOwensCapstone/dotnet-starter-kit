@@ -23,7 +23,20 @@ public sealed class UpdateLifecycleStageHandler(
         var foundRation = await repository.GetComponentByIdAsync<Ration>(request.UpdateRationCommand!.Id, cancellationToken);
         var foundGrowthTreatment = await repository.GetComponentByIdAsync<GrowthTreatment>(request.UpdateGrowthTreatmentCommand!.Id, cancellationToken);
         var foundPreventativeTreatment = await repository.GetComponentByIdAsync<PreventativeTreatment>(request.UpdatePreventativeTreatmentCommand!.Id, cancellationToken);
-        var updatedLifecycleStage = lifecycleStage.Update(request.Name, request.Description, request.Rating, foundRation, foundGrowthTreatment, foundPreventativeTreatment);
+        var updatedLifecycleStage = lifecycleStage.Update(
+            request.Name, 
+            request.Description, 
+            foundRation, 
+            foundGrowthTreatment, 
+            foundPreventativeTreatment,
+            request.TargetWeight,
+            request.TargetAdfi,
+            request.AdfiStdDev,
+            request.TargetWeightRangeForSort,
+            request.MergeableDuration,
+            request.MergeableWeightRange,
+            request.MaxHead
+        );
         await repository.UpdateAsync(updatedLifecycleStage, cancellationToken);
         logger.LogInformation("lifecycleStage with id : {LifecycleStageId} updated.", lifecycleStage.Id);
         return new UpdateLifecycleStageResponse(lifecycleStage.Id);

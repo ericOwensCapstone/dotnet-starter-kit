@@ -20,7 +20,20 @@ public sealed class CreateLifecycleStageHandler(
         var foundGrowthTreatment = await repository.GetComponentByIdAsync<GrowthTreatment>(request.UpdateGrowthTreatmentCommand!.Id, cancellationToken);
         var foundPreventativeTreatment = await repository.GetComponentByIdAsync<PreventativeTreatment>(request.UpdatePreventativeTreatmentCommand!.Id, cancellationToken);
 
-        var lifecycleStage = LifecycleStage.Create(request.Name!, request.Description, request.Rating, foundRation, foundGrowthTreatment, foundPreventativeTreatment);
+        var lifecycleStage = LifecycleStage.Create(
+            request.Name!, 
+            request.Description, 
+            foundRation, 
+            foundGrowthTreatment, 
+            foundPreventativeTreatment,
+            request.TargetWeight,
+            request.TargetAdfi,
+            request.AdfiStdDev,
+            request.TargetWeightRangeForSort,
+            request.MergeableDuration,
+            request.MergeableWeightRange,
+            request.MaxHead
+        );
         await repository.AddAsync(lifecycleStage, cancellationToken);
         logger.LogInformation("lifecycleStage created {LifecycleStageId}", lifecycleStage.Id);
         return new CreateLifecycleStageResponse(lifecycleStage.Id);

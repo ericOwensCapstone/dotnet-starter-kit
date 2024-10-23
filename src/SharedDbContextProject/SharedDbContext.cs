@@ -7,6 +7,7 @@ using Finbuckle.MultiTenant.Abstractions;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
 using FSH.Framework.Infrastructure.Tenant;
+using FSH.Starter.WebApi.AnimalTypeCatalog.Domain;
 using FSH.Starter.WebApi.GrowthTreatmentCatalog.Domain;
 using FSH.Starter.WebApi.LifecycleProgramCatalog.Domain;
 using FSH.Starter.WebApi.LifecycleStageCatalog.Domain;
@@ -31,6 +32,7 @@ namespace SharedDbContextProject
         public DbSet<LifecycleStage> LifecycleStages { get; set; } = null!;
         public DbSet<LifecycleProgram> LifecyclePrograms { get; set; } = null!;
         public DbSet<LifecycleProgramStage> LifecycleProgramStages { get; set; } = null!;
+        public DbSet<AnimalType> AnimalTypes {  get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

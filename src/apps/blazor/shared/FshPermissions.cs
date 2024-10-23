@@ -33,6 +33,7 @@ public static class FshResource
     public const string PreventativeTreatments = nameof(PreventativeTreatments);
     public const string LifecycleStages = nameof(LifecycleStages);
     public const string LifecyclePrograms = nameof(LifecyclePrograms);
+    public const string AnimalTypes = nameof(AnimalTypes);
 }
 
 public static class FshPermissions
@@ -108,6 +109,14 @@ public static class FshPermissions
         new("Update LifecyclePrograms", FshAction.Update, FshResource.LifecyclePrograms),
         new("Delete LifecyclePrograms", FshAction.Delete, FshResource.LifecyclePrograms),
         new("Export LifecyclePrograms", FshAction.Export, FshResource.LifecyclePrograms),
+
+        //animaltypes   
+        new("View AnimalTypes", FshAction.View, FshResource.AnimalTypes, IsBasic: true),
+        new("Search AnimalTypes", FshAction.Search, FshResource.AnimalTypes, IsBasic: true),
+        new("Create AnimalTypes", FshAction.Create, FshResource.AnimalTypes),
+        new("Update AnimalTypes", FshAction.Update, FshResource.AnimalTypes),
+        new("Delete AnimalTypes", FshAction.Delete, FshResource.AnimalTypes),
+        new("Export AnimalTypes", FshAction.Export, FshResource.AnimalTypes),
 
         // TODO BLAZORFSHPERMISSIONS
 

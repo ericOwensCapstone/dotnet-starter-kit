@@ -89,7 +89,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LifecycleProgramCatalog.App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LifecycleProgramCatalog.Infrastructure", "api\modules\LifecycleProgramCatalog\LifecycleProgramCatalog.Infrastructure\LifecycleProgramCatalog.Infrastructure.csproj", "{FC250A77-A9B1-4E7E-B176-3E20FB58A97D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedDbContextProject", "SharedDbContextProject\SharedDbContextProject.csproj", "{798CCDEF-86EA-4CFF-9CE3-5311CD8B8214}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedDbContextProject", "SharedDbContextProject\SharedDbContextProject.csproj", "{798CCDEF-86EA-4CFF-9CE3-5311CD8B8214}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AnimalTypeCatalog", "AnimalTypeCatalog", "{640F5155-F2BC-497A-A1AE-F6E50D4B9B76}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalTypeCatalog.Application", "api\modules\AnimalTypeCatalog\AnimalTypeCatalog.Application\AnimalTypeCatalog.Application.csproj", "{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalTypeCatalog.Infrastructure", "api\modules\AnimalTypeCatalog\AnimalTypeCatalog.Infrastructure\AnimalTypeCatalog.Infrastructure.csproj", "{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -413,6 +419,30 @@ Global
 		{798CCDEF-86EA-4CFF-9CE3-5311CD8B8214}.Release|x64.Build.0 = Release|Any CPU
 		{798CCDEF-86EA-4CFF-9CE3-5311CD8B8214}.Release|x86.ActiveCfg = Release|Any CPU
 		{798CCDEF-86EA-4CFF-9CE3-5311CD8B8214}.Release|x86.Build.0 = Release|Any CPU
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}.Debug|x64.Build.0 = Debug|Any CPU
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}.Debug|x86.Build.0 = Debug|Any CPU
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}.Release|x64.ActiveCfg = Release|Any CPU
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}.Release|x64.Build.0 = Release|Any CPU
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}.Release|x86.ActiveCfg = Release|Any CPU
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3}.Release|x86.Build.0 = Release|Any CPU
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Debug|x64.Build.0 = Debug|Any CPU
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Debug|x86.Build.0 = Debug|Any CPU
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Release|x64.ActiveCfg = Release|Any CPU
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Release|x64.Build.0 = Release|Any CPU
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Release|x86.ActiveCfg = Release|Any CPU
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -455,6 +485,9 @@ Global
 		{DCCEA79F-7FA8-472F-84D7-564765CF0DDF} = {1073AB87-1ACB-4A00-A86B-734FE86EA1E8}
 		{FC250A77-A9B1-4E7E-B176-3E20FB58A97D} = {1073AB87-1ACB-4A00-A86B-734FE86EA1E8}
 		{798CCDEF-86EA-4CFF-9CE3-5311CD8B8214} = {F3DF5AC5-8CDC-46D4-969D-1245A6880215}
+		{640F5155-F2BC-497A-A1AE-F6E50D4B9B76} = {F3DF5AC5-8CDC-46D4-969D-1245A6880215}
+		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3} = {640F5155-F2BC-497A-A1AE-F6E50D4B9B76}
+		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A} = {640F5155-F2BC-497A-A1AE-F6E50D4B9B76}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA8248C2-3877-4AF7-8777-A17E7881E030}

@@ -20,6 +20,7 @@
     <ProjectReference Include="..\framework\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\migrations\MSSQL\MSSQL.csproj" />
     <ProjectReference Include="..\migrations\PostgreSQL\PostgreSQL.csproj" />
+    <ProjectReference Include="..\modules\AnimalTypeCatalog\AnimalTypeCatalog.Infrastructure\AnimalTypeCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\GrowthTreatmentCatalog\GrowthTreatmentCatalog.Infrastructure\GrowthTreatmentCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\LifecycleProgramCatalog\LifecycleProgramCatalog.Infrastructure\LifecycleProgramCatalog.Infrastructure.csproj" />

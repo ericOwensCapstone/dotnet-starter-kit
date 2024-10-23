@@ -16,5 +16,6 @@ public static class FshResources
     public const string PreventativeTreatments = nameof(PreventativeTreatments);
     public const string LifecycleStages = nameof(LifecycleStages);
     public const string LifecyclePrograms = nameof(LifecyclePrograms);
+    public const string AnimalTypes = nameof(AnimalTypes);
     //TODO MOREBLAZORFSHRESOURCES
 }

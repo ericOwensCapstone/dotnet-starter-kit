@@ -10,5 +10,7 @@ public static class SchemaNames
     public const string PreventativeTreatmentCatalog = "preventativetreatmentcatalog";
     public const string LifecycleStageCatalog = "lifecyclestagecatalog";
     public const string LifecycleProgramCatalog = "lifecycleprogramcatalog";
+    public const string AnimalTypeCatalog = "animaltypecatalog";
+
     public const string SharedCatalog = "sharedcatalog";
 }

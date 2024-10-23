@@ -1,0 +1,49 @@
+﻿@page "/catalog/animaltypes"
+
+<PageHeader Title="AnimalTypes" Header="AnimalTypes" SubHeader="Manage your AnimalTypes." />
+
+<EntityTable @ref="_table" TEntity="AnimalTypeResponse" TId="Guid" TRequest="AnimalTypeViewModel" Context="@Context">
+
+    <AdvancedSearchContent>
+        <MudSlider T="decimal" @bind-value="SearchMinimumRate" Min="0" Max="9999" Step="100">Minimum Rate: @_searchMinimumRate.ToString()</MudSlider>
+        <MudSlider T="decimal" @bind-value="SearchMaximumRate" Min="0" Max="9999" Step="100">Maximum Rate: @_searchMaximumRate.ToString()</MudSlider>
+    </AdvancedSearchContent>
+
+    <EditFormContent>
+        @if (!Context.AddEditModal.IsCreate)
+        {
+            <MudItem xs="12" md="6">
+                <MudTextField Value="context.Id" Underline=false ReadOnly Label="AnimalType Id" />
+            </MudItem>
+        }
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Name" For="@(() => context.Name)" @bind-Value="context.Name" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Description" For="@(() => context.Description)"
+                @bind-Value="context.Description" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="DollarsPerPound" For="@(() => context.DollarsPerPound)" @bind-Value="context.DollarsPerPound" />
+        </MudItem>
+        <MudItem xs="12" md="12">
+            <MudItem>
+                <div>
+                    @if(!Context.AddEditModal.IsCreate)
+                    {
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Info" Size="Size.Small" Target="_blank"
+                            StartIcon="@Icons.Material.Filled.RemoveRedEye" Style="margin-left: 5px;" >
+                            View
+                        </MudButton>
+
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
+                                   StartIcon="@Icons.Material.Filled.Delete" Style="margin-left: 5px;">
+                            Delete
+                        </MudButton>
+                    }
+                </div>
+            </MudItem>
+        </MudItem>
+    </EditFormContent>
+
+</EntityTable>

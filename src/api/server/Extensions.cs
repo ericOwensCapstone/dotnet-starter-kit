@@ -15,6 +15,8 @@ using FSH.Starter.WebApi.LifecycleStageCatalog.Application;
 using FSH.Starter.WebApi.LifecycleStageCatalog.Infrastructure;
 using FSH.Starter.WebApi.LifecycleProgramCatalog.Application;
 using FSH.Starter.WebApi.LifecycleProgramCatalog.Infrastructure;
+using FSH.Starter.WebApi.AnimalTypeCatalog.Application;
+using FSH.Starter.WebApi.AnimalTypeCatalog.Infrastructure;
 
 namespace FSH.Starter.WebApi.Host;
 
@@ -34,6 +36,7 @@ public static class Extensions
             typeof(PreventativeTreatmentCatalogMetadata).Assembly,
             typeof(LifecycleStageCatalogMetadata).Assembly,
             typeof(LifecycleProgramCatalogMetadata).Assembly,
+            typeof(AnimalTypeCatalogMetadata).Assembly,
             typeof(TodoModule).Assembly
         };
 
@@ -51,6 +54,7 @@ public static class Extensions
         builder.RegisterPreventativeTreatmentCatalogServices();
         builder.RegisterLifecycleStageCatalogServices();
         builder.RegisterLifecycleProgramCatalogServices();
+        builder.RegisterAnimalTypeCatalogServices();
 
 
 
@@ -73,6 +77,7 @@ public static class Extensions
             config.WithModule<PreventativeTreatmentCatalogModule.Endpoints>();
             config.WithModule<LifecycleStageCatalogModule.Endpoints>();
             config.WithModule<LifecycleProgramCatalogModule.Endpoints>();
+            config.WithModule<AnimalTypeCatalogModule.Endpoints>();
         });
 
         return builder;
@@ -92,6 +97,7 @@ public static class Extensions
         app.UsePreventativeTreatmentCatalogModule();
         app.UseLifecycleStageCatalogModule();
         app.UseLifecycleProgramCatalogModule();
+        app.UseAnimalTypeCatalogModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()

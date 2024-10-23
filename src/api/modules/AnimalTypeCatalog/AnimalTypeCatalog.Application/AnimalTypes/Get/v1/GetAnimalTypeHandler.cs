@@ -20,7 +20,28 @@ public sealed class GetAnimalTypeHandler(
             {
                 var animalTypeItem = await repository.GetByIdAsync(request.Id, cancellationToken);
                 if (animalTypeItem == null) throw new AnimalTypeNotFoundException(request.Id);
-                return new AnimalTypeResponse(animalTypeItem.Id, animalTypeItem.Name, animalTypeItem.Description, animalTypeItem.DollarsPerPound);
+                return new AnimalTypeResponse
+                (
+                    animalTypeItem.Id, 
+                    animalTypeItem.Name, 
+                    animalTypeItem.Description,
+                    animalTypeItem.FcrMean,
+                    animalTypeItem.FcrStdDev,
+                    animalTypeItem.DiseaseIncidenceMean,
+                    animalTypeItem.DiseaseIncidenceStdDev,
+                    animalTypeItem.CarcassYieldMean,
+                    animalTypeItem.CarcassYieldStdDev,
+                    animalTypeItem.QualityGradeMean,
+                    animalTypeItem.QualityGradeStdDev,
+                    animalTypeItem.LowerCriticalTemp,
+                    animalTypeItem.UpperCriticalTemp,
+                    animalTypeItem.ArrivalHeadCountMean,
+                    animalTypeItem.ArrivalHeadCountStdDev,
+                    animalTypeItem.ArrivalWeightMean,
+                    animalTypeItem.ArrivalWeightStdDev,
+                    animalTypeItem.ArrivalCostPerCwtMean,
+                    animalTypeItem.ArrivalCostPerCwtStdDev
+                );
             },
             cancellationToken: cancellationToken);
         return item!;

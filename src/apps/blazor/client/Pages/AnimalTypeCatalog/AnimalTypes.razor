@@ -23,9 +23,56 @@
             <MudTextField Label="Description" For="@(() => context.Description)"
                 @bind-Value="context.Description" />
         </MudItem>
-        <MudItem xs="12" md="6">
-            <MudTextField Label="DollarsPerPound" For="@(() => context.DollarsPerPound)" @bind-Value="context.DollarsPerPound" />
+
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="FCR Mean" @bind-Value="context.FcrMean" />
         </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="FCR StdDev" @bind-Value="context.FcrStdDev" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Disease Incidence Mean" @bind-Value="context.DiseaseIncidenceMean" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Disease Incidence StdDev" @bind-Value="context.DiseaseIncidenceStdDev" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Carcass Yield Mean" @bind-Value="context.CarcassYieldMean" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Carcass Yield StdDev" @bind-Value="context.CarcassYieldStdDev" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Quality Grade Mean" @bind-Value="context.QualityGradeMean" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Quality Grade StdDev" @bind-Value="context.QualityGradeStdDev" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Lower Critical Temp" @bind-Value="context.LowerCriticalTemp" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Upper Critical Temp" @bind-Value="context.UpperCriticalTemp" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Arrival Head Count Mean" @bind-Value="context.ArrivalHeadCountMean" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Arrival Head Count StdDev" @bind-Value="context.ArrivalHeadCountStdDev" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Arrival Weight Mean" @bind-Value="context.ArrivalWeightMean" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Arrival Weight StdDev" @bind-Value="context.ArrivalWeightStdDev" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Arrival Cost Mean" @bind-Value="context.ArrivalCostPerCwtMean" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Arrival Cost StdDev" @bind-Value="context.ArrivalCostPerCwtStdDev" />
+        </MudItem>
+
         <MudItem xs="12" md="12">
             <MudItem>
                 <div>

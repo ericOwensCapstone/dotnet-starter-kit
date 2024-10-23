@@ -13,7 +13,27 @@ public sealed class CreateAnimalTypeHandler(
     public async Task<CreateAnimalTypeResponse> Handle(CreateAnimalTypeCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var animalType = AnimalType.Create(request.Name!, request.Description, request.DollarsPerPound);
+        var animalType = AnimalType.Create
+        (
+            request.Name!, 
+            request.Description, 
+            request.FcrMean,
+            request.FcrStdDev,
+            request.DiseaseIncidenceMean,
+            request.DiseaseIncidenceStdDev,
+            request.CarcassYieldMean,
+            request.CarcassYieldStdDev,
+            request.QualityGradeMean,
+            request.QualityGradeStdDev,
+            request.LowerCriticalTemp,
+            request.UpperCriticalTemp,
+            request.ArrivalHeadCountMean,
+            request.ArrivalHeadCountStdDev,
+            request.ArrivalWeightMean,
+            request.ArrivalWeightStdDev,
+            request.ArrivalCostPerCwtMean,
+            request.ArrivalCostPerCwtStdDev
+        );
         await repository.AddAsync(animalType, cancellationToken);
         logger.LogInformation("animalType created {AnimalTypeId}", animalType.Id);
         return new CreateAnimalTypeResponse(animalType.Id);

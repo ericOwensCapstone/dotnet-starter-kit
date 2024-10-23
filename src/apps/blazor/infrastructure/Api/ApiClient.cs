@@ -8553,8 +8553,53 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string? Description { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("dollarsPerPound")]
-        public double DollarsPerPound { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonPropertyName("fcrMean")]
+        public double FcrMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("fcrStdDev")]
+        public double FcrStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("diseaseIncidenceMean")]
+        public double DiseaseIncidenceMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("diseaseIncidenceStdDev")]
+        public double DiseaseIncidenceStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("carcassYieldMean")]
+        public double CarcassYieldMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("carcassYieldStdDev")]
+        public double CarcassYieldStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("qualityGradeMean")]
+        public double QualityGradeMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("qualityGradeStdDev")]
+        public double QualityGradeStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lowerCriticalTemp")]
+        public double LowerCriticalTemp { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("upperCriticalTemp")]
+        public double UpperCriticalTemp { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalHeadCountMean")]
+        public double ArrivalHeadCountMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalHeadCountStdDev")]
+        public double ArrivalHeadCountStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalWeightMean")]
+        public double ArrivalWeightMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalWeightStdDev")]
+        public double ArrivalWeightStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalCostPerCwtMean")]
+        public double ArrivalCostPerCwtMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalCostPerCwtStdDev")]
+        public double ArrivalCostPerCwtStdDev { get; set; } = default!;
 
     }
 
@@ -8646,11 +8691,56 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
     public partial class CreateAnimalTypeCommand
     {
 
+        [System.Text.Json.Serialization.JsonPropertyName("fcrMean")]
+        public double FcrMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("fcrStdDev")]
+        public double FcrStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("diseaseIncidenceMean")]
+        public double DiseaseIncidenceMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("diseaseIncidenceStdDev")]
+        public double DiseaseIncidenceStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("carcassYieldMean")]
+        public double CarcassYieldMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("carcassYieldStdDev")]
+        public double CarcassYieldStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("qualityGradeMean")]
+        public double QualityGradeMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("qualityGradeStdDev")]
+        public double QualityGradeStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lowerCriticalTemp")]
+        public double LowerCriticalTemp { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("upperCriticalTemp")]
+        public double UpperCriticalTemp { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalHeadCountMean")]
+        public double ArrivalHeadCountMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalHeadCountStdDev")]
+        public double ArrivalHeadCountStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalWeightMean")]
+        public double ArrivalWeightMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalWeightStdDev")]
+        public double ArrivalWeightStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalCostPerCwtMean")]
+        public double ArrivalCostPerCwtMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalCostPerCwtStdDev")]
+        public double ArrivalCostPerCwtStdDev { get; set; } = default!;
+
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string? Name { get; set; } = "Sample AnimalType";
-
-        [System.Text.Json.Serialization.JsonPropertyName("dollarsPerPound")]
-        public double DollarsPerPound { get; set; } = 10D;
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string? Description { get; set; } = "Descriptive Description";
@@ -9693,11 +9783,56 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         [System.Text.Json.Serialization.JsonPropertyName("id")]
         public System.Guid Id { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("fcrMean")]
+        public double FcrMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("fcrStdDev")]
+        public double FcrStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("diseaseIncidenceMean")]
+        public double DiseaseIncidenceMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("diseaseIncidenceStdDev")]
+        public double DiseaseIncidenceStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("carcassYieldMean")]
+        public double CarcassYieldMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("carcassYieldStdDev")]
+        public double CarcassYieldStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("qualityGradeMean")]
+        public double QualityGradeMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("qualityGradeStdDev")]
+        public double QualityGradeStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lowerCriticalTemp")]
+        public double LowerCriticalTemp { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("upperCriticalTemp")]
+        public double UpperCriticalTemp { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalHeadCountMean")]
+        public double ArrivalHeadCountMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalHeadCountStdDev")]
+        public double ArrivalHeadCountStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalWeightMean")]
+        public double ArrivalWeightMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalWeightStdDev")]
+        public double ArrivalWeightStdDev { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalCostPerCwtMean")]
+        public double ArrivalCostPerCwtMean { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("arrivalCostPerCwtStdDev")]
+        public double ArrivalCostPerCwtStdDev { get; set; } = default!;
+
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string? Name { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("dollarsPerPound")]
-        public double DollarsPerPound { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string? Description { get; set; } = default!;

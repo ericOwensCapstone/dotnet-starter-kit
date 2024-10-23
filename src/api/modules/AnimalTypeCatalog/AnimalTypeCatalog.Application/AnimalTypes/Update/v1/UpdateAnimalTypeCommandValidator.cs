@@ -6,7 +6,6 @@ public class UpdateAnimalTypeCommandValidator : AbstractValidator<UpdateAnimalTy
     public UpdateAnimalTypeCommandValidator()
     {
         RuleFor(p => p.Name).NotEmpty().MinimumLength(2).MaximumLength(75);
-        RuleFor(p => p.DollarsPerPound).GreaterThan(0);
     }
 }
 

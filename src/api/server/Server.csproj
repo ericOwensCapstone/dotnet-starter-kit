@@ -28,6 +28,7 @@
     <ProjectReference Include="..\modules\PreventativeTreatmentCatalog\PreventativeTreatmentCatalog.Infrastructure\PreventativeTreatmentCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\RationCatalog\RationCatalog.Infrastructure\RationCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\Todo\Todo.csproj" />
+    <ProjectReference Include="..\modules\WeatherZoneCatalog\WeatherZoneCatalog.Infrastructure\WeatherZoneCatalog.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.Development.json">

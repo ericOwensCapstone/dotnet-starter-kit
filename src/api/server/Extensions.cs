@@ -17,6 +17,8 @@ using FSH.Starter.WebApi.LifecycleProgramCatalog.Application;
 using FSH.Starter.WebApi.LifecycleProgramCatalog.Infrastructure;
 using FSH.Starter.WebApi.AnimalTypeCatalog.Application;
 using FSH.Starter.WebApi.AnimalTypeCatalog.Infrastructure;
+using FSH.Starter.WebApi.WeatherZoneCatalog.Application;
+using FSH.Starter.WebApi.WeatherZoneCatalog.Infrastructure;
 
 namespace FSH.Starter.WebApi.Host;
 
@@ -37,6 +39,7 @@ public static class Extensions
             typeof(LifecycleStageCatalogMetadata).Assembly,
             typeof(LifecycleProgramCatalogMetadata).Assembly,
             typeof(AnimalTypeCatalogMetadata).Assembly,
+            typeof(WeatherZoneCatalogMetadata).Assembly,
             typeof(TodoModule).Assembly
         };
 
@@ -55,6 +58,7 @@ public static class Extensions
         builder.RegisterLifecycleStageCatalogServices();
         builder.RegisterLifecycleProgramCatalogServices();
         builder.RegisterAnimalTypeCatalogServices();
+        builder.RegisterWeatherZoneCatalogServices();
 
 
 
@@ -78,6 +82,7 @@ public static class Extensions
             config.WithModule<LifecycleStageCatalogModule.Endpoints>();
             config.WithModule<LifecycleProgramCatalogModule.Endpoints>();
             config.WithModule<AnimalTypeCatalogModule.Endpoints>();
+            config.WithModule<WeatherZoneCatalogModule.Endpoints>();
         });
 
         return builder;
@@ -98,6 +103,7 @@ public static class Extensions
         app.UseLifecycleStageCatalogModule();
         app.UseLifecycleProgramCatalogModule();
         app.UseAnimalTypeCatalogModule();
+        app.UseWeatherZoneCatalogModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()

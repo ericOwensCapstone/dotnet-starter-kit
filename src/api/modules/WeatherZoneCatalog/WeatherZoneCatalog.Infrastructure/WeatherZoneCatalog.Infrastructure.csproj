@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>FSH.Starter.WebApi.WeatherZoneCatalog.Infrastructure</RootNamespace>
+    <AssemblyName>FSH.Starter.WebApi.WeatherZoneCatalog.Infrastructure</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Persistence\Repositories\**" />
+    <EmbeddedResource Remove="Persistence\Repositories\**" />
+    <None Remove="Persistence\Repositories\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\SharedDbContextProject\SharedDbContextProject.csproj" />
+    <ProjectReference Include="..\..\..\framework\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\WeatherZoneCatalog.Application\WeatherZoneCatalog.Application.csproj" />
+  </ItemGroup>
+</Project>
+
+

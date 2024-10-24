@@ -13,6 +13,7 @@ using FSH.Starter.WebApi.LifecycleProgramCatalog.Domain;
 using FSH.Starter.WebApi.LifecycleStageCatalog.Domain;
 using FSH.Starter.WebApi.PreventativeTreatmentCatalog.Domain;
 using FSH.Starter.WebApi.RationCatalog.Domain;
+using FSH.Starter.WebApi.WeatherZoneCatalog.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -32,7 +33,9 @@ namespace SharedDbContextProject
         public DbSet<LifecycleStage> LifecycleStages { get; set; } = null!;
         public DbSet<LifecycleProgram> LifecyclePrograms { get; set; } = null!;
         public DbSet<LifecycleProgramStage> LifecycleProgramStages { get; set; } = null!;
-        public DbSet<AnimalType> AnimalTypes {  get; set; } = null!;
+        public DbSet<AnimalType> AnimalTypes { get; set; } = null!;
+        public DbSet<WeatherZone> WeatherZones { get; set; } = null!;
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

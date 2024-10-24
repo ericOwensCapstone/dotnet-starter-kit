@@ -97,6 +97,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalTypeCatalog.Applicati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalTypeCatalog.Infrastructure", "api\modules\AnimalTypeCatalog\AnimalTypeCatalog.Infrastructure\AnimalTypeCatalog.Infrastructure.csproj", "{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WeatherZoneCatalog", "WeatherZoneCatalog", "{9D13623F-6960-4C35-8D4E-AEB9524BB2CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherZoneCatalog.Application", "api\modules\WeatherZoneCatalog\WeatherZoneCatalog.Application\WeatherZoneCatalog.Application.csproj", "{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherZoneCatalog.Infrastructure", "api\modules\WeatherZoneCatalog\WeatherZoneCatalog.Infrastructure\WeatherZoneCatalog.Infrastructure.csproj", "{E880F467-75EB-44AE-89AF-B38121456E6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -443,6 +449,30 @@ Global
 		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Release|x64.Build.0 = Release|Any CPU
 		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Release|x86.ActiveCfg = Release|Any CPU
 		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A}.Release|x86.Build.0 = Release|Any CPU
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}.Debug|x64.Build.0 = Debug|Any CPU
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}.Debug|x86.Build.0 = Debug|Any CPU
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}.Release|x64.ActiveCfg = Release|Any CPU
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}.Release|x64.Build.0 = Release|Any CPU
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6}.Release|x86.Build.0 = Release|Any CPU
+		{E880F467-75EB-44AE-89AF-B38121456E6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E880F467-75EB-44AE-89AF-B38121456E6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E880F467-75EB-44AE-89AF-B38121456E6D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E880F467-75EB-44AE-89AF-B38121456E6D}.Debug|x64.Build.0 = Debug|Any CPU
+		{E880F467-75EB-44AE-89AF-B38121456E6D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E880F467-75EB-44AE-89AF-B38121456E6D}.Debug|x86.Build.0 = Debug|Any CPU
+		{E880F467-75EB-44AE-89AF-B38121456E6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E880F467-75EB-44AE-89AF-B38121456E6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E880F467-75EB-44AE-89AF-B38121456E6D}.Release|x64.ActiveCfg = Release|Any CPU
+		{E880F467-75EB-44AE-89AF-B38121456E6D}.Release|x64.Build.0 = Release|Any CPU
+		{E880F467-75EB-44AE-89AF-B38121456E6D}.Release|x86.ActiveCfg = Release|Any CPU
+		{E880F467-75EB-44AE-89AF-B38121456E6D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -488,6 +518,9 @@ Global
 		{640F5155-F2BC-497A-A1AE-F6E50D4B9B76} = {F3DF5AC5-8CDC-46D4-969D-1245A6880215}
 		{F9EB5264-FFE2-4579-BE86-6D4B6915F5E3} = {640F5155-F2BC-497A-A1AE-F6E50D4B9B76}
 		{BFBF1BA5-F0BB-44A9-AAC0-2BB79C895A9A} = {640F5155-F2BC-497A-A1AE-F6E50D4B9B76}
+		{9D13623F-6960-4C35-8D4E-AEB9524BB2CA} = {F3DF5AC5-8CDC-46D4-969D-1245A6880215}
+		{EB8CC147-CEFD-4A06-8562-E7FCC014E2E6} = {9D13623F-6960-4C35-8D4E-AEB9524BB2CA}
+		{E880F467-75EB-44AE-89AF-B38121456E6D} = {9D13623F-6960-4C35-8D4E-AEB9524BB2CA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA8248C2-3877-4AF7-8777-A17E7881E030}

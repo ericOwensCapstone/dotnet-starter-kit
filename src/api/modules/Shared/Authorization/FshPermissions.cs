@@ -34,6 +34,7 @@ public static class FshResource
     public const string LifecycleStages = nameof(LifecycleStages);
     public const string LifecyclePrograms = nameof(LifecyclePrograms);
     public const string AnimalTypes = nameof(AnimalTypes);
+    public const string WeatherZones = nameof(WeatherZones);
 }
 
 public static class FshPermissions
@@ -119,6 +120,15 @@ public static class FshPermissions
         new("Update AnimalTypes", FshAction.Update, FshResource.AnimalTypes),
         new("Delete AnimalTypes", FshAction.Delete, FshResource.AnimalTypes),
         new("Export AnimalTypes", FshAction.Export, FshResource.AnimalTypes),
+
+        //WeatherZones
+        new("View WeatherZones", FshAction.View, FshResource.WeatherZones, IsBasic: true),
+        new("Search WeatherZones", FshAction.Search, FshResource.WeatherZones, IsBasic: true),
+        new("Create WeatherZones", FshAction.Create, FshResource.WeatherZones),
+        new("Update WeatherZones", FshAction.Update, FshResource.WeatherZones),
+        new("Delete WeatherZones", FshAction.Delete, FshResource.WeatherZones),
+        new("Export WeatherZones", FshAction.Export, FshResource.WeatherZones),
+
 
         //todos
         new("View Todos", FshAction.View, FshResource.Todos, IsBasic: true),

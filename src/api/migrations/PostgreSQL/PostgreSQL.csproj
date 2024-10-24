@@ -6,6 +6,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\SharedDbContextProject\SharedDbContextProject.csproj" />
     <ProjectReference Include="..\..\framework\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\..\modules\AnimalTypeCatalog\AnimalTypeCatalog.Infrastructure\AnimalTypeCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\GrowthTreatmentCatalog\GrowthTreatmentCatalog.Infrastructure\GrowthTreatmentCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\LifecycleProgramCatalog\LifecycleProgramCatalog.Infrastructure\LifecycleProgramCatalog.Infrastructure.csproj" />
@@ -14,5 +15,6 @@
     <ProjectReference Include="..\..\modules\RationCatalog\RationCatalog.Infrastructure\RationCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Shared\Shared.csproj" />
     <ProjectReference Include="..\..\modules\Todo\Todo.csproj" />
+    <ProjectReference Include="..\..\modules\WeatherZoneCatalog\WeatherZoneCatalog.Infrastructure\WeatherZoneCatalog.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

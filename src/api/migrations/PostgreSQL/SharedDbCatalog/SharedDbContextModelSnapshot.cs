@@ -317,6 +317,51 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.SharedDbCatalog
                     b.ToTable("Rations", "sharedcatalog");
                 });
 
+            modelBuilder.Entity("FSH.Starter.WebApi.WeatherZoneCatalog.Domain.WeatherZone", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<double>("DeviationAmplitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("DeviationPeriod")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("PeakTempDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<double>("TempRange")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("YearlyAverageTemp")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WeatherZones", "sharedcatalog");
+                });
+
             modelBuilder.Entity("FSH.Starter.WebApi.LifecycleProgramCatalog.Domain.LifecycleProgramStage", b =>
                 {
                     b.HasOne("FSH.Starter.WebApi.LifecycleProgramCatalog.Domain.LifecycleProgram", "LifecycleProgram")

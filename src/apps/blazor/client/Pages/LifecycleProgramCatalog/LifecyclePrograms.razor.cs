@@ -68,7 +68,6 @@ public partial class LifecyclePrograms
                 var createCommand = prod.Adapt<CreateLifecycleProgramCommand>();
                 createCommand.UpdateLifeycleProgramStageCommands = commands;
                 await _client.CreateLifecycleProgramEndpointAsync("1", createCommand);
-                //ApprovedLifecycleStages = new();
             },
             editFormInitializedFunc: async () =>
             {
@@ -100,7 +99,6 @@ public partial class LifecyclePrograms
             },
             updateFunc: async (id, prod) =>
             {
-                //ApprovedLifecycleStages = new();
                 List<UpdateLifecycleProgramStageCommand> commands = new List<UpdateLifecycleProgramStageCommand>();
                 var order = 0;
                 foreach (var item in ApprovedLifecycleStages)
@@ -117,12 +115,10 @@ public partial class LifecyclePrograms
                 updateCommand.UpdateLifecycleProgramStageCommands = commands;
 
                 await _client.UpdateLifecycleProgramEndpointAsync("1", id, prod.Adapt<UpdateLifecycleProgramCommand>());
-                //ApprovedLifecycleStages = new();
             },
             deleteFunc: async id =>
             {
                 await _client.DeleteLifecycleProgramEndpointAsync("1", id);
-                //ApprovedLifecycleStages = new();
             });
 
         LocalLifecycleStages = await LoadLifecycleStagesAsync();
@@ -216,7 +212,5 @@ public class LifecycleStageSelection
 }
 public class LifecycleProgramViewModel : UpdateLifecycleProgramCommand
 {
-    //public LifecycleStageResponse SelectedLifecycleStage { get; set; } = default!;
 
-    //public List<LifecycleStageSelection> LifecycleStageSelections { get; set; } = new();
 }

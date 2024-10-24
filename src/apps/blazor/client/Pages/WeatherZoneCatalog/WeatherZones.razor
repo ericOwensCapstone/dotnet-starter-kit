@@ -1,0 +1,37 @@
+﻿@page "/catalog/weatherzones"
+
+<PageHeader Title="WeatherZones" Header="WeatherZones" SubHeader="Manage your WeatherZones." />
+
+<EntityTable @ref="_table" TEntity="WeatherZoneResponse" TId="Guid" TRequest="WeatherZoneViewModel" Context="@Context">
+
+    <AdvancedSearchContent>
+        <MudSlider T="decimal" @bind-value="SearchMinimumRate" Min="0" Max="9999" Step="100">Minimum Rate: @_searchMinimumRate.ToString()</MudSlider>
+        <MudSlider T="decimal" @bind-value="SearchMaximumRate" Min="0" Max="9999" Step="100">Maximum Rate: @_searchMaximumRate.ToString()</MudSlider>
+    </AdvancedSearchContent>
+
+    <EditFormContent>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Name" For="@(() => context.Name)" @bind-Value="context.Name" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Description" For="@(() => context.Description)"
+                @bind-Value="context.Description" />
+        </MudItem>
+
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Yearly Average Temp" @bind-Value="context.YearlyAverageTemp" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Temp Range" @bind-Value="context.TempRange" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Deviation Period" @bind-Value="context.DeviationPeriod" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudNumericField T="double" Label="Deviation Amplitude" @bind-Value="context.DeviationAmplitude" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudDatePicker Label="Peak Temp Date" @bind-Date="TempPeakTempDate" />
+        </MudItem>
+    </EditFormContent>
+</EntityTable>

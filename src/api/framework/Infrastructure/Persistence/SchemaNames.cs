@@ -11,6 +11,7 @@ public static class SchemaNames
     public const string LifecycleStageCatalog = "lifecyclestagecatalog";
     public const string LifecycleProgramCatalog = "lifecycleprogramcatalog";
     public const string AnimalTypeCatalog = "animaltypecatalog";
+    public const string WeatherZoneCatalog = "weatherzonecatalog";
 
     public const string SharedCatalog = "sharedcatalog";
 }

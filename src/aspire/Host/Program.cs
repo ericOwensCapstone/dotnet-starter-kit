@@ -1,3 +1,6 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 builder.AddContainer("grafana", "grafana/grafana")
@@ -9,18 +12,24 @@ builder.AddContainer("prometheus", "prom/prometheus")
        .WithBindMount("../../../compose/prometheus", "/etc/prometheus", isReadOnly: true)
        .WithHttpEndpoint(port: 9090, targetPort: 9090);
 
-var username = builder.AddParameter("pg-username", "admin");
-var password = builder.AddParameter("pg-password", "admin");
+//var username = builder.AddParameter("pg-username", "admin");
+//var password = builder.AddParameter("pg-password", "admin");
 
-var database = builder.AddPostgres("db", username, password, port: 5432)
-    .WithDataVolume()
-    .AddDatabase("fullstackhero");
+//var database = builder.AddPostgres("db", username, password, port: 5432)
+//    .WithDataVolume()
+//    .AddDatabase("fullstackhero");
 
-var api = builder.AddProject<Projects.Server>("webapi")
-    .WaitFor(database);
+//var api = builder.AddProject<Projects.Server>("webapi")
+//    .WaitFor(database);
 
-var blazor = builder.AddProject<Projects.Client>("blazor");
+//var blazor = builder.AddProject<Projects.Client>("blazor");
+
+
+builder.AddProject<Projects.Server>("webapi");
+
+builder.AddProject<Projects.Client>("blazor");
 
 using var app = builder.Build();
 
 await app.RunAsync();
+

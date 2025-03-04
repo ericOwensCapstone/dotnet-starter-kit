@@ -23,9 +23,11 @@ using FSH.Framework.Infrastructure.Tenant.Endpoints;
 using FSH.Starter.Aspire.ServiceDefaults;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 
 namespace FSH.Framework.Infrastructure;
 
@@ -76,6 +78,14 @@ public static class Extensions
 
     public static WebApplication UseFshFramework(this WebApplication app)
     {
+        var env = app.Services.GetRequiredService<IWebHostEnvironment>();
+
+        ////Conditionally add the DevelopmentCorsMiddleware in development environment
+        //if (env.IsDevelopment())
+        //{
+        //    app.UseMiddleware<DevelopmentCorsMiddleware>();
+        //}
+
         app.MapDefaultEndpoints();
         app.UseRateLimit();
         app.UseSecurityHeaders();

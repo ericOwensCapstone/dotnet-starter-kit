@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using static Microsoft.FSharp.Core.ByRefKinds;
 
 namespace FSH.Framework.Infrastructure.Cors;
 public static class Extensions
@@ -16,6 +17,7 @@ public static class Extensions
                 .AllowAnyMethod()
                 .AllowCredentials()
                 .WithOrigins(corsOptions.AllowedOrigins.ToArray())));
+
     }
 
     internal static IApplicationBuilder UseCorsPolicy(this IApplicationBuilder app)

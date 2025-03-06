@@ -1,9 +1,23 @@
 To add a new entity, starting from Ration,
+
 For the WebApi, 
 - Modules.Ranch.Application.Rations should be replicated for the new entity 
 - Modules.Ranch.Domain.Rations should be replicated for the new entity
 
 - Modules.Ranch.Infrastructure.Endpoints.v1.Rations should be replicated for the new entity
+- Modules.Ranch.Infrastructure.Persistence.Configurations.Rations should be replicated for the new entity
 
-- In Modules.Ranch.Infrastructure, the new entity should be added to the DbContext
+- In Modules.Ranch.Infrastructure, the new entity should be added to the RanchDbContext
+- In Modules.Ranch.Infrastructure, new seeding should be added for the new entity
 
+- In FSH.Starter.Shared.Authorization.FshPermissions, permissions for the new entity should be added, copying from the Ration permissions
+
+- In FSH.Starter.Shared.Authorization.FshResources, a new resource should be added, copying from the Ration resource
+
+- In FSH.Starter.WebApi.Ranch.Infrastructure.RanchModule, 
+    -- update AddRoutes
+    -- update RegisterRanchServices
+
+- Update these classes copied from the Ration equivalents:
+    
+    

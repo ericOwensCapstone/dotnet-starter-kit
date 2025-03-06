@@ -19,5 +19,9 @@ For the WebApi,
     -- update RegisterRanchServices
 
 - Update these classes copied from the Ration equivalents:
+    - blah
+
+For the Blazor app:
+- Blah
     
     

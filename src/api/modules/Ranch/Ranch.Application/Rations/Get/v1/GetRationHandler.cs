@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
-using FSH.Starter.WebApi.Ranch.Domain.Exceptions;
+using FSH.Starter.WebApi.Ranch.Domain.Rations.Exceptions;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Core.Caching;
-using FSH.Starter.WebApi.Ranch.Domain;
 using MediatR;
+using FSH.Starter.WebApi.Ranch.Domain.Rations;
 
 namespace FSH.Starter.WebApi.Ranch.Application.Rations.Get.v1;
 public sealed class GetRationHandler(

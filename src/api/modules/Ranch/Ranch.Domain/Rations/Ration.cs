@@ -1,8 +1,8 @@
 using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
-using FSH.Starter.WebApi.Ranch.Domain.Events;
+using FSH.Starter.WebApi.Ranch.Domain.Rations.Events;
 
-namespace FSH.Starter.WebApi.Ranch.Domain;
+namespace FSH.Starter.WebApi.Ranch.Domain.Rations;
 public class Ration : AuditableEntity, IAggregateRoot
 {
     public string Name { get; private set; } = string.Empty;

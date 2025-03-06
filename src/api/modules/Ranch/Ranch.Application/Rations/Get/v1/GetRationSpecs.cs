@@ -1,5 +1,5 @@
 using Ardalis.Specification;
-using FSH.Starter.WebApi.Ranch.Domain;
+using FSH.Starter.WebApi.Ranch.Domain.Rations;
 
 namespace FSH.Starter.WebApi.Ranch.Application.Rations.Get.v1;
 

@@ -1,7 +1,7 @@
 using FSH.Framework.Core.Paging;
 using FSH.Framework.Core.Persistence;
 using FSH.Starter.WebApi.Ranch.Application.Rations.Get.v1;
-using FSH.Starter.WebApi.Ranch.Domain;
+using FSH.Starter.WebApi.Ranch.Domain.Rations;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 

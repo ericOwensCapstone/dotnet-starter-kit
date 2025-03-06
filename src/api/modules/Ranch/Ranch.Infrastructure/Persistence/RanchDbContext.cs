@@ -2,7 +2,7 @@ using Finbuckle.MultiTenant.Abstractions;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
 using FSH.Framework.Infrastructure.Tenant;
-using FSH.Starter.WebApi.Ranch.Domain;
+using FSH.Starter.WebApi.Ranch.Domain.Rations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
-namespace FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1;
+namespace FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.Rations;
 
 public static class SearchRationsEndpoint
 {

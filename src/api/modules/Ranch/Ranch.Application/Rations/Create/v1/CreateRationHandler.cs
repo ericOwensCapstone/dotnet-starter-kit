@@ -1,5 +1,5 @@
 using FSH.Framework.Core.Persistence;
-using FSH.Starter.WebApi.Ranch.Domain;
+using FSH.Starter.WebApi.Ranch.Domain.Rations;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

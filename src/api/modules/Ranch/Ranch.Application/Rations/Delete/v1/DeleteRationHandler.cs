@@ -1,6 +1,6 @@
 using FSH.Framework.Core.Persistence;
-using FSH.Starter.WebApi.Ranch.Domain;
-using FSH.Starter.WebApi.Ranch.Domain.Exceptions;
+using FSH.Starter.WebApi.Ranch.Domain.Rations.Exceptions;
+using FSH.Starter.WebApi.Ranch.Domain.Rations;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

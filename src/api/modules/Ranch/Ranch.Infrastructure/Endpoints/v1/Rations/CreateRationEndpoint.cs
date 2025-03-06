@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1;
+namespace FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.Rations;
 public static class CreateRationEndpoint
 {
     internal static RouteHandlerBuilder MapRationCreationEndpoint(this IEndpointRouteBuilder endpoints)

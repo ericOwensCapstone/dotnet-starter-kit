@@ -1,8 +1,8 @@
 using Carter;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
-using FSH.Starter.WebApi.Ranch.Domain;
-using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1;
+using FSH.Starter.WebApi.Ranch.Domain.Rations;
+using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.Rations;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

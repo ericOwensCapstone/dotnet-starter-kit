@@ -1,5 +1,5 @@
 using FSH.Framework.Core.Persistence;
-using FSH.Starter.WebApi.Ranch.Domain;
+using FSH.Starter.WebApi.Ranch.Domain.Rations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

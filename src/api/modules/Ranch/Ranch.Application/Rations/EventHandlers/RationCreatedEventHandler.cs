@@ -1,4 +1,4 @@
-using FSH.Starter.WebApi.Ranch.Domain.Events;
+using FSH.Starter.WebApi.Ranch.Domain.Rations.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

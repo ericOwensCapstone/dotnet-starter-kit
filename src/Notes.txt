@@ -1,0 +1,5 @@
+To add a new entity, starting from Ration,
+For the WebApi, 
+- Modules.Ranch.Application.Rations should be replicated
+- Modules.Ranch.Domain.Events needs new entity Created and Updated events
+- Modules.Ranch.Domain.Exceptions needs new 

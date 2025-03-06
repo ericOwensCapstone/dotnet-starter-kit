@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>FSH.Starter.WebApi.Ranch.Application</RootNamespace>
+    <AssemblyName>FSH.Starter.WebApi.Ranch.Application</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
+    <ProjectReference Include="..\Ranch.Domain\Ranch.Domain.csproj" />
+  </ItemGroup>
+</Project>
+

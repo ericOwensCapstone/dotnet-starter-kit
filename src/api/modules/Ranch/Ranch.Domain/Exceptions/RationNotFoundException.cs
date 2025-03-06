@@ -1,0 +1,11 @@
+using FSH.Framework.Core.Exceptions;
+
+namespace FSH.Starter.WebApi.Ranch.Domain.Exceptions;
+public sealed class RationNotFoundException : NotFoundException
+{
+    public RationNotFoundException(Guid id)
+        : base($"ration with id {id} not found")
+    {
+    }
+}
+

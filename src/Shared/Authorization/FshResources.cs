@@ -9,6 +9,10 @@ public static class FshResources
     public const string Roles = nameof(Roles);
     public const string RoleClaims = nameof(RoleClaims);
     public const string Products = nameof(Products);
+    //TODO RESOURCES
+    public const string Rations = nameof(Rations);
+
+
     public const string Brands = nameof(Brands);
     public const string Todos = nameof(Todos);
     public const string AuditTrails = nameof(AuditTrails);

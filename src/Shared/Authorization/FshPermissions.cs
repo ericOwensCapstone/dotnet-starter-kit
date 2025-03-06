@@ -36,6 +36,19 @@ public static class FshPermissions
         new("Delete Products", FshActions.Delete, FshResources.Products),
         new("Export Products", FshActions.Export, FshResources.Products),
 
+        //TODO PERMISSIONS
+
+        //rations
+        new("View Rations", FshActions.View, FshResources.Rations, IsBasic: true),
+        new("Search Rations", FshActions.Search, FshResources.Rations, IsBasic: true),
+        new("Create Rations", FshActions.Create, FshResources.Rations),
+        new("Update Rations", FshActions.Update, FshResources.Rations),
+        new("Delete Rations", FshActions.Delete, FshResources.Rations),
+        new("Export Rations", FshActions.Export, FshResources.Rations),
+
+
+
+
         //brands
         new("View Brands", FshActions.View, FshResources.Brands, IsBasic: true),
         new("Search Brands", FshActions.Search, FshResources.Brands, IsBasic: true),

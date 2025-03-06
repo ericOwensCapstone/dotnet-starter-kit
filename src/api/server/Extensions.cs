@@ -4,6 +4,8 @@ using Carter;
 using FluentValidation;
 using FSH.Starter.WebApi.Catalog.Application;
 using FSH.Starter.WebApi.Catalog.Infrastructure;
+using FSH.Starter.WebApi.Ranch.Application;
+using FSH.Starter.WebApi.Ranch.Infrastructure;
 using FSH.Starter.WebApi.Todo;
 
 namespace FSH.Starter.WebApi.Host;
@@ -18,6 +20,7 @@ public static class Extensions
         var assemblies = new Assembly[]
         {
             typeof(CatalogMetadata).Assembly,
+            typeof(RanchMetadata).Assembly,
             typeof(TodoModule).Assembly
         };
 
@@ -32,12 +35,14 @@ public static class Extensions
 
         //register module services
         builder.RegisterCatalogServices();
+        builder.RegisterRanchServices();
         builder.RegisterTodoServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
         {
             config.WithModule<CatalogModule.Endpoints>();
+            config.WithModule<RanchModule.Endpoints>();
             config.WithModule<TodoModule.Endpoints>();
         });
 
@@ -50,6 +55,7 @@ public static class Extensions
 
         //register modules
         app.UseCatalogModule();
+        app.UseRanchModule();
         app.UseTodoModule();
 
         //register api versions

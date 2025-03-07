@@ -1,3 +1,7 @@
+REVIEW
+- NavMenu.razor.cs TODO for permissions
+
+
 To add a new entity, starting from Ration,
 
 For the WebApi, 
@@ -18,10 +22,18 @@ For the WebApi,
     -- update AddRoutes
     -- update RegisterRanchServices
 
-- Update these classes copied from the Ration equivalents:
-    - blah
+Run the migration and update the database.
+Run the app and run nswag
 
-For the Blazor app:
-- Blah
-    
+Then, for the Blazor app:
+- Update the NavMenu.razor
+- Copy the Rations.razor and change its name to the new entity name
+- search and replace in the new page for Ration and ration replacing with the new entity equivalents
+
+- Update these classes copied from the Ration equivalents in the WebApi for the new entity content:
+    - blah
+  
+and run the migrations for the updates.
+
+
     

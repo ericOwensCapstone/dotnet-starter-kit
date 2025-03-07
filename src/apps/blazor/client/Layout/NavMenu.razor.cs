@@ -22,8 +22,13 @@ public partial class NavMenu
     private bool _canViewTodos;
     private bool _canViewTenants;
     private bool _canViewAuditTrails;
+
+    private bool _canViewGrowthTreatments;
+    private bool _canViewRations;
+
     private bool CanViewAdministrationGroup => _canViewUsers || _canViewRoles || _canViewTenants;
 
+    
     protected override async Task OnParametersSetAsync()
     {
         var user = (await AuthState).User;
@@ -36,5 +41,7 @@ public partial class NavMenu
         _canViewTodos = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Todos);
         _canViewTenants = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Tenants);
         _canViewAuditTrails = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.AuditTrails);
+        _canViewRations = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Rations);
+        _canViewGrowthTreatments = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.GrowthTreatments);
     }
 }

@@ -12,9 +12,15 @@
          <MudNavLink Href="/catalog/products" Icon="@Icons.Material.Filled.ShoppingBag" Class="fsh-nav-child">Products</MudNavLink>
         <MudNavLink Href="/catalog/brands" Icon="@Icons.Material.Filled.Label" Class="fsh-nav-child">Brands</MudNavLink>
     </MudNavGroup>
-@*     TODO NAV *@
     <MudNavGroup Title="Ranch" Icon="@Icons.Material.Filled.AddBox">
-        <MudNavLink Href="/ranch/rations" Icon="@Icons.Material.Filled.Grass" Class="fsh-nav-child">Rations</MudNavLink>
+        @if (_canViewRations)
+        {
+            <MudNavLink Href="/ranch/rations" Icon="@Icons.Material.Filled.Grass" Class="fsh-nav-child">Rations</MudNavLink>
+        }
+        @if (_canViewGrowthTreatments)
+        {
+            <MudNavLink Href="/ranch/growthTreatments" Icon="@Icons.Material.Filled.MonitorWeight" Class="fsh-nav-child">Growth Treatments</MudNavLink>
+        }
     </MudNavGroup>
     <MudNavLink Href="/todos" Icon="@Icons.Material.Filled.Checklist" Class="fsh-nav-child">Todos</MudNavLink>
     @if (CanViewAdministrationGroup)

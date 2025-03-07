@@ -6,49 +6,49 @@ using Microsoft.AspNetCore.Components;
 
 namespace FSH.Starter.Blazor.Client.Pages.Ranch;
 
-public partial class Rations
+public partial class GrowthTreatments
 {
     [Inject]
     protected IApiClient _client { get; set; } = default!;
 
-    protected EntityServerTableContext<RationResponse, Guid, RationViewModel> Context { get; set; } = default!;
+    protected EntityServerTableContext<GrowthTreatmentResponse, Guid, GrowthTreatmentViewModel> Context { get; set; } = default!;
 
-    private EntityTable<RationResponse, Guid, RationViewModel> _table = default!;
+    private EntityTable<GrowthTreatmentResponse, Guid, GrowthTreatmentViewModel> _table = default!;
 
     //private List<BrandResponse> _brands = new();
 
     protected override async Task OnInitializedAsync()
     {
         Context = new(
-            entityName: "Ration",
-            entityNamePlural: "Rations",
-            entityResource: FshResources.Rations,
+            entityName: "GrowthTreatment",
+            entityNamePlural: "GrowthTreatments",
+            entityResource: FshResources.GrowthTreatments,
             fields: new()
             {
-                new(ration => ration.Id,"Id", "Id"),
-                new(ration => ration.Name,"Name", "Name"),
-                new(ration => ration.Description, "Description", "Description"),
-                new(ration => ration.Price, "Price", "Price"),
+                new(growthTreatment => growthTreatment.Id,"Id", "Id"),
+                new(growthTreatment => growthTreatment.Name,"Name", "Name"),
+                new(growthTreatment => growthTreatment.Description, "Description", "Description"),
+                new(growthTreatment => growthTreatment.Price, "Price", "Price"),
             },
             enableAdvancedSearch: true,
-            idFunc: ration => ration.Id!.Value,
+            idFunc: growthTreatment => growthTreatment.Id!.Value,
             searchFunc: async filter =>
             {
-                var rationFilter = filter.Adapt<SearchRationsCommand>();
-                rationFilter.MinimumRate = Convert.ToDouble(SearchMinimumRate);
-                rationFilter.MaximumRate = Convert.ToDouble(SearchMaximumRate);
-                var result = await _client.SearchRationsEndpointAsync("1", rationFilter);
-                return result.Adapt<PaginationResponse<RationResponse>>();
+                var growthTreatmentFilter = filter.Adapt<SearchGrowthTreatmentsCommand>();
+                growthTreatmentFilter.MinimumRate = Convert.ToDouble(SearchMinimumRate);
+                growthTreatmentFilter.MaximumRate = Convert.ToDouble(SearchMaximumRate);
+                var result = await _client.SearchGrowthTreatmentsEndpointAsync("1", growthTreatmentFilter);
+                return result.Adapt<PaginationResponse<GrowthTreatmentResponse>>();
             },
-            createFunc: async ration =>
+            createFunc: async growthTreatment =>
             {
-                await _client.CreateRationEndpointAsync("1", ration.Adapt<CreateRationCommand>());
+                await _client.CreateGrowthTreatmentEndpointAsync("1", growthTreatment.Adapt<CreateGrowthTreatmentCommand>());
             },
-            updateFunc: async (id, ration) =>
+            updateFunc: async (id, growthTreatment) =>
             {
-                await _client.UpdateRationEndpointAsync("1", id, ration.Adapt<UpdateRationCommand>());
+                await _client.UpdateGrowthTreatmentEndpointAsync("1", id, growthTreatment.Adapt<UpdateGrowthTreatmentCommand>());
             },
-            deleteFunc: async id => await _client.DeleteRationEndpointAsync("1", id));
+            deleteFunc: async id => await _client.DeleteGrowthTreatmentEndpointAsync("1", id));
 
         //await LoadBrandsAsync();
     }
@@ -101,6 +101,6 @@ public partial class Rations
     }
 }
 
-public class RationViewModel : UpdateRationCommand
+public class GrowthTreatmentViewModel : UpdateGrowthTreatmentCommand
 {
 }

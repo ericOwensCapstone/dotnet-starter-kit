@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 
 namespace FSH.Starter.Shared.Authorization;
 
@@ -36,8 +36,6 @@ public static class FshPermissions
         new("Delete Products", FshActions.Delete, FshResources.Products),
         new("Export Products", FshActions.Export, FshResources.Products),
 
-        //TODO PERMISSIONS
-
         //rations
         new("View Rations", FshActions.View, FshResources.Rations, IsBasic: true),
         new("Search Rations", FshActions.Search, FshResources.Rations, IsBasic: true),
@@ -45,9 +43,16 @@ public static class FshPermissions
         new("Update Rations", FshActions.Update, FshResources.Rations),
         new("Delete Rations", FshActions.Delete, FshResources.Rations),
         new("Export Rations", FshActions.Export, FshResources.Rations),
+    
+        //growthTreatments
+        new("View GrowthTreatments", FshActions.View, FshResources.GrowthTreatments),
+        new("Search GrowthTreatments", FshActions.Search, FshResources.GrowthTreatments),
+        new("Create GrowthTreatments", FshActions.Create, FshResources.GrowthTreatments),
+        new("Update GrowthTreatments", FshActions.Update, FshResources.GrowthTreatments),
+        new("Delete GrowthTreatments", FshActions.Delete, FshResources.GrowthTreatments),
+        new("Export GrowthTreatments", FshActions.Export, FshResources.GrowthTreatments),
 
-
-
+//TODO PERMISSIONS
 
         //brands
         new("View Brands", FshActions.View, FshResources.Brands, IsBasic: true),

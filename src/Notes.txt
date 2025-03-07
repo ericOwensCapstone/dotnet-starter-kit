@@ -17,13 +17,16 @@ At the top of the Program.cs file, change the value of
 - lowerCaseReplacement 
 to the name for the new entity.
 
-Run the project.
+Run the CsharpRanchRewriter project.
 
 The project will create all of the necessary files for the new entity in the WebApi,
 move those files to the actual project, and then update other files in the project.
 
 When this is complete, navigate to
 ~/Desktop/AI/randomRanch/dotnet-starter-kit/src/api/server
+
+NOTE:  If something goes wrong and the CsharpRanchRewriter needs updating, be sure to git restore the original versions of the RandomRanch files and to
+copy the Ranch folder in SaveRanchRewrites to RanchRewrites again.
 
 and run the following commands:
  dotnet ef migrations add "Add [New Entity Name] to Ranch Schema" --project .././migrations/postgresql/ --context RanchDbContext -o Ranch

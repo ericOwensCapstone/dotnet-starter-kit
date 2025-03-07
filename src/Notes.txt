@@ -2,7 +2,53 @@ REVIEW
 - NavMenu.razor.cs TODO for permissions
 
 
-To add a new entity, starting from Ration,
+To add a new entity:
+
+In the C:\Users\EricOwens\Desktop\AI\playground\ folder there are three sub-folders:
+- RanchRewrites
+- SaveRanchRewrites
+- InspectRanchRewrites
+
+Copy the Ranch folder in SaveRanchRewrites to RanchRewrites.
+
+Open the CsharpRanchRewriter project in Visual Studio. 
+At the top of the Program.cs file, change the value of 
+- upperCaseReplacement and
+- lowerCaseReplacement 
+to the name for the new entity.
+
+Run the project.
+
+The project will create all of the necessary files for the new entity in the WebApi,
+move those files to the actual project, and then update other files in the project.
+
+When this is complete, navigate to
+~/Desktop/AI/randomRanch/dotnet-starter-kit/src/api/server
+
+and run the following commands:
+ dotnet ef migrations add "Add [New Entity Name] to Ranch Schema" --project .././migrations/postgresql/ --context RanchDbContext -o Ranch
+ dotnet ef database update --project .././migrations/postgresql/ --context RanchDbContext
+
+When this is complete, run the RandomRanch solution Host.  The host will launch Swagger.
+
+Now, navigate to ~/Desktop/AI/nswag and run the following command:
+ nswag run nswag.json
+
+ This will create a new version of the ApiClient.cs file in ~/Desktop/AI/nswag.
+ Copy this ApiClient.cs file to
+ C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\Api,
+ replacing the existing ApiClient.cs file already there.
+
+ Now, in the Blazor project,
+ - update the NavMenu.razor
+ - add a new page for the new entity
+
+
+
+
+====================================================================================================
+
+OLD NOTES
 
 For the WebApi, 
 - Modules.Ranch.Application.Rations should be replicated for the new entity 

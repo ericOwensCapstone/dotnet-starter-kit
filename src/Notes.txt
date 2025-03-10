@@ -55,6 +55,17 @@ NavMenu.razor: commented out content
 HANGFIRE:
 @ localhost:7000/jobs
 
+
+
+public class GrowthTreatment
+{
+    public string Name { get; private set; } = string.Empty;
+    public string Description { get; private set; } = string.Empty;
+    public decimal DollarsPerHead { get; private set; } = 0;
+}
+
+
+
 ====================================================================================================
 
 OLD NOTES

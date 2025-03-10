@@ -46,8 +46,14 @@ Now, navigate to ~/Desktop/AI/nswag and run the following command:
  - update the NavMenu.razor
  - add a new page for the new entity
 
+REMOVED FSH STUFF:
 
+Home.razor: commented out content
+MainLayout.razor: commented out content, including account link to "dashboard"
+NavMenu.razor: commented out content
 
+HANGFIRE:
+@ localhost:7000/jobs
 
 ====================================================================================================
 

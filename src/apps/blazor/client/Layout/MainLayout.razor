@@ -7,7 +7,7 @@
          fullstackhero
      </MudButton>
     <MudSpacer />
-    <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+@*     <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
         <MudButton Variant="Variant.Filled" DropShadow="false" Color="Color.Primary"
             Href="https://opencollective.com/fullstackhero" Target="_blank" StartIcon="@Icons.Material.Filled.Favorite">
             Sponsor</MudButton>
@@ -58,7 +58,7 @@
             <MudMenuItem Href="https://fullstackhero.net/getting-started/" Target="_blank">
                 Quick-Start Guide</MudMenuItem>
         </MudMenu>
-    </MudHidden>
+    </MudHidden> *@
      <MudMenu DropShadow="false" PopoverClass="mud-elevation-25" AnchorOrigin="Origin.BottomRight" LockScroll="true" TransformOrigin="Origin.TopRight">
         <ActivatorContent>
             <MudIconButton Icon="@Icons.Material.Filled.Person" Color="Color.Inherit" />
@@ -71,12 +71,12 @@
                         <MudText>Account</MudText>
                     </div>
                 </MudMenuItem>
-                <MudMenuItem Href="/dashboard">
+@*                 <MudMenuItem Href="/dashboard">
                     <div class="d-flex">
                         <MudIcon Class="mx-2" Icon="@Icons.Material.Filled.Dashboard" />
                         <MudText>Dashboard</MudText>
                     </div>
-                </MudMenuItem>
+                </MudMenuItem> *@
                 <div class="mt-4 mx-4">
                     <MudButton Color="Color.Error" FullWidth="true" StartIcon="@Icons.Material.Filled.Logout" DropShadow="false"
                         Variant="Variant.Filled" OnClick="Logout">

@@ -55,16 +55,10 @@ NavMenu.razor: commented out content
 HANGFIRE:
 @ localhost:7000/jobs
 
+WARNING:  The Update method in the domain class differs from the original FSH
+approach and is not discriminating w.r.t. which properties are updated.
 
-
-public class GrowthTreatment
-{
-    public string Name { get; private set; } = string.Empty;
-    public string Description { get; private set; } = string.Empty;
-    public decimal DollarsPerHead { get; private set; } = 0;
-}
-
-
+DOMAIN EVENTS: are publish by this method: private async Task PublishDomainEventsAsync() in the FshDbContext on save
 
 ====================================================================================================
 

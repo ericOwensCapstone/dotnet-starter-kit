@@ -43,14 +43,6 @@ public static class FshPermissions
         new("Update Rations", FshActions.Update, FshResources.Rations),
         new("Delete Rations", FshActions.Delete, FshResources.Rations),
         new("Export Rations", FshActions.Export, FshResources.Rations),
-    
-        //growthTreatments
-        new("View GrowthTreatments", FshActions.View, FshResources.GrowthTreatments),
-        new("Search GrowthTreatments", FshActions.Search, FshResources.GrowthTreatments),
-        new("Create GrowthTreatments", FshActions.Create, FshResources.GrowthTreatments),
-        new("Update GrowthTreatments", FshActions.Update, FshResources.GrowthTreatments),
-        new("Delete GrowthTreatments", FshActions.Delete, FshResources.GrowthTreatments),
-        new("Export GrowthTreatments", FshActions.Export, FshResources.GrowthTreatments),
 
 //TODO PERMISSIONS
 

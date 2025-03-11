@@ -1,7 +1,6 @@
 REVIEW
 - NavMenu.razor.cs TODO for permissions
 
-
 To add a new entity:
 
 In the C:\Users\EricOwens\Desktop\AI\playground\ folder there are three sub-folders:
@@ -46,6 +45,11 @@ Now, navigate to ~/Desktop/AI/nswag and run the following command:
  - update the NavMenu.razor
  - add a new page for the new entity
 
+PERMISSIONS
+Permissions are assigned as claims to individual users.  If the FshPermissions themselves are updated after
+the creation of a user, the new permissions will be assigned to that user by the
+IdentityDbInitializr class in the Fsh.Starter.WebApi project.
+
 REMOVED FSH STUFF:
 
 Home.razor: commented out content
@@ -59,6 +63,21 @@ WARNING:  The Update method in the domain class differs from the original FSH
 approach and is not discriminating w.r.t. which properties are updated.
 
 DOMAIN EVENTS: are publish by this method: private async Task PublishDomainEventsAsync() in the FshDbContext on save
+and publishing is implemented by MediatR
+
+
+STUFF THAT NEEDS TO BE UPDATED AFTER DomainClassRewrite:
+- SearchGrowthTreatmentSpecs
+- GrowthTreatmentConfiguration
+- CreateGrowthTreatmentCommand
+- CreateGrowthTreatmentCommandValidator
+- CreateGrowthTreatmentHandler
+- GrowthTreatmentResponse
+- SearchGrowthTreatmentsCommand
+- UpdateGrowthTreatmentCommand
+- UpdateGrowthTreatmentCommandValidator
+- UpdateGrowthTreatmentHandler
+
 
 ====================================================================================================
 

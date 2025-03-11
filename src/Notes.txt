@@ -50,11 +50,14 @@ Permissions are assigned as claims to individual users.  If the FshPermissions t
 the creation of a user, the new permissions will be assigned to that user by the
 IdentityDbInitializr class in the Fsh.Starter.WebApi project.
 
-REMOVED FSH STUFF:
+CHANGED OR REMOVED FSH STUFF:
 
+Aspire Host program.cs to not use containerized postgres
+Package version updates
 Home.razor: commented out content
 MainLayout.razor: commented out content, including account link to "dashboard"
 NavMenu.razor: commented out content
+Need to run proxy AND then run at https://localhost:7100
 
 HANGFIRE:
 @ localhost:7000/jobs

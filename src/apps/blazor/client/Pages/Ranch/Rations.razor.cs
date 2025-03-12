@@ -15,8 +15,6 @@ public partial class Rations
 
     private EntityTable<RationResponse, Guid, RationViewModel> _table = default!;
 
-    //private List<BrandResponse> _brands = new();
-
     protected override async Task OnInitializedAsync()
     {
         Context = new(
@@ -35,8 +33,6 @@ public partial class Rations
             searchFunc: async filter =>
             {
                 var rationFilter = filter.Adapt<SearchRationsCommand>();
-                rationFilter.MinimumRate = Convert.ToDouble(SearchMinimumRate);
-                rationFilter.MaximumRate = Convert.ToDouble(SearchMaximumRate);
                 var result = await _client.SearchRationsEndpointAsync("1", rationFilter);
                 return result.Adapt<PaginationResponse<RationResponse>>();
             },
@@ -49,56 +45,8 @@ public partial class Rations
                 await _client.UpdateRationEndpointAsync("1", id, ration.Adapt<UpdateRationCommand>());
             },
             deleteFunc: async id => await _client.DeleteRationEndpointAsync("1", id));
-
-        //await LoadBrandsAsync();
     }
 
-    //private async Task LoadBrandsAsync()
-    //{
-    //    if (_brands.Count == 0)
-    //    {
-    //        var response = await _client.SearchBrandsEndpointAsync("1", new SearchBrandsCommand());
-    //        if (response?.Items != null)
-    //        {
-    //            _brands = response.Items.ToList();
-    //        }
-    //    }
-    //}
-
-    // Advanced Search
-
-    //private Guid? _searchBrandId;
-    //private Guid? SearchBrandId
-    //{
-    //    get => _searchBrandId;
-    //    set
-    //    {
-    //        _searchBrandId = value;
-    //        _ = _table.ReloadDataAsync();
-    //    }
-    //}
-
-    private decimal _searchMinimumRate;
-    private decimal SearchMinimumRate
-    {
-        get => _searchMinimumRate;
-        set
-        {
-            _searchMinimumRate = value;
-            _ = _table.ReloadDataAsync();
-        }
-    }
-
-    private decimal _searchMaximumRate = 9999;
-    private decimal SearchMaximumRate
-    {
-        get => _searchMaximumRate;
-        set
-        {
-            _searchMaximumRate = value;
-            _ = _table.ReloadDataAsync();
-        }
-    }
 }
 
 public class RationViewModel : UpdateRationCommand

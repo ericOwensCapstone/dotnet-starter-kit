@@ -70,7 +70,7 @@ and publishing is implemented by MediatR
 
 
 STUFF THAT NEEDS TO BE UPDATED AFTER DomainClassRewrite:
-- SearchGrowthTreatmentSpecs
+- SearchGrowthTreatmentSpecs -- done
 - GrowthTreatmentConfiguration -- done
 - CreateGrowthTreatmentCommand -- done
 - CreateGrowthTreatmentCommandValidator -- done

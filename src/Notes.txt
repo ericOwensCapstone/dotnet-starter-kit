@@ -53,7 +53,7 @@ IdentityDbInitializr class in the Fsh.Starter.WebApi project.
 CHANGED OR REMOVED FSH STUFF:
 
 Aspire Host program.cs to not use containerized postgres
-Package version updates
+Package version updatesgit statu
 Home.razor: commented out content
 MainLayout.razor: commented out content, including account link to "dashboard"
 NavMenu.razor: commented out content

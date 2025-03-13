@@ -75,8 +75,8 @@ STUFF THAT NEEDS TO BE UPDATED AFTER DomainClassRewrite:
 - CreateGrowthTreatmentCommand -- done
 - CreateGrowthTreatmentCommandValidator -- done
 - CreateGrowthTreatmentHandler -- done
-- GrowthTreatmentResponse
-- SearchGrowthTreatmentsCommand
+- GrowthTreatmentResponse -- done
+- SearchGrowthTreatmentsCommand -- done
 - UpdateGrowthTreatmentCommand
 - UpdateGrowthTreatmentCommandValidator
 - UpdateGrowthTreatmentHandler

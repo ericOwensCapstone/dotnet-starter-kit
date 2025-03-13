@@ -5,8 +5,9 @@ public class CreateRationCommandValidator : AbstractValidator<CreateRationComman
 {
     public CreateRationCommandValidator()
     {
-        RuleFor(p => p.Name).NotEmpty().MinimumLength(2).MaximumLength(75);
-        RuleFor(p => p.Price).GreaterThan(0);
+        RuleFor(p => p.Name).NotEmpty().MinimumLength(2).MaximumLength(99);
+        RuleFor(p => p.Description).NotEmpty().MinimumLength(2).MaximumLength(999);
+        RuleFor(p => p.DollarsPerPound).GreaterThan(0);
     }
 }
 

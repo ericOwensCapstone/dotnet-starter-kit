@@ -23,10 +23,9 @@ public partial class Rations
             entityResource: FshResources.Rations,
             fields: new()
             {
-                new(ration => ration.Id,"Id", "Id"),
                 new(ration => ration.Name,"Name", "Name"),
                 new(ration => ration.Description, "Description", "Description"),
-                new(ration => ration.Price, "Price", "Price"),
+                new(ration => ration.DollarsPerPound, "DollarsPerPound", "DollarsPerPound"),
             },
             enableAdvancedSearch: true,
             idFunc: ration => ration.Id!.Value,

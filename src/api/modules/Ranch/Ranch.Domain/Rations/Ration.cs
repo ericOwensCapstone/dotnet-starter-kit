@@ -5,54 +5,51 @@ using FSH.Starter.WebApi.Ranch.Domain.Rations.Events;
 namespace FSH.Starter.WebApi.Ranch.Domain.Rations;
 public class Ration : AuditableEntity, IAggregateRoot
 {
-    public string Name { get; private set; } = string.Empty;
-    public string? Description { get; private set; }
-    public decimal Price { get; private set; }
+    public string Name { get; private set; } = string.Empty; // MaxLength=99, Default="Sample Ration", Rule=NotEmpty().MinimumLength(2).MaximumLength(99)
+    public string? Description { get; private set; } = string.Empty; // MaxLength=999, Default="Ration Description", Rule=NotEmpty().MinimumLength(2).MaximumLength(999)
+    public decimal DollarsPerPound { get; private set; } = 0; // Default=0.10, Rule=GreaterThan(0)
 
     private Ration() { }
 
-    private Ration(Guid id, string name, string? description, decimal price)
+    private Ration(
+        Guid id,
+        string name,
+        string? description,
+        decimal dollarsPerPound
+    )
     {
         Id = id;
         Name = name;
         Description = description;
-        Price = price;
+        DollarsPerPound = dollarsPerPound;
 
-        QueueDomainEvent(new RationCreated { Ration = this });
+        QueueDomainEvent(new RationCreated {Ration = this});
     }
 
-    public static Ration Create(string name, string? description, decimal price)
+    public static Ration Create(
+        string name,
+        string? description,
+        decimal dollarsPerPound
+    )
     {
-        return new Ration(Guid.NewGuid(), name, description, price);
+        return new Ration(
+            Guid.NewGuid(),
+            name,
+            description,
+            dollarsPerPound
+        );
     }
 
-    public Ration Update(string? name, string? description, decimal? price)
+    public Ration Update(
+        string name,
+        string? description,
+        decimal dollarsPerPound
+    )
     {
-        bool isUpdated = false;
-
-        if (!string.IsNullOrWhiteSpace(name) && !string.Equals(Name, name, StringComparison.OrdinalIgnoreCase))
-        {
-            Name = name;
-            isUpdated = true;
-        }
-
-        if (!string.Equals(Description, description, StringComparison.OrdinalIgnoreCase))
-        {
-            Description = description;
-            isUpdated = true;
-        }
-
-        if (price.HasValue && Price != price.Value)
-        {
-            Price = price.Value;
-            isUpdated = true;
-        }
-
-        if (isUpdated)
-        {
-            QueueDomainEvent(new RationUpdated { Ration = this });
-        }
-
+        Name = name;
+        Description = description;
+        DollarsPerPound = dollarsPerPound;
+        QueueDomainEvent(new RationUpdated { Ration = this });
         return this;
     }
 }

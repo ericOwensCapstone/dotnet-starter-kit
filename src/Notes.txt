@@ -3,20 +3,22 @@ REVIEW
 
 To add a new entity:
 
-Open the CsharpRanchRewriter project in Visual Studio.
+Open the CSharpRanchRewriter project in Visual Studio.
 
-Update the RanchRewriterConstants.cs file with the new entity name and the properties for the new entity.
+Update the RanchRewriterConstants.cs file with the new entity name and the properties for the new entity, and a new Nav Icon spec.
 
-Run the CsharpRanchRewriter project.
+For now, in the RewriterExec, comment out the Blazor rewrites at the bottom (we will run them in just a minute).
+
+Run the CSharpRanchRewriter project.
 
 The project will create all of the necessary files for the new entity in the WebApi,
 move those files to the actual project, and then update other files in the project.
 
+NOTE:  Rebuild the FSH project to ensure that the rewriting was successful.
+If something goes wrong and the CsharpRanchRewriter needs updating, be sure to git restore the original versions of the RandomRanch files.
+
 When this is complete, navigate to
 ~/Desktop/AI/randomRanch/dotnet-starter-kit/src/api/server
-
-NOTE:  If something goes wrong and the CsharpRanchRewriter needs updating, be sure to git restore the original versions of the RandomRanch files and to
-copy the Ranch folder in SaveRanchRewrites to RanchRewrites again.
 
 and run the following commands:
  dotnet ef migrations add "Add [New Entity Name] to Ranch Schema" --project .././migrations/postgresql/ --context RanchDbContext -o Ranch
@@ -32,9 +34,12 @@ Now, navigate to ~/Desktop/AI/nswag and run the following command:
  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\Api,
  replacing the existing ApiClient.cs file already there.
 
- Now, in the Blazor project,
- - update the NavMenu.razor
- - add a new page for the new entity
+Now, update the CSharpRanchRewriter RewriterExec file, commenting out the code line just run, and uncommenting the
+lines at the bottom that rewrite Blazor content.
+
+Run the CSharpRanchRewriter project.
+
+This should complete the new entity in the FSH project.
 
 PERMISSIONS
 Permissions are assigned as claims to individual users.  If the FshPermissions themselves are updated after

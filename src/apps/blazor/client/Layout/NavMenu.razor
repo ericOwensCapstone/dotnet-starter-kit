@@ -21,6 +21,10 @@
         {
             <MudNavLink Href="/ranch/growthTreatments" Icon="@Icons.Material.Filled.MonitorWeight" Class="fsh-nav-child">GrowthTreatments</MudNavLink>
         }
+        @if (_canViewPreventiveTreatments)
+        {
+            <MudNavLink Href="/ranch/preventiveTreatments" Icon="@Icons.Material.Filled.Vaccines" Class="fsh-nav-child">PreventiveTreatments</MudNavLink>
+        }
 @* TODO ADD PAGES *@
     </MudNavGroup>
 @*     <MudNavLink Href="/todos" Icon="@Icons.Material.Filled.Checklist" Class="fsh-nav-child">Todos</MudNavLink>  *@ 

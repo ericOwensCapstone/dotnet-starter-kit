@@ -52,6 +52,14 @@ public static class FshPermissions
         new("Delete GrowthTreatments", FshActions.Delete, FshResources.GrowthTreatments),
         new("Export GrowthTreatments", FshActions.Export, FshResources.GrowthTreatments),
 
+        //preventiveTreatments
+        new("View PreventiveTreatments", FshActions.View, FshResources.PreventiveTreatments, IsBasic: true),
+        new("Search PreventiveTreatments", FshActions.Search, FshResources.PreventiveTreatments, IsBasic: true),
+        new("Create PreventiveTreatments", FshActions.Create, FshResources.PreventiveTreatments),
+        new("Update PreventiveTreatments", FshActions.Update, FshResources.PreventiveTreatments),
+        new("Delete PreventiveTreatments", FshActions.Delete, FshResources.PreventiveTreatments),
+        new("Export PreventiveTreatments", FshActions.Export, FshResources.PreventiveTreatments),
+
 //TODO PERMISSIONS
 
         //brands

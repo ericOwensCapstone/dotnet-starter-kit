@@ -11,6 +11,7 @@ public static class FshResources
     public const string Products = nameof(Products);
     public const string Rations = nameof(Rations);
     public const string GrowthTreatments = nameof(GrowthTreatments);
+    public const string PreventiveTreatments = nameof(PreventiveTreatments);
     //TODO RESOURCES
     public const string Brands = nameof(Brands);
     public const string Todos = nameof(Todos);

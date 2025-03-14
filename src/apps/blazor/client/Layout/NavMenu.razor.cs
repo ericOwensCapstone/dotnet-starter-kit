@@ -1,4 +1,4 @@
-﻿using FSH.Starter.Blazor.Infrastructure.Auth;
+using FSH.Starter.Blazor.Infrastructure.Auth;
 using FSH.Starter.Shared.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
@@ -22,9 +22,9 @@ public partial class NavMenu
     private bool _canViewTodos;
     private bool _canViewTenants;
     private bool _canViewAuditTrails;
-
-    //private bool _canViewGrowthTreatments;
     private bool _canViewRations;
+    private bool _canViewGrowthTreatments;
+    //TODO ADD CAN VIEWS
 
     private bool CanViewAdministrationGroup => _canViewUsers || _canViewRoles || _canViewTenants;
 
@@ -42,6 +42,7 @@ public partial class NavMenu
         _canViewTenants = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Tenants);
         _canViewAuditTrails = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.AuditTrails);
         _canViewRations = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Rations);
- //       _canViewGrowthTreatments = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.GrowthTreatments);
+        _canViewGrowthTreatments = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.GrowthTreatments);
+        //TODO ASSIGN CAN VIEWS
     }
 }

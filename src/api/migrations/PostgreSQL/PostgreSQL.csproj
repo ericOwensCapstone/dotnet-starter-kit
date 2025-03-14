@@ -12,6 +12,7 @@
   <ItemGroup>
     <Folder Include="Catalog\" />
     <Folder Include="Identity\" />
+    <Folder Include="Ranch\" />
     <Folder Include="Tenant\" />
     <Folder Include="Todo\" />
   </ItemGroup>

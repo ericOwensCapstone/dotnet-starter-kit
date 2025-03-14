@@ -1,4 +1,4 @@
-﻿<PersonCard Style="background-color: var(--mud-palette-drawer-background);color: var(--mud-palette-drawer-text); margin-bottom:0px!important" />
+<PersonCard Style="background-color: var(--mud-palette-drawer-background);color: var(--mud-palette-drawer-text); margin-bottom:0px!important" />
 <MudNavMenu>
     <MudText Typo="Typo.subtitle2" Color="Color.Surface" Class="ml-4 my-3">Start</MudText>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
@@ -17,10 +17,11 @@
         {
             <MudNavLink Href="/ranch/rations" Icon="@Icons.Material.Filled.Grass" Class="fsh-nav-child">Rations</MudNavLink>
         }
-@*         @if (_canViewGrowthTreatments)
+        @if (_canViewGrowthTreatments)
         {
-            <MudNavLink Href="/ranch/growthTreatments" Icon="@Icons.Material.Filled.MonitorWeight" Class="fsh-nav-child">Growth Treatments</MudNavLink>
-        } *@
+            <MudNavLink Href="/ranch/growthTreatments" Icon="@Icons.Material.Filled.MonitorWeight" Class="fsh-nav-child">GrowthTreatments</MudNavLink>
+        }
+@* TODO ADD PAGES *@
     </MudNavGroup>
 @*     <MudNavLink Href="/todos" Icon="@Icons.Material.Filled.Checklist" Class="fsh-nav-child">Todos</MudNavLink>  *@ 
    @if (CanViewAdministrationGroup)

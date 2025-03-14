@@ -3,18 +3,9 @@ REVIEW
 
 To add a new entity:
 
-In the C:\Users\EricOwens\Desktop\AI\playground\ folder there are three sub-folders:
-- RanchRewrites
-- SaveRanchRewrites
-- InspectRanchRewrites
+Open the CsharpRanchRewriter project in Visual Studio.
 
-Copy the Ranch folder in SaveRanchRewrites to RanchRewrites.
-
-Open the CsharpRanchRewriter project in Visual Studio. 
-At the top of the Program.cs file, change the value of 
-- upperCaseReplacement and
-- lowerCaseReplacement 
-to the name for the new entity.
+Update the RanchRewriterConstants.cs file with the new entity name and the properties for the new entity.
 
 Run the CsharpRanchRewriter project.
 
@@ -55,7 +46,7 @@ CHANGED OR REMOVED FSH STUFF:
 Aspire Host program.cs to not use containerized postgres
 Package version updatesgit statu
 Home.razor: commented out content
-MainLayout.razor: commented out content, including account link to "dashboard"
+MainLayout.razor: commented out FSH content, including account link to "dashboard"
 NavMenu.razor: commented out content
 Need to run proxy AND then run at https://localhost:7100
 
@@ -65,8 +56,8 @@ HANGFIRE:
 WARNING:  The Update method in the domain class differs from the original FSH
 approach and is not discriminating w.r.t. which properties are updated.
 
-DOMAIN EVENTS: are publish by this method: private async Task PublishDomainEventsAsync() in the FshDbContext on save
-and publishing is implemented by MediatR
+DOMAIN EVENTS: are publish by this method: private async Task PublishDomainEventsAsync() in the FshDbContext on save;
+publishing is implemented by MediatR
 
 
 STUFF THAT NEEDS TO BE UPDATED AFTER DomainClassRewrite:
@@ -78,44 +69,12 @@ STUFF THAT NEEDS TO BE UPDATED AFTER DomainClassRewrite:
 - GrowthTreatmentResponse -- done
 - SearchGrowthTreatmentsCommand -- done
 - UpdateGrowthTreatmentCommand -- done
-- UpdateGrowthTreatmentCommandValidator
-- UpdateGrowthTreatmentHandler
+- UpdateGrowthTreatmentCommandValidator -- done
+- UpdateGrowthTreatmentHandler -- done
 
 
 ====================================================================================================
 
-OLD NOTES
-
-For the WebApi, 
-- Modules.Ranch.Application.Rations should be replicated for the new entity 
-- Modules.Ranch.Domain.Rations should be replicated for the new entity
-
-- Modules.Ranch.Infrastructure.Endpoints.v1.Rations should be replicated for the new entity
-- Modules.Ranch.Infrastructure.Persistence.Configurations.Rations should be replicated for the new entity
-
-- In Modules.Ranch.Infrastructure, the new entity should be added to the RanchDbContext
-- In Modules.Ranch.Infrastructure, new seeding should be added for the new entity
-
-- In FSH.Starter.Shared.Authorization.FshPermissions, permissions for the new entity should be added, copying from the Ration permissions
-
-- In FSH.Starter.Shared.Authorization.FshResources, a new resource should be added, copying from the Ration resource
-
-- In FSH.Starter.WebApi.Ranch.Infrastructure.RanchModule, 
-    -- update AddRoutes
-    -- update RegisterRanchServices
-
-Run the migration and update the database.
-Run the app and run nswag
-
-Then, for the Blazor app:
-- Update the NavMenu.razor
-- Copy the Rations.razor and change its name to the new entity name
-- search and replace in the new page for Ration and ration replacing with the new entity equivalents
-
-- Update these classes copied from the Ration equivalents in the WebApi for the new entity content:
-    - blah
-  
-and run the migrations for the updates.
 
 
     

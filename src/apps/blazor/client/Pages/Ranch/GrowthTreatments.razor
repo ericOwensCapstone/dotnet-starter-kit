@@ -1,8 +1,8 @@
-﻿@page "/ranch/rations"
+@page "/ranch/growthTreatments"
 
-<PageHeader Title="Rations" Header="Rations" SubHeader="Manage your Rations." />
+<PageHeader Title="GrowthTreatments" Header="GrowthTreatments" SubHeader="Manage your GrowthTreatments." />
 
-<EntityTable @ref="_table" TEntity="RationResponse" TId="Guid" TRequest="RationViewModel" Context="@Context">
+<EntityTable @ref="_table" TEntity="GrowthTreatmentResponse" TId="Guid" TRequest="GrowthTreatmentViewModel" Context="@Context">
 
     <AdvancedSearchContent>
         
@@ -12,7 +12,7 @@
         @if (!Context.AddEditModal.IsCreate)
         {
             <MudItem xs="12" md="6">
-                <MudTextField Value="context.Id" Underline=false ReadOnly Label="Ration Id" />
+                <MudTextField Value="context.Id" Underline=false ReadOnly Label="GrowthTreatment Id" />
             </MudItem>
         }
         @* TODO START *@
@@ -23,7 +23,7 @@
             <MudTextField Label="Description" For="@(() => context.Description)" @bind-Value="context.Description" />
         </MudItem>
         <MudItem xs="12" md="6">
-            <MudTextField Label="DollarsPerPound" For="@(() => context.DollarsPerPound)" @bind-Value="context.DollarsPerPound" />
+            <MudTextField Label="DollarsPerHead" For="@(() => context.DollarsPerHead)" @bind-Value="context.DollarsPerHead" />
         </MudItem>
         @* TODO END *@
         <MudItem xs="12" md="12">

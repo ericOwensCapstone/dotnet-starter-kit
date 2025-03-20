@@ -66,6 +66,9 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name", "TenantId")
+                        .IsUnique();
+
                     b.ToTable("GrowthTreatments", "ranch");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
@@ -114,6 +117,9 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name", "TenantId")
+                        .IsUnique();
+
                     b.ToTable("PreventiveTreatments", "ranch");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
@@ -161,6 +167,9 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                         .HasColumnType("character varying(64)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name", "TenantId")
+                        .IsUnique();
 
                     b.ToTable("Rations", "ranch");
 

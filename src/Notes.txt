@@ -1,5 +1,7 @@
 REVIEW
-- NavMenu.razor.cs TODO for permissions
+
+For the hierarchical data, note that the response type is different than the command type.
+
 ========================================
 
 Entity Name Uniqueness

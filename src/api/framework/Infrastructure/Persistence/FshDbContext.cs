@@ -1,11 +1,14 @@
 ﻿using Finbuckle.MultiTenant.Abstractions;
 using Finbuckle.MultiTenant.EntityFrameworkCore;
 using FSH.Framework.Core.Domain.Contracts;
+using FSH.Framework.Core.Exceptions;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Tenant;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Npgsql;
 
 namespace FSH.Framework.Infrastructure.Persistence;
 public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenantContextAccessor,
@@ -34,10 +37,17 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
     }
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        this.TenantNotSetMode = TenantNotSetMode.Overwrite;
-        int result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-        await PublishDomainEventsAsync().ConfigureAwait(false);
-        return result;
+        try
+        {
+            this.TenantNotSetMode = TenantNotSetMode.Overwrite;
+            int result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await PublishDomainEventsAsync().ConfigureAwait(false);
+            return result;
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException pgEx && pgEx.SqlState == "23505")
+        {
+            throw new DuplicateEntityNameException();
+        }
     }
     private async Task PublishDomainEventsAsync()
     {

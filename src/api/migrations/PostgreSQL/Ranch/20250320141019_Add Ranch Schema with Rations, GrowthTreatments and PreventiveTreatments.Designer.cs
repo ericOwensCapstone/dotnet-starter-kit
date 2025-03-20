@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
 {
     [DbContext(typeof(RanchDbContext))]
-    [Migration("20250314174744_Add Preventive Treatments to Ranch Schema")]
-    partial class AddPreventiveTreatmentstoRanchSchema
+    [Migration("20250320141019_Add Ranch Schema with Rations, GrowthTreatments and PreventiveTreatments")]
+    partial class AddRanchSchemawithRationsGrowthTreatmentsandPreventiveTreatments
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,6 +69,9 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name", "TenantId")
+                        .IsUnique();
+
                     b.ToTable("GrowthTreatments", "ranch");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
@@ -117,6 +120,9 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name", "TenantId")
+                        .IsUnique();
+
                     b.ToTable("PreventiveTreatments", "ranch");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
@@ -164,6 +170,9 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                         .HasColumnType("character varying(64)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name", "TenantId")
+                        .IsUnique();
 
                     b.ToTable("Rations", "ranch");
 

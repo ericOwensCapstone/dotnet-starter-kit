@@ -1,45 +1,28 @@
 REVIEW
-
+========================================
 For the hierarchical data, note that the response type is different than the command type.
 
-========================================
 
-Entity Name Uniqueness
+public sealed record CreateLifecycleStageCommand(
+    double TargetWeight,
+    double TargetAdfi,
+    double AdfiStdDev,
+    double TargetWeightRangeForSort,
+    int MergeableDuration,
+    double MergeableWeightRange,
+    int MaxHead,
+    [property: DefaultValue("Sample LifecycleStage")] 
+    string? Name,
+    [property: DefaultValue("Descriptive Description")] 
+    string? Description = null,
+    [property: JsonPropertyName("ration")]
+    UpdateRationCommand? UpdateRationCommand = null,
+    [property: JsonPropertyName("growthTreatment")]
+    UpdateGrowthTreatmentCommand? UpdateGrowthTreatmentCommand = null,
+    [property: JsonPropertyName("preventativeTreatment")]
+    UpdatePreventativeTreatmentCommand? UpdatePreventativeTreatmentCommand = null
+) : IRequest<CreateLifecycleStageResponse>;
 
-using Finbuckle.MultiTenant;
-using FSH.Starter.WebApi.Ranch.Domain.GrowthTreatments;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace FSH.Starter.WebApi.Ranch.Infrastructure.Persistence.Configurations.GrowthTreatments
-{
-    internal sealed class GrowthTreatmentConfiguration : IEntityTypeConfiguration<GrowthTreatment>
-    {
-        public void Configure(EntityTypeBuilder<GrowthTreatment> builder)
-        {
-            builder.IsMultiTenant();
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Name).HasMaxLength(99);
-            builder.Property(x => x.Description).HasMaxLength(999);
-
-            // Add unique constraint on Name and TenantId
-            builder.HasIndex(x => new { x.Name, x.TenantId }).IsUnique();
-        }
-    }
-}
-
-app.MapPost("/entities", async (YourEntity entity, YourEntityRepository repository) =>
-{
-    try
-    {
-        await repository.AddAsync(entity);
-        return Results.Created($"/entities/{entity.Id}", entity);
-    }
-    catch (DbUpdateException ex) when (ex.InnerException is PostgresException pgEx && pgEx.SqlState == "23505")
-    {
-        return Results.Conflict(new { message = $"An entity with the name '{entity.Name}' already exists for tenant '{entity.TenantId}'." });
-    }
-});
 
 ========================================
 To add a new entity:

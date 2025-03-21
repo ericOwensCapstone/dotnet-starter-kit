@@ -1,5 +1,25 @@
 REVIEW
 ========================================
+
+Need new dbcontext rewriter for autoincludes
+Need SearchCommand when there are includes
+
+??? How do the default queries ignore the entity rows that have been soft deleted?
+In FshDbContext:
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // QueryFilters need to be applied before base.OnModelCreating
+        modelBuilder.AppendGlobalQueryFilter<ISoftDeletable>(s => s.Deleted == null);
+        base.OnModelCreating(modelBuilder);
+    }
+
+
+
+Add Autoincludes to dbcontext for all entities:
+            modelBuilder.Entity<LifecycleStage>()
+                .Navigation(ls => ls.PreventativeTreatment)
+                .AutoInclude();
+
 For the hierarchical data, note that the response type is different than the command type.
 
 

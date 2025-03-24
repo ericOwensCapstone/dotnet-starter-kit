@@ -52,13 +52,13 @@ public partial class Rations
         //End Subentity Loader calls
     }
 
+    //Start Subentity Loaders
+    //End Subentity Loaders
+
+    //Start Subentity Advanced Search
+    //End Subentity Advanced Search
+
 }
-
-//Start Subentity Loaders
-//End Subentity Loaders
-
-//Start Subentity Advanced Search
-//End Subentity Advanced Search
 
 public class RationViewModel : UpdateRationCommand
 {

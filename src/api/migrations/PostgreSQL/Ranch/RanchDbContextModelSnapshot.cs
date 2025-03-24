@@ -67,7 +67,8 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                     b.HasKey("Id");
 
                     b.HasIndex("Name", "TenantId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"Deleted\" IS NULL");
 
                     b.ToTable("GrowthTreatments", "ranch");
 
@@ -118,7 +119,8 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                     b.HasKey("Id");
 
                     b.HasIndex("Name", "TenantId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"Deleted\" IS NULL");
 
                     b.ToTable("PreventiveTreatments", "ranch");
 
@@ -169,7 +171,8 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                     b.HasKey("Id");
 
                     b.HasIndex("Name", "TenantId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"Deleted\" IS NULL");
 
                     b.ToTable("Rations", "ranch");
 

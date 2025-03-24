@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
 {
     /// <inheritdoc />
-    public partial class AddRanchSchemawithRationsGrowthTreatmentsandPreventiveTreatments : Migration
+    public partial class AddRanchschemawithRationGrowthTreatmentandPreventiveTreatment : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -85,21 +85,24 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                 schema: "ranch",
                 table: "GrowthTreatments",
                 columns: new[] { "Name", "TenantId" },
-                unique: true);
+                unique: true,
+                filter: "\"Deleted\" IS NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PreventiveTreatments_Name_TenantId",
                 schema: "ranch",
                 table: "PreventiveTreatments",
                 columns: new[] { "Name", "TenantId" },
-                unique: true);
+                unique: true,
+                filter: "\"Deleted\" IS NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rations_Name_TenantId",
                 schema: "ranch",
                 table: "Rations",
                 columns: new[] { "Name", "TenantId" },
-                unique: true);
+                unique: true,
+                filter: "\"Deleted\" IS NULL");
         }
 
         /// <inheritdoc />

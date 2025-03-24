@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
 {
     [DbContext(typeof(RanchDbContext))]
-    [Migration("20250320141019_Add Ranch Schema with Rations, GrowthTreatments and PreventiveTreatments")]
-    partial class AddRanchSchemawithRationsGrowthTreatmentsandPreventiveTreatments
+    [Migration("20250324185010_Add Ranch schema with Ration, GrowthTreatment, and PreventiveTreatment")]
+    partial class AddRanchschemawithRationGrowthTreatmentandPreventiveTreatment
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,7 +70,8 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                     b.HasKey("Id");
 
                     b.HasIndex("Name", "TenantId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"Deleted\" IS NULL");
 
                     b.ToTable("GrowthTreatments", "ranch");
 
@@ -121,7 +122,8 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                     b.HasKey("Id");
 
                     b.HasIndex("Name", "TenantId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"Deleted\" IS NULL");
 
                     b.ToTable("PreventiveTreatments", "ranch");
 
@@ -172,7 +174,8 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                     b.HasKey("Id");
 
                     b.HasIndex("Name", "TenantId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"Deleted\" IS NULL");
 
                     b.ToTable("Rations", "ranch");
 

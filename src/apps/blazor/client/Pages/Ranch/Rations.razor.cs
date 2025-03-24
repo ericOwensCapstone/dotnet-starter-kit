@@ -15,6 +15,9 @@ public partial class Rations
 
     private EntityTable<RationResponse, Guid, RationViewModel> _table = default!;
 
+    //Start Subentity Lists
+    //End Subentity Lists
+
     protected override async Task OnInitializedAsync()
     {
         Context = new(
@@ -44,9 +47,18 @@ public partial class Rations
                 await _client.UpdateRationEndpointAsync("1", id, ration.Adapt<UpdateRationCommand>());
             },
             deleteFunc: async id => await _client.DeleteRationEndpointAsync("1", id));
+
+        //Start Subentity Loader calls
+        //End Subentity Loader calls
     }
 
 }
+
+//Start Subentity Loaders
+//End Subentity Loaders
+
+//Start Subentity Advanced Search
+//End Subentity Advanced Search
 
 public class RationViewModel : UpdateRationCommand
 {

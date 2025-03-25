@@ -5,6 +5,7 @@ using FSH.Framework.Infrastructure.Tenant;
 using FSH.Starter.WebApi.Ranch.Domain.Rations;
 using FSH.Starter.WebApi.Ranch.Domain.GrowthTreatments;
 using FSH.Starter.WebApi.Ranch.Domain.PreventiveTreatments;
+using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -22,6 +23,7 @@ public sealed class RanchDbContext : FshDbContext
     public DbSet<Ration> Rations { get; set; } = null!;
     public DbSet<GrowthTreatment> GrowthTreatments { get; set; } = null!;
     public DbSet<PreventiveTreatment> PreventiveTreatments { get; set; } = null!;
+    public DbSet<LifecycleStage> LifecycleStages { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

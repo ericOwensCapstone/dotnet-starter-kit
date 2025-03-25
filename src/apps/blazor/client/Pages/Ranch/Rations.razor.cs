@@ -35,6 +35,8 @@ public partial class Rations
             searchFunc: async filter =>
             {
                 var rationFilter = filter.Adapt<SearchRationsCommand>();
+                //Start filter parameters
+                //End filter parameters
                 var result = await _client.SearchRationsEndpointAsync("1", rationFilter);
                 return result.Adapt<PaginationResponse<RationResponse>>();
             },

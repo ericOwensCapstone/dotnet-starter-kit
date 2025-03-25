@@ -1,6 +1,8 @@
 using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
+using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
 using FSH.Starter.WebApi.Ranch.Domain.Rations.Events;
+using Microsoft.EntityFrameworkCore;
 
 namespace FSH.Starter.WebApi.Ranch.Domain.Rations;
 public class Ration : AuditableEntity, IAggregateRoot
@@ -51,6 +53,13 @@ public class Ration : AuditableEntity, IAggregateRoot
         DollarsPerPound = dollarsPerPound;
         QueueDomainEvent(new RationUpdated { Ration = this });
         return this;
+    }
+
+    public override (bool CanBeDeleted, string Reason) CanBeSoftDeleted(DbContext context)
+    {
+        bool canBeDeleted = !context.Set<LifecycleStage>().Any(ls => ls.RationId == Id && ls.Deleted == null);
+        string reason = canBeDeleted ? string.Empty : "Cannot soft delete Ration because it is referenced by a non-soft-deleted LifecycleStage.";
+        return (canBeDeleted, reason);
     }
 }
 

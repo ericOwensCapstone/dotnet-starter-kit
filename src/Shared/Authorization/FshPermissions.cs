@@ -60,6 +60,14 @@ public static class FshPermissions
         new("Delete PreventiveTreatments", FshActions.Delete, FshResources.PreventiveTreatments),
         new("Export PreventiveTreatments", FshActions.Export, FshResources.PreventiveTreatments),
 
+        //lifecycleStages
+        new("View LifecycleStages", FshActions.View, FshResources.LifecycleStages, IsBasic: true),
+        new("Search LifecycleStages", FshActions.Search, FshResources.LifecycleStages, IsBasic: true),
+        new("Create LifecycleStages", FshActions.Create, FshResources.LifecycleStages),
+        new("Update LifecycleStages", FshActions.Update, FshResources.LifecycleStages),
+        new("Delete LifecycleStages", FshActions.Delete, FshResources.LifecycleStages),
+        new("Export LifecycleStages", FshActions.Export, FshResources.LifecycleStages),
+
 //TODO PERMISSIONS
 
         //brands

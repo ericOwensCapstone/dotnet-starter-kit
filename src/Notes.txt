@@ -43,6 +43,12 @@ public sealed record CreateLifecycleStageCommand(
     UpdatePreventativeTreatmentCommand? UpdatePreventativeTreatmentCommand = null
 ) : IRequest<CreateLifecycleStageResponse>;
 
+========================================
+Soft deletes are implemented in AuditInterceptor.cs
+
+The currently implemented CanBeSoftDeleted interface method
+assumes that an entity of a given type is only referenced in 
+a single other entity type.
 
 ========================================
 To add a new entity:

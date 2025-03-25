@@ -25,6 +25,7 @@ public partial class NavMenu
     private bool _canViewRations;
     private bool _canViewGrowthTreatments;
     private bool _canViewPreventiveTreatments;
+    private bool _canViewLifecycleStages;
     //TODO ADD CAN VIEWS
 
     private bool CanViewAdministrationGroup => _canViewUsers || _canViewRoles || _canViewTenants;
@@ -45,6 +46,7 @@ public partial class NavMenu
         _canViewRations = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Rations);
         _canViewGrowthTreatments = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.GrowthTreatments);
         _canViewPreventiveTreatments = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.PreventiveTreatments);
+        _canViewLifecycleStages = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.LifecycleStages);
         //TODO ASSIGN CAN VIEWS
     }
 }

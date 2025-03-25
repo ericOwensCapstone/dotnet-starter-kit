@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
 {
     [DbContext(typeof(RanchDbContext))]
-    [Migration("20250324185010_Add Ranch schema with Ration, GrowthTreatment, and PreventiveTreatment")]
-    partial class AddRanchschemawithRationGrowthTreatmentandPreventiveTreatment
+    [Migration("20250325132213_Add initial Ranch schema")]
+    partial class AddinitialRanchschema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,6 +74,70 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                         .HasFilter("\"Deleted\" IS NULL");
 
                     b.ToTable("GrowthTreatments", "ranch");
+
+                    b.HasAnnotation("Finbuckle:MultiTenant", true);
+                });
+
+            modelBuilder.Entity("FSH.Starter.WebApi.Ranch.Domain.LifecycleStages.LifecycleStage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("Deleted")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(999)
+                        .HasColumnType("character varying(999)");
+
+                    b.Property<Guid?>("GrowthTreatmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(99)
+                        .HasColumnType("character varying(99)");
+
+                    b.Property<Guid?>("PreventiveTreatmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("RationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GrowthTreatmentId");
+
+                    b.HasIndex("PreventiveTreatmentId");
+
+                    b.HasIndex("RationId");
+
+                    b.HasIndex("Name", "TenantId")
+                        .IsUnique()
+                        .HasFilter("\"Deleted\" IS NULL");
+
+                    b.ToTable("LifecycleStages", "ranch");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -180,6 +244,30 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                     b.ToTable("Rations", "ranch");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
+                });
+
+            modelBuilder.Entity("FSH.Starter.WebApi.Ranch.Domain.LifecycleStages.LifecycleStage", b =>
+                {
+                    b.HasOne("FSH.Starter.WebApi.Ranch.Domain.GrowthTreatments.GrowthTreatment", "GrowthTreatment")
+                        .WithMany()
+                        .HasForeignKey("GrowthTreatmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("FSH.Starter.WebApi.Ranch.Domain.PreventiveTreatments.PreventiveTreatment", "PreventiveTreatment")
+                        .WithMany()
+                        .HasForeignKey("PreventiveTreatmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("FSH.Starter.WebApi.Ranch.Domain.Rations.Ration", "Ration")
+                        .WithMany()
+                        .HasForeignKey("RationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("GrowthTreatment");
+
+                    b.Navigation("PreventiveTreatment");
+
+                    b.Navigation("Ration");
                 });
 #pragma warning restore 612, 618
         }

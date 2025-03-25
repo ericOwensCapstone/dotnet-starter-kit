@@ -1,6 +1,8 @@
 using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
+using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
 using FSH.Starter.WebApi.Ranch.Domain.PreventiveTreatments.Events;
+using Microsoft.EntityFrameworkCore;
 
 namespace FSH.Starter.WebApi.Ranch.Domain.PreventiveTreatments;
 public class PreventiveTreatment : AuditableEntity, IAggregateRoot
@@ -51,6 +53,13 @@ public class PreventiveTreatment : AuditableEntity, IAggregateRoot
         DollarsPerHead = dollarsPerHead;
         QueueDomainEvent(new PreventiveTreatmentUpdated { PreventiveTreatment = this });
         return this;
+    }
+
+    public override (bool CanBeDeleted, string Reason) CanBeSoftDeleted(DbContext context)
+    {
+        bool canBeDeleted = !context.Set<LifecycleStage>().Any(ls => ls.PreventiveTreatmentId == Id && ls.Deleted == null);
+        string reason = canBeDeleted ? string.Empty : "Cannot soft delete PreventiveTreatment because it is referenced by a non-soft-deleted LifecycleStage.";
+        return (canBeDeleted, reason);
     }
 }
 

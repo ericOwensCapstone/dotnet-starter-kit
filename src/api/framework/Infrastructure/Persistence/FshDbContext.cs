@@ -37,6 +37,21 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
     }
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        var entries = ChangeTracker.Entries()
+            .Where(e => e.State == EntityState.Modified || e.State == EntityState.Deleted);
+
+        foreach (var entry in entries)
+        {
+            if (entry.Entity is ISoftDeletable softDeletable && entry.State == EntityState.Deleted)
+            {
+                var (canBeDeleted, reason) = softDeletable.CanBeSoftDeleted(this);
+                if (!canBeDeleted)
+                {
+                    throw new InvalidOperationException(reason);
+                }             
+            }
+        }
+
         try
         {
             this.TenantNotSetMode = TenantNotSetMode.Overwrite;

@@ -1,5 +1,5 @@
 <MudDrawer Anchor="Anchor.Right" @bind-Open="ThemeDrawerOpen" outlined Variant="@DrawerVariant.Temporary"
-    Width="350px" Height="100vh">
+           Width="350px" Height="100vh">
     <MudDrawerHeader Class="align-center">
         <MudText Typo="Typo.h6">
             Theme Manager
@@ -24,5 +24,12 @@
         </MudExpansionPanels>
     </div>
 </MudDrawer>
-<MudOverlay DarkBackground="false" OnClick="@(() => ThemeDrawerOpenChanged.InvokeAsync(false))"
-    Visible="ThemeDrawerOpen" VisibleChanged="ThemeDrawerOpenChanged" />
+
+@if (!ThemeDrawerOpen)
+{
+    <MudOverlay DarkBackground="false" OnClick="@(() => ThemeDrawerOpenChanged.InvokeAsync(false))"
+                Visible="ThemeDrawerOpen" VisibleChanged="ThemeDrawerOpenChanged" />
+}
+
+@* <MudOverlay DarkBackground="false" OnClick="@(() => ThemeDrawerOpenChanged.InvokeAsync(false))"
+            Visible="ThemeDrawerOpen" VisibleChanged="ThemeDrawerOpenChanged" Style="z-index: 1200;" /> *@

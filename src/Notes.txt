@@ -130,6 +130,42 @@ STUFF THAT NEEDS TO BE UPDATED AFTER DomainClassRewrite:
 
 ====================================================================================================
 
+Validators applied here:
+    public static WebApplicationBuilder RegisterModules(this WebApplicationBuilder builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
 
+        //define module assemblies
+        var assemblies = new Assembly[]
+        {
+            typeof(CatalogMetadata).Assembly,
+            typeof(RanchMetadata).Assembly,
+            typeof(TodoModule).Assembly
+        };
+
+        //register validators
+        builder.Services.AddValidatorsFromAssemblies(assemblies);
+
+        //register mediatr
+        builder.Services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblies(assemblies);
+        });
+
+        //register module services
+        builder.RegisterCatalogServices();
+        builder.RegisterRanchServices();
+        builder.RegisterTodoServices();
+
+        //add carter endpoint modules
+        builder.Services.AddCarter(configurator: config =>
+        {
+            config.WithModule<CatalogModule.Endpoints>();
+            config.WithModule<RanchModule.Endpoints>();
+            config.WithModule<TodoModule.Endpoints>();
+        });
+
+        return builder;
+    }
 
     

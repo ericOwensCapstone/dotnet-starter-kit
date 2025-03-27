@@ -1,0 +1,457 @@
+FSH uses Finbuckle to implement MultiTenancy
+
+We'll look at the implementation of MultiTenance for the TodoItem entity.
+
+See:
+public static IServiceCollection ConfigureMultitenancy(this IServiceCollection services)
+
+Here is the TodoItem entity:
+//--------------------------------------------------------------------------------
+using FSH.Framework.Core.Domain;
+using FSH.Framework.Core.Domain.Contracts;
+using FSH.Starter.WebApi.Todo.Domain.Events;
+
+namespace FSH.Starter.WebApi.Todo.Domain;
+public class TodoItem : AuditableEntity, IAggregateRoot
+{
+    public string? Title { get; set; }
+
+    public string? Note { get; set; }
+
+    public static TodoItem Create(string title, string note)
+    {
+        var item = new TodoItem();
+
+        item.Title = title;
+        item.Note = note;
+
+        item.QueueDomainEvent(new TodoItemCreated(item.Id, item.Title, item.Note));
+
+        TodoMetrics.Created.Add(1);
+
+        return item;
+    }
+
+    public TodoItem Update(string? title, string? note)
+    {
+        if (title is not null && Title?.Equals(title, StringComparison.OrdinalIgnoreCase) is not true) Title = title;
+        if (note is not null && Note?.Equals(note, StringComparison.OrdinalIgnoreCase) is not true) Note = note;
+
+        this.QueueDomainEvent(new TodoItemUpdated(this));
+
+        return this;
+
+    }
+}
+//--------------------------------------------------------------------------------
+
+Associated with the TodoItem entity is this code:
+
+//--------------------------------------------------------------------------------
+using Finbuckle.MultiTenant;
+using FSH.Starter.WebApi.Todo.Domain;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace FSH.Starter.WebApi.Todo.Persistence.Configurations;
+internal sealed class TodoItemConfiguration : IEntityTypeConfiguration<TodoItem>
+{
+    public void Configure(EntityTypeBuilder<TodoItem> builder)
+    {
+        builder.IsMultiTenant();
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Title).HasMaxLength(100);
+        builder.Property(x => x.Note).HasMaxLength(1000);
+    }
+}
+//--------------------------------------------------------------------------------
+
+The Configure method is called from the TodoDbContext class.  Note the call to
+modelBuilder.ApplyConfigurationsFromAssembly(typeof(TodoDbContext).Assembly) in the
+OnModelCreating method of the TodoDbContext class.
+
+//--------------------------------------------------------------------------------
+using Finbuckle.MultiTenant.Abstractions;
+using FSH.Framework.Core.Persistence;
+using FSH.Framework.Infrastructure.Persistence;
+using FSH.Framework.Infrastructure.Tenant;
+using FSH.Starter.WebApi.Todo.Domain;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
+namespace FSH.Starter.WebApi.Todo.Persistence;
+public sealed class TodoDbContext : FshDbContext
+{
+    public TodoDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenantContextAccessor, DbContextOptions<TodoDbContext> options, IPublisher publisher, IOptions<DatabaseOptions> settings)
+        : base(multiTenantContextAccessor, options, publisher, settings)
+    {
+    }
+
+    public DbSet<TodoItem> Todos { get; set; } = null!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        ArgumentNullException.ThrowIfNull(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TodoDbContext).Assembly);
+        modelBuilder.HasDefaultSchema(SchemaNames.Todo);
+    }
+}
+//--------------------------------------------------------------------------------
+
+The call to builder.IsMultiTenant() in the Configure method has this implementation 
+in the Finbuckle static class EntityTypeBuilderExtensions that sets up the
+Global Query filter for the TenantId so that row level security is implemented.
+
+//--------------------------------------------------------------------------------
+
+// Copyright Finbuckle LLC, Andrew White, and Contributors.
+// Refer to the solution LICENSE file for more information.
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using Finbuckle.MultiTenant.EntityFrameworkCore;
+
+// ReSharper disable once CheckNamespace
+namespace Finbuckle.MultiTenant;
+
+public static class EntityTypeBuilderExtensions
+{
+    private class ExpressionVariableScope
+    {
+        public IMultiTenantDbContext? Context { get; }
+    }
+
+    private static LambdaExpression? GetQueryFilter(this EntityTypeBuilder builder)
+    {
+        return builder.Metadata.GetQueryFilter();
+    }
+
+    /// <summary>
+    /// Adds MultiTenant support for an entity. Call <see cref="IsMultiTenant" /> after
+    /// <see cref="EntityTypeBuilder.HasQueryFilter" /> to merge query filters.
+    /// </summary>
+    /// <param name="builder">The typed EntityTypeBuilder instance.</param>
+    /// <returns>A MultiTenantEntityTypeBuilder instance.</returns>
+    public static MultiTenantEntityTypeBuilder IsMultiTenant(this EntityTypeBuilder builder)
+    {
+        if (builder.Metadata.IsMultiTenant())
+            return new MultiTenantEntityTypeBuilder(builder);
+
+        builder.HasAnnotation(Constants.MultiTenantAnnotationName, true);
+
+        try
+        {
+            builder.Property<string>("TenantId")
+                .IsRequired()
+                .HasMaxLength(Internal.Constants.TenantIdMaxLength);
+        }
+        catch (Exception ex)
+        {
+            throw new MultiTenantException($"{builder.Metadata.ClrType} unable to add TenantId property", ex);
+        }
+
+        // build expression tree for e => EF.Property<string>(e, "TenantId") == TenantInfo.Id
+
+        // where e is one of our entity types
+        // will need this ParameterExpression for next step and for final step
+        var entityParamExp = Expression.Parameter(builder.Metadata.ClrType, "e");
+
+        var existingQueryFilter = builder.GetQueryFilter();
+
+        // override to match existing query parameter if applicable
+        if (existingQueryFilter != null)
+        {
+            entityParamExp = existingQueryFilter.Parameters.First();
+        }
+
+        // build up expression tree for: EF.Property<string>(e, "TenantId")
+        var tenantIdExp = Expression.Constant("TenantId", typeof(string));
+        var efPropertyExp = Expression.Call(typeof(EF), nameof(EF.Property), new[] { typeof(string) }, entityParamExp, tenantIdExp);
+        var leftExp = efPropertyExp;
+
+        // build up express tree for: TenantInfo.Id
+        // EF will magically sub the current db context in for scope.Context
+        var scopeConstantExp = Expression.Constant(new ExpressionVariableScope());
+        var contextMemberInfo = typeof(ExpressionVariableScope).GetMember(nameof(ExpressionVariableScope.Context))[0];
+        var contextMemberAccessExp = Expression.MakeMemberAccess(scopeConstantExp, contextMemberInfo);
+        var contextTenantInfoExp = Expression.Property(contextMemberAccessExp, nameof(IMultiTenantDbContext.TenantInfo));
+        var rightExp = Expression.Property(contextTenantInfoExp, nameof(IMultiTenantDbContext.TenantInfo.Id));
+
+        // build expression tree for EF.Property<string>(e, "TenantId") == TenantInfo.Id'
+        var predicate = Expression.Equal(leftExp, rightExp);
+
+        // combine with existing filter
+        if (existingQueryFilter != null)
+        {
+            predicate = Expression.AndAlso(existingQueryFilter.Body, predicate);
+        }
+
+        // build the final expression tree
+        var delegateType = Expression.GetDelegateType(builder.Metadata.ClrType, typeof(bool));
+        var lambdaExp = Expression.Lambda(delegateType, predicate, entityParamExp);
+
+        // set the filter
+        builder.HasQueryFilter(lambdaExp);
+
+        return new MultiTenantEntityTypeBuilder(builder);
+    }
+}
+//--------------------------------------------------------------------------------
+
+At run time, the global query filter uses the current tenant context to find the tenantId to use
+to filter the data. The TodoDbContext class inherits from FshDbContext which is injected with the
+IMultiTenantContextAccessor<FshTenantInfo> that is used to get the TenantId for the current tenant.
+
+FshTenantInfo looks like this:
+
+//--------------------------------------------------------------------------------
+using Finbuckle.MultiTenant.Abstractions;
+using FSH.Framework.Core.Exceptions;
+using FSH.Framework.Core.Tenant;
+using FSH.Framework.Infrastructure.Tenant.Abstractions;
+
+namespace FSH.Framework.Infrastructure.Tenant;
+public sealed class FshTenantInfo : IFshTenantInfo
+{
+    public FshTenantInfo()
+    {
+    }
+
+    public FshTenantInfo(string id, string name, string? connectionString, string adminEmail, string? issuer = null)
+    {
+        Id = id;
+        Identifier = id;
+        Name = name;
+        ConnectionString = connectionString ?? string.Empty;
+        AdminEmail = adminEmail;
+        IsActive = true;
+        Issuer = issuer;
+
+        // Add Default 1 Month Validity for all new tenants. Something like a DEMO period for tenants.
+        ValidUpto = DateTime.UtcNow.AddMonths(1);
+    }
+    public string Id { get; set; } = default!;
+    public string Identifier { get; set; } = default!;
+
+    public string Name { get; set; } = default!;
+    public string ConnectionString { get; set; } = default!;
+
+    public string AdminEmail { get; set; } = default!;
+    public bool IsActive { get; set; }
+    public DateTime ValidUpto { get; set; }
+    public string? Issuer { get; set; }
+
+    public void AddValidity(int months) =>
+        ValidUpto = ValidUpto.AddMonths(months);
+
+    public void SetValidity(in DateTime validTill) =>
+        ValidUpto = ValidUpto < validTill
+            ? validTill
+            : throw new FshException("Subscription cannot be backdated.");
+
+    public void Activate()
+    {
+        if (Id == TenantConstants.Root.Id)
+        {
+            throw new InvalidOperationException("Invalid Tenant");
+        }
+
+        IsActive = true;
+    }
+
+    public void Deactivate()
+    {
+        if (Id == TenantConstants.Root.Id)
+        {
+            throw new InvalidOperationException("Invalid Tenant");
+        }
+
+        IsActive = false;
+    }
+    string? ITenantInfo.Id { get => Id; set => Id = value ?? throw new InvalidOperationException("Id can't be null."); }
+    string? ITenantInfo.Identifier { get => Identifier; set => Identifier = value ?? throw new InvalidOperationException("Identifier can't be null."); }
+    string? ITenantInfo.Name { get => Name; set => Name = value ?? throw new InvalidOperationException("Name can't be null."); }
+    string? IFshTenantInfo.ConnectionString { get => ConnectionString; set => ConnectionString = value ?? throw new InvalidOperationException("ConnectionString can't be null."); }
+}
+
+//--------------------------------------------------------------------------------
+
+
+How do migrations and EntityBuilder.Configure work together to add the TenantId column?
+
+This extension controls the interaction:
+
+//--------------------------------------------------------------------------------
+using Finbuckle.MultiTenant;
+using Finbuckle.MultiTenant.Abstractions;
+using Finbuckle.MultiTenant.Stores.DistributedCacheStore;
+using FSH.Framework.Core.Persistence;
+using FSH.Framework.Core.Tenant;
+using FSH.Framework.Core.Tenant.Abstractions;
+using FSH.Framework.Infrastructure.Persistence;
+using FSH.Framework.Infrastructure.Persistence.Services;
+using FSH.Framework.Infrastructure.Tenant.Persistence;
+using FSH.Framework.Infrastructure.Tenant.Services;
+using FSH.Starter.WebApi.Shared.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+
+namespace FSH.Framework.Infrastructure.Tenant;
+internal static class Extensions
+{
+    public static IServiceCollection ConfigureMultitenancy(this IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        services.AddTransient<IConnectionStringValidator, ConnectionStringValidator>();
+        services.BindDbContext<TenantDbContext>();
+        services
+            .AddMultiTenant<FshTenantInfo>(config =>
+            {
+                // to save database calls to resolve tenant
+                // this was happening for every request earlier, leading to ineffeciency
+                config.Events.OnTenantResolved = async (context) =>
+                {
+                    if (context.StoreType != typeof(DistributedCacheStore<FshTenantInfo>))
+                    {
+                        var sp = ((HttpContext)context.Context!).RequestServices;
+                        var distributedCacheStore = sp
+                            .GetService<IEnumerable<IMultiTenantStore<FshTenantInfo>>>()!
+                            .FirstOrDefault(s => s.GetType() == typeof(DistributedCacheStore<FshTenantInfo>));
+
+                        await distributedCacheStore!.TryAddAsync((FshTenantInfo)context.TenantInfo!);
+                    }
+                    await Task.FromResult(0);
+                };
+            })
+            .WithClaimStrategy(FshClaims.Tenant)
+            .WithHeaderStrategy(TenantConstants.Identifier)
+            .WithDistributedCacheStore(TimeSpan.FromMinutes(60))
+            .WithEFCoreStore<TenantDbContext, FshTenantInfo>();
+        services.AddScoped<ITenantService, TenantService>();
+        return services;
+    }
+
+    public static WebApplication UseMultitenancy(this WebApplication app)
+    {
+        ArgumentNullException.ThrowIfNull(app);
+        app.UseMultiTenant();
+
+        // set up tenant store
+        var tenants = TenantStoreSetup(app);
+
+        // set up tenant databases
+        app.SetupTenantDatabases(tenants);
+
+        return app;
+    }
+
+    private static IApplicationBuilder SetupTenantDatabases(this IApplicationBuilder app, IEnumerable<FshTenantInfo> tenants)
+    {
+        foreach (var tenant in tenants)
+        {
+            // create a scope for tenant
+            using var tenantScope = app.ApplicationServices.CreateScope();
+
+            //set current tenant so that the right connection string is used
+            tenantScope.ServiceProvider.GetRequiredService<IMultiTenantContextSetter>()
+                .MultiTenantContext = new MultiTenantContext<FshTenantInfo>()
+                {
+                    TenantInfo = tenant
+                };
+
+            // using the scope, perform migrations / seeding
+            var initializers = tenantScope.ServiceProvider.GetServices<IDbInitializer>();
+            foreach (var initializer in initializers)
+            {
+                initializer.MigrateAsync(CancellationToken.None).Wait();
+                initializer.SeedAsync(CancellationToken.None).Wait();
+            }
+        }
+        return app;
+    }
+
+    private static IEnumerable<FshTenantInfo> TenantStoreSetup(IApplicationBuilder app)
+    {
+        var scope = app.ApplicationServices.CreateScope();
+
+        // tenant master schema migration
+        var tenantDbContext = scope.ServiceProvider.GetRequiredService<TenantDbContext>();
+        if (tenantDbContext.Database.GetPendingMigrations().Any())
+        {
+            tenantDbContext.Database.Migrate();
+            Log.Information("applied database migrations for tenant module");
+        }
+
+        // default tenant seeding
+        if (tenantDbContext.TenantInfo.Find(TenantConstants.Root.Id) is null)
+        {
+            var rootTenant = new FshTenantInfo(
+                TenantConstants.Root.Id,
+                TenantConstants.Root.Name,
+                string.Empty,
+                TenantConstants.Root.EmailAddress);
+
+            rootTenant.SetValidity(DateTime.UtcNow.AddYears(1));
+            tenantDbContext.TenantInfo.Add(rootTenant);
+            tenantDbContext.SaveChanges();
+            Log.Information("configured default tenant data");
+        }
+
+        // get all tenants from store
+        var tenantStore = scope.ServiceProvider.GetRequiredService<IMultiTenantStore<FshTenantInfo>>();
+        var tenants = tenantStore.GetAllAsync().Result;
+
+        //dispose scope
+        scope.Dispose();
+
+        return tenants;
+    }
+}
+
+//--------------------------------------------------------------------------------
+ and this is the TodoDbInitializer:
+
+ //--------------------------------------------------------------------------------
+
+ using FSH.Framework.Core.Persistence;
+using FSH.Starter.WebApi.Todo.Domain;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+
+namespace FSH.Starter.WebApi.Todo.Persistence;
+internal sealed class TodoDbInitializer(
+    ILogger<TodoDbInitializer> logger,
+    TodoDbContext context) : IDbInitializer
+{
+    public async Task MigrateAsync(CancellationToken cancellationToken)
+    {
+        if ((await context.Database.GetPendingMigrationsAsync(cancellationToken).ConfigureAwait(false)).Any())
+        {
+            await context.Database.MigrateAsync(cancellationToken).ConfigureAwait(false);
+            logger.LogInformation("[{Tenant}] applied database migrations for todo module", context.TenantInfo!.Identifier);
+        }
+    }
+
+    public async Task SeedAsync(CancellationToken cancellationToken)
+    {
+        const string Title = "Hello World!";
+        const string Note = "This is your first task";
+        if (await context.Todos.FirstOrDefaultAsync(t => t.Title == Title, cancellationToken).ConfigureAwait(false) is null)
+        {
+            var todo = TodoItem.Create(Title, Note);
+            await context.Todos.AddAsync(todo, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            logger.LogInformation("[{Tenant}] seeding default todo data", context.TenantInfo!.Identifier);
+        }
+    }
+}
+//--------------------------------------------------------------------------------
+
+How is TenantId set in the TodoDbContext class?

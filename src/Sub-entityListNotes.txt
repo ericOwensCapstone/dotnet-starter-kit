@@ -1,0 +1,94 @@
+In my solution I have this class:
+
+public class LifecycleStage
+{
+    public string Name { get; private set; } = default!;
+    public string? Description { get; private set; }
+    public Ration Ration { get; private set; }
+    public GrowthTreatment GrowthTreatment { get; private set; }
+    public PreventativeTreatment PreventativeTreatment { get; private set; }
+
+    public double TargetWeight { get; private set; }
+    public double TargetAdfi { get; private set; }
+    public double AdfiStdDev { get; private set; }
+    public double TargetWeightRangeForSort { get; private set; }
+    public int MergeableDuration { get; private set; }
+    public double MergeableWeightRange { get; private set; }
+    public int MaxHead { get; private set; }
+}
+
+And this class:
+
+public class LifecycleProgram 
+{
+    public string Name { get; private set; } = default!;
+    public string? Description { get; private set; }
+    public decimal Rating { get; private set; }
+    public List<LifecycleProgramStage>? LifecycleProgramStages { get; private set; } = new();
+}
+
+And this class:
+
+public class LifecycleProgramStage
+{
+    public Guid LifecycleProgramId { get; set; }
+    public Guid LifecycleStageId { get; set; }
+    public LifecycleStage LifecycleStage { get; set; } = default!;
+
+    public int Order { get; set; }
+}
+
+And in my DbContext I have this content in the OnModelCreating method:
+
+    modelBuilder.Entity<LifecycleProgramStage>()
+        .HasKey(lps => new { lps.LifecycleProgramId, lps.LifecycleStageId });
+
+    modelBuilder.Entity<LifecycleProgramStage>()
+        .HasOne(lps => lps.LifecycleStage)
+        .WithMany()
+        .HasForeignKey(lps => lps.LifecycleStageId);
+
+    modelBuilder.Entity<LifecycleProgram>()
+        .Navigation(lp => lp.LifecycleProgramStages)
+        .AutoInclude();
+
+    modelBuilder.Entity<LifecycleProgramStage>()
+        .Navigation(lps => lps.LifecycleStage)
+        .AutoInclude();
+
+Could you explain what this code is doing and what options there are to improve it?
+
+
+Improvements:
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<LifecycleProgramStage>()
+        .HasKey(lps => new { lps.LifecycleProgramId, lps.LifecycleStageId });
+
+    modelBuilder.Entity<LifecycleProgramStage>()
+        .HasOne(lps => lps.LifecycleStage)
+        .WithMany()
+        .HasForeignKey(lps => lps.LifecycleStageId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+    // ensures that LifecycleProgramStage is deleted when LifecycleProgram is deleted
+    modelBuilder.Entity<LifecycleProgramStage>()
+        .HasOne<LifecycleProgram>()
+        .WithMany(lp => lp.LifecycleProgramStages)
+        .HasForeignKey(lps => lps.LifecycleProgramId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+    modelBuilder.Entity<LifecycleProgram>()
+        .Navigation(lp => lp.LifecycleProgramStages)
+        .AutoInclude();
+
+    modelBuilder.Entity<LifecycleProgramStage>()
+        .Navigation(lps => lps.LifecycleStage)
+        .AutoInclude();
+
+    // what other indexes would be useful?
+    modelBuilder.Entity<LifecycleProgram>()
+        .HasIndex(lp => lp.Name)
+        .IsUnique();
+}

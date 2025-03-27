@@ -1,0 +1,58 @@
+using FluentValidation;
+using System.Collections.Generic;
+
+namespace FSH.Starter.WebApi.Ranch.Application.Rations.Create.v1
+{
+    public class CreateRationCommand
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal DollarsPerPound { get; set; }
+        public List<string> Ingredients { get; set; }
+    }
+
+    public class CreateRationCommandValidator : AbstractValidator<CreateRationCommand>
+    {
+        public CreateRationCommandValidator()
+        {
+            RuleFor(p => p.Name).NotEmpty().MinimumLength(2).MaximumLength(99);
+            RuleFor(p => p.Description).NotEmpty().MinimumLength(2).MaximumLength(999);
+            RuleFor(p => p.DollarsPerPound).GreaterThan(0);
+
+            // Validate that the Ingredients list is not empty
+            RuleFor(p => p.Ingredients).NotEmpty().WithMessage("Ingredients list cannot be empty.");
+
+            // Validate each element in the Ingredients list
+            RuleForEach(p => p.Ingredients).NotEmpty().WithMessage("Ingredient cannot be empty.")
+                                           .MinimumLength(2).WithMessage("Ingredient must be at least 2 characters long.");
+        }
+    }
+}
+
+
+===
+
+
+using FluentValidation;
+using MediatR;
+
+namespace FSH.Framework.Infrastructure.Behaviours;
+public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
+{
+    private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
+
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    {
+        if (_validators.Any())
+        {
+            var context = new ValidationContext<TRequest>(request);
+            var validationResults = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(context, cancellationToken)));
+            var failures = validationResults.SelectMany(r => r.Errors).Where(f => f != null).ToList();
+
+            if (failures.Count > 0)
+                throw new ValidationException(failures);
+        }
+        return await next();
+    }
+}

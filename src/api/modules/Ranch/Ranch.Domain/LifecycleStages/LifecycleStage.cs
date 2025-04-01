@@ -44,8 +44,9 @@ public class LifecycleStage : AuditableEntity, IAggregateRoot
         Guid? preventiveTreatmentId
     )
     {
+        var newId = Guid.NewGuid();
         return new LifecycleStage(
-            Guid.NewGuid(),
+            newId,
             name,
             description,
             rationId,

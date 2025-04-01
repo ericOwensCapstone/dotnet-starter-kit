@@ -34,8 +34,9 @@ public class PreventiveTreatment : AuditableEntity, IAggregateRoot
         decimal dollarsPerHead
     )
     {
+        var newId = Guid.NewGuid();
         return new PreventiveTreatment(
-            Guid.NewGuid(),
+            newId,
             name,
             description,
             dollarsPerHead

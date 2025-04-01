@@ -34,8 +34,9 @@ public class Ration : AuditableEntity, IAggregateRoot
         decimal dollarsPerPound
     )
     {
+        var newId = Guid.NewGuid();
         return new Ration(
-            Guid.NewGuid(),
+            newId,
             name,
             description,
             dollarsPerPound

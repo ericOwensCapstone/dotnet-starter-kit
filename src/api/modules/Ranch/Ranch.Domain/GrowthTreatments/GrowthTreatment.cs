@@ -34,8 +34,9 @@ public class GrowthTreatment : AuditableEntity, IAggregateRoot
         decimal dollarsPerHead
     )
     {
+        var newId = Guid.NewGuid();
         return new GrowthTreatment(
-            Guid.NewGuid(),
+            newId,
             name,
             description,
             dollarsPerHead

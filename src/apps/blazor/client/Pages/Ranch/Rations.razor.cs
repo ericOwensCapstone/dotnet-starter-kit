@@ -48,8 +48,8 @@ public partial class Rations
                 await _client.CreateRationEndpointAsync("1", ration.Adapt<CreateRationCommand>());
                 //End Create Func code
             },
-            // Start Edit Func code
-            // End Edit Func code
+            //Start Edit Func code
+            //End Edit Func code
             updateFunc: async (id, ration) =>
             {
                 //Start Update Func code

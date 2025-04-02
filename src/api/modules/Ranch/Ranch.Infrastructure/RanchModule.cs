@@ -10,6 +10,8 @@ using FSH.Starter.WebApi.Ranch.Domain.PreventiveTreatments;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.PreventiveTreatments;
 using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.LifecycleStages;
+using FSH.Starter.WebApi.Ranch.Domain.LifecyclePrograms;
+using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.LifecyclePrograms;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -50,6 +52,13 @@ public static class RanchModule
             lifecycleStageGroup.MapGetLifecycleStageListEndpoint();
             lifecycleStageGroup.MapLifecycleStageUpdateEndpoint();
             lifecycleStageGroup.MapLifecycleStageDeleteEndpoint();
+        
+            var lifecycleProgramGroup = app.MapGroup("lifecyclePrograms").WithTags("lifecyclePrograms");
+            lifecycleProgramGroup.MapLifecycleProgramCreationEndpoint();
+            lifecycleProgramGroup.MapGetLifecycleProgramEndpoint();
+            lifecycleProgramGroup.MapGetLifecycleProgramListEndpoint();
+            lifecycleProgramGroup.MapLifecycleProgramUpdateEndpoint();
+            lifecycleProgramGroup.MapLifecycleProgramDeleteEndpoint();
         }
     }
     public static WebApplicationBuilder RegisterRanchServices(this WebApplicationBuilder builder)
@@ -65,6 +74,8 @@ public static class RanchModule
         builder.Services.AddKeyedScoped<IReadRepository<PreventiveTreatment>, RanchRepository<PreventiveTreatment>>("ranch:preventiveTreatments");
         builder.Services.AddKeyedScoped<IRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
         builder.Services.AddKeyedScoped<IReadRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
+        builder.Services.AddKeyedScoped<IRepository<LifecycleProgram>, RanchRepository<LifecycleProgram>>("ranch:lifecyclePrograms");
+        builder.Services.AddKeyedScoped<IReadRepository<LifecycleProgram>, RanchRepository<LifecycleProgram>>("ranch:lifecyclePrograms");
         return builder;
     }
     public static WebApplication UseRanchModule(this WebApplication app)

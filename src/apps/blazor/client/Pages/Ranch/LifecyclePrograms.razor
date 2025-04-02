@@ -1,0 +1,83 @@
+@page "/ranch/lifecyclePrograms"
+
+<PageHeader Title="LifecyclePrograms" Header="LifecyclePrograms" SubHeader="Manage your LifecyclePrograms." />
+
+<EntityTable @ref="_table" TEntity="LifecycleProgramResponse" TId="Guid" TRequest="LifecycleProgramViewModel" Context="@Context">
+
+    <AdvancedSearchContent>    </AdvancedSearchContent>
+
+    <EditFormContent>
+        @if (!Context.AddEditModal.IsCreate)
+        {
+            <MudItem xs="12" md="6">
+                <MudTextField Value="context.Id" Underline=false ReadOnly Label="LifecycleProgram Id" />
+            </MudItem>
+        }
+        @* TODO START *@
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Name" For="@(() => context.Name)" @bind-Value="context.Name" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Description" For="@(() => context.Description)" @bind-Value="context.Description" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudSelect T="LifecycleStageResponse" Label="LifecycleStage" @bind-Value="SelectedLifecycleStage" ToStringFunc=@(x => x.Name)>
+                @foreach (var lifecycleStage in _lifecycleStages)
+                {
+                    <MudSelectItem Value="lifecycleStage">@lifecycleStage.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudNumericField T="int" Label="LifecycleStage Order" @bind-Value="SelectedLifecycleStageOrder" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudButton DropShadow="false" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" ButtonType="ButtonType.Button" Color="Color.Secondary" @onclick="AddToLifecycleStageList">
+                Add to LifecycleStage List
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" md="12">
+            <MudTable Items="@ApprovedLifecycleStages" Class="mt-4">
+                <HeaderContent>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Order</MudTh>
+                    <MudTh>Description</MudTh>
+                </HeaderContent>
+                <RowTemplate Context="stagesContext">
+                    <MudTd>@stagesContext.LifecycleStage.Name</MudTd>
+                    <MudTd>@stagesContext.Order</MudTd>
+                    <MudTd>@stagesContext.LifecycleStage.Description</MudTd>
+                    <MudTd>
+                        <MudButton DropShadow="false" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Remove" Color="Color.Error" Size="Size.Small" @onclick="() => DeleteFromLifecycleStageList(stagesContext)">
+                            Remove
+                        </MudButton>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudItem>
+
+
+        @* TODO END *@
+        @* VIEW DELETE CODE START *@
+        <MudItem xs="12" md="12">
+            <MudItem>
+                <div>
+                    @if(!Context.AddEditModal.IsCreate)
+                    {
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Info" Size="Size.Small" Target="_blank"
+                            StartIcon="@Icons.Material.Filled.RemoveRedEye" Style="margin-left: 5px;" >
+                            View
+                        </MudButton>
+
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
+                                   StartIcon="@Icons.Material.Filled.Delete" Style="margin-left: 5px;">
+                            Delete
+                        </MudButton>
+                    }
+                </div>
+            </MudItem>
+        </MudItem>
+        @* VIEW DELETE CODE END *@
+    </EditFormContent>
+
+</EntityTable>

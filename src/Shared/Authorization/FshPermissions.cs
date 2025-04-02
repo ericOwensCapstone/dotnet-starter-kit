@@ -68,6 +68,14 @@ public static class FshPermissions
         new("Delete LifecycleStages", FshActions.Delete, FshResources.LifecycleStages),
         new("Export LifecycleStages", FshActions.Export, FshResources.LifecycleStages),
 
+        //lifecyclePrograms
+        new("View LifecyclePrograms", FshActions.View, FshResources.LifecyclePrograms, IsBasic: true),
+        new("Search LifecyclePrograms", FshActions.Search, FshResources.LifecyclePrograms, IsBasic: true),
+        new("Create LifecyclePrograms", FshActions.Create, FshResources.LifecyclePrograms),
+        new("Update LifecyclePrograms", FshActions.Update, FshResources.LifecyclePrograms),
+        new("Delete LifecyclePrograms", FshActions.Delete, FshResources.LifecyclePrograms),
+        new("Export LifecyclePrograms", FshActions.Export, FshResources.LifecyclePrograms),
+
 //TODO PERMISSIONS
 
         //brands

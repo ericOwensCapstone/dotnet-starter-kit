@@ -13,6 +13,7 @@ public static class FshResources
     public const string GrowthTreatments = nameof(GrowthTreatments);
     public const string PreventiveTreatments = nameof(PreventiveTreatments);
     public const string LifecycleStages = nameof(LifecycleStages);
+    public const string LifecyclePrograms = nameof(LifecyclePrograms);
     //TODO RESOURCES
     public const string Brands = nameof(Brands);
     public const string Todos = nameof(Todos);

@@ -26,24 +26,6 @@
             <MudTextField Label="DollarsPerHead" For="@(() => context.DollarsPerHead)" @bind-Value="context.DollarsPerHead" />
         </MudItem>
         @* TODO END *@
-        <MudItem xs="12" md="12">
-            <MudItem>
-                <div>
-                    @if(!Context.AddEditModal.IsCreate)
-                    {
-                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Info" Size="Size.Small" Target="_blank"
-                            StartIcon="@Icons.Material.Filled.RemoveRedEye" Style="margin-left: 5px;" >
-                            View
-                        </MudButton>
-
-                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
-                                   StartIcon="@Icons.Material.Filled.Delete" Style="margin-left: 5px;">
-                            Delete
-                        </MudButton>
-                    }
-                </div>
-            </MudItem>
-        </MudItem>
     </EditFormContent>
 
 </EntityTable>

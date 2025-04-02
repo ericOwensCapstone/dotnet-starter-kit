@@ -38,21 +38,32 @@ public partial class Rations
                 //Start filter parameters
                 //End filter parameters
                 var result = await _client.SearchRationsEndpointAsync("1", rationFilter);
+                //Start Search Func List code
+                //End Search Func List code
                 return result.Adapt<PaginationResponse<RationResponse>>();
             },
             createFunc: async ration =>
             {
+                //Start Create Func code
                 await _client.CreateRationEndpointAsync("1", ration.Adapt<CreateRationCommand>());
+                //End Create Func code
             },
+            // Start Edit Func code
+            // End Edit Func code
             updateFunc: async (id, ration) =>
             {
+                //Start Update Func code
                 await _client.UpdateRationEndpointAsync("1", id, ration.Adapt<UpdateRationCommand>());
+                //End Update Func code
             },
             deleteFunc: async id => await _client.DeleteRationEndpointAsync("1", id));
 
         //Start Subentity Loader calls
         //End Subentity Loader calls
     }
+
+    //Start List Related Code
+    //End List Related Code
 
     //Start Subentity Loaders
     //End Subentity Loaders

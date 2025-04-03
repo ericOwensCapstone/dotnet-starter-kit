@@ -9,12 +9,6 @@
     </AdvancedSearchContent>
 
     <EditFormContent>
-        @if (!Context.AddEditModal.IsCreate)
-        {
-            <MudItem xs="12" md="6">
-                <MudTextField Value="context.Id" Underline=false ReadOnly Label="PreventiveTreatment Id" />
-            </MudItem>
-        }
         @* TODO START *@
         <MudItem xs="12" md="6">
             <MudTextField Label="Name" For="@(() => context.Name)" @bind-Value="context.Name" />

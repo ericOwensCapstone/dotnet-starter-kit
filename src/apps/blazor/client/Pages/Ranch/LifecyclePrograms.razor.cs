@@ -51,12 +51,29 @@ public partial class LifecyclePrograms
             createFunc: async lifecycleProgram =>
             {
                 //Start Create Func code
+                var createCommand = lifecycleProgram.Adapt<CreateLifecycleProgramCommand>();
+
+                List<CreateLifecycleProgramLifecycleStageCommand> lifecycleProgramLifecycleStageCommands = new List<CreateLifecycleProgramLifecycleStageCommand>();
+                foreach (var item in ApprovedLifecycleStages)
+                {
+                    var createLifecycleProgramLifecycleStageCommand = new CreateLifecycleProgramLifecycleStageCommand
+                    {
+                        LifecycleStageId = item.LifecycleStage.Id,
+                        Order = item.Order
+                    };
+                    lifecycleProgramLifecycleStageCommands.Add(createLifecycleProgramLifecycleStageCommand);
+                }
+                
+                createCommand.LifecycleProgramLifecycleStages = lifecycleProgramLifecycleStageCommands;
+                
+                await _client.CreateLifecycleProgramEndpointAsync("1", createCommand);
                 //End Create Func code
             },
             //Start Edit Func code
             editFormInitializedFunc: async () =>
             {
                 await Task.Delay(1);
+                ApprovedLifecycleStages = new();
                 var temp = Context.AddEditModal.RequestModel;
                 var target = CurrentPage.FirstOrDefault(lp => lp.Id == temp.Id);
                 if (target != null)
@@ -73,7 +90,7 @@ public partial class LifecyclePrograms
                         ApprovedLifecycleStages.Add(newLifecycleStageSelection);
                     }
                     SortApprovedLifecycleStages();
-
+    
                 }
                 Context.AddEditModal.ForceRender();
             },
@@ -83,7 +100,7 @@ public partial class LifecyclePrograms
                 //Start Update Func code
                 var updateCommand = lifecycleProgram.Adapt<UpdateLifecycleProgramCommand>();
 
-                List<UpdateLifecycleProgramLifecycleStageCommand> LifecycleProgramLifecycleStageCommands = new List<UpdateLifecycleProgramLifecycleStageCommand>();
+                List<UpdateLifecycleProgramLifecycleStageCommand> lifecycleProgramLifecycleStageCommands = new List<UpdateLifecycleProgramLifecycleStageCommand>();
                 foreach (var item in ApprovedLifecycleStages)
                 {
                     var updateLifecycleProgramLifecycleStageCommand = new UpdateLifecycleProgramLifecycleStageCommand
@@ -92,10 +109,10 @@ public partial class LifecyclePrograms
                         LifecycleStageId = item.LifecycleStage.Id,
                         Order = item.Order
                     };
-                    LifecycleProgramLifecycleStageCommands.Add(updateLifecycleProgramLifecycleStageCommand);
+                    lifecycleProgramLifecycleStageCommands.Add(updateLifecycleProgramLifecycleStageCommand);
                 }
                 
-                updateCommand.LifecycleProgramLifecycleStages = LifecycleProgramLifecycleStageCommands;
+                updateCommand.LifecycleProgramLifecycleStages = lifecycleProgramLifecycleStageCommands;
                 
                 await _client.UpdateLifecycleProgramEndpointAsync("1", id, updateCommand);
                 //End Update Func code

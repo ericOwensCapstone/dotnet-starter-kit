@@ -20,9 +20,6 @@ using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.PreventiveTreatments;
 using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.LifecycleStages;
 // End LifecycleStage
-
-
-
 namespace FSH.Starter.WebApi.Ranch.Infrastructure;
 public static class RanchModule
 {

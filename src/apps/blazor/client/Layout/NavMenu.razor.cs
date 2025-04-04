@@ -32,7 +32,6 @@ public partial class NavMenu
     // Start LifecycleStage
     private bool _canViewLifecycleStages;
     // End LifecycleStage
-    
     //TODO ADD CAN VIEWS
 
     private bool CanViewAdministrationGroup => _canViewUsers || _canViewRoles || _canViewTenants;

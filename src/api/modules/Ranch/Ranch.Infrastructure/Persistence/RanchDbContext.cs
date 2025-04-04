@@ -1,4 +1,8 @@
 using Finbuckle.MultiTenant.Abstractions;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Shared.Constants;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
 using FSH.Framework.Infrastructure.Tenant;
@@ -12,12 +16,6 @@ using FSH.Starter.WebApi.Ranch.Domain.PreventiveTreatments;
 // Start LifecycleStage
 using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
 // End LifecycleStage
-
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Shared.Constants;
-
 namespace FSH.Starter.WebApi.Ranch.Infrastructure.Persistence;
 
 public sealed class RanchDbContext : FshDbContext

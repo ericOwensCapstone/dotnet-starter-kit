@@ -58,8 +58,7 @@ public partial class NavMenu
         // End PreventiveTreatment
         // Start LifecycleStage
         _canViewLifecycleStages = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.LifecycleStages);
-        // End LifecycleStage
-        
+        // End LifecycleStage 
         //TODO ASSIGN CAN VIEWS
     }
 }

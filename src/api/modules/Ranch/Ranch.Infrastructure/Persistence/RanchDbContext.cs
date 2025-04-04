@@ -3,10 +3,16 @@ using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
 using FSH.Framework.Infrastructure.Tenant;
 using FSH.Starter.WebApi.Ranch.Domain.Rations;
+// Start GrowthTreatment
 using FSH.Starter.WebApi.Ranch.Domain.GrowthTreatments;
+// End GrowthTreatment
+// Start PreventiveTreatment
 using FSH.Starter.WebApi.Ranch.Domain.PreventiveTreatments;
+// End PreventiveTreatment
+// Start LifecycleStage
 using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
-using FSH.Starter.WebApi.Ranch.Domain.LifecyclePrograms;
+// End LifecycleStage
+
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -31,9 +37,7 @@ public sealed class RanchDbContext : FshDbContext
     // Start LifecycleStage
     public DbSet<LifecycleStage> LifecycleStages { get; set; } = null!;
     // End LifecycleStage
-    // Start LifecycleProgram
-    public DbSet<LifecycleProgram> LifecyclePrograms { get; set; } = null!;
-    // End LifecycleProgram
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

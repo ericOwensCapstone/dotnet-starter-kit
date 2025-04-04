@@ -19,9 +19,7 @@ public static class FshResources
     // Start LifecycleStage
     public const string LifecycleStages = nameof(LifecycleStages);
     // End LifecycleStage
-    // Start LifecycleProgram
-    public const string LifecyclePrograms = nameof(LifecyclePrograms);
-    // End LifecycleProgram
+    
     //TODO RESOURCES
     public const string Brands = nameof(Brands);
     public const string Todos = nameof(Todos);

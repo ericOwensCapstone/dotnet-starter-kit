@@ -4,14 +4,19 @@ using FSH.Framework.Infrastructure.Persistence;
 using FSH.Starter.WebApi.Ranch.Domain.Rations;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.Rations;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Persistence;
+// Start GrowthTreatment
 using FSH.Starter.WebApi.Ranch.Domain.GrowthTreatments;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.GrowthTreatments;
+// End GrowthTreatment
+// Start PreventiveTreatment
 using FSH.Starter.WebApi.Ranch.Domain.PreventiveTreatments;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.PreventiveTreatments;
+// End PreventiveTreatment
+// Start LifecycleStage
 using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.LifecycleStages;
-using FSH.Starter.WebApi.Ranch.Domain.LifecyclePrograms;
-using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.LifecyclePrograms;
+// End LifecycleStage
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -59,14 +64,7 @@ public static class RanchModule
             lifecycleStageGroup.MapLifecycleStageDeleteEndpoint();
             // End LifecycleStage
 
-            // Start LifecycleProgram
-            var lifecycleProgramGroup = app.MapGroup("lifecyclePrograms").WithTags("lifecyclePrograms");
-            lifecycleProgramGroup.MapLifecycleProgramCreationEndpoint();
-            lifecycleProgramGroup.MapGetLifecycleProgramEndpoint();
-            lifecycleProgramGroup.MapGetLifecycleProgramListEndpoint();
-            lifecycleProgramGroup.MapLifecycleProgramUpdateEndpoint();
-            lifecycleProgramGroup.MapLifecycleProgramDeleteEndpoint();
-            // End LifecycleProgram
+            
         }
     }
     public static WebApplicationBuilder RegisterRanchServices(this WebApplicationBuilder builder)
@@ -88,10 +86,7 @@ public static class RanchModule
         builder.Services.AddKeyedScoped<IRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
         builder.Services.AddKeyedScoped<IReadRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
         // End LifecycleStage
-        // Start LifecycleProgram
-        builder.Services.AddKeyedScoped<IRepository<LifecycleProgram>, RanchRepository<LifecycleProgram>>("ranch:lifecyclePrograms");
-        builder.Services.AddKeyedScoped<IReadRepository<LifecycleProgram>, RanchRepository<LifecycleProgram>>("ranch:lifecyclePrograms");
-        // End LifecycleProgram
+        
         return builder;
     }
     public static WebApplication UseRanchModule(this WebApplication app)

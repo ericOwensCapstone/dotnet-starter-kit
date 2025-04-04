@@ -73,7 +73,7 @@ public static class FshPermissions
         new("Delete LifecycleStages", FshActions.Delete, FshResources.LifecycleStages),
         new("Export LifecycleStages", FshActions.Export, FshResources.LifecycleStages),
         // End LifecycleStage
-//TODO PERMISSIONS
+        //TODO PERMISSIONS
 
         //brands
         new("View Brands", FshActions.View, FshResources.Brands, IsBasic: true),

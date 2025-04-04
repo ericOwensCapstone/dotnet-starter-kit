@@ -20,6 +20,11 @@ using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.PreventiveTreatments;
 using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.LifecycleStages;
 // End LifecycleStage
+
+// Start LifecycleProgram
+using FSH.Starter.WebApi.Ranch.Domain.LifecyclePrograms;
+using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.LifecyclePrograms;
+// End LifecycleProgram
 namespace FSH.Starter.WebApi.Ranch.Infrastructure;
 public static class RanchModule
 {
@@ -63,6 +68,17 @@ public static class RanchModule
             // End LifecycleStage
 
             
+        
+            
+        
+            // Start LifecycleProgram
+            var lifecycleProgramGroup = app.MapGroup("lifecyclePrograms").WithTags("lifecyclePrograms");
+            lifecycleProgramGroup.MapLifecycleProgramCreationEndpoint();
+            lifecycleProgramGroup.MapGetLifecycleProgramEndpoint();
+            lifecycleProgramGroup.MapGetLifecycleProgramListEndpoint();
+            lifecycleProgramGroup.MapLifecycleProgramUpdateEndpoint();
+            lifecycleProgramGroup.MapLifecycleProgramDeleteEndpoint();
+            // End LifecycleProgram
         }
     }
     public static WebApplicationBuilder RegisterRanchServices(this WebApplicationBuilder builder)
@@ -84,6 +100,11 @@ public static class RanchModule
         builder.Services.AddKeyedScoped<IRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
         builder.Services.AddKeyedScoped<IReadRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
         // End LifecycleStage
+        
+        // Start LifecycleProgram
+        builder.Services.AddKeyedScoped<IRepository<LifecycleProgram>, RanchRepository<LifecycleProgram>>("ranch:lifecyclePrograms");
+        builder.Services.AddKeyedScoped<IReadRepository<LifecycleProgram>, RanchRepository<LifecycleProgram>>("ranch:lifecyclePrograms");
+        // End LifecycleProgram
         return builder;
     }
     public static WebApplication UseRanchModule(this WebApplication app)

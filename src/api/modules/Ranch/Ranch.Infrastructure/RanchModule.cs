@@ -1,9 +1,13 @@
 using Carter;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using FSH.Starter.WebApi.Ranch.Infrastructure.Persistence;
 using FSH.Starter.WebApi.Ranch.Domain.Rations;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.Rations;
-using FSH.Starter.WebApi.Ranch.Infrastructure.Persistence;
 // Start GrowthTreatment
 using FSH.Starter.WebApi.Ranch.Domain.GrowthTreatments;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.GrowthTreatments;
@@ -17,10 +21,7 @@ using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.LifecycleStages;
 // End LifecycleStage
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection;
+
 
 namespace FSH.Starter.WebApi.Ranch.Infrastructure;
 public static class RanchModule

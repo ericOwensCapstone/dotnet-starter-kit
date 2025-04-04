@@ -22,10 +22,18 @@ public sealed class RanchDbContext : FshDbContext
     }
 
     public DbSet<Ration> Rations { get; set; } = null!;
+    // Start GrowthTreatment
     public DbSet<GrowthTreatment> GrowthTreatments { get; set; } = null!;
+    // End GrowthTreatment
+    // Start PreventiveTreatment
     public DbSet<PreventiveTreatment> PreventiveTreatments { get; set; } = null!;
+    // End PreventiveTreatment
+    // Start LifecycleStage
     public DbSet<LifecycleStage> LifecycleStages { get; set; } = null!;
+    // End LifecycleStage
+    // Start LifecycleProgram
     public DbSet<LifecycleProgram> LifecyclePrograms { get; set; } = null!;
+    // End LifecycleProgram
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

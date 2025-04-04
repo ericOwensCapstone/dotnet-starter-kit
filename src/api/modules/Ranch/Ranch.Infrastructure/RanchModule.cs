@@ -32,33 +32,41 @@ public static class RanchModule
             rationGroup.MapRationUpdateEndpoint();
             rationGroup.MapRationDeleteEndpoint();
         
+            // Start GrowthTreatment
             var growthTreatmentGroup = app.MapGroup("growthTreatments").WithTags("growthTreatments");
             growthTreatmentGroup.MapGrowthTreatmentCreationEndpoint();
             growthTreatmentGroup.MapGetGrowthTreatmentEndpoint();
             growthTreatmentGroup.MapGetGrowthTreatmentListEndpoint();
             growthTreatmentGroup.MapGrowthTreatmentUpdateEndpoint();
             growthTreatmentGroup.MapGrowthTreatmentDeleteEndpoint();
-        
+            // End GrowthTreatment
+
+            // Start PreventiveTreatment
             var preventiveTreatmentGroup = app.MapGroup("preventiveTreatments").WithTags("preventiveTreatments");
             preventiveTreatmentGroup.MapPreventiveTreatmentCreationEndpoint();
             preventiveTreatmentGroup.MapGetPreventiveTreatmentEndpoint();
             preventiveTreatmentGroup.MapGetPreventiveTreatmentListEndpoint();
             preventiveTreatmentGroup.MapPreventiveTreatmentUpdateEndpoint();
             preventiveTreatmentGroup.MapPreventiveTreatmentDeleteEndpoint();
-        
+            // End PreventiveTreatment
+
+            // Start LifecycleStage
             var lifecycleStageGroup = app.MapGroup("lifecycleStages").WithTags("lifecycleStages");
             lifecycleStageGroup.MapLifecycleStageCreationEndpoint();
             lifecycleStageGroup.MapGetLifecycleStageEndpoint();
             lifecycleStageGroup.MapGetLifecycleStageListEndpoint();
             lifecycleStageGroup.MapLifecycleStageUpdateEndpoint();
             lifecycleStageGroup.MapLifecycleStageDeleteEndpoint();
-        
+            // End LifecycleStage
+
+            // Start LifecycleProgram
             var lifecycleProgramGroup = app.MapGroup("lifecyclePrograms").WithTags("lifecyclePrograms");
             lifecycleProgramGroup.MapLifecycleProgramCreationEndpoint();
             lifecycleProgramGroup.MapGetLifecycleProgramEndpoint();
             lifecycleProgramGroup.MapGetLifecycleProgramListEndpoint();
             lifecycleProgramGroup.MapLifecycleProgramUpdateEndpoint();
             lifecycleProgramGroup.MapLifecycleProgramDeleteEndpoint();
+            // End LifecycleProgram
         }
     }
     public static WebApplicationBuilder RegisterRanchServices(this WebApplicationBuilder builder)
@@ -68,14 +76,22 @@ public static class RanchModule
         builder.Services.AddScoped<IDbInitializer, RanchDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<Ration>, RanchRepository<Ration>>("ranch:rations");
         builder.Services.AddKeyedScoped<IReadRepository<Ration>, RanchRepository<Ration>>("ranch:rations");
+        // Start GrowthTreatment
         builder.Services.AddKeyedScoped<IRepository<GrowthTreatment>, RanchRepository<GrowthTreatment>>("ranch:growthTreatments");
         builder.Services.AddKeyedScoped<IReadRepository<GrowthTreatment>, RanchRepository<GrowthTreatment>>("ranch:growthTreatments");
+        // End GrowthTreatment
+        // Start PreventiveTreatment
         builder.Services.AddKeyedScoped<IRepository<PreventiveTreatment>, RanchRepository<PreventiveTreatment>>("ranch:preventiveTreatments");
         builder.Services.AddKeyedScoped<IReadRepository<PreventiveTreatment>, RanchRepository<PreventiveTreatment>>("ranch:preventiveTreatments");
+        // End PreventiveTreatment
+        // Start LifecycleStage
         builder.Services.AddKeyedScoped<IRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
         builder.Services.AddKeyedScoped<IReadRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
+        // End LifecycleStage
+        // Start LifecycleProgram
         builder.Services.AddKeyedScoped<IRepository<LifecycleProgram>, RanchRepository<LifecycleProgram>>("ranch:lifecyclePrograms");
         builder.Services.AddKeyedScoped<IReadRepository<LifecycleProgram>, RanchRepository<LifecycleProgram>>("ranch:lifecyclePrograms");
+        // End LifecycleProgram
         return builder;
     }
     public static WebApplication UseRanchModule(this WebApplication app)

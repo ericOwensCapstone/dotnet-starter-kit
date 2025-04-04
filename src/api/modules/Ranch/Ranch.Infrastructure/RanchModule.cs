@@ -84,7 +84,6 @@ public static class RanchModule
         builder.Services.AddKeyedScoped<IRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
         builder.Services.AddKeyedScoped<IReadRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
         // End LifecycleStage
-        
         return builder;
     }
     public static WebApplication UseRanchModule(this WebApplication app)

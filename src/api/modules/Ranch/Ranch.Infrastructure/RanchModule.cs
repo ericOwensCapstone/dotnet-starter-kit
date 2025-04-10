@@ -20,13 +20,6 @@ using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.PreventiveTreatments;
 using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.LifecycleStages;
 // End LifecycleStage
-
-
-
-
-
-
-
 // Start LifecycleProgram
 using FSH.Starter.WebApi.Ranch.Domain.LifecyclePrograms;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.LifecyclePrograms;
@@ -44,8 +37,7 @@ public static class RanchModule
             rationGroup.MapGetRationEndpoint();
             rationGroup.MapGetRationListEndpoint();
             rationGroup.MapRationUpdateEndpoint();
-            rationGroup.MapRationDeleteEndpoint();
-        
+            rationGroup.MapRationDeleteEndpoint();       
             // Start GrowthTreatment
             var growthTreatmentGroup = app.MapGroup("growthTreatments").WithTags("growthTreatments");
             growthTreatmentGroup.MapGrowthTreatmentCreationEndpoint();
@@ -54,7 +46,6 @@ public static class RanchModule
             growthTreatmentGroup.MapGrowthTreatmentUpdateEndpoint();
             growthTreatmentGroup.MapGrowthTreatmentDeleteEndpoint();
             // End GrowthTreatment
-
             // Start PreventiveTreatment
             var preventiveTreatmentGroup = app.MapGroup("preventiveTreatments").WithTags("preventiveTreatments");
             preventiveTreatmentGroup.MapPreventiveTreatmentCreationEndpoint();
@@ -63,7 +54,6 @@ public static class RanchModule
             preventiveTreatmentGroup.MapPreventiveTreatmentUpdateEndpoint();
             preventiveTreatmentGroup.MapPreventiveTreatmentDeleteEndpoint();
             // End PreventiveTreatment
-
             // Start LifecycleStage
             var lifecycleStageGroup = app.MapGroup("lifecycleStages").WithTags("lifecycleStages");
             lifecycleStageGroup.MapLifecycleStageCreationEndpoint();
@@ -72,23 +62,6 @@ public static class RanchModule
             lifecycleStageGroup.MapLifecycleStageUpdateEndpoint();
             lifecycleStageGroup.MapLifecycleStageDeleteEndpoint();
             // End LifecycleStage
-
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
             // Start LifecycleProgram
             var lifecycleProgramGroup = app.MapGroup("lifecyclePrograms").WithTags("lifecyclePrograms");
             lifecycleProgramGroup.MapLifecycleProgramCreationEndpoint();
@@ -118,13 +91,6 @@ public static class RanchModule
         builder.Services.AddKeyedScoped<IRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
         builder.Services.AddKeyedScoped<IReadRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
         // End LifecycleStage
-        
-        
-        
-        
-        
-        
-        
         // Start LifecycleProgram
         builder.Services.AddKeyedScoped<IRepository<LifecycleProgram>, RanchRepository<LifecycleProgram>>("ranch:lifecyclePrograms");
         builder.Services.AddKeyedScoped<IReadRepository<LifecycleProgram>, RanchRepository<LifecycleProgram>>("ranch:lifecyclePrograms");

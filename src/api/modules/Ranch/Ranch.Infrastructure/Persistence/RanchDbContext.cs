@@ -16,25 +16,16 @@ using FSH.Starter.WebApi.Ranch.Domain.PreventiveTreatments;
 // Start LifecycleStage
 using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
 // End LifecycleStage
-
-
-
-
-
-
-
 // Start LifecycleProgram
 using FSH.Starter.WebApi.Ranch.Domain.LifecyclePrograms;
 // End LifecycleProgram
 namespace FSH.Starter.WebApi.Ranch.Infrastructure.Persistence;
-
 public sealed class RanchDbContext : FshDbContext
 {
     public RanchDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenantContextAccessor, DbContextOptions<RanchDbContext> options, IPublisher publisher, IOptions<DatabaseOptions> settings)
         : base(multiTenantContextAccessor, options, publisher, settings)
     {
     }
-
     public DbSet<Ration> Rations { get; set; } = null!;
     // Start GrowthTreatment
     public DbSet<GrowthTreatment> GrowthTreatments { get; set; } = null!;
@@ -43,12 +34,11 @@ public sealed class RanchDbContext : FshDbContext
     public DbSet<PreventiveTreatment> PreventiveTreatments { get; set; } = null!;
     // End PreventiveTreatment
     // Start LifecycleStage
-    public DbSet<LifecycleStage> LifecycleStages { get; set; } = null!;// Start LifecycleProgram
+    public DbSet<LifecycleStage> LifecycleStages { get; set; } = null!;
+    // End LifecycleStage
+    // Start LifecycleProgram
     public DbSet<LifecycleProgram> LifecyclePrograms { get; set; } = null!;
     // End LifecycleProgram
-    // End LifecycleStage
-    
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

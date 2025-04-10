@@ -35,7 +35,6 @@ public static class FshPermissions
         new("Update Products", FshActions.Update, FshResources.Products),
         new("Delete Products", FshActions.Delete, FshResources.Products),
         new("Export Products", FshActions.Export, FshResources.Products),
-
         //rations
         new("View Rations", FshActions.View, FshResources.Rations, IsBasic: true),
         new("Search Rations", FshActions.Search, FshResources.Rations, IsBasic: true),
@@ -43,7 +42,6 @@ public static class FshPermissions
         new("Update Rations", FshActions.Update, FshResources.Rations),
         new("Delete Rations", FshActions.Delete, FshResources.Rations),
         new("Export Rations", FshActions.Export, FshResources.Rations),
-
         // Start GrowthTreatment
         //growthTreatments
         new("View GrowthTreatments", FshActions.View, FshResources.GrowthTreatments, IsBasic: true),
@@ -53,7 +51,6 @@ public static class FshPermissions
         new("Delete GrowthTreatments", FshActions.Delete, FshResources.GrowthTreatments),
         new("Export GrowthTreatments", FshActions.Export, FshResources.GrowthTreatments),
         // End GrowthTreatment
-
         // Start PreventiveTreatment
         //preventiveTreatments
         new("View PreventiveTreatments", FshActions.View, FshResources.PreventiveTreatments, IsBasic: true),
@@ -63,7 +60,6 @@ public static class FshPermissions
         new("Delete PreventiveTreatments", FshActions.Delete, FshResources.PreventiveTreatments),
         new("Export PreventiveTreatments", FshActions.Export, FshResources.PreventiveTreatments),
         // End PreventiveTreatment
-
         // Start LifecycleStage
         //lifecycleStages
         new("View LifecycleStages", FshActions.View, FshResources.LifecycleStages, IsBasic: true),
@@ -73,21 +69,6 @@ public static class FshPermissions
         new("Delete LifecycleStages", FshActions.Delete, FshResources.LifecycleStages),
         new("Export LifecycleStages", FshActions.Export, FshResources.LifecycleStages),
         // End LifecycleStage
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
         // Start LifecycleProgram
         new("View LifecyclePrograms", FshActions.View, FshResources.LifecyclePrograms, IsBasic: true),
         new("Search LifecyclePrograms", FshActions.Search, FshResources.LifecyclePrograms, IsBasic: true),

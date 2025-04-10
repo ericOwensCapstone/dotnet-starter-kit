@@ -32,12 +32,6 @@ public partial class NavMenu
     // Start LifecycleStage
     private bool _canViewLifecycleStages;
     // End LifecycleStage
-    
-    
-    
-    
-    
-    
     // Start LifecycleProgram
     private bool _canViewLifecyclePrograms;
     // End LifecycleProgram
@@ -68,12 +62,6 @@ public partial class NavMenu
         // Start LifecycleStage
         _canViewLifecycleStages = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.LifecycleStages);
         // End LifecycleStage 
-        
-        
-        
-        
-        
-        
         // Start LifecycleProgram
         _canViewLifecyclePrograms = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.LifecyclePrograms);
         // End LifecycleProgram

@@ -19,6 +19,10 @@ a single other entity type.
 ========================================
 To add a new entity:
 
+
+!!! Prepare the NavMenu.razor file to add the new entity to the menu group.
+
+
 Open the CSharpRanchRewriter project in Visual Studio.
 
 Update the RanchRewriterConstants.cs file with the new entity name and the properties for the new entity, and a new Nav Icon spec.

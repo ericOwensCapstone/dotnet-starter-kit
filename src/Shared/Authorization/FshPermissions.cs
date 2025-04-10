@@ -76,6 +76,18 @@ public static class FshPermissions
 
         
 
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
         // Start LifecycleProgram
         new("View LifecyclePrograms", FshActions.View, FshResources.LifecyclePrograms, IsBasic: true),
         new("Search LifecyclePrograms", FshActions.Search, FshResources.LifecyclePrograms, IsBasic: true),

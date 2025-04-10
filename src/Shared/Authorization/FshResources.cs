@@ -21,6 +21,12 @@ public static class FshResources
     // End LifecycleStage
     
     
+    
+    
+    
+    
+    
+    
     // Start LifecycleProgram
     public const string LifecyclePrograms = nameof(LifecyclePrograms);
     // End LifecycleProgram

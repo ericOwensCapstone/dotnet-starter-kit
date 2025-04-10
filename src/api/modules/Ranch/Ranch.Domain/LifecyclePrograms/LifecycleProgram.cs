@@ -8,9 +8,9 @@ namespace FSH.Starter.WebApi.Ranch.Domain.LifecyclePrograms;
 public class LifecycleProgram : AuditableEntity, IAggregateRoot
 {
 
-    public string Name { get; private set; } = string.Empty; // MaxLength=100, Default="Sample LifecycleProgram", Rule=NotEmpty().MinimumLength(2).MaximumLength(100)
-    public string? Description { get; private set; } = string.Empty; // MaxLength=1000, Default="Descriptive Description", Rule=NotEmpty().MinimumLength(2).MaximumLength(1000)
-    public List<LifecycleProgramLifecycleStage> LifecycleProgramLifecycleStages { get; private set; } = new(); // Rule=NotEmpty()
+            public string Name { get; private set; } = string.Empty; // MaxLength=100, Default="Sample LifecycleProgram", Rule=NotEmpty().MinimumLength(2).MaximumLength(100)
+            public string? Description { get; private set; } = string.Empty; // MaxLength=1000, Default="Descriptive Description", Rule=NotEmpty().MinimumLength(2).MaximumLength(1000)
+            public List<LifecycleProgramLifecycleStage> LifecycleProgramLifecycleStages { get; private set; } = new(); // Rule=NotEmpty()
 
     private LifecycleProgram() { }
 

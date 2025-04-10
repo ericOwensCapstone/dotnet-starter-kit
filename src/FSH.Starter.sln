@@ -73,6 +73,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ranch.Domain", "api\modules
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ranch.Infrastructure", "api\modules\Ranch\Ranch.Infrastructure\Ranch.Infrastructure.csproj", "{BC56C4CA-D72B-4DE9-B3FB-017B8ADA2DC0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Harvest", "Harvest", "{B15A92A2-F168-41DC-A031-9BAE3AEA9701}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -329,6 +331,7 @@ Global
 		{22A22CD4-36F4-42B0-9B44-870A1B897BCB} = {EC98B356-5D90-49CE-AF7E-C19A718E4EDD}
 		{F43F7EEE-4FF1-45C0-8B13-AE6AC73391C7} = {EC98B356-5D90-49CE-AF7E-C19A718E4EDD}
 		{BC56C4CA-D72B-4DE9-B3FB-017B8ADA2DC0} = {EC98B356-5D90-49CE-AF7E-C19A718E4EDD}
+		{B15A92A2-F168-41DC-A031-9BAE3AEA9701} = {F3DF5AC5-8CDC-46D4-969D-1245A6880215}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA8248C2-3877-4AF7-8777-A17E7881E030}

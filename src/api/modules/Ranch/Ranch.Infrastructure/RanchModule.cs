@@ -21,6 +21,12 @@ using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.LifecycleStages;
 // End LifecycleStage
 
+
+
+
+
+
+
 // Start LifecycleProgram
 using FSH.Starter.WebApi.Ranch.Domain.LifecyclePrograms;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.LifecyclePrograms;
@@ -71,6 +77,18 @@ public static class RanchModule
         
             
         
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
             // Start LifecycleProgram
             var lifecycleProgramGroup = app.MapGroup("lifecyclePrograms").WithTags("lifecyclePrograms");
             lifecycleProgramGroup.MapLifecycleProgramCreationEndpoint();
@@ -100,6 +118,12 @@ public static class RanchModule
         builder.Services.AddKeyedScoped<IRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
         builder.Services.AddKeyedScoped<IReadRepository<LifecycleStage>, RanchRepository<LifecycleStage>>("ranch:lifecycleStages");
         // End LifecycleStage
+        
+        
+        
+        
+        
+        
         
         // Start LifecycleProgram
         builder.Services.AddKeyedScoped<IRepository<LifecycleProgram>, RanchRepository<LifecycleProgram>>("ranch:lifecyclePrograms");

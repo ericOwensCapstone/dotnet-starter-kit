@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Asp.Versioning.Conventions;
 using Carter;
 using FluentValidation;
@@ -8,6 +8,8 @@ using FSH.Starter.WebApi.Ranch.Application;
 using FSH.Starter.WebApi.Ranch.Infrastructure;
 using FSH.Starter.WebApi.Todo;
 
+using FSH.Starter.WebApi.Harvest.Application;
+using FSH.Starter.WebApi.Harvest.Infrastructure; 
 namespace FSH.Starter.WebApi.Host;
 
 public static class Extensions
@@ -21,6 +23,7 @@ public static class Extensions
         {
             typeof(CatalogMetadata).Assembly,
             typeof(RanchMetadata).Assembly,
+            typeof(HarvestMetadata).Assembly,
             typeof(TodoModule).Assembly
         };
 
@@ -34,6 +37,7 @@ public static class Extensions
         });
 
         //register module services
+        builder.RegisterHarvestServices();
         builder.RegisterCatalogServices();
         builder.RegisterRanchServices();
         builder.RegisterTodoServices();
@@ -41,6 +45,7 @@ public static class Extensions
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
         {
+            config.WithModule<HarvestModule.Endpoints>();
             config.WithModule<CatalogModule.Endpoints>();
             config.WithModule<RanchModule.Endpoints>();
             config.WithModule<TodoModule.Endpoints>();
@@ -54,6 +59,7 @@ public static class Extensions
         ArgumentNullException.ThrowIfNull(app);
 
         //register modules
+        app.UseHarvestModule();
         app.UseCatalogModule();
         app.UseRanchModule();
         app.UseTodoModule();

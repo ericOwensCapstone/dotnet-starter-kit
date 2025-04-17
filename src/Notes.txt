@@ -1,8 +1,23 @@
-REVIEW
-========================================
 
 ========================================
-Soft deletes are implemented in AuditInterceptor.cs
+Access Control
+    - see FshDbContext.cs
+    - see FshPermissions.cs
+    - see FshRoles.cs
+    - see FshUser.cs
+    - see FshUserRole.cs
+    - see FshUserStore.cs
+    - see UserManagerExtensions.cs
+
+========================================
+MediatR-based bus
+    In FshDbContext.cs, see PublishDomainEventsAsync().
+
+========================================
+Soft deletes
+    - see AuditInterceptor.cs
+    - CanBeSoftDeleted() in domain classes
+
 How do the default queries ignore the entity rows that have been soft deleted?
 In FshDbContext:
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -18,10 +33,6 @@ a single other entity type.
 
 ========================================
 To add a new entity:
-
-
-!!! Prepare the NavMenu.razor file to add the new entity to the menu group.
-
 
 Open the CSharpRanchRewriter project in Visual Studio.
 

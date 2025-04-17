@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -73,14 +73,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ranch.Domain", "api\modules
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ranch.Infrastructure", "api\modules\Ranch\Ranch.Infrastructure\Ranch.Infrastructure.csproj", "{BC56C4CA-D72B-4DE9-B3FB-017B8ADA2DC0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Harvest", "Harvest", "{B15A92A2-F168-41DC-A031-9BAE3AEA9701}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harvest.Application", "api\modules\Harvest\Harvest.Application\Harvest.Application.csproj", "{3CCB927B-C762-4221-B5E6-A1D3FDE53698}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harvest.Domain", "api\modules\Harvest\Harvest.Domain\Harvest.Domain.csproj", "{9DDDBB78-B55E-4598-AB3F-1CB7C577CB33}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harvest.Infrastructure", "api\modules\Harvest\Harvest.Infrastructure\Harvest.Infrastructure.csproj", "{2627E66B-BC62-4620-AFF1-ECAB597EB18F}"
-EndProject
+# Start Modules
+# End Modules
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -372,11 +366,9 @@ Global
 		{EC98B356-5D90-49CE-AF7E-C19A718E4EDD} = {F3DF5AC5-8CDC-46D4-969D-1245A6880215}
 		{22A22CD4-36F4-42B0-9B44-870A1B897BCB} = {EC98B356-5D90-49CE-AF7E-C19A718E4EDD}
 		{F43F7EEE-4FF1-45C0-8B13-AE6AC73391C7} = {EC98B356-5D90-49CE-AF7E-C19A718E4EDD}
-		{BC56C4CA-D72B-4DE9-B3FB-017B8ADA2DC0} = {EC98B356-5D90-49CE-AF7E-C19A718E4EDD}
-		{B15A92A2-F168-41DC-A031-9BAE3AEA9701} = {F3DF5AC5-8CDC-46D4-969D-1245A6880215}
-		{3CCB927B-C762-4221-B5E6-A1D3FDE53698} = {B15A92A2-F168-41DC-A031-9BAE3AEA9701}
-		{9DDDBB78-B55E-4598-AB3F-1CB7C577CB33} = {B15A92A2-F168-41DC-A031-9BAE3AEA9701}
-		{2627E66B-BC62-4620-AFF1-ECAB597EB18F} = {B15A92A2-F168-41DC-A031-9BAE3AEA9701}
+		{BC56C4CA-D72B-4DE9-B3FB-017B8ADA2DC0} = {EC98B356-5D90-49CE-AF7E-C19A718E4EDD}	
+		# Start Nesting
+		# End Nesting
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA8248C2-3877-4AF7-8777-A17E7881E030}

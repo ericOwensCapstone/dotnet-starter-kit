@@ -5,5 +5,6 @@ public static class SchemaNames
     public const string Catalog = "catalog";
     public const string Ranch = "ranch";
     public const string Tenant = "tenant";
-    public const string Harvest = "harvest";
+    // Start Add Schema Names
+    // End Add Schema Names
 }

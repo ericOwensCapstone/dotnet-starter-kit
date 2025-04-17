@@ -7,13 +7,16 @@
     <ProjectReference Include="..\..\framework\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Ranch\Ranch.Infrastructure\Ranch.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\modules\Harvest\Harvest.Infrastructure\Harvest.Infrastructure.csproj" />
+    <!-- Start Project References -->
+    <!-- End Project References -->
     <ProjectReference Include="..\..\modules\Todo\Todo.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Catalog\" />
     <Folder Include="Identity\" />
     <Folder Include="Ranch\" />
+    <!-- Start Folders -->
+    <!-- End Folders -->
     <Folder Include="Tenant\" />
     <Folder Include="Todo\" />
   </ItemGroup>

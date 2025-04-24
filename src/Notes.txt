@@ -36,9 +36,11 @@ To add a new entity:
 
 Open the CSharpRanchRewriter project in Visual Studio.
 
-Update the RanchRewriterConstants.cs file with the new entity name and the properties for the new entity, and a new Nav Icon spec.
+Update the RewriterSpecs.cs file with the new entity name and the properties for the new entity, and a new Nav Icon spec, update the module to name
 
-For now, in the RewriterExec, comment out the Blazor rewrites at the bottom (we will run them in just a minute).
+For now, in the RewriterExec, comment out 
+    - the Blazor rewrites at the bottom (we will run them in just a minute).
+    - the module write and clean code (see other instructions for creating a new module)
 
 Run the CSharpRanchRewriter project.
 
@@ -72,11 +74,13 @@ Run the CSharpRanchRewriter project.
 
 This should complete the new entity in the FSH project.
 
+========================================
 PERMISSIONS
 Permissions are assigned as claims to individual users.  If the FshPermissions themselves are updated after
 the creation of a user, the new permissions will be assigned to that user by the
 IdentityDbInitializr class in the Fsh.Starter.WebApi project.
 
+========================================
 CHANGED OR REMOVED FSH STUFF:
 
 Aspire Host program.cs to not use containerized postgres
@@ -86,28 +90,17 @@ MainLayout.razor: commented out FSH content, including account link to "dashboar
 NavMenu.razor: commented out content
 Need to run proxy AND then run at https://localhost:7100
 
+========================================
 HANGFIRE:
 @ localhost:7000/jobs
 
+========================================
 WARNING:  The Update method in the domain class differs from the original FSH
 approach and is not discriminating w.r.t. which properties are updated.
 
+========================================
 DOMAIN EVENTS: are publish by this method: private async Task PublishDomainEventsAsync() in the FshDbContext on save;
 publishing is implemented by MediatR
-
-
-STUFF THAT NEEDS TO BE UPDATED AFTER DomainClassRewrite:
-- SearchGrowthTreatmentSpecs -- done
-- GrowthTreatmentConfiguration -- done
-- CreateGrowthTreatmentCommand -- done
-- CreateGrowthTreatmentCommandValidator -- done
-- CreateGrowthTreatmentHandler -- done
-- GrowthTreatmentResponse -- done
-- SearchGrowthTreatmentsCommand -- done
-- UpdateGrowthTreatmentCommand -- done
-- UpdateGrowthTreatmentCommandValidator -- done
-- UpdateGrowthTreatmentHandler -- done
-
 
 ====================================================================================================
 

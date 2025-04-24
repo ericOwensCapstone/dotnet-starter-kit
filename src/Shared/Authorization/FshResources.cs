@@ -10,18 +10,6 @@ public static class FshResources
     public const string RoleClaims = nameof(RoleClaims);
     public const string Products = nameof(Products);
     public const string Rations = nameof(Rations);
-    // Start GrowthTreatment
-    public const string GrowthTreatments = nameof(GrowthTreatments);
-    // End GrowthTreatment
-    // Start PreventiveTreatment
-    public const string PreventiveTreatments = nameof(PreventiveTreatments);
-    // End PreventiveTreatment
-    // Start LifecycleStage
-    public const string LifecycleStages = nameof(LifecycleStages);
-    // End LifecycleStage
-    // Start LifecycleProgram
-    public const string LifecyclePrograms = nameof(LifecyclePrograms);
-    // End LifecycleProgram
     //TODO RESOURCES
     public const string Brands = nameof(Brands);
     public const string Todos = nameof(Todos);

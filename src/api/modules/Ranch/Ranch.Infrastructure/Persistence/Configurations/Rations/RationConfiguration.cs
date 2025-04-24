@@ -8,8 +8,6 @@ internal sealed class RationConfiguration : IEntityTypeConfiguration<Ration>
 {
     public void Configure(EntityTypeBuilder<Ration> builder)
     {
-        builder.IsMultiTenant();
-        builder.Property<string>("TenantId"); // Define TenantId as a shadow property
         builder.Property<DateTimeOffset?>("Deleted"); // Define Deleted as a shadow property  
         builder.HasIndex("Name", "TenantId").IsUnique().HasFilter("\"Deleted\" IS NULL");
         builder.HasKey(x => x.Id);

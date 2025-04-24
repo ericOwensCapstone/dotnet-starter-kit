@@ -456,7 +456,7 @@ Here:
 2. Modify the Global Query Filter
 Update the global query filter logic to include shared data. Specifically, for entities like Contract, allow access if the current tenant is either the primary owner (TenantId) or is listed in SharedWithTenantIds.
 Modify the OnModelCreating method in FshDbContext:
-
+//SHARED
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id;

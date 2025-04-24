@@ -1,12 +1,13 @@
 using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
-using FSH.Starter.WebApi.Ranch.Domain.LifecycleStages;
+using FSH.Framework.Core.Tenant.Abstractions;
 using FSH.Starter.WebApi.Ranch.Domain.Rations.Events;
 using Microsoft.EntityFrameworkCore;
 
 namespace FSH.Starter.WebApi.Ranch.Domain.Rations;
-public class Ration : AuditableEntity, IAggregateRoot
+public class Ration : AuditableEntity, IAggregateRoot, ITenantEntity
 {
+    public string? TenantId { get; set; } 
     public string Name { get; private set; } = string.Empty; // MaxLength=99, Default="Sample Ration", Rule=NotEmpty().MinimumLength(2).MaximumLength(99)
     public string? Description { get; private set; } = string.Empty; // MaxLength=999, Default="Ration Description", Rule=NotEmpty().MinimumLength(2).MaximumLength(999)
     public decimal DollarsPerPound { get; private set; } = 0; // Default=0.10, Rule=GreaterThan(0)
@@ -58,8 +59,8 @@ public class Ration : AuditableEntity, IAggregateRoot
 
     public override (bool CanBeDeleted, string Reason) CanBeSoftDeleted(DbContext context)
     {
-        bool canBeDeleted = !context.Set<LifecycleStage>().Any(ls => ls.RationId == Id && ls.Deleted == null);
-        string reason = canBeDeleted ? string.Empty : "Cannot soft delete Ration because it is referenced by a non-soft-deleted LifecycleStage.";
+        bool canBeDeleted = true;
+        string reason = string.Empty;
         return (canBeDeleted, reason);
     }
 }

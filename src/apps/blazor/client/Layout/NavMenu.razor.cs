@@ -23,18 +23,6 @@ public partial class NavMenu
     private bool _canViewTenants;
     private bool _canViewAuditTrails;
     private bool _canViewRations;
-    // Start GrowthTreatment
-    private bool _canViewGrowthTreatments;
-    // End GrowthTreatment
-    // Start PreventiveTreatment
-    private bool _canViewPreventiveTreatments;
-    // End PreventiveTreatment
-    // Start LifecycleStage
-    private bool _canViewLifecycleStages;
-    // End LifecycleStage
-    // Start LifecycleProgram
-    private bool _canViewLifecyclePrograms;
-    // End LifecycleProgram
     //TODO ADD CAN VIEWS
 
     private bool CanViewAdministrationGroup => _canViewUsers || _canViewRoles || _canViewTenants;
@@ -53,18 +41,7 @@ public partial class NavMenu
         _canViewTenants = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Tenants);
         _canViewAuditTrails = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.AuditTrails);
         _canViewRations = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Rations);
-        // Start GrowthTreatment
-        _canViewGrowthTreatments = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.GrowthTreatments);
-        // End GrowthTreatment
-        // Start PreventiveTreatment
-        _canViewPreventiveTreatments = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.PreventiveTreatments);
-        // End PreventiveTreatment
-        // Start LifecycleStage
-        _canViewLifecycleStages = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.LifecycleStages);
-        // End LifecycleStage 
-        // Start LifecycleProgram
-        _canViewLifecyclePrograms = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.LifecyclePrograms);
-        // End LifecycleProgram
+ 
         //TODO ASSIGN CAN VIEWS
     }
 }

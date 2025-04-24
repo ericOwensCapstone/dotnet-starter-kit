@@ -32,8 +32,6 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
     {
         // QueryFilters need to be applied before base.OnModelCreating
 
-        //var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id;
-
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             var entityClrType = entityType.ClrType;

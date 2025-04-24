@@ -143,3 +143,546 @@ Validators applied here:
     }
 
     
+========================================
+
+Finbuckle.MultiTenant is a library designed to simplify multitenancy in .NET applications. It provides tools to manage tenants, resolve tenant-specific data, and configure tenant-specific services. Here's a breakdown of how Finbuckle implements multitenancy and how it integrates with your solution:
+---
+Key Concepts in Finbuckle.MultiTenant
+1.	Tenant Information (ITenantInfo):
+•	Represents the metadata for a tenant, such as Id, Name, ConnectionString, etc.
+•	In your solution, FshTenantInfo implements ITenantInfo and extends it with additional properties like AdminEmail, IsActive, and ValidUpto.
+2.	Tenant Resolution:
+•	Finbuckle uses tenant resolvers to determine the current tenant based on the incoming request or context.
+•	Common resolvers include:
+•	Host-based: Resolves the tenant based on the subdomain or hostname.
+•	Path-based: Resolves the tenant from the URL path.
+•	Header-based: Resolves the tenant from a specific HTTP header.
+•	The resolved tenant is stored in the IMultiTenantContext.
+3.	Tenant Context (IMultiTenantContext):
+•	Holds the current tenant's information (TenantInfo) and is accessible throughout the application.
+•	In your solution, IMultiTenantContextAccessor<FshTenantInfo> is used to access the current tenant's context.
+4.	Multitenant Database Context (MultiTenantDbContext):
+•	A specialized DbContext that supports tenant-specific database configurations.
+•	In your solution, FshDbContext inherits from MultiTenantDbContext and dynamically configures the database connection string based on the current tenant.
+5.	Tenant Middleware:
+•	Finbuckle provides middleware to resolve the tenant for each incoming request and populate the IMultiTenantContext.
+---
+
+How Finbuckle Works in Your Solution
+1.	Tenant Information (FshTenantInfo):
+•	FshTenantInfo stores tenant-specific metadata, including the ConnectionString for tenant-specific databases.
+•	It also includes custom logic for managing tenant validity and activation.
+2.	Tenant Context Accessor (IMultiTenantContextAccessor):
+•	IMultiTenantContextAccessor<FshTenantInfo> is injected into FshDbContext to access the current tenant's context.
+•	The ConnectionString from the tenant context is used to configure the database connection dynamically in OnConfiguring.
+3.	Multitenant Database Context (FshDbContext):
+•	Inherits from MultiTenantDbContext to enable tenant-specific database configurations.
+•	Dynamically sets the connection string based on the current tenant's ConnectionString.
+•	Implements additional logic, such as global query filters (e.g., for soft deletes) and domain event publishing.
+4.	Tenant Resolution:
+•	Finbuckle's middleware resolves the tenant for each request and populates the IMultiTenantContext.
+•	The resolution strategy (e.g., host-based, path-based) can be configured during application setup.
+5.	Error Handling:
+•	Your solution includes custom error handling for tenant-specific scenarios, such as throwing a DuplicateEntityNameException 
+for unique constraint violations.
+
+Enhancing Your Multitenant Solution
+To enhance your multitenant solution, consider the following:
+1.	Custom Tenant Resolvers:
+•	Implement custom resolvers if the default ones (host, path, header) don't meet your requirements.
+•	For example, resolve tenants based on JWT claims or a custom query parameter.
+2.	Tenant Caching:
+•	Cache tenant information to reduce database lookups during tenant resolution.
+3.	Tenant-Specific Services:
+•	Use Finbuckle's AddMultiTenant extension to register tenant-specific services (e.g., tenant-specific configurations or dependencies).
+4.	Advanced Database Strategies:
+•	Support multiple database strategies:
+•	Single Database, Shared Schema: All tenants share the same database and schema.
+•	Single Database, Separate Schemas: Each tenant has its own schema within the same database.
+•	Separate Databases: Each tenant has its own database (your current approach).
+5.	Tenant Lifecycle Management:
+•	Add APIs or background jobs to manage tenant lifecycle events, such as activation, deactivation, and subscription expiration.
+6.	Monitoring and Auditing:
+•	Implement tenant-specific logging and monitoring to track tenant activity and performance.
+---
+
+Summary
+Finbuckle.MultiTenant simplifies multitenancy by providing tools for tenant resolution, tenant context management, and tenant-specific database configurations. In your solution:
+•	FshTenantInfo represents tenant metadata.
+•	FshDbContext dynamically configures the database based on the current tenant.
+•	IMultiTenantContextAccessor provides access to the current tenant's context.
+By leveraging Finbuckle's extensibility (e.g., custom resolvers, caching, and advanced database strategies), you can further enhance your multitenant solution to meet your application's needs. Let me know if you'd like help implementing any specific enhancements!
+
+
+=========================================
+Actually, my solution is not using tenant-specific connection strings, but rather is implementing a single database and tables have a tenantId column that Finbuckle must use to filter database interactions by FshTenantInfo.  Is this possible and how does it work?
+
+Yes, it is absolutely possible to use a single database with a shared schema where each table includes a TenantId column, and Finbuckle can filter database interactions based on the current tenant. This approach is commonly referred to as "Single Database, Shared Schema" multitenancy. Finbuckle.MultiTenant supports this scenario through global query filters and tenant resolution.
+Here’s how it works and how you can implement it in your solution:
+---
+How Single Database, Shared Schema Works with Finbuckle
+1.	Tenant Identifier (TenantId):
+•	Each table in your database includes a TenantId column to identify which tenant owns the data.
+•	The TenantId is typically a foreign key or a simple identifier (e.g., a GUID or string).
+2.	Global Query Filters:
+•	Finbuckle uses global query filters in Entity Framework Core to automatically filter data based on the current tenant.
+•	These filters ensure that all queries include a condition like WHERE TenantId = {CurrentTenantId} without requiring explicit filtering in every query.
+3.	Tenant Context (IMultiTenantContext):
+•	The current tenant's information (e.g., TenantId) is resolved and stored in the IMultiTenantContext.
+•	This TenantId is then used in the global query filter to restrict data access.
+4.	Tenant Resolution:
+•	Finbuckle resolves the tenant for each request (e.g., from the hostname, path, or header) and sets the TenantId in the IMultiTenantContext.
+---
+
+Steps to Implement Single Database, Shared Schema
+1. Add a TenantId Column to Your Entities
+Ensure all your tenant-specific entities implement a common interface (e.g., ITenantEntity) that includes a TenantId property.
+public interface ITenantEntity
+{
+    string TenantId { get; set; }
+}
+
+public class ExampleEntity : ITenantEntity
+{
+    public int Id { get; set; }
+    public string TenantId { get; set; } = default!;
+    public string Name { get; set; } = default!;
+}
+
+2. Apply Global Query Filters in FshDbContext
+Override the OnModelCreating method in your FshDbContext to apply a global query filter for all entities implementing ITenantEntity.
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // Apply global query filter for tenant-specific entities
+    modelBuilder.Entity<ITenantEntity>()
+        .HasQueryFilter(e => e.TenantId == multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id);
+
+    // Apply other configurations
+    base.OnModelCreating(modelBuilder);
+}
+This ensures that all queries automatically include a filter like WHERE TenantId = {CurrentTenantId}.
+
+3. Set the TenantId on Entity Creation
+When creating new entities, ensure the TenantId is automatically set to the current tenant's ID.
+Override the SaveChangesAsync method in FshDbContext to populate the TenantId for new entities:
+public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+{
+    var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id;
+
+    if (string.IsNullOrEmpty(tenantId))
+    {
+        throw new InvalidOperationException("TenantId is not set.");
+    }
+
+    foreach (var entry in ChangeTracker.Entries<ITenantEntity>())
+    {
+        if (entry.State == EntityState.Added)
+        {
+            entry.Entity.TenantId = tenantId;
+        }
+    }
+
+    return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+}
+
+4. Configure Tenant Resolution
+Ensure that Finbuckle's middleware is configured to resolve the tenant for each request. For example, you can use a host-based or path-based resolver.
+In Program.cs or Startup.cs:
+
+services.AddMultiTenant<FshTenantInfo>()
+    .WithHostStrategy() // Resolve tenant based on the hostname
+    .WithPerTenantOptions<DatabaseOptions>((options, tenantInfo) =>
+    {
+        // Configure tenant-specific options if needed
+    });
+
+
+5. Handle Tenant-Specific Logic
+If you need to perform tenant-specific logic (e.g., during entity creation or validation), you can access the current tenant's information via IMultiTenantContextAccessor.
+For example:
+var currentTenant = multiTenantContextAccessor.MultiTenantContext?.TenantInfo;
+if (currentTenant == null)
+{
+    throw new InvalidOperationException("No tenant resolved.");
+}
+
+
+How It Works in Practice
+1.	Querying Data:
+•	When you query a table (e.g., dbContext.ExampleEntities.ToListAsync()), the global query filter automatically appends WHERE TenantId = {CurrentTenantId} to the query.
+•	This ensures that each tenant only sees their own data.
+2.	Inserting Data:
+•	When you add a new entity, the TenantId is automatically set to the current tenant's ID in the SaveChangesAsync method.
+3.	Resolving the Tenant:
+•	Finbuckle's middleware resolves the tenant for each request and sets the TenantId in the IMultiTenantContext.
+
+==========================================
+It is possible that the global query filter for tenant-specific entities is not explicitly applied in the code you provided but is instead handled indirectly or through a different mechanism. Let me explain how this could be done and how you can verify or implement it.
+---
+How Global Query Filters Could Be Applied Indirectly
+1.	Implicit Application via Finbuckle's MultiTenantDbContext:
+•	If your FshDbContext inherits from MultiTenantDbContext, Finbuckle can automatically apply a global query filter for entities that implement ITenantInfo or a similar interface.
+•	This behavior depends on how Finbuckle is configured and whether it is set up to enforce tenant isolation.
+2.	Custom Query Filter Logic:
+•	The global query filter might be applied dynamically in a base class or through a shared configuration that is not directly visible in the provided code.
+•	For example, a base DbContext class or a shared extension method could be responsible for applying the filter.
+3.	Middleware or Interceptors:
+
+How to Verify If a Global Query Filter Is Applied
+1.	Check the OnModelCreating Method in FshDbContext:
+•	Look for code that applies a global query filter, such as:
+     modelBuilder.Entity<YourEntity>()
+         .HasQueryFilter(e => e.TenantId == currentTenantId);
+     
+•	If this is missing, the filter is likely not applied explicitly.
+
+
+2.	Inspect the Base Class (MultiTenantDbContext):
+•	Check if MultiTenantDbContext or any other base class applies a global query filter automatically.
+3.	Examine the Query Execution:
+•	Run a query in your application and inspect the generated SQL (e.g., using a logging provider like Serilog or EF Core's built-in logging).
+•	Look for a WHERE TenantId = {CurrentTenantId} clause in the SQL.
+4.	Check for Middleware or Interceptors:
+•	Review the middleware pipeline or EF Core interceptors to see if tenant filtering is applied dynamically.
+---
+
+
+How to Explicitly Apply a Global Query Filter
+If you confirm that a global query filter is not being applied, you can explicitly add it in your FshDbContext:
+1. Implement a Tenant-Specific Interface
+Ensure all tenant-specific entities implement an interface like ITenantEntity:
+public interface ITenantEntity
+{
+    string TenantId { get; set; }
+}
+
+2. Apply the Global Query Filter in OnModelCreating
+Override the OnModelCreating method in FshDbContext to apply the filter:
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id;
+
+    if (!string.IsNullOrEmpty(tenantId))
+    {
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (typeof(ITenantEntity).IsAssignableFrom(entityType.ClrType))
+            {
+                var parameter = Expression.Parameter(entityType.ClrType, "e");
+                var filter = Expression.Lambda(
+                    Expression.Equal(
+                        Expression.Property(parameter, nameof(ITenantEntity.TenantId)),
+                        Expression.Constant(tenantId)),
+                    parameter);
+
+                entityType.SetQueryFilter(filter);
+            }
+        }
+    }
+
+    base.OnModelCreating(modelBuilder);
+}
+
+This dynamically applies the filter to all entities that implement ITenantEntity.
+
+3. Set the TenantId on Entity Creation
+Ensure the TenantId is set for new entities in SaveChangesAsync:
+
+public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+{
+    var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id;
+
+    if (string.IsNullOrEmpty(tenantId))
+    {
+        throw new InvalidOperationException("TenantId is not set.");
+    }
+
+    foreach (var entry in ChangeTracker.Entries<ITenantEntity>())
+    {
+        if (entry.State == EntityState.Added)
+        {
+            entry.Entity.TenantId = tenantId;
+        }
+    }
+
+    return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+}
+
+
+Alternative Approaches
+If you prefer not to use global query filters, here are some alternatives:
+1.	Manual Filtering in Repositories or Services:
+•	Add tenant-specific filtering logic in your repository or service layer.
+•	Example:
+     var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id;
+     var entities = dbContext.YourEntities.Where(e => e.TenantId == tenantId).ToList();
+     
+2.	EF Core Interceptors:
+•	Use EF Core query interceptors to modify queries dynamically and add tenant-specific conditions.
+3.	Middleware:
+•	Implement middleware to enforce tenant isolation by modifying the request pipeline or injecting tenant-specific services.
+---
+
+==========================================
+
+I think my solution must use implicit application via Finbuckle's MultiTenantDbContext.  
+All of my entities are call build.IsMultitenant() on EntityTypeBuilder<SomeEntity> builder.  
+Given this implementation I need to modify it to allow some data to be shared between two tenants.  
+In this scenario, one tenant has entered into a contract with another tenant, and they need to share Contract data.  
+How could I approach modifying my current implementation to allow this?
+
+
+Steps to Implement Shared Data
+1. Update the Entity to Support Shared Access
+Modify the Contract entity (or any other shared entity) to include a collection of TenantIds that are allowed to access it.
+For example:
+public class Contract : ITenantEntity
+{
+    public int Id { get; set; }
+    public string TenantId { get; set; } = default!; // Primary owner of the contract
+    public List<string> SharedWithTenantIds { get; set; } = new(); // Tenants with shared access
+    public string ContractDetails { get; set; } = default!;
+}
+
+Here:
+•	TenantId represents the primary owner of the contract.
+•	SharedWithTenantIds is a list of tenant IDs that are allowed to access the contract.
+
+2. Modify the Global Query Filter
+Update the global query filter logic to include shared data. Specifically, for entities like Contract, allow access if the current tenant is either the primary owner (TenantId) or is listed in SharedWithTenantIds.
+Modify the OnModelCreating method in FshDbContext:
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id;
+
+    if (!string.IsNullOrEmpty(tenantId))
+    {
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (typeof(ITenantEntity).IsAssignableFrom(entityType.ClrType))
+            {
+                var parameter = Expression.Parameter(entityType.ClrType, "e");
+
+                // Default filter: TenantId matches the current tenant
+                var tenantFilter = Expression.Equal(
+                    Expression.Property(parameter, nameof(ITenantEntity.TenantId)),
+                    Expression.Constant(tenantId));
+
+                // Additional filter for shared entities
+                if (entityType.ClrType == typeof(Contract))
+                {
+                    var sharedFilter = Expression.Call(
+                        Expression.Property(parameter, nameof(Contract.SharedWithTenantIds)),
+                        typeof(List<string>).GetMethod("Contains")!,
+                        Expression.Constant(tenantId));
+
+                    // Combine the filters with OR
+                    tenantFilter = Expression.OrElse(tenantFilter, sharedFilter);
+                }
+
+                var filter = Expression.Lambda(tenantFilter, parameter);
+                entityType.SetQueryFilter(filter);
+            }
+        }
+    }
+
+    base.OnModelCreating(modelBuilder);
+}
+
+This logic:
+•	Applies the default tenant filter (TenantId == CurrentTenantId) for all entities.
+•	Adds an additional condition for Contract entities to allow access if the current tenant is in SharedWithTenantIds.
+
+. Handle Shared Data in Save Operations
+When saving a Contract entity, ensure that the SharedWithTenantIds property is populated correctly.
+For example, when creating or updating a contract, you can add logic to include the appropriate tenant IDs in SharedWithTenantIds:
+public async Task ShareContractWithTenantAsync(int contractId, string sharedTenantId)
+{
+    var contract = await dbContext.Contracts.FindAsync(contractId);
+    if (contract == null)
+    {
+        throw new InvalidOperationException("Contract not found.");
+    }
+
+    if (!contract.SharedWithTenantIds.Contains(sharedTenantId))
+    {
+        contract.SharedWithTenantIds.Add(sharedTenantId);
+        await dbContext.SaveChangesAsync();
+    }
+}
+
+4. Optional: Add a Service for Shared Data Management
+To encapsulate the logic for managing shared data, create a service that handles operations like sharing, unsharing, and retrieving shared data.
+For example:
+
+public class ContractSharingService
+{
+    private readonly FshDbContext _dbContext;
+
+    public ContractSharingService(FshDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    public async Task ShareContractAsync(int contractId, string sharedTenantId)
+    {
+        var contract = await _dbContext.Contracts.FindAsync(contractId);
+        if (contract == null)
+        {
+            throw new InvalidOperationException("Contract not found.");
+        }
+
+        if (!contract.SharedWithTenantIds.Contains(sharedTenantId))
+        {
+            contract.SharedWithTenantIds.Add(sharedTenantId);
+            await _dbContext.SaveChangesAsync();
+        }
+    }
+
+    public async Task UnshareContractAsync(int contractId, string sharedTenantId)
+    {
+        var contract = await _dbContext.Contracts.FindAsync(contractId);
+        if (contract == null)
+        {
+            throw new InvalidOperationException("Contract not found.");
+        }
+
+        if (contract.SharedWithTenantIds.Contains(sharedTenantId))
+        {
+            contract.SharedWithTenantIds.Remove(sharedTenantId);
+            await _dbContext.SaveChangesAsync();
+        }
+    }
+}
+
+
+Considerations
+1.	Security:
+•	Ensure that only authorized tenants can share or access data.
+•	Validate tenant permissions before adding them to SharedWithTenantIds.
+2.	Performance:
+•	If SharedWithTenantIds grows large, consider optimizing it (e.g., using a separate table for shared access instead of a list).
+3.	Auditing:
+•	Track which tenants share data and when the sharing occurs for auditing purposes.
+4.	Scalability:
+•	If sharing becomes a common feature, consider creating a dedicated table for managing shared access relationships.
+For example:
+public class ContractSharing
+{
+    public int Id { get; set; }
+    public int ContractId { get; set; }
+    public string SharedTenantId { get; set; } = default!;
+}
+
+This approach would allow you to query shared access relationships more efficiently.
+---
+Summary
+To allow data sharing between tenants:
+1.	Modify the Contract entity to include a SharedWithTenantIds property.
+2.	Update the global query filter to allow access for tenants listed in SharedWithTenantIds.
+3.	Add logic to manage shared access during save operations.
+4.	Optionally, create a service to encapsulate shared data management.
+This approach maintains tenant isolation while enabling controlled data sharing. 
+
+===========================================
+Since my solution is currently using Finbuckles implicit multitenancy, 
+and this implementation has my code implementing the global query filtering, 
+how should I modify any Finbuckle configuration?
+
+Steps to Modify Finbuckle Configuration
+1. Disable Finbuckle's Implicit Query Filtering
+By default, Finbuckle applies its own global query filters when you use IsMultiTenant(). Since you are now implementing custom global query filters, you should disable Finbuckle's implicit filtering to avoid conflicts.
+To do this, you can configure Finbuckle to skip applying its default query filters. This is done by overriding the OnModelCreating method in your FshDbContext and not calling builder.IsMultiTenant() for your entities.
+For example:
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // Do NOT call builder.IsMultiTenant() here
+    // Instead, apply your custom global query filters as shown earlier
+    base.OnModelCreating(modelBuilder);
+}
+Alternatively, if you still want to use IsMultiTenant() for some entities but not others (e.g., Contract), you can selectively apply it only to entities that do not require custom filtering.
+---
+
+2. Remove Finbuckle's Default Query Filters
+If you want to completely remove Finbuckle's default query filtering for all entities, you can configure the MultiTenantOptions to disable query filtering globally.
+In your ConfigureMultitenancy method, modify the AddMultiTenant configuration:
+services.AddMultiTenant<FshTenantInfo>(config =>
+{
+    config.Options.DisableQueryFilters = true; // Disable Finbuckle's default query filters
+});
+
+This ensures that Finbuckle does not apply any implicit query filters, leaving you free to implement your own.
+
+3. Ensure Tenant Resolution Still Works
+Even though you are disabling Finbuckle's query filtering, you still need to ensure that tenant resolution works as expected. Finbuckle's middleware and tenant resolution strategies (e.g., WithClaimStrategy, WithHeaderStrategy, etc.) should remain unchanged.
+For example, in your ConfigureMultitenancy method:
+services.AddMultiTenant<FshTenantInfo>(config =>
+{
+    config.Events.OnTenantResolveCompleted = async (context) =>
+    {
+        // Custom logic for tenant resolution (if needed)
+        await Task.CompletedTask;
+    };
+})
+.WithClaimStrategy(FshClaims.Tenant) // Resolve tenant from claims
+.WithHeaderStrategy(TenantConstants.Identifier) // Resolve tenant from headers
+.WithDelegateStrategy(async context =>
+{
+    if (context is not HttpContext httpContext)
+        return null;
+
+    if (!httpContext.Request.Query.TryGetValue("tenant", out var tenantIdentifier) || string.IsNullOrEmpty(tenantIdentifier))
+        return null;
+
+    return await Task.FromResult(tenantIdentifier.ToString());
+});
+
+This ensures that the current tenant is still resolved and available in the IMultiTenantContext.
+
+4. Update IsMultiTenant() Usage
+If you are using IsMultiTenant() in your EntityTypeBuilder configurations, you may need to modify its usage to align with your custom filtering logic.
+For example:
+•	For entities that require custom filtering (e.g., Contract), do not call IsMultiTenant().
+•	For entities that do not require custom filtering, you can continue using IsMultiTenant().
+Example:
+public class ContractConfiguration : IEntityTypeConfiguration<Contract>
+{
+    public void Configure(EntityTypeBuilder<Contract> builder)
+    {
+        // Do NOT call builder.IsMultiTenant() here
+        builder.HasKey(c => c.Id);
+        builder.Property(c => c.TenantId).IsRequired();
+        builder.Property(c => c.ContractDetails).HasMaxLength(500);
+    }
+}
+
+public class SomeOtherEntityConfiguration : IEntityTypeConfiguration<SomeOtherEntity>
+{
+    public void Configure(EntityTypeBuilder<SomeOtherEntity> builder)
+    {
+        // Continue using IsMultiTenant() for entities that don't require custom filtering
+        builder.IsMultiTenant();
+        builder.HasKey(e => e.Id);
+        builder.Property(e => e.Name).HasMaxLength(100);
+    }
+}
+
+5. Test the Configuration
+After modifying the Finbuckle configuration, test the following scenarios to ensure everything works as expected:
+•	Verify that tenant resolution still works and the IMultiTenantContext is populated correctly.
+•	Ensure that your custom global query filters are applied and that shared data (e.g., Contract) is accessible by multiple tenants.
+•	Confirm that other entities remain isolated to their respective tenants.
+---
+Summary of Changes
+1.	Disable Finbuckle's Default Query Filters:
+•	Use config.Options.DisableQueryFilters = true in AddMultiTenant.
+•	Alternatively, avoid calling IsMultiTenant() for entities requiring custom filtering.
+2.	Implement Custom Global Query Filters:
+•	Apply your own query filters in OnModelCreating to handle shared data scenarios.
+3.	Retain Tenant Resolution:
+•	Ensure Finbuckle's middleware and tenant resolution strategies remain intact.
+4.	Selective Use of IsMultiTenant():
+•	Use IsMultiTenant() only for entities that do not require custom filtering.
+

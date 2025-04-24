@@ -690,3 +690,21 @@ Summary of Changes
 4.	Selective Use of IsMultiTenant():
 •	Use IsMultiTenant() only for entities that do not require custom filtering.
 
+
+
+
+===========================================
+Implementation notes:
+
+public class Contract : ITenantEntity
+{
+    public int Id { get; set; }
+
+    public string TenantId { get; set; } = default!; // Primary owner of the contract
+
+    public List<string> SharedWithTenantIds { get; set; } = new(); // Tenants with shared access
+
+    public string ContractDetails { get; set; } = default!;
+}
+
+

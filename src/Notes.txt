@@ -710,6 +710,13 @@ public class Contract : ITenantEntity
 
 =======
 
+
+namespace FSH.Framework.Core.Tenant.Abstractions;
+public interface IShareableEntity : ITenantEntity
+{
+    List<string> SharedWithTenantIds { get; set; };
+}
+
 protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // QueryFilters need to be applied before base.OnModelCreating
@@ -789,3 +796,16 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 
         base.OnModelCreating(modelBuilder);
     }
+
+    ============================
+
+    -- Add the shareableEntity stuff to the FshDbContext and its interface to core
+
+    -- In Harvest, add a TenantPage, which includes Name and Description, plus services and commodities
+
+    Question:  How do system entities like services and commodities work since they are not tenant-specific?
+        -- Who adds them to the system?
+            -- The root tenant
+            -- It would be an IRootEntity
+        -- How can all access them?
+            -- How are the FshPermissions and FshRoles set up to allow this?

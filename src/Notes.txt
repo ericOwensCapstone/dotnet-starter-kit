@@ -708,3 +708,84 @@ public class Contract : ITenantEntity
 }
 
 
+=======
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // QueryFilters need to be applied before base.OnModelCreating
+
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            var entityClrType = entityType.ClrType;
+
+            // Parameter for the lambda expression
+            var parameter = Expression.Parameter(entityClrType, "e");
+
+            // Tenant filter
+            Expression tenantFilter = null;
+            if (typeof(ITenantEntity).IsAssignableFrom(entityClrType))
+            {
+                // Use a method to dynamically fetch the tenant ID
+                var tenantIdProperty = Expression.Property(parameter, nameof(ITenantEntity.TenantId));
+                var tenantIdMethod = typeof(FshDbContext).GetMethod(nameof(GetCurrentTenantId), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var tenantIdCall = Expression.Call(Expression.Constant(this), tenantIdMethod);
+                tenantFilter = Expression.Equal(tenantIdProperty, tenantIdCall);
+            }
+
+            // SharedWithTenantIds filter
+            Expression sharedWithFilter = null;
+            if (typeof(IShareableEntity).IsAssignableFrom(entityClrType))
+            {
+                var sharedWithProperty = Expression.Property(parameter, nameof(IShareableEntity.SharedWithTenantIds));
+                var tenantIdMethod = typeof(FshDbContext).GetMethod(nameof(GetCurrentTenantId), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var tenantIdCall = Expression.Call(Expression.Constant(this), tenantIdMethod);
+
+                // Check if the SharedWithTenantIds collection contains the current tenant ID
+                var containsMethod = typeof(Enumerable).GetMethods()
+                    .First(m => m.Name == nameof(Enumerable.Contains) && m.GetParameters().Length == 2)
+                    .MakeGenericMethod(typeof(string));
+                sharedWithFilter = Expression.Call(containsMethod, sharedWithProperty, tenantIdCall);
+            }
+
+            // Combine tenant and sharedWith filters
+            Expression ownershipFilter = null;
+            if (tenantFilter != null && sharedWithFilter != null)
+            {
+                ownershipFilter = Expression.OrElse(tenantFilter, sharedWithFilter);
+            }
+            else
+            {
+                ownershipFilter = tenantFilter ?? sharedWithFilter;
+            }
+
+            // Soft delete filter
+            Expression softDeleteFilter = null;
+            if (typeof(ISoftDeletable).IsAssignableFrom(entityClrType))
+            {
+                softDeleteFilter = Expression.Equal(
+                    Expression.Property(parameter, nameof(ISoftDeletable.Deleted)),
+                    Expression.Constant(null));
+            }
+
+            // Combine all filters
+            Expression combinedFilter = null;
+            if (ownershipFilter != null && softDeleteFilter != null)
+            {
+                combinedFilter = Expression.AndAlso(ownershipFilter, softDeleteFilter);
+            }
+            else
+            {
+                combinedFilter = ownershipFilter ?? softDeleteFilter;
+            }
+
+            // Apply the combined filter if any
+            if (combinedFilter != null)
+            {
+                var lambda = Expression.Lambda(combinedFilter, parameter);
+                entityType.SetQueryFilter(lambda);
+            }
+
+        }
+
+        base.OnModelCreating(modelBuilder);
+    }

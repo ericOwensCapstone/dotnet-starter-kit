@@ -809,3 +809,51 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
             -- It would be an IRootEntity
         -- How can all access them?
             -- How are the FshPermissions and FshRoles set up to allow this?
+
+For Tenants in {root, other1, ...}
+IsBasic and IsRoot
+
+This configuration, for any new tenant TenantX, would not allow the TenantX Admin role to change
+its or its Basic role users' permissions to Create, Update, Delete, Export.
+
+However, the TenantX Admin role could revoke a TenantX Basic role's permissions for View and Search.
+
+        new("View Rations", FshActions.View, FshResources.Rations, IsBasic: true),
+        new("Search Rations", FshActions.Search, FshResources.Rations, IsBasic: true),
+        new("Create Rations", FshActions.Create, FshResources.Rations, IsRoot: true),
+        new("Update Rations", FshActions.Update, FshResources.Rations, IsRoot: true),
+        new("Delete Rations", FshActions.Delete, FshResources.Rations, IsRoot: true),
+        new("Export Rations", FshActions.Export, FshResources.Rations, IsRoot: true),
+
+Also, NOTE: when permissions are updated through the UI currently, existing users' permissions
+are NOT updated.  Only new tenants and their users, and new users of existing tenants are affected.
+
+
+api\framework\Infrastructure\Tenant\Extensions.cs
+    -- SetupTenantDatabases() called from UseMultitenancy()
+    -- which is called from api\framework\Infrastructure\Extensions.cs UseFshFramework()
+IdentityDbInitializer.cs
+
+Issues:
+    -- The RoleClaims table is not being updated when Rewriter removes entities...
+    --- At the moment, the DbInitializer is doing this:
+
+var newClaims = permissions
+            .Where(permission => !currentClaims.Any(c => c.Type == FshClaims.Permission && c.Value == permission.Name))
+            .Select(permission => new FshRoleClaim
+            {
+                RoleId = role.Id,
+                ClaimType = FshClaims.Permission,
+                ClaimValue = permission.Name,
+                CreatedBy = "application",
+                CreatedOn = timeProvider.GetUtcNow()
+            })
+            .ToList();
+
+and then only updating these "newClaims".  
+Is there another way?
+
+
+
+
+

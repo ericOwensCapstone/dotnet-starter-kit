@@ -854,6 +854,24 @@ and then only updating these "newClaims".
 Is there another way?
 
 
+==================================
+Blazor-side validation requires rewrite of ViewModel in code-behind, for example:
+
+public class RationViewModel //: UpdateRationCommand
+{
+    public Guid Id { get; set; }
+    [StringLength(4, ErrorMessage = "Name must be less than 4 characters.")]
+    public string? Name { get; set; }
+    [StringLength(5, ErrorMessage = "Description must be less than 5 characters.")]
+    public string? Description { get; set; }
+    [Range(0.1, 0.4, ErrorMessage = "DollarsPerPound must be between 0.1 and 0.4.")]
+    public decimal DollarsPerPound { get; set; }
+}
+
+
+
+
+
 
 
 

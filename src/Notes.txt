@@ -857,7 +857,7 @@ Is there another way?
 ==================================
 Blazor-side validation requires rewrite of ViewModel in code-behind, for example:
 
-public class RationViewModel //: UpdateRationCommand
+public class RationViewModel //: UpdateRationCommand -- no longer inherit from the Update command
 {
     public Guid Id { get; set; }
     [StringLength(4, ErrorMessage = "Name must be less than 4 characters.")]

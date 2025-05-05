@@ -868,8 +868,10 @@ public class RationViewModel //: UpdateRationCommand -- no longer inherit from t
     public decimal DollarsPerPound { get; set; }
 }
 
+==================================
+see TODO Member in TenantService.cs
 
-
+public Guid? MemberId { get; set; } = default!;
 
 
 

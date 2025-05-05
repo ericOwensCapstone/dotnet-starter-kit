@@ -47,7 +47,7 @@ public sealed class TenantService : ITenantService
         {
             connectionString = string.Empty;
         }
-
+        //TODO Member
         FshTenantInfo tenant = new(request.Id, request.Name, connectionString, request.AdminEmail, request.Issuer);
         await _tenantStore.TryAddAsync(tenant).ConfigureAwait(false);
 

@@ -26,6 +26,8 @@ public sealed class FshTenantInfo : IFshTenantInfo
     public string Id { get; set; } = default!;
     public string Identifier { get; set; } = default!;
 
+    public Guid? MemberId { get; set; } = default!;
+
     public string Name { get; set; } = default!;
     public string ConnectionString { get; set; } = default!;
 

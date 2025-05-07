@@ -1382,7 +1382,11 @@ Example:
 </MudMenuItem>
 
 
-See AuthState in Rations.razor.cs example
+See AuthState in Rations.razor.cs example:
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; } = default!;
 
-
-
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthState;
+        var currentTenantId = authState.User.FindFirst("tenant")?.Value ?? string.Empty;

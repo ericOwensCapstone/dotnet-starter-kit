@@ -871,9 +871,518 @@ public class RationViewModel //: UpdateRationCommand -- no longer inherit from t
 ==================================
 see TODO Member in TenantService.cs
 
-public Guid? MemberId { get; set; } = default!;git git
+public Guid? MemberId { get; set; } = default!;
 
 
+==================================
+
+To implement data security for the MemberAd entity, where each tenant can create, update, and delete their own MemberAd, but all tenants can fetch and view a list of all MemberAds, you can follow these steps:
+---
+1. Define the MemberAd Entity
+The MemberAd entity should implement the ITenantEntity interface to associate it with a specific tenant. However, it will require special handling for the global query filter to allow all tenants to view it.
+public class MemberAd : ITenantEntity
+{
+    public Guid Id { get; set; }
+    public string TenantId { get; set; } = default!;
+    public string Title { get; set; } = default!;
+    public string Content { get; set; } = default!;
+    public DateTime CreatedOn { get; set; }
+}
+
+2. Adjust the Global Query Filter
+Modify the global query filter in the FshDbContext to handle the MemberAd entity differently. Specifically, allow all tenants to view MemberAd entities, but still enforce the TenantId filter for other entities.
+Update the OnModelCreating method:
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+    {
+        var entityClrType = entityType.ClrType;
+
+        // Parameter for the lambda expression
+        var parameter = Expression.Parameter(entityClrType, "e");
+
+        // Tenant filter
+        Expression tenantFilter = null;
+        if (typeof(ITenantEntity).IsAssignableFrom(entityClrType))
+        {
+            if (entityClrType == typeof(MemberAd))
+            {
+                // No tenant filter for MemberAd (all tenants can view)
+                tenantFilter = null;
+            }
+            else
+            {
+                var tenantIdProperty = Expression.Property(parameter, nameof(ITenantEntity.TenantId));
+                var tenantIdMethod = typeof(FshDbContext).GetMethod(nameof(GetCurrentTenantId), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var tenantIdCall = Expression.Call(Expression.Constant(this), tenantIdMethod);
+                tenantFilter = Expression.Equal(tenantIdProperty, tenantIdCall);
+            }
+        }
+
+        // Soft delete filter
+        Expression softDeleteFilter = null;
+        if (typeof(ISoftDeletable).IsAssignableFrom(entityClrType))
+        {
+            softDeleteFilter = Expression.Equal(
+                Expression.Property(parameter, nameof(ISoftDeletable.Deleted)),
+                Expression.Constant(null));
+        }
+
+        // Combine filters if both are applicable
+        Expression combinedFilter = null;
+        if (tenantFilter != null && softDeleteFilter != null)
+        {
+            combinedFilter = Expression.AndAlso(tenantFilter, softDeleteFilter);
+        }
+        else
+        {
+            combinedFilter = tenantFilter ?? softDeleteFilter;
+        }
+
+        // Apply the combined filter if any
+        if (combinedFilter != null)
+        {
+            var lambda = Expression.Lambda(combinedFilter, parameter);
+            entityType.SetQueryFilter(lambda);
+        }
+    }
+
+    base.OnModelCreating(modelBuilder);
+}
+
+3. Enforce Tenant Ownership for Create, Update, and Delete
+In the SaveChangesAsync method, ensure that only the owning tenant can create, update, or delete their MemberAd:
+
+foreach (var entry in entries)
+{
+    if (entry.Entity is ITenantEntity tenantEntity && entry.State == EntityState.Added)
+    {
+        // Set the TenantId for new entities
+        tenantEntity.TenantId = tenantId;
+    }
+    else if (entry.Entity is MemberAd && entry.State == EntityState.Modified)
+    {
+        // Prevent other tenants from modifying MemberAds they don't own
+        if (tenantEntity.TenantId != tenantId)
+        {
+            throw new UnauthorizedAccessException("You cannot modify another tenant's MemberAd.");
+        }
+    }
+    else if (entry.Entity is MemberAd && entry.State == EntityState.Deleted)
+    {
+        // Prevent other tenants from deleting MemberAds they don't own
+        if (tenantEntity.TenantId != tenantId)
+        {
+            throw new UnauthorizedAccessException("You cannot delete another tenant's MemberAd.");
+        }
+    }
+}
+
+4. Adjust Permissions
+Ensure that the permissions for MemberAd are configured correctly. For example:
+new("View MemberAds", FshActions.View, FshResources.MemberAds, IsBasic: true),
+new("Create MemberAds", FshActions.Create, FshResources.MemberAds),
+new("Update MemberAds", FshActions.Update, FshResources.MemberAds),
+new("Delete MemberAds", FshActions.Delete, FshResources.MemberAds),
+
+5. Controller or Endpoint Logic
+In your API endpoints, ensure that the appropriate permissions are enforced. For example:
+•	Fetch All MemberAds: No tenant filter is applied, so all tenants can view the list.
+•	Create/Update/Delete MemberAd: Use the RequirePermission method to enforce tenant-specific permissions.
+endpoints.MapPost("/memberads", async (CreateMemberAdCommand request, ISender mediator) =>
+{
+    var response = await mediator.Send(request);
+    return Results.Ok(response);
+})
+.RequirePermission("Permissions.MemberAds.Create");
+
+
+
+To implement your MemberAd requirements in your Blazor client, you can follow a similar approach to your existing Rations page while making adjustments to meet the specific requirements for MemberAd. Below are the steps and ideas to implement the functionality:
+1. Define the MemberAd Entity and ViewModel
+Create a MemberAdResponse and MemberAdViewModel to represent the data for the table and form.
+MemberAdResponse (Read-Only Data for Viewing)
+public class MemberAdResponse
+{
+    public Guid Id { get; set; }
+    public string TenantName { get; set; } = default!;
+    public string LogoUrl { get; set; } = default!;
+    public string PhotoUrl { get; set; } = default!;
+    public List<string> Services { get; set; } = new();
+    public string Description { get; set; } = default!;
+}
+
+2. Create the MemberAds.razor Page
+This page will allow tenants to:
+•	View a table of all MemberAds.
+•	Drill down into a read-only view of a specific MemberAd.
+•	Create, update, or delete their own MemberAd.
+MemberAds.razor
+
+
+@page "/memberads"
+
+<PageHeader Title="Member Ads" Header="Member Ads" SubHeader="Manage your Member Ads." />
+
+<EntityTable @ref="_table" TEntity="MemberAdResponse" TId="Guid" TRequest="MemberAdViewModel" Context="@Context">
+
+    <AdvancedSearchContent>
+        <!-- Add any advanced search fields here -->
+    </AdvancedSearchContent>
+
+    <EditFormContent>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Logo URL" For="@(() => context.LogoUrl)" @bind-Value="context.LogoUrl" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Photo URL" For="@(() => context.PhotoUrl)" @bind-Value="context.PhotoUrl" />
+        </MudItem>
+        <MudItem xs="12" md="12">
+            <MudTextField Label="Description" For="@(() => context.Description)" @bind-Value="context.Description" />
+        </MudItem>
+        <MudItem xs="12" md="12">
+            <MudSelect T="string" Label="Services" MultiSelection="true" @bind-Value="context.Services">
+                <MudSelectItem Value="Service1">Service 1</MudSelectItem>
+                <MudSelectItem Value="Service2">Service 2</MudSelectItem>
+                <MudSelectItem Value="Service3">Service 3</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+    </EditFormContent>
+
+</EntityTable>
+
+3. Implement the MemberAds.razor.cs Code-Behind
+This will handle the data loading, creation, updating, and deletion of MemberAds.
+
+
+using FSH.Starter.Blazor.Client.Components.EntityTable;
+using FSH.Starter.Blazor.Infrastructure.Api;
+using FSH.Starter.Shared.Authorization;
+using Mapster;
+using Microsoft.AspNetCore.Components;
+
+namespace FSH.Starter.Blazor.Client.Pages;
+
+public partial class MemberAds
+{
+    [Inject]
+    protected IApiClient _client { get; set; } = default!;
+
+    protected EntityServerTableContext<MemberAdResponse, Guid, MemberAdViewModel> Context { get; set; } = default!;
+
+    private EntityTable<MemberAdResponse, Guid, MemberAdViewModel> _table = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Context = new(
+            entityName: "Member Ad",
+            entityNamePlural: "Member Ads",
+            entityResource: FshResources.MemberAds,
+            fields: new()
+            {
+                new(ad => ad.TenantName, "Tenant Name", "TenantName"),
+                new(ad => ad.Description, "Description", "Description"),
+                new(ad => ad.Services, "Services", "Services"),
+            },
+            enableAdvancedSearch: true,
+            idFunc: ad => ad.Id,
+            searchFunc: async filter =>
+            {
+                var result = await _client.SearchMemberAdsEndpointAsync("1", filter.Adapt<SearchMemberAdsCommand>());
+                return result.Adapt<PaginationResponse<MemberAdResponse>>();
+            },
+            createFunc: async ad =>
+            {
+                await _client.CreateMemberAdEndpointAsync("1", ad.Adapt<CreateMemberAdCommand>());
+            },
+            updateFunc: async (id, ad) =>
+            {
+                await _client.UpdateMemberAdEndpointAsync("1", id, ad.Adapt<UpdateMemberAdCommand>());
+            },
+            deleteFunc: async id => await _client.DeleteMemberAdEndpointAsync("1", id));
+    }
+}
+
+
+4. Add a Read-Only Drill-Down View
+Create a new page for viewing a specific MemberAd in a read-only format.
+MemberAdDetails.razor
+@page "/memberads/{id:guid}"
+
+<PageHeader Title="Member Ad Details" Header="Member Ad Details" />
+
+@if (MemberAd is null)
+{
+    <MudProgressCircular Indeterminate="true" />
+}
+else
+{
+    <MudCard>
+        <MudCardHeader>
+            <MudText Typo="Typo.h5">@MemberAd.TenantName</MudText>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText Typo="Typo.body1">Description: @MemberAd.Description</MudText>
+            <MudText Typo="Typo.body1">Services: @string.Join(", ", MemberAd.Services)</MudText>
+            <MudImage Src="@MemberAd.LogoUrl" Alt="Logo" Width="100px" />
+            <MudImage Src="@MemberAd.PhotoUrl" Alt="Photo" Width="200px" />
+        </MudCardContent>
+    </MudCard>
+}
+
+using Microsoft.AspNetCore.Components;
+
+public partial class MemberAdDetails
+{
+    [Inject]
+    protected IApiClient _client { get; set; } = default!;
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private MemberAdResponse? MemberAd { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MemberAd = await _client.GetMemberAdEndpointAsync("1", Id);
+    }
+}
+
+using Microsoft.AspNetCore.Components;
+
+public partial class MemberAdDetails
+{
+    [Inject]
+    protected IApiClient _client { get; set; } = default!;
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private MemberAdResponse? MemberAd { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MemberAd = await _client.GetMemberAdEndpointAsync("1", Id);
+    }
+}
+
+6. Permissions
+Update your permissions to include MemberAds:
+
+new("View MemberAds", FshActions.View, FshResources.MemberAds, IsBasic: true),
+new("Create MemberAds", FshActions.Create, FshResources.MemberAds),
+new("Update MemberAds", FshActions.Update, FshResources.MemberAds),
+new("Delete MemberAds", FshActions.Delete, FshResources.MemberAds),
+
+
+
+
+
+Yes, the suggested implementation would allow members to create more than one MemberAd because there is no restriction in the createFunc or the backend logic to limit the number of MemberAd entities a tenant can create. If you want to enforce a rule that each tenant can only create one MemberAd, you need to add additional validation both on the client side and the server side.
+
+
+1. Client-Side Restriction
+Modify the createFunc in MemberAds.razor.cs to check if the tenant already has a MemberAd before allowing the creation of a new one.
+Updated createFunc:
+
+createFunc: async ad =>
+{
+    // Fetch the current tenant's MemberAd
+    var existingAds = await _client.SearchMemberAdsEndpointAsync("1", new SearchMemberAdsCommand { TenantId = "current-tenant-id" });
+
+    if (existingAds.Items.Any())
+    {
+        // Show a message to the user
+        ToastService.ShowError("You can only create one Member Ad.");
+        return;
+    }
+
+    // Proceed with creation if no existing MemberAd is found
+    await _client.CreateMemberAdEndpointAsync("1", ad.Adapt<CreateMemberAdCommand>());
+},
+
+
+2. Server-Side Restriction
+To ensure data integrity, enforce the "one MemberAd per tenant" rule on the server side as well. This is critical because client-side restrictions can be bypassed.
+Validation in the CreateMemberAdCommandHandler:
+In your backend, add a check in the command handler for creating a MemberAd:
+
+public class CreateMemberAdCommandHandler : IRequestHandler<CreateMemberAdCommand, Guid>
+{
+    private readonly IApplicationDbContext _context;
+    private readonly ICurrentTenant _currentTenant;
+
+    public CreateMemberAdCommandHandler(IApplicationDbContext context, ICurrentTenant currentTenant)
+    {
+        _context = context;
+        _currentTenant = currentTenant;
+    }
+
+    public async Task<Guid> Handle(CreateMemberAdCommand request, CancellationToken cancellationToken)
+    {
+        // Ensure the tenant has not already created a MemberAd
+        var tenantId = _currentTenant.Id;
+        if (await _context.MemberAds.AnyAsync(ad => ad.TenantId == tenantId, cancellationToken))
+        {
+            throw new InvalidOperationException("You can only create one Member Ad.");
+        }
+
+        // Proceed with creation
+        var memberAd = new MemberAd
+        {
+            TenantId = tenantId,
+            LogoUrl = request.LogoUrl,
+            PhotoUrl = request.PhotoUrl,
+            Services = request.Services,
+            Description = request.Description
+        };
+
+        _context.MemberAds.Add(memberAd);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return memberAd.Id;
+    }
+}
+
+his ensures that even if a malicious user bypasses the client-side restriction, the server will reject the request if the tenant already has a MemberAd.
+---
+3. UI Feedback
+If a tenant already has a MemberAd, you can disable the "Create" button in the UI and provide feedback to the user.
+Disable the "Create" Button:
+In MemberAds.razor, add logic to disable the "Create" button if the tenant already has a MemberAd.
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@_hasMemberAd"
+           OnClick="(() => InvokeModal())" StartIcon="@Icons.Material.Filled.Add"
+           IconColor="Color.Surface" Class="mr-4">Create</MudButton>
+
+Check for Existing MemberAd:
+In MemberAds.razor.cs, add a flag to track whether the tenant already has a MemberAd:
+
+private bool _hasMemberAd;
+
+protected override async Task OnInitializedAsync()
+{
+    // Check if the tenant already has a MemberAd
+    var existingAds = await _client.SearchMemberAdsEndpointAsync("1", new SearchMemberAdsCommand { TenantId = "current-tenant-id" });
+    _hasMemberAd = existingAds.Items.Any();
+
+    Context = new(
+        entityName: "Member Ad",
+        entityNamePlural: "Member Ads",
+        entityResource: FshResources.MemberAds,
+        fields: new()
+        {
+            new(ad => ad.TenantName, "Tenant Name", "TenantName"),
+            new(ad => ad.Description, "Description", "Description"),
+            new(ad => ad.Services, "Services", "Services"),
+        },
+        enableAdvancedSearch: true,
+        idFunc: ad => ad.Id,
+        searchFunc: async filter =>
+        {
+            var result = await _client.SearchMemberAdsEndpointAsync("1", filter.Adapt<SearchMemberAdsCommand>());
+            return result.Adapt<PaginationResponse<MemberAdResponse>>();
+        },
+        createFunc: async ad =>
+        {
+            if (_hasMemberAd)
+            {
+                ToastService.ShowError("You can only create one Member Ad.");
+                return;
+            }
+
+            await _client.CreateMemberAdEndpointAsync("1", ad.Adapt<CreateMemberAdCommand>());
+        },
+        updateFunc: async (id, ad) =>
+        {
+            await _client.UpdateMemberAdEndpointAsync("1", id, ad.Adapt<UpdateMemberAdCommand>());
+        },
+        deleteFunc: async id => await _client.DeleteMemberAdEndpointAsync("1", id));
+}
+
+You're correct that relying solely on server-side validation in the FshDbContext to prevent unauthorized updates or deletions is not ideal for user experience. If the Actions dropdown in the EntityTable shows options like "Edit" or "Delete" for MemberAds that belong to other tenants, it could confuse users or give the impression that they have permissions they do not actually have.
+To improve the user experience, you can dynamically control the visibility of the "Edit" and "Delete" options in the Actions dropdown based on the tenant's ownership of the MemberAd. Here's how you can achieve this:
+---
+1. Add Ownership Check in the Client
+You can use the TenantId of the current user (retrieved from the authentication state) to determine whether the logged-in user owns the MemberAd. If the user does not own the MemberAd, hide the "Edit" and "Delete" options in the Actions dropdown.
+Update MemberAds.razor.cs:
+Add a method to check ownership of a MemberAd:
+
+private string CurrentTenantId { get; set; } = default!;
+
+protected override async Task OnInitializedAsync()
+{
+    // Retrieve the current tenant's ID from the authentication state
+    var authState = await AuthState;
+    CurrentTenantId = authState.User.FindFirst("tenantId")?.Value ?? string.Empty;
+
+    Context = new(
+        entityName: "Member Ad",
+        entityNamePlural: "Member Ads",
+        entityResource: FshResources.MemberAds,
+        fields: new()
+        {
+            new(ad => ad.TenantName, "Tenant Name", "TenantName"),
+            new(ad => ad.Description, "Description", "Description"),
+            new(ad => ad.Services, "Services", "Services"),
+        },
+        enableAdvancedSearch: true,
+        idFunc: ad => ad.Id,
+        searchFunc: async filter =>
+        {
+            var result = await _client.SearchMemberAdsEndpointAsync("1", filter.Adapt<SearchMemberAdsCommand>());
+            return result.Adapt<PaginationResponse<MemberAdResponse>>();
+        },
+        createFunc: async ad =>
+        {
+            if (_hasMemberAd)
+            {
+                ToastService.ShowError("You can only create one Member Ad.");
+                return;
+            }
+
+            await _client.CreateMemberAdEndpointAsync("1", ad.Adapt<CreateMemberAdCommand>());
+        },
+        updateFunc: async (id, ad) =>
+        {
+            await _client.UpdateMemberAdEndpointAsync("1", id, ad.Adapt<UpdateMemberAdCommand>());
+        },
+        deleteFunc: async id => await _client.DeleteMemberAdEndpointAsync("1", id),
+        canUpdateEntityFunc: ad => ad.TenantId == CurrentTenantId, // Only allow editing if the tenant owns the MemberAd
+        canDeleteEntityFunc: ad => ad.TenantId == CurrentTenantId  // Only allow deletion if the tenant owns the MemberAd
+    );
+}
+
+
+Here:
+•	canUpdateEntityFunc and canDeleteEntityFunc are used to dynamically determine whether the "Edit" and "Delete" options should be shown for a specific MemberAd.
+•	The CurrentTenantId is retrieved from the authentication state and compared with the TenantId of the MemberAd.
+---
+2. Update the EntityTable to Respect Ownership
+The EntityTable component already has logic to check whether an entity can be updated or deleted using the CanUpdateEntity and CanDeleteEntity methods. These methods will now use the canUpdateEntityFunc and canDeleteEntityFunc defined in the Context.
+No Changes Needed in EntityTable.razor.cs:
+The existing logic in EntityTable.razor.cs will automatically respect the canUpdateEntityFunc and canDeleteEntityFunc:
+
+private bool CanUpdateEntity(TEntity entity) =>
+    _canUpdate && (Context.CanUpdateEntityFunc is null || Context.CanUpdateEntityFunc(entity));
+
+private bool CanDeleteEntity(TEntity entity) =>
+    _canDelete && (Context.CanDeleteEntityFunc is null || Context.CanDeleteEntityFunc(entity));
+
+4. Optional: Add a Tooltip for Clarity
+If you want to provide additional clarity to the user, you can add a tooltip or a disabled button in place of the "Edit" and "Delete" options for MemberAds that the user does not own.
+Example:
+
+<MudMenuItem Disabled="true" Style="color:gray!important" Title="You cannot edit another tenant's Member Ad">
+    Edit
+</MudMenuItem>
+<MudMenuItem Disabled="true" Style="color:gray!important" Title="You cannot delete another tenant's Member Ad">
+    Delete
+</MudMenuItem>
+
+
+See AuthState in Rations.razor.cs example
 
 
 

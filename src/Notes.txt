@@ -1390,3 +1390,9 @@ See AuthState in Rations.razor.cs example:
     {
         var authState = await AuthState;
         var currentTenantId = authState.User.FindFirst("tenant")?.Value ?? string.Empty;
+
+
+
+
+
+How to enforce the "one MemberAd per tenant" rule in the backend?

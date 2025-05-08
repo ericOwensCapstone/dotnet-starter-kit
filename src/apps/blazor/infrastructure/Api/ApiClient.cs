@@ -6324,7 +6324,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         public string? Name { get; set; } = "Sample Ration";
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
-        public string? Description { get; set; } = "Ration Description";
+        public string? Description { get; set; } = "Descriptive Description";
 
         [System.Text.Json.Serialization.JsonPropertyName("dollarsPerPound")]
         public double DollarsPerPound { get; set; } = 0.1D;
@@ -6538,6 +6538,9 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
         public System.Guid? Id { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("tenantId")]
+        public string? TenantId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string? Name { get; set; } = default!;

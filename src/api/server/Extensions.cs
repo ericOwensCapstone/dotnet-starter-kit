@@ -8,6 +8,10 @@ using FSH.Starter.WebApi.Ranch.Application;
 using FSH.Starter.WebApi.Ranch.Infrastructure;
 using FSH.Starter.WebApi.Todo;
 // Start Module Usings
+// Start Members Module Usings
+using FSH.Starter.WebApi.Members.Application;
+using FSH.Starter.WebApi.Members.Infrastructure; 
+// End Members Module Usings
 // End Module Usings
 namespace FSH.Starter.WebApi.Host;
 
@@ -23,6 +27,9 @@ public static class Extensions
             typeof(CatalogMetadata).Assembly,
             typeof(RanchMetadata).Assembly,
             // Start Assemblies
+            // Start Members Module Assembly
+            typeof(MembersMetadata).Assembly,
+            // End Members Module Assembly
             // End Assemblies
             typeof(TodoModule).Assembly
         };
@@ -38,6 +45,9 @@ public static class Extensions
 
         //register module services
         // Start Module Registrations
+        // Start Members Module Registration
+        builder.RegisterMembersServices();
+        // End Members Module Registration
         // End Module Registrations
         builder.RegisterCatalogServices();
         builder.RegisterRanchServices();
@@ -47,6 +57,9 @@ public static class Extensions
         builder.Services.AddCarter(configurator: config =>
         {
             // Start Carter Modules
+            // Start Members Carter Module
+            config.WithModule<MembersModule.Endpoints>();
+            // End Members Carter Module
             // End Carter Modules
             config.WithModule<CatalogModule.Endpoints>();
             config.WithModule<RanchModule.Endpoints>();
@@ -62,6 +75,9 @@ public static class Extensions
 
         //register modules
         // Start Use Modules
+        // Start Use Members Module
+        app.UseMembersModule();
+        // End Use Members Module
         // End Use Modules
         app.UseCatalogModule();
         app.UseRanchModule();

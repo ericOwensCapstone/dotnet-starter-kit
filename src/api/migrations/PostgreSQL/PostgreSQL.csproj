@@ -8,6 +8,9 @@
     <ProjectReference Include="..\..\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Ranch\Ranch.Infrastructure\Ranch.Infrastructure.csproj" />
     <!-- Start Project References -->
+    <!-- Start Members Project Reference -->
+    <ProjectReference Include="..\..\modules\Members\Members.Infrastructure\Members.Infrastructure.csproj" />
+    <!-- End Members Project Reference -->    
     <!-- End Project References -->
     <ProjectReference Include="..\..\modules\Todo\Todo.csproj" />
   </ItemGroup>
@@ -16,6 +19,9 @@
     <Folder Include="Identity\" />
     <Folder Include="Ranch\" />
     <!-- Start Folders -->
+    <!-- Start Members Folder -->
+    <Folder Include="Members\" />
+    <!-- End Members Folder -->
     <!-- End Folders -->
     <Folder Include="Tenant\" />
     <Folder Include="Todo\" />

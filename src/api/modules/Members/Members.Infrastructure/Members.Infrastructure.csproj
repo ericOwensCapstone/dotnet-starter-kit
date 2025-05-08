@@ -1,0 +1,16 @@
+
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>FSH.Starter.WebApi.Members.Infrastructure</RootNamespace>
+    <AssemblyName>FSH.Starter.WebApi.Members.Infrastructure</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Persistence\Repositories\**" />
+    <EmbeddedResource Remove="Persistence\Repositories\**" />
+    <None Remove="Persistence\Repositories\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\framework\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Members.Application\Members.Application.csproj" />
+  </ItemGroup>
+</Project>

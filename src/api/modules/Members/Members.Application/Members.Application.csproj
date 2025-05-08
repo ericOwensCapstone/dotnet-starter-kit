@@ -1,0 +1,11 @@
+
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>FSH.Starter.WebApi.Members.Application</RootNamespace>
+    <AssemblyName>FSH.Starter.WebApi.Members.Application</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
+    <ProjectReference Include="..\Members.Domain\Members.Domain.csproj" />
+  </ItemGroup>
+</Project>

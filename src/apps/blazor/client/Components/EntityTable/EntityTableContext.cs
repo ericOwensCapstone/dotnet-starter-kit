@@ -127,6 +127,11 @@ public abstract class EntityTableContext<TEntity, TId, TRequest>
     /// </summary>
     public Func<TEntity, bool>? CanDeleteEntityFunc { get; set; }
 
+    /// <summary>
+    /// Use this if you want to disable the create functionality.
+    /// </summary>
+    public Func<bool>? CanCreateEntityFunc { get; set; }
+
     public EntityTableContext(
         List<EntityField<TEntity>> fields,
         Func<TEntity, TId>? idFunc,
@@ -146,7 +151,8 @@ public abstract class EntityTableContext<TEntity, TId, TRequest>
         Func<Task>? editFormInitializedFunc,
         Func<bool>? hasExtraActionsFunc,
         Func<TEntity, bool>? canUpdateEntityFunc,
-        Func<TEntity, bool>? canDeleteEntityFunc)
+        Func<TEntity, bool>? canDeleteEntityFunc,
+        Func<bool>? canCreateEntityFunc)
     {
         EntityResource = entityResource;
         Fields = fields;
@@ -167,6 +173,7 @@ public abstract class EntityTableContext<TEntity, TId, TRequest>
         HasExtraActionsFunc = hasExtraActionsFunc;
         CanUpdateEntityFunc = canUpdateEntityFunc;
         CanDeleteEntityFunc = canDeleteEntityFunc;
+        CanCreateEntityFunc = canCreateEntityFunc;
     }
 
     // AddEdit modal

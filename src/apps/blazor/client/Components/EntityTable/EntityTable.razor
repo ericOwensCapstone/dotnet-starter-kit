@@ -44,7 +44,7 @@
 
             <ToolBarContent>
                 <div class="justify-center mud-text-align-center">
-                    @if (_canCreate)
+                    @if (CanCreateEntity())
                     {
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" DropShadow="false"
                                    OnClick="(() => InvokeModal())" StartIcon="@Icons.Material.Filled.Add"

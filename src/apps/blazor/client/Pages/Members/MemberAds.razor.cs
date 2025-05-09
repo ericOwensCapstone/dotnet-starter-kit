@@ -25,6 +25,7 @@ public partial class MemberAds
     //TODO Member Start
     [CascadingParameter]
     protected Task<AuthenticationState> AuthState { get; set; } = default!;
+    private string CurrentTenantId { get; set; } = default!;
     private bool _canCreateIt = true;
     //TODO Member End
 
@@ -32,6 +33,9 @@ public partial class MemberAds
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthState;
+        CurrentTenantId = authState.User.FindFirst("tenant")?.Value ?? string.Empty;
+
         Context = new(
             entityName: "MemberAd",
             entityNamePlural: "MemberAds",
@@ -60,7 +64,7 @@ public partial class MemberAds
                     //Start Create Func code
                     await _client.CreateMemberAdEndpointAsync("1", memberAd.Adapt<CreateMemberAdCommand>());
                     //End Create Func code
-                    //_canCreateIt = false;
+                    _canCreateIt = false;
                 }
                 catch (Exception ex)
                 {
@@ -94,20 +98,21 @@ public partial class MemberAds
             //TODO Member Start
             canCreateEntityFunc: () => {
                 return _canCreateIt;
-            }
+            },
+            canUpdateEntityFunc: ad => ad.TenantId == CurrentTenantId, // Only allow editing if the tenant owns the MemberAd
+            canDeleteEntityFunc: ad => ad.TenantId == CurrentTenantId  // Only allow deletion if the tenant owns the MemberAd
             //TODO Member End
         );
 
         //TODO Member Start
-        var authState = await AuthState;
-        var currentTenantId = authState.User.FindFirst("tenant")?.Value ?? string.Empty;
+
         var memberAdFilter = new SearchMemberAdsCommand();
-        memberAdFilter.TenantId = currentTenantId;
+        memberAdFilter.TenantId = CurrentTenantId;
         var memberAds = await _client.SearchMemberAdsEndpointAsync("1", memberAdFilter);
         //var memberAd = memberAds.Items?.FirstOrDefault(x => x.TenantId == currentTenantId);
         if (memberAds.TotalCount != 0)
         {
-            //_canCreateIt = false;
+            _canCreateIt = false;
         }
         //TODO: Member End
 

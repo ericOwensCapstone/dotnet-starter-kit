@@ -75,7 +75,22 @@ public partial class MemberAds
                 await _client.UpdateMemberAdEndpointAsync("1", id, memberAd.Adapt<UpdateMemberAdCommand>());
                 //End Update Func code
             },
-            deleteFunc: async id => await _client.DeleteMemberAdEndpointAsync("1", id),
+            deleteFunc: async id =>
+            {
+                //TODO Member Start
+                try
+                {
+                    //Start Delete Func code
+                    await _client.DeleteMemberAdEndpointAsync("1", id);
+                    //End Delete Func code
+                    _canCreateIt = true;
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+                //TODO Member End
+            },
             //TODO Member Start
             canCreateEntityFunc: () => {
                 return _canCreateIt;

@@ -42,6 +42,14 @@ public static class FshPermissions
         new("Update Rations", FshActions.Update, FshResources.Rations),
         new("Delete Rations", FshActions.Delete, FshResources.Rations),
         new("Export Rations", FshActions.Export, FshResources.Rations),
+        // Start MemberAd
+        new("View MemberAds", FshActions.View, FshResources.MemberAds, IsBasic: true),
+        new("Search MemberAds", FshActions.Search, FshResources.MemberAds, IsBasic: true),
+        new("Create MemberAds", FshActions.Create, FshResources.MemberAds),
+        new("Update MemberAds", FshActions.Update, FshResources.MemberAds),
+        new("Delete MemberAds", FshActions.Delete, FshResources.MemberAds),
+        new("Export MemberAds", FshActions.Export, FshResources.MemberAds),
+        // End MemberAd
         //TODO PERMISSIONS
 
         //brands

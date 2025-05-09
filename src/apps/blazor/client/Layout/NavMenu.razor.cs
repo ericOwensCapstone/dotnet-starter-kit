@@ -23,6 +23,9 @@ public partial class NavMenu
     private bool _canViewTenants;
     private bool _canViewAuditTrails;
     private bool _canViewRations;
+    // Start MemberAd
+    private bool _canViewMemberAds;
+    // End MemberAd
     //TODO ADD CAN VIEWS
 
     private bool CanViewAdministrationGroup => _canViewUsers || _canViewRoles || _canViewTenants;
@@ -42,6 +45,9 @@ public partial class NavMenu
         _canViewAuditTrails = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.AuditTrails);
         _canViewRations = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Rations);
  
+        // Start MemberAd
+        _canViewMemberAds = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.MemberAds);
+        // End MemberAd
         //TODO ASSIGN CAN VIEWS
     }
 }

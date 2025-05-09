@@ -1,0 +1,20 @@
+@page "/ranch/memberAds"
+
+<PageHeader Title="MemberAds" Header="MemberAds" SubHeader="Manage your MemberAds." />
+
+<EntityTable @ref="_table" TEntity="MemberAdResponse" TId="Guid" TRequest="MemberAdViewModel" Context="@Context">
+
+    <AdvancedSearchContent>    </AdvancedSearchContent>
+
+    <EditFormContent>
+        @* TODO START *@
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Name" For="@(() => context.Name)" @bind-Value="context.Name" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Description" For="@(() => context.Description)" @bind-Value="context.Description" />
+        </MudItem>
+        @* TODO END *@
+    </EditFormContent>
+
+</EntityTable>

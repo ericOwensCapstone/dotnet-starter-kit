@@ -9,6 +9,7 @@ using FSH.Framework.Infrastructure.Tenant;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Npgsql;
 
@@ -43,11 +44,18 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
             Expression tenantFilter = null;
             if (typeof(ITenantEntity).IsAssignableFrom(entityClrType))
             {
-                // Use a method to dynamically fetch the tenant ID
-                var tenantIdProperty = Expression.Property(parameter, nameof(ITenantEntity.TenantId));
-                var tenantIdMethod = typeof(FshDbContext).GetMethod(nameof(GetCurrentTenantId), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                var tenantIdCall = Expression.Call(Expression.Constant(this), tenantIdMethod);
-                tenantFilter = Expression.Equal(tenantIdProperty, tenantIdCall);
+                if (typeof(IPublicEntity).IsAssignableFrom(entityClrType))
+                {
+                    // No tenant filter for public entity (all tenants can view)
+                    tenantFilter = null;
+                }
+                else
+                {
+                    var tenantIdProperty = Expression.Property(parameter, nameof(ITenantEntity.TenantId));
+                    var tenantIdMethod = typeof(FshDbContext).GetMethod(nameof(GetCurrentTenantId), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    var tenantIdCall = Expression.Call(Expression.Constant(this), tenantIdMethod);
+                    tenantFilter = Expression.Equal(tenantIdProperty, tenantIdCall);
+                }
             }
 
             // Soft delete filter
@@ -108,10 +116,23 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
                 // Set the TenantId for new entities
                 tenantEntity.TenantId = tenantId;
             }
-            else if (entry.State == EntityState.Modified)
+            else if (entry.Entity is ITenantEntity tenantEntity2 && entry.State == EntityState.Modified)
             {
+                if (tenantEntity2.TenantId != tenantId)
+                {
+                    var entityClrType = entry.Entity.GetType();
+                    throw new UnauthorizedAccessException($"You cannot modify another tenant's {entityClrType.Name} entity.");
+                }
                 // Prevent TenantId from being modified
                 entry.Property(nameof(ITenantEntity.TenantId)).IsModified = false;
+            }
+            else if (entry.Entity is ITenantEntity tenantEntity3 && entry.State == EntityState.Deleted)
+            {
+                if (tenantEntity3.TenantId != tenantId)
+                {
+                    var entityClrType = entry.Entity.GetType();
+                    throw new UnauthorizedAccessException($"You cannot delete another tenant's {entityClrType.Name} entity.");
+                }
             }
 
             if (entry.Entity is ISoftDeletable softDeletable && entry.State == EntityState.Deleted)

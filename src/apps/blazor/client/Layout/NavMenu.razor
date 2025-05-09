@@ -21,6 +21,12 @@
     </MudNavGroup>
 @* START Members NAV GROUP *@
     <MudNavGroup Title = "Members" Icon="@Icons.Material.Filled.AddBox">
+        @* Start MemberAd *@        
+        @if (_canViewMemberAds)
+        {
+            <MudNavLink Href="/ranch/memberAds" Icon="@Icons.Material.Filled.MonitorWeight" Class="fsh-nav-child">MemberAds</MudNavLink>
+        }
+        @* End MemberAd *@
 @* TODO ADD Members PAGES *@
     </MudNavGroup>
 @* END Members NAV GROUP *@

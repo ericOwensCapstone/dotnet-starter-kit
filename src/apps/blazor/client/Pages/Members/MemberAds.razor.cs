@@ -60,7 +60,7 @@ public partial class MemberAds
                     //Start Create Func code
                     await _client.CreateMemberAdEndpointAsync("1", memberAd.Adapt<CreateMemberAdCommand>());
                     //End Create Func code
-                    _canCreateIt = false;
+                    //_canCreateIt = false;
                 }
                 catch (Exception ex)
                 {
@@ -107,7 +107,7 @@ public partial class MemberAds
         //var memberAd = memberAds.Items?.FirstOrDefault(x => x.TenantId == currentTenantId);
         if (memberAds.TotalCount != 0)
         {
-            _canCreateIt = false;
+            //_canCreateIt = false;
         }
         //TODO: Member End
 

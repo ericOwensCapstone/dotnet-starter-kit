@@ -17,6 +17,12 @@
         {
             <MudNavLink Href="/ranch/rations" Icon="@Icons.Material.Filled.Grass" Class="fsh-nav-child">Rations</MudNavLink>
         }
+        @* Start ContractStatus *@        
+        @if (_canViewContractStatuses)
+        {
+            <MudNavLink Href="/ranch/contractStatuses" Icon="@Icons.Material.Filled.List" Class="fsh-nav-child">ContractStatuses</MudNavLink>
+        }
+        @* End ContractStatus *@
 @* TODO ADD Ranch PAGES *@
     </MudNavGroup>
 @* START Members NAV GROUP *@

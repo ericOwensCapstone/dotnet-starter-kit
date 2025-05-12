@@ -7,6 +7,9 @@ using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
 using FSH.Framework.Infrastructure.Tenant;
 using FSH.Starter.WebApi.Ranch.Domain.Rations;
+// Start ContractStatus
+using FSH.Starter.WebApi.Ranch.Domain.ContractStatuses;
+// End ContractStatus
 namespace FSH.Starter.WebApi.Ranch.Infrastructure.Persistence;
 public sealed class RanchDbContext : FshDbContext
 {
@@ -15,6 +18,9 @@ public sealed class RanchDbContext : FshDbContext
     {
     }
     public DbSet<Ration> Rations { get; set; } = null!;
+    // Start ContractStatus
+    public DbSet<ContractStatus> ContractStatuses { get; set; } = null!;
+    // End ContractStatus
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

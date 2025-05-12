@@ -58,6 +58,19 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
                 }
             }
 
+            // SharedWith filter
+            Expression sharedWithFilter = null;
+            if (typeof(ISharedEntity).IsAssignableFrom(entityClrType))
+            {
+                var sharedWithProperty = Expression.Property(parameter, nameof(ISharedEntity.SharedWith));
+                var tenantIdMethod = typeof(FshDbContext).GetMethod(nameof(GetCurrentTenantId), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var tenantIdCall = Expression.Call(Expression.Constant(this), tenantIdMethod);
+
+                // Check if the current tenant ID is in the SharedWith list
+                var containsMethod = typeof(List<string>).GetMethod(nameof(List<string>.Contains), new[] { typeof(string) });
+                sharedWithFilter = Expression.Call(sharedWithProperty, containsMethod!, tenantIdCall);
+            }
+
             // Soft delete filter
             Expression softDeleteFilter = null;
             if (typeof(ISoftDeletable).IsAssignableFrom(entityClrType))
@@ -67,15 +80,21 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
                     Expression.Constant(null));
             }
 
-            // Combine filters if both are applicable
+            // Combine filters
             Expression combinedFilter = null;
-            if (tenantFilter != null && softDeleteFilter != null)
+            if (tenantFilter != null || sharedWithFilter != null)
             {
-                combinedFilter = Expression.AndAlso(tenantFilter, softDeleteFilter);
+                var tenantOrSharedFilter = tenantFilter != null && sharedWithFilter != null
+                    ? Expression.OrElse(tenantFilter, sharedWithFilter)
+                    : tenantFilter ?? sharedWithFilter;
+
+                combinedFilter = softDeleteFilter != null
+                    ? Expression.AndAlso(tenantOrSharedFilter, softDeleteFilter)
+                    : tenantOrSharedFilter;
             }
             else
             {
-                combinedFilter = tenantFilter ?? softDeleteFilter;
+                combinedFilter = softDeleteFilter;
             }
 
             // Apply the combined filter if any

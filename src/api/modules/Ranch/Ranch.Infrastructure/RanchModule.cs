@@ -8,6 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Persistence;
 using FSH.Starter.WebApi.Ranch.Domain.Rations;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.Rations;
+// Start ContractStatus
+using FSH.Starter.WebApi.Ranch.Domain.ContractStatuses;
+using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.ContractStatuses;
+// End ContractStatus
 namespace FSH.Starter.WebApi.Ranch.Infrastructure;
 public static class RanchModule
 {
@@ -22,6 +26,14 @@ public static class RanchModule
             rationGroup.MapGetRationListEndpoint();
             rationGroup.MapRationUpdateEndpoint();
             rationGroup.MapRationDeleteEndpoint();       
+            // Start ContractStatus
+            var contractStatusGroup = app.MapGroup("contractStatuses").WithTags("contractStatuses");
+            contractStatusGroup.MapContractStatusCreationEndpoint();
+            contractStatusGroup.MapGetContractStatusEndpoint();
+            contractStatusGroup.MapGetContractStatusListEndpoint();
+            contractStatusGroup.MapContractStatusUpdateEndpoint();
+            contractStatusGroup.MapContractStatusDeleteEndpoint();
+            // End ContractStatus
         }
     }
     public static WebApplicationBuilder RegisterRanchServices(this WebApplicationBuilder builder)
@@ -31,6 +43,10 @@ public static class RanchModule
         builder.Services.AddScoped<IDbInitializer, RanchDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<Ration>, RanchRepository<Ration>>("ranch:rations");
         builder.Services.AddKeyedScoped<IReadRepository<Ration>, RanchRepository<Ration>>("ranch:rations");
+        // Start ContractStatus
+        builder.Services.AddKeyedScoped<IRepository<ContractStatus>, RanchRepository<ContractStatus>>("ranch:contractStatuses");
+        builder.Services.AddKeyedScoped<IReadRepository<ContractStatus>, RanchRepository<ContractStatus>>("ranch:contractStatuses");
+        // End ContractStatus
         return builder;
     }
     public static WebApplication UseRanchModule(this WebApplication app)

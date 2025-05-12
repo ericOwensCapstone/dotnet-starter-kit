@@ -103,7 +103,7 @@ DOMAIN EVENTS: are publish by this method: private async Task PublishDomainEvent
 publishing is implemented by MediatR
 
 ====================================================================================================
-
+VALIDATORS
 Validators applied here:
     public static WebApplicationBuilder RegisterModules(this WebApplicationBuilder builder)
     {

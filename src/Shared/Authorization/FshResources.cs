@@ -13,6 +13,9 @@ public static class FshResources
     // Start MemberAd
     public const string MemberAds = nameof(MemberAds);
     // End MemberAd
+    // Start ContractStatus
+    public const string ContractStatuses = nameof(ContractStatuses);
+    // End ContractStatus
     //TODO RESOURCES
     public const string Brands = nameof(Brands);
     public const string Todos = nameof(Todos);

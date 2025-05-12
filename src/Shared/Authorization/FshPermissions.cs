@@ -50,6 +50,14 @@ public static class FshPermissions
         new("Delete MemberAds", FshActions.Delete, FshResources.MemberAds),
         new("Export MemberAds", FshActions.Export, FshResources.MemberAds),
         // End MemberAd
+        // Start ContractStatus
+        new("View ContractStatuses", FshActions.View, FshResources.ContractStatuses, IsRoot: true),
+        new("Search ContractStatuses", FshActions.Search, FshResources.ContractStatuses, IsBasic: true),
+        new("Create ContractStatuses", FshActions.Create, FshResources.ContractStatuses, IsRoot: true),
+        new("Update ContractStatuses", FshActions.Update, FshResources.ContractStatuses, IsRoot: true),
+        new("Delete ContractStatuses", FshActions.Delete, FshResources.ContractStatuses, IsRoot: true),
+        new("Export ContractStatuses", FshActions.Export, FshResources.ContractStatuses, IsRoot: true),
+        // End ContractStatus
         //TODO PERMISSIONS
 
         //brands

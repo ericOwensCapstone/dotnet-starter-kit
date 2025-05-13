@@ -22,7 +22,7 @@ public partial class MemberAds
     //Start Subentity Lists
     //End Subentity Lists
 
-    //TODO Member Start
+    //TODO Member Start - properties needed for enforcing only 1 member ad per tenant
     [CascadingParameter]
     protected Task<AuthenticationState> AuthState { get; set; } = default!;
     private string CurrentTenantId { get; set; } = default!;
@@ -58,7 +58,7 @@ public partial class MemberAds
             },
             createFunc: async memberAd =>
             {
-                //TODO Member Start
+                //TODO Member Start - updating the _canCreateIt property to false after successfully creating a member ad
                 try
                 {
                     //Start Create Func code
@@ -81,7 +81,7 @@ public partial class MemberAds
             },
             deleteFunc: async id =>
             {
-                //TODO Member Start
+                //TODO Member Start - updating the _canCreateIt property to true after successfully deleting a member ad
                 try
                 {
                     //Start Delete Func code
@@ -95,7 +95,7 @@ public partial class MemberAds
                 }
                 //TODO Member End
             },
-            //TODO Member Start
+            //TODO Member Start - adding the tenantId checking for canCreateEntityFunc, canUpdateEntityFunc, and canDeleteEntityFunc
             canCreateEntityFunc: () => {
                 return _canCreateIt;
             },
@@ -104,7 +104,7 @@ public partial class MemberAds
             //TODO Member End
         );
 
-        //TODO Member Start
+        //TODO Member Start - adding initialization code to check if the tenant already has a member ad
 
         var memberAdFilter = new SearchMemberAdsCommand();
         memberAdFilter.TenantId = CurrentTenantId;

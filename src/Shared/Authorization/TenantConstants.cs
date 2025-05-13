@@ -1,6 +1,7 @@
 ﻿namespace FSH.Starter.Shared.Authorization;
 public static class TenantConstants
 {
+    //TODO TenantId
     public static class Root
     {
         public const string Id = "root";

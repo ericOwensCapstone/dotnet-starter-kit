@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Packages.props = Directory.Packages.props
 		Notes.txt = Notes.txt
 		README.md = README.md
+		SharedEntityNotes.txt = SharedEntityNotes.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{93324D12-DE1B-4C1B-934A-92AA140FF6F6}"

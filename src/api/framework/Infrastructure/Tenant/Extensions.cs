@@ -93,10 +93,21 @@ internal static class Extensions
                 initializer.MigrateAsync(CancellationToken.None).Wait();
                 initializer.SeedAsync(CancellationToken.None).Wait();
             }
+
+            //TODO Member - patch memberId onto tenants for legacy tenants
+            if (tenant.MemberId is null)
+            {
+                var tenantDbContext = tenantScope.ServiceProvider.GetRequiredService<TenantDbContext>();
+                tenantDbContext.Attach(tenant);
+                tenant.MemberId = Guid.NewGuid();
+                tenantDbContext.SaveChanges();
+                Log.Information("patched default tenant data for MemberId");
+            }
         }
         return app;
     }
 
+    //TODO TenantId
     private static IEnumerable<FshTenantInfo> TenantStoreSetup(IApplicationBuilder app)
     {
         var scope = app.ApplicationServices.CreateScope();
@@ -109,17 +120,26 @@ internal static class Extensions
             Log.Information("applied database migrations for tenant module");
         }
 
+        //TODO Member - patch memberId onto legacy root tenant
         // default tenant seeding
-        if (tenantDbContext.TenantInfo.Find(TenantConstants.Root.Id) is null)
+        var rootTenant = tenantDbContext.TenantInfo.Find(TenantConstants.Root.Id);
+        if (rootTenant is null)
         {
-            var rootTenant = new FshTenantInfo(
+            rootTenant = new FshTenantInfo(
                 TenantConstants.Root.Id,
                 TenantConstants.Root.Name,
+                Guid.NewGuid(),
                 string.Empty,
                 TenantConstants.Root.EmailAddress);
 
             rootTenant.SetValidity(DateTime.UtcNow.AddYears(1));
             tenantDbContext.TenantInfo.Add(rootTenant);
+            tenantDbContext.SaveChanges();
+            Log.Information("configured default tenant data");
+        }
+        else if(rootTenant.MemberId is null)
+        {
+            rootTenant.MemberId = Guid.NewGuid();
             tenantDbContext.SaveChanges();
             Log.Information("configured default tenant data");
         }

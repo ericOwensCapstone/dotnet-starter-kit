@@ -17,7 +17,7 @@ public sealed class CreateMemberAdHandler(
     public async Task<CreateMemberAdResponse> Handle(CreateMemberAdCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        //TODO Member Start
+        //TODO Member Start - enforce only 1 per member/tenant
         var currentTenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id ?? throw new InvalidOperationException("TenantId is not set.");
         var searchCommand = new SearchMemberAdsCommand();
         searchCommand.TenantId = currentTenantId;

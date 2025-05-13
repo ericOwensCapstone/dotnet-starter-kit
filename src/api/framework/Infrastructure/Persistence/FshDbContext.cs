@@ -23,8 +23,12 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
     private readonly IPublisher _publisher = publisher;
     private readonly DatabaseOptions _settings = settings.Value;
 
+    //TODO Member Start - can we switch all uses of TenantId below to MemberId?
+    // except we would set both TenantId and MemberId in the save of added entities?
+
     private string GetCurrentTenantId()
     {
+        var temp = multiTenantContextAccessor.MultiTenantContext?.TenantInfo;
         var currentTenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id ?? throw new InvalidOperationException("TenantId is not set.");
         return currentTenantId;
     }

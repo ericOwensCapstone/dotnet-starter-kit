@@ -17,10 +17,10 @@
   <ItemGroup>
     <Folder Include="Catalog\" />
     <Folder Include="Identity\" />
+    <Folder Include="Members\" />
     <Folder Include="Ranch\" />
     <!-- Start Folders -->
     <!-- Start Members Folder -->
-    <Folder Include="Members\" />
     <!-- End Members Folder -->
     <!-- End Folders -->
     <Folder Include="Tenant\" />

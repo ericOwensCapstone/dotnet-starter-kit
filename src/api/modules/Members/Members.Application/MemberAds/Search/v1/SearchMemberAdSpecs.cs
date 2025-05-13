@@ -12,7 +12,7 @@ public class SearchMemberAdSpecs : EntitiesByPaginationFilterSpec<MemberAd, Memb
         Query
             // Includes are implemented in context model builder
             .OrderBy(c => c.Name, !command.HasOrderBy())
-            //TODO Member Start - Search Spec needs to include the TenantId from the Search Command in the query
+            //TODO Member Start One Per - Search Spec needs to include the TenantId from the Search Command in the query
             .Where(p => p.TenantId == command.TenantId, command.TenantId != null);
             //TODO Member End
 }

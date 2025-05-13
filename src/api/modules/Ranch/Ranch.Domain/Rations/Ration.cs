@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 namespace FSH.Starter.WebApi.Ranch.Domain.Rations;
 public class Ration : AuditableEntity, IAggregateRoot, ITenantEntity
 {
-    public string? TenantId { get; set; } 
+    public string? TenantId { get; set; }
+    public Guid? MemberId { get; set; } = Guid.Empty;
     public string Name { get; private set; } = string.Empty; // MaxLength=99, Default="Sample Ration", Rule=NotEmpty().MinimumLength(2).MaximumLength(99)
     public string? Description { get; private set; } = string.Empty; // MaxLength=999, Default="Ration Description", Rule=NotEmpty().MinimumLength(2).MaximumLength(999)
     public decimal DollarsPerPound { get; private set; } = 0; // Default=0.10, Rule=GreaterThan(0)

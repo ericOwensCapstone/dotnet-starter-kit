@@ -123,10 +123,16 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id;
+        var memberId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.MemberId;
 
         if (string.IsNullOrEmpty(tenantId))
         {
             throw new InvalidOperationException("TenantId is not set.");
+        }
+
+        if (memberId == null || memberId == Guid.Empty)
+        {
+            throw new InvalidOperationException("MemberId is not set.");
         }
 
         var entries = ChangeTracker.Entries()
@@ -138,6 +144,8 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
             {
                 // Set the TenantId for new entities
                 tenantEntity.TenantId = tenantId;
+                // Set the MemberId for new entities
+                tenantEntity.MemberId = memberId;
             }
             else if (entry.Entity is ITenantEntity tenantEntity2 && entry.State == EntityState.Modified)
             {

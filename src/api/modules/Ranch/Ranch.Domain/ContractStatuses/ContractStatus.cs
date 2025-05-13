@@ -8,6 +8,7 @@ namespace FSH.Starter.WebApi.Ranch.Domain.ContractStatuses;
 public class ContractStatus : AuditableEntity, IAggregateRoot, ITenantEntity, IPublicEntity
 {
     public string? TenantId { get; set; } = string.Empty;
+    public Guid? MemberId { get; set; } = Guid.Empty;
     public string Name { get; private set; } = string.Empty; // Rule=NotEmpty().MinimumLength(2).MaximumLength(99)
     public string? Description { get; private set; } = string.Empty; // Rule=NotEmpty().MinimumLength(2).MaximumLength(999)
 

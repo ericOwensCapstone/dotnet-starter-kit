@@ -6,6 +6,7 @@ namespace FSH.Starter.WebApi.Ranch.Application.Rations.Search.v1;
 
 public class SearchRationsCommand : PaginationFilter, IRequest<PagedList<RationResponse>>
 {
-
+    //Start One Per Code
+    //End One Per Code
 }
 

@@ -7,8 +7,8 @@ namespace FSH.Starter.WebApi.Members.Application.MemberAds.Search.v1;
 
 public class SearchMemberAdsCommand : PaginationFilter, IRequest<PagedList<MemberAdResponse>>
 {
-    //TODO Member Start One Per - Search Command needs a value for TenantId
+    //TODO One Per Start
     public string TenantId { get; set; }
-    //TODO Member End
+    //TODO One Per End
 }
 

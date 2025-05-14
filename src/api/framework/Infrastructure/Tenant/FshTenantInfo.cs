@@ -9,7 +9,6 @@ public sealed class FshTenantInfo : IFshTenantInfo
     public FshTenantInfo()
     {
     }
-    //TODO Member Id - add MemberId property to FshTenantInfo
     public FshTenantInfo(string id, string name, Guid? memberId, string? connectionString, string adminEmail, string? issuer = null)
     {
         Id = id;

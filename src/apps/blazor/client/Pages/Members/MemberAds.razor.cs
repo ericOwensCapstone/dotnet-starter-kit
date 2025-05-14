@@ -22,22 +22,19 @@ public partial class MemberAds
     //Start Subentity Lists
     //End Subentity Lists
 
-    //TODO Member Start - adding the tenantId checking for canUpdateEntityFunc, and canDeleteEntityFunc
+    //TODO All Start
     [CascadingParameter]
     protected Task<AuthenticationState> AuthState { get; set; } = default!;
     private string CurrentTenantId { get; set; } = default!;
-    //TODO Member End
-
-    //TODO Member Start One Per - properties needed for enforcing only 1 member ad per tenant
     private bool _canCreateIt = true;
-    //TODO Member End
+    //TODO All End
 
     protected override async Task OnInitializedAsync()
     {
-        //TODO Member Start - adding the tenantId checking for canUpdateEntityFunc, and canDeleteEntityFunc
+        //TODO All Start
         var authState = await AuthState;
         CurrentTenantId = authState.User.FindFirst("tenant")?.Value ?? string.Empty;
-        //TODO Member End
+        //TODO All End
 
         Context = new(
             entityName: "MemberAd",
@@ -65,9 +62,9 @@ public partial class MemberAds
                 await _client.CreateMemberAdEndpointAsync("1", memberAd.Adapt<CreateMemberAdCommand>());
                 //End Create Func code
 
-                //TODO Member Start
+                //TODO One Per Start
                 _canCreateIt = false;
-                //TODO Member End
+                //TODO One Per End
             },
             //Start Edit Func code
             //End Edit Func code
@@ -82,23 +79,20 @@ public partial class MemberAds
                 //Start Delete Func code
                 await _client.DeleteMemberAdEndpointAsync("1", id);
                 //End Delete Func code
-                //TODO Member Start - updating the _canCreateIt property to true after successfully deleting a member ad
+                //TODO One Per Start 
                 _canCreateIt = true;
-                //TODO Member End
+                //TODO One Per End
             },
-            //TODO Member Start - enforcing one per tenant/member
+            //TODO All Start
             canCreateEntityFunc: () => {
                 return _canCreateIt;
             },
-            //TODO Member End
-
-            //TODO Member Start - adding the tenantId checking canUpdateEntityFunc, and canDeleteEntityFunc
             canUpdateEntityFunc: ad => ad.TenantId == CurrentTenantId, // Only allow editing if the tenant owns the MemberAd
             canDeleteEntityFunc: ad => ad.TenantId == CurrentTenantId  // Only allow deletion if the tenant owns the MemberAd
-            //TODO Member End
+            //TODO All End
         );
 
-        //TODO Member Start One Per- adding initialization code to check if the tenant already has a member ad
+        //TODO One Per Start 
         var memberAdFilter = new SearchMemberAdsCommand();
         memberAdFilter.TenantId = CurrentTenantId;
         var memberAds = await _client.SearchMemberAdsEndpointAsync("1", memberAdFilter);
@@ -106,13 +100,14 @@ public partial class MemberAds
         {
             _canCreateIt = false;
         }
-        //TODO: Member End
+        //TODO One Per End
 
         //Start Subentity Loader calls
         //End Subentity Loader calls
     }
 
-    //Start List Related Code//End List Related Code
+    //Start List Related Code
+    //End List Related Code
 
     //Start Subentity Loaders
     //End Subentity Loaders

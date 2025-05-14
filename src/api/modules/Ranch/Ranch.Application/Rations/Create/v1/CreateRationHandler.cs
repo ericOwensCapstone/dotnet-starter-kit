@@ -13,6 +13,8 @@ public sealed class CreateRationHandler(
     public async Task<CreateRationResponse> Handle(CreateRationCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
+        //Start One Per Code
+        //End One Per Code
         var ration = Ration.Create(
             request.Name,
             request.Description,

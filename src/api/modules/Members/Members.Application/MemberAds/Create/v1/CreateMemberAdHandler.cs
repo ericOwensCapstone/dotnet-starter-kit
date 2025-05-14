@@ -17,7 +17,7 @@ public sealed class CreateMemberAdHandler(
     public async Task<CreateMemberAdResponse> Handle(CreateMemberAdCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        //TODO Member Start - enforce only 1 per member/tenant
+        //TODO One Per Start
         var currentTenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id ?? throw new InvalidOperationException("TenantId is not set.");
         var searchCommand = new SearchMemberAdsCommand();
         searchCommand.TenantId = currentTenantId;
@@ -27,7 +27,7 @@ public sealed class CreateMemberAdHandler(
         {
             throw new InvalidOperationException("Tenant already has a member ad.");
         }
-        //TODO Member End
+        //TODO One Per End
         var memberAd = MemberAd.Create(
             request.TenantId,
             request.Name,

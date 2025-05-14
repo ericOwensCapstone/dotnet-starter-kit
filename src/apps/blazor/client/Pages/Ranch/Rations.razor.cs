@@ -3,6 +3,7 @@ using FSH.Starter.Blazor.Infrastructure.Api;
 using FSH.Starter.Shared.Authorization;
 using Mapster;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace FSH.Starter.Blazor.Client.Pages.Ranch;
 
@@ -18,8 +19,16 @@ public partial class Rations
     //Start Subentity Lists
     //End Subentity Lists
 
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; } = default!;
+    private string CurrentTenantId { get; set; } = default!;
+    private bool _canCreateIt = true;
+
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthState;
+        CurrentTenantId = authState.User.FindFirst("tenant")?.Value ?? string.Empty;
+
         Context = new(
             entityName: "Ration",
             entityNamePlural: "Rations",
@@ -47,6 +56,9 @@ public partial class Rations
                 //Start Create Func code
                 await _client.CreateRationEndpointAsync("1", ration.Adapt<CreateRationCommand>());
                 //End Create Func code
+
+                //Start One Per Create Func Code
+                //End One Per Create Func Code
             },
             //Start Edit Func code
             //End Edit Func code
@@ -56,7 +68,22 @@ public partial class Rations
                 await _client.UpdateRationEndpointAsync("1", id, ration.Adapt<UpdateRationCommand>());
                 //End Update Func code
             },
-            deleteFunc: async id => await _client.DeleteRationEndpointAsync("1", id));
+            deleteFunc: async id =>
+            {
+                //Start Delete Func code
+                await _client.DeleteRationEndpointAsync("1", id);
+                //End Delete Func code
+                _canCreateIt = true;
+            },
+            canCreateEntityFunc: () => {
+                return _canCreateIt;
+            },
+            canUpdateEntityFunc: ad => ad.TenantId == CurrentTenantId, 
+            canDeleteEntityFunc: ad => ad.TenantId == CurrentTenantId  
+        );
+
+        //Start One Per Initialize Code
+        //End One Per Intialize Code
 
         //Start Subentity Loader calls
         //End Subentity Loader calls

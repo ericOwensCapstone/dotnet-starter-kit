@@ -83,7 +83,7 @@ public partial class Rations
         );
 
         //Start One Per Initialize Code
-        //End One Per Intialize Code
+        //End One Per Initialize Code
 
         //Start Subentity Loader calls
         //End Subentity Loader calls

@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 
 namespace FSH.Starter.WebApi.Ranch.Application.Rations.Create.v1;
 public sealed class CreateRationHandler(
+    // Start Injections
+    // End Injections
     ILogger<CreateRationHandler> logger,
     [FromKeyedServices("ranch:rations")] IRepository<Ration> repository)
     : IRequestHandler<CreateRationCommand, CreateRationResponse>

@@ -10,9 +10,8 @@ public class SearchRationSpecs : EntitiesByPaginationFilterSpec<Ration, RationRe
     public SearchRationSpecs(SearchRationsCommand command)
         : base(command) =>
         Query
-            .OrderBy(c => c.Name, !command.HasOrderBy())
             //Start One Per Code
-            //End One Per Code        
-        ;
+            //End One Per Code  
+            .OrderBy(c => c.Name, !command.HasOrderBy());
 }
 

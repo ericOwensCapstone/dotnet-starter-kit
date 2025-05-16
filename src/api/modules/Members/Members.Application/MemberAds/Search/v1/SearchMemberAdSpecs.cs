@@ -12,8 +12,8 @@ public class SearchMemberAdSpecs : EntitiesByPaginationFilterSpec<MemberAd, Memb
         Query
             // Includes are implemented in context model builder
             .OrderBy(c => c.Name, !command.HasOrderBy())
-            //TODO One Per Start 
+
             .Where(p => p.TenantId == command.TenantId, command.TenantId != null);
-            //TODO One Per End
+
 }
 

@@ -1,7 +1,6 @@
 ﻿namespace FSH.Framework.Core.Tenant.Dtos;
 public class TenantDetail
 {
-    //TODO TenantId
     public string Id { get; set; } = default!;
     public string Name { get; set; } = default!;
     public string? ConnectionString { get; set; }

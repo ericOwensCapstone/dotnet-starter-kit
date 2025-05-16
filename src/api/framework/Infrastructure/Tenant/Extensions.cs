@@ -107,7 +107,6 @@ internal static class Extensions
         return app;
     }
 
-    //TODO TenantId
     private static IEnumerable<FshTenantInfo> TenantStoreSetup(IApplicationBuilder app)
     {
         var scope = app.ApplicationServices.CreateScope();

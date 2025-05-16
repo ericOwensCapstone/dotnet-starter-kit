@@ -64,9 +64,9 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
 
             // SharedWith filter
             Expression sharedWithFilter = null;
-            if (typeof(ISharedEntity).IsAssignableFrom(entityClrType))
+            if (typeof(IShareableEntity).IsAssignableFrom(entityClrType))
             {
-                var sharedWithProperty = Expression.Property(parameter, nameof(ISharedEntity.SharedWith));
+                var sharedWithProperty = Expression.Property(parameter, nameof(IShareableEntity.SharedWith));
                 var tenantIdMethod = typeof(FshDbContext).GetMethod(nameof(GetCurrentTenantId), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 var tenantIdCall = Expression.Call(Expression.Constant(this), tenantIdMethod);
 

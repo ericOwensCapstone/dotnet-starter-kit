@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Tenant
 {
     /// <inheritdoc />
-    public partial class AddTenantSchema : Migration
+    public partial class AddinitialTenantschema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,6 +21,7 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Tenant
                 {
                     Id = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     Identifier = table.Column<string>(type: "text", nullable: false),
+                    MemberId = table.Column<Guid>(type: "uuid", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: false),
                     ConnectionString = table.Column<string>(type: "text", nullable: false),
                     AdminEmail = table.Column<string>(type: "text", nullable: false),

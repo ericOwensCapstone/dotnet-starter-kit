@@ -1,0 +1,36 @@
+@page "/ranch/contracts"
+
+<PageHeader Title="Contracts" Header="Contracts" SubHeader="Manage your Contracts." />
+
+<EntityTable @ref="_table" TEntity="ContractResponse" TId="Guid" TRequest="ContractViewModel" Context="@Context">
+
+    <AdvancedSearchContent>
+        <MudSelect T="Guid?" Label="ContractStatus" @bind-Value="SearchContractStatusId">
+            <MudSelectItem T="Guid?" Value="null">All ContractStatuses</MudSelectItem>
+            @foreach (var contractStatus in _contractStatuses)
+            {
+                <MudSelectItem T="Guid?" Value="contractStatus.Id">@contractStatus.Name</MudSelectItem>
+            }
+        </MudSelect>
+    </AdvancedSearchContent>
+
+    <EditFormContent>
+        @* TODO START *@
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Name" For="@(() => context.Name)" @bind-Value="context.Name" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Description" For="@(() => context.Description)" @bind-Value="context.Description" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudSelect T="Guid?" Label="ContractStatus" @bind-Value="context.ContractStatusId">
+                @foreach(var contractStatus in _contractStatuses)
+                {
+                    <MudSelectItem T="Guid?" Value="contractStatus.Id">@contractStatus.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        @* TODO END *@
+    </EditFormContent>
+
+</EntityTable>

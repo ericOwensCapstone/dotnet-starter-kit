@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
 {
     /// <inheritdoc />
-    public partial class InitialRanchSchema : Migration
+    public partial class AddinitialRanchschema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -59,6 +59,50 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                     table.PrimaryKey("PK_Rations", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Contracts",
+                schema: "ranch",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<string>(type: "text", nullable: true),
+                    MemberId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Name = table.Column<string>(type: "character varying(99)", maxLength: 99, nullable: false),
+                    Description = table.Column<string>(type: "character varying(999)", maxLength: 999, nullable: true),
+                    ContractStatusId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    Deleted = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contracts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contracts_ContractStatuses_ContractStatusId",
+                        column: x => x.ContractStatusId,
+                        principalSchema: "ranch",
+                        principalTable: "ContractStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contracts_ContractStatusId",
+                schema: "ranch",
+                table: "Contracts",
+                column: "ContractStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contracts_Name_TenantId",
+                schema: "ranch",
+                table: "Contracts",
+                columns: new[] { "Name", "TenantId" },
+                unique: true,
+                filter: "\"Deleted\" IS NULL");
+
             migrationBuilder.CreateIndex(
                 name: "IX_ContractStatuses_Name_TenantId",
                 schema: "ranch",
@@ -80,11 +124,15 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ContractStatuses",
+                name: "Contracts",
                 schema: "ranch");
 
             migrationBuilder.DropTable(
                 name: "Rations",
+                schema: "ranch");
+
+            migrationBuilder.DropTable(
+                name: "ContractStatuses",
                 schema: "ranch");
         }
     }

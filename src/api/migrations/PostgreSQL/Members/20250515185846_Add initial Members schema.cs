@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Members
 {
     /// <inheritdoc />
-    public partial class InitialMembersSchema : Migration
+    public partial class AddinitialMembersschema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

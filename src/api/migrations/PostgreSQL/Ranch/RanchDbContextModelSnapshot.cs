@@ -71,6 +71,59 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                     b.ToTable("ContractStatuses", "ranch");
                 });
 
+            modelBuilder.Entity("FSH.Starter.WebApi.Ranch.Domain.Contracts.Contract", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ContractStatusId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("Deleted")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(999)
+                        .HasColumnType("character varying(999)");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("MemberId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(99)
+                        .HasColumnType("character varying(99)");
+
+                    b.Property<string>("TenantId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractStatusId");
+
+                    b.HasIndex("Name", "TenantId")
+                        .IsUnique()
+                        .HasFilter("\"Deleted\" IS NULL");
+
+                    b.ToTable("Contracts", "ranch");
+                });
+
             modelBuilder.Entity("FSH.Starter.WebApi.Ranch.Domain.Rations.Ration", b =>
                 {
                     b.Property<Guid>("Id")
@@ -120,6 +173,16 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Ranch
                         .HasFilter("\"Deleted\" IS NULL");
 
                     b.ToTable("Rations", "ranch");
+                });
+
+            modelBuilder.Entity("FSH.Starter.WebApi.Ranch.Domain.Contracts.Contract", b =>
+                {
+                    b.HasOne("FSH.Starter.WebApi.Ranch.Domain.ContractStatuses.ContractStatus", "ContractStatus")
+                        .WithMany()
+                        .HasForeignKey("ContractStatusId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ContractStatus");
                 });
 #pragma warning restore 612, 618
         }

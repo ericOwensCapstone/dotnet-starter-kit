@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Tenant
 {
     [DbContext(typeof(TenantDbContext))]
-    [Migration("20250505145834_Add MemberId")]
-    partial class AddMemberId
+    [Migration("20250515191018_Add initial Tenant schema")]
+    partial class AddinitialTenantschema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

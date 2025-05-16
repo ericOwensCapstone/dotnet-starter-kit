@@ -29,6 +29,9 @@ public partial class NavMenu
     // Start ContractStatus
     private bool _canViewContractStatuses;
     // End ContractStatus
+    // Start Contract;
+    private bool _canViewContracts;
+    // End Contract;
     //TODO ADD CAN VIEWS
 
     private bool CanViewAdministrationGroup => _canViewUsers || _canViewRoles || _canViewTenants;
@@ -48,12 +51,15 @@ public partial class NavMenu
         _canViewAuditTrails = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.AuditTrails);
         _canViewRations = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Rations);
  
-        // Start MemberAd
+        // Start MemberAd;
         _canViewMemberAds = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.MemberAds);
-        // End MemberAd
-        // Start ContractStatus
+        // End MemberAd;
+        // Start ContractStatus;
         _canViewContractStatuses = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.ContractStatuses);
-        // End ContractStatus
+        // End ContractStatus;
+        // Start Contract;
+        _canViewContracts = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Contracts);
+        // End Contract;
         //TODO ASSIGN CAN VIEWS
     }
 }

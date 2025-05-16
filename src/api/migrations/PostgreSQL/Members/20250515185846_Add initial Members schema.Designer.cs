@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Members
 {
     [DbContext(typeof(MembersDbContext))]
-    [Migration("20250513135918_Initial Members Schema")]
-    partial class InitialMembersSchema
+    [Migration("20250515185846_Add initial Members schema")]
+    partial class AddinitialMembersschema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

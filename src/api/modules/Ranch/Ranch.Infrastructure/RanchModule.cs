@@ -46,30 +46,6 @@ public static class RanchModule
             contractGroup.MapContractUpdateEndpoint();
             contractGroup.MapContractDeleteEndpoint();
             // End Contract;
-            // Start Contract;
-            var contractGroup = app.MapGroup("contracts").WithTags("contracts");
-            contractGroup.MapContractCreationEndpoint();
-            contractGroup.MapGetContractEndpoint();
-            contractGroup.MapGetContractListEndpoint();
-            contractGroup.MapContractUpdateEndpoint();
-            contractGroup.MapContractDeleteEndpoint();
-            // End Contract;
-            // Start Contract;
-            var contractGroup = app.MapGroup("contracts").WithTags("contracts");
-            contractGroup.MapContractCreationEndpoint();
-            contractGroup.MapGetContractEndpoint();
-            contractGroup.MapGetContractListEndpoint();
-            contractGroup.MapContractUpdateEndpoint();
-            contractGroup.MapContractDeleteEndpoint();
-            // End Contract;
-            // Start Contract;
-            var contractGroup = app.MapGroup("contracts").WithTags("contracts");
-            contractGroup.MapContractCreationEndpoint();
-            contractGroup.MapGetContractEndpoint();
-            contractGroup.MapGetContractListEndpoint();
-            contractGroup.MapContractUpdateEndpoint();
-            contractGroup.MapContractDeleteEndpoint();
-            // End Contract;
         }
     }
     public static WebApplicationBuilder RegisterRanchServices(this WebApplicationBuilder builder)
@@ -83,18 +59,6 @@ public static class RanchModule
         builder.Services.AddKeyedScoped<IRepository<ContractStatus>, RanchRepository<ContractStatus>>("ranch:contractStatuses");
         builder.Services.AddKeyedScoped<IReadRepository<ContractStatus>, RanchRepository<ContractStatus>>("ranch:contractStatuses");
         // End ContractStatus;
-        // Start Contract;
-        builder.Services.AddKeyedScoped<IRepository<Contract>, RanchRepository<Contract>>("ranch:contracts");
-        builder.Services.AddKeyedScoped<IReadRepository<Contract>, RanchRepository<Contract>>("ranch:contracts");
-        // End Contract;
-        // Start Contract;
-        builder.Services.AddKeyedScoped<IRepository<Contract>, RanchRepository<Contract>>("ranch:contracts");
-        builder.Services.AddKeyedScoped<IReadRepository<Contract>, RanchRepository<Contract>>("ranch:contracts");
-        // End Contract;
-        // Start Contract;
-        builder.Services.AddKeyedScoped<IRepository<Contract>, RanchRepository<Contract>>("ranch:contracts");
-        builder.Services.AddKeyedScoped<IReadRepository<Contract>, RanchRepository<Contract>>("ranch:contracts");
-        // End Contract;
         // Start Contract;
         builder.Services.AddKeyedScoped<IRepository<Contract>, RanchRepository<Contract>>("ranch:contracts");
         builder.Services.AddKeyedScoped<IReadRepository<Contract>, RanchRepository<Contract>>("ranch:contracts");

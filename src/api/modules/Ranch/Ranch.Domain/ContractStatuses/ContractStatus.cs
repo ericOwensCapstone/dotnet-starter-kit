@@ -1,7 +1,3 @@
-using FSH.Starter.WebApi.Ranch.Domain.Contracts;
-using FSH.Starter.WebApi.Ranch.Domain.Contracts;
-using FSH.Starter.WebApi.Ranch.Domain.Contracts;
-using FSH.Starter.WebApi.Ranch.Domain.Contracts;
 using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
 using FSH.Framework.Core.Tenant.Abstractions;
@@ -64,8 +60,8 @@ public class ContractStatus : AuditableEntity, IAggregateRoot, ITenantEntity, IP
     }
     public override (bool CanBeDeleted, string Reason) CanBeSoftDeleted(DbContext context)
     {
-        bool canBeDeleted = !context.Set<Contract>().Any(ls => ls.ContractStatusId == Id && ls.Deleted == null);
-        string reason = canBeDeleted ? string.Empty : "Cannot soft delete ContractStatus because it is referenced by a non-soft-deleted Contract.";
+        bool canBeDeleted = true;
+        string reason = string.Empty;
         return (canBeDeleted, reason);
     }
 }

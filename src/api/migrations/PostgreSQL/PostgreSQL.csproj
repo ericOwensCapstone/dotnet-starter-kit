@@ -4,24 +4,23 @@
     <AssemblyName>FSH.Starter.WebApi.Migrations.PostgreSQL</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Members\**" />
+    <EmbeddedResource Remove="Members\**" />
+    <None Remove="Members\**" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\framework\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Ranch\Ranch.Infrastructure\Ranch.Infrastructure.csproj" />
     <!-- Start Project References -->
-    <!-- Start Members Project Reference -->
-    <ProjectReference Include="..\..\modules\Members\Members.Infrastructure\Members.Infrastructure.csproj" />
-    <!-- End Members Project Reference -->    
     <!-- End Project References -->
     <ProjectReference Include="..\..\modules\Todo\Todo.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Catalog\" />
     <Folder Include="Identity\" />
-    <Folder Include="Members\" />
     <Folder Include="Ranch\" />
     <!-- Start Folders -->
-    <!-- Start Members Folder -->
-    <!-- End Members Folder -->
     <!-- End Folders -->
     <Folder Include="Tenant\" />
     <Folder Include="Todo\" />

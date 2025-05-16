@@ -25,17 +25,6 @@
         @* End ContractStatus *@
 @* TODO ADD Ranch PAGES *@
     </MudNavGroup>
-@* START Members NAV GROUP *@
-    <MudNavGroup Title = "Members" Icon="@Icons.Material.Filled.AddBox">
-        @* Start MemberAd *@        
-        @if (_canViewMemberAds)
-        {
-            <MudNavLink Href="/ranch/memberAds" Icon="@Icons.Material.Filled.Groups" Class="fsh-nav-child">MemberAds</MudNavLink>
-        }
-        @* End MemberAd *@
-@* TODO ADD Members PAGES *@
-    </MudNavGroup>
-@* END Members NAV GROUP *@
 @* TODO ADD NEW MODULE *@
 @*     <MudNavLink Href="/todos" Icon="@Icons.Material.Filled.Checklist" Class="fsh-nav-child">Todos</MudNavLink>  *@ 
    @if (CanViewAdministrationGroup)

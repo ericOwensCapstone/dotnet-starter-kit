@@ -20,7 +20,7 @@ public static class GetContractStatusEndpoint
             .WithSummary("gets contractStatus by id")
             .WithDescription("gets prodct by id")
             .Produces<ContractStatusResponse>()
-            .RequirePermission("Permissions.ContractStatuses.View")
+            .RequirePermission("Permissions.ContractStatuses.Search")
             .MapToApiVersion(1);
     }
 }

@@ -58,6 +58,22 @@ public static class FshPermissions
         new("Delete ContractStatuses", FshActions.Delete, FshResources.ContractStatuses, IsRoot: true),
         new("Export ContractStatuses", FshActions.Export, FshResources.ContractStatuses, IsRoot: true),
         // End ContractStatus
+        // Start MemberPage;
+        new("View MemberPages", FshActions.View, FshResources.MemberPages, IsBasic: true),
+        new("Search MemberPages", FshActions.Search, FshResources.MemberPages, IsBasic: true),
+        new("Create MemberPages", FshActions.Create, FshResources.MemberPages),
+        new("Update MemberPages", FshActions.Update, FshResources.MemberPages),
+        new("Delete MemberPages", FshActions.Delete, FshResources.MemberPages),
+        new("Export MemberPages", FshActions.Export, FshResources.MemberPages),
+        // End MemberPage;
+        // Start Contract;
+        new("View Contracts", FshActions.View, FshResources.Contracts, IsBasic: true),
+        new("Search Contracts", FshActions.Search, FshResources.Contracts, IsBasic: true),
+        new("Create Contracts", FshActions.Create, FshResources.Contracts),
+        new("Update Contracts", FshActions.Update, FshResources.Contracts),
+        new("Delete Contracts", FshActions.Delete, FshResources.Contracts),
+        new("Export Contracts", FshActions.Export, FshResources.Contracts),
+        // End Contract;
         //TODO PERMISSIONS
 
         //brands

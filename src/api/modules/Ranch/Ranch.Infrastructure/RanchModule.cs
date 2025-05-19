@@ -12,6 +12,14 @@ using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.Rations;
 using FSH.Starter.WebApi.Ranch.Domain.ContractStatuses;
 using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.ContractStatuses;
 // End ContractStatus;
+// Start MemberPage;
+using FSH.Starter.WebApi.Ranch.Domain.MemberPages;
+using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.MemberPages;
+// End MemberPage;
+// Start Contract;
+using FSH.Starter.WebApi.Ranch.Domain.Contracts;
+using FSH.Starter.WebApi.Ranch.Infrastructure.Endpoints.v1.Contracts;
+// End Contract;
 namespace FSH.Starter.WebApi.Ranch.Infrastructure;
 public static class RanchModule
 {
@@ -34,6 +42,22 @@ public static class RanchModule
             contractStatusGroup.MapContractStatusUpdateEndpoint();
             contractStatusGroup.MapContractStatusDeleteEndpoint();
             // End ContractStatus;
+            // Start MemberPage;
+            var memberPageGroup = app.MapGroup("memberPages").WithTags("memberPages");
+            memberPageGroup.MapMemberPageCreationEndpoint();
+            memberPageGroup.MapGetMemberPageEndpoint();
+            memberPageGroup.MapGetMemberPageListEndpoint();
+            memberPageGroup.MapMemberPageUpdateEndpoint();
+            memberPageGroup.MapMemberPageDeleteEndpoint();
+            // End MemberPage;
+            // Start Contract;
+            var contractGroup = app.MapGroup("contracts").WithTags("contracts");
+            contractGroup.MapContractCreationEndpoint();
+            contractGroup.MapGetContractEndpoint();
+            contractGroup.MapGetContractListEndpoint();
+            contractGroup.MapContractUpdateEndpoint();
+            contractGroup.MapContractDeleteEndpoint();
+            // End Contract;
         }
     }
     public static WebApplicationBuilder RegisterRanchServices(this WebApplicationBuilder builder)
@@ -47,6 +71,14 @@ public static class RanchModule
         builder.Services.AddKeyedScoped<IRepository<ContractStatus>, RanchRepository<ContractStatus>>("ranch:contractStatuses");
         builder.Services.AddKeyedScoped<IReadRepository<ContractStatus>, RanchRepository<ContractStatus>>("ranch:contractStatuses");
         // End ContractStatus;
+        // Start MemberPage;
+        builder.Services.AddKeyedScoped<IRepository<MemberPage>, RanchRepository<MemberPage>>("ranch:memberPages");
+        builder.Services.AddKeyedScoped<IReadRepository<MemberPage>, RanchRepository<MemberPage>>("ranch:memberPages");
+        // End MemberPage;
+        // Start Contract;
+        builder.Services.AddKeyedScoped<IRepository<Contract>, RanchRepository<Contract>>("ranch:contracts");
+        builder.Services.AddKeyedScoped<IReadRepository<Contract>, RanchRepository<Contract>>("ranch:contracts");
+        // End Contract;
         return builder;
     }
     public static WebApplication UseRanchModule(this WebApplication app)

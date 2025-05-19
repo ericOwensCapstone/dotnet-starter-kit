@@ -40,25 +40,19 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // QueryFilters need to be applied before base.OnModelCreating
-
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             var entityClrType = entityType.ClrType;
-
-            // Parameter for the lambda expression
             var parameter = Expression.Parameter(entityClrType, "e");
 
-            // Tenant filter
             Expression tenantFilter = null;
+            Expression sharedWithFilter = null;
+            Expression softDeleteFilter = null;
+
+            // Tenant filter
             if (typeof(ITenantEntity).IsAssignableFrom(entityClrType))
             {
-                if (typeof(IPublicEntity).IsAssignableFrom(entityClrType))
-                {
-                    // No tenant filter for public entity (all tenants can view)
-                    tenantFilter = null;
-                }
-                else
+                if (!typeof(IPublicEntity).IsAssignableFrom(entityClrType))
                 {
                     var tenantIdProperty = Expression.Property(parameter, nameof(ITenantEntity.TenantId));
                     var tenantIdMethod = typeof(FshDbContext).GetMethod(nameof(GetCurrentTenantId), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -67,21 +61,48 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
                 }
             }
 
-            // SharedWith filter
-            Expression sharedWithFilter = null;
+            // SharedWith filter (generic)
             if (typeof(IShareableEntity).IsAssignableFrom(entityClrType))
             {
-                //var sharedWithProperty = Expression.Property(parameter, nameof(IShareableEntity.SharedWith));
-                //var tenantIdMethod = typeof(FshDbContext).GetMethod(nameof(GetCurrentTenantId), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                //var tenantIdCall = Expression.Call(Expression.Constant(this), tenantIdMethod);
+                var sharedWithProp = entityClrType
+                    .GetProperties()
+                    .FirstOrDefault(p => Attribute.IsDefined(p, typeof(SharedWithMembersAttribute)));
 
-                //// Check if the current tenant ID is in the SharedWith list
-                //var containsMethod = typeof(List<string>).GetMethod(nameof(List<string>.Contains), new[] { typeof(string) });
-                //sharedWithFilter = Expression.Call(sharedWithProperty, containsMethod!, tenantIdCall);
+                if (sharedWithProp != null)
+                {
+                    var sharedWithProperty = Expression.Property(parameter, sharedWithProp.Name);
+                    var elementType = sharedWithProp.PropertyType.GetGenericArguments().First();
+
+                    // Find the property with [PropertyWithMemberId]
+                    var memberIdNavProp = elementType.GetProperties()
+                        .FirstOrDefault(p => Attribute.IsDefined(p, typeof(PropertyWithMemberIdAttribute)));
+
+                    if (memberIdNavProp != null)
+                    {
+                        var xParam = Expression.Parameter(elementType, "x");
+                        var memberPageProperty = Expression.Property(xParam, memberIdNavProp.Name);
+
+                        // Now get the MemberId property from the navigation property
+                        var memberIdProperty = Expression.Property(memberPageProperty, "MemberId");
+
+                        var memberIdMethod = typeof(FshDbContext).GetMethod(nameof(GetCurrentMemberId), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        var memberIdCall = Expression.Call(Expression.Constant(this), memberIdMethod);
+
+                        var memberIdCallConverted = Expression.Convert(memberIdCall, typeof(Guid?));
+                        var memberIdEquals = Expression.Equal(memberIdProperty, memberIdCallConverted);
+                        var lambda = Expression.Lambda(memberIdEquals, xParam);
+
+                        var anyMethod = typeof(Enumerable).GetMethods()
+                            .First(m => m.Name == "Any" && m.GetParameters().Length == 2)
+                            .MakeGenericMethod(elementType);
+
+                        sharedWithFilter = Expression.Call(anyMethod, sharedWithProperty, lambda);
+                    }
+                }
             }
 
+
             // Soft delete filter
-            Expression softDeleteFilter = null;
             if (typeof(ISoftDeletable).IsAssignableFrom(entityClrType))
             {
                 softDeleteFilter = Expression.Equal(
@@ -89,24 +110,19 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
                     Expression.Constant(null));
             }
 
-            // Combine filters
-            Expression combinedFilter = null;
-            if (tenantFilter != null || sharedWithFilter != null)
-            {
-                var tenantOrSharedFilter = tenantFilter != null && sharedWithFilter != null
-                    ? Expression.OrElse(tenantFilter, sharedWithFilter)
-                    : tenantFilter ?? sharedWithFilter;
-
-                combinedFilter = softDeleteFilter != null
-                    ? Expression.AndAlso(tenantOrSharedFilter, softDeleteFilter)
-                    : tenantOrSharedFilter;
-            }
+            // Combine filters: (tenantFilter OR sharedWithFilter) AND softDeleteFilter
+            Expression accessFilter = null;
+            if (tenantFilter != null && sharedWithFilter != null)
+                accessFilter = Expression.OrElse(tenantFilter, sharedWithFilter);
             else
-            {
-                combinedFilter = softDeleteFilter;
-            }
+                accessFilter = tenantFilter ?? sharedWithFilter;
 
-            // Apply the combined filter if any
+            Expression combinedFilter = null;
+            if (accessFilter != null && softDeleteFilter != null)
+                combinedFilter = Expression.AndAlso(accessFilter, softDeleteFilter);
+            else
+                combinedFilter = accessFilter ?? softDeleteFilter;
+
             if (combinedFilter != null)
             {
                 var lambda = Expression.Lambda(combinedFilter, parameter);

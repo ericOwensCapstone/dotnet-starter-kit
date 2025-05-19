@@ -1,1 +1,33 @@
 
+For Contract Configuration:
+
+add
+builder.HasIndex(x => x.TenantId);
+
+For ContractMemberPage Configuration:
+
+internal sealed class ContractMemberPageConfiguration : IEntityTypeConfiguration<ContractMemberPage>
+{
+    public void Configure(EntityTypeBuilder<ContractMemberPage> builder)
+    {
+        builder.HasKey(x => x.Id);
+
+        // Index for filtering by MemberId (for shared-with queries)
+        builder.HasIndex(x => x.MemberId);
+
+        // Index for joining/filtering by ContractId (for navigation)
+        builder.HasIndex(x => x.ContractId);
+
+        // If you often filter by both, consider a composite index
+        builder.HasIndex(x => new { x.ContractId, x.MemberId });
+    }
+}
+
+
+
+
+
+
+
+
+    }

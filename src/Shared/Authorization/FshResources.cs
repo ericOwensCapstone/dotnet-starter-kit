@@ -16,6 +16,12 @@ public static class FshResources
     // Start ContractStatus
     public const string ContractStatuses = nameof(ContractStatuses);
     // End ContractStatus
+    // Start MemberPage;
+    public const string MemberPages = nameof(MemberPages);
+    // End MemberPage;
+    // Start Contract;
+    public const string Contracts = nameof(Contracts);
+    // End Contract;
     //TODO RESOURCES
     public const string Brands = nameof(Brands);
     public const string Todos = nameof(Todos);

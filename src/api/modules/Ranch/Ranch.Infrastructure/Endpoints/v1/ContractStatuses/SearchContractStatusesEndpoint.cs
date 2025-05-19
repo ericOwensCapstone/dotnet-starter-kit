@@ -24,7 +24,7 @@ public static class SearchContractStatusesEndpoint
             .WithSummary("Gets a list of contractStatuses")
             .WithDescription("Gets a list of contractStatuses with pagination and filtering support")
             .Produces<PagedList<ContractStatusResponse>>()
-            .RequirePermission("Permissions.ContractStatuses.View")
+            .RequirePermission("Permissions.ContractStatuses.Search")
             .MapToApiVersion(1);
     }
 }

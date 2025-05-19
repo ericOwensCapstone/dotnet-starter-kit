@@ -28,9 +28,14 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
 
     private string GetCurrentTenantId()
     {
-        var temp = multiTenantContextAccessor.MultiTenantContext?.TenantInfo;
         var currentTenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id ?? throw new InvalidOperationException("TenantId is not set.");
         return currentTenantId;
+    }
+
+    private Guid GetCurrentMemberId()
+    {
+        var currentMemberId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.MemberId ?? throw new InvalidOperationException("TenantId is not set.");
+        return currentMemberId;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -66,13 +71,13 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
             Expression sharedWithFilter = null;
             if (typeof(IShareableEntity).IsAssignableFrom(entityClrType))
             {
-                var sharedWithProperty = Expression.Property(parameter, nameof(IShareableEntity.SharedWith));
-                var tenantIdMethod = typeof(FshDbContext).GetMethod(nameof(GetCurrentTenantId), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                var tenantIdCall = Expression.Call(Expression.Constant(this), tenantIdMethod);
+                //var sharedWithProperty = Expression.Property(parameter, nameof(IShareableEntity.SharedWith));
+                //var tenantIdMethod = typeof(FshDbContext).GetMethod(nameof(GetCurrentTenantId), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                //var tenantIdCall = Expression.Call(Expression.Constant(this), tenantIdMethod);
 
-                // Check if the current tenant ID is in the SharedWith list
-                var containsMethod = typeof(List<string>).GetMethod(nameof(List<string>.Contains), new[] { typeof(string) });
-                sharedWithFilter = Expression.Call(sharedWithProperty, containsMethod!, tenantIdCall);
+                //// Check if the current tenant ID is in the SharedWith list
+                //var containsMethod = typeof(List<string>).GetMethod(nameof(List<string>.Contains), new[] { typeof(string) });
+                //sharedWithFilter = Expression.Call(sharedWithProperty, containsMethod!, tenantIdCall);
             }
 
             // Soft delete filter

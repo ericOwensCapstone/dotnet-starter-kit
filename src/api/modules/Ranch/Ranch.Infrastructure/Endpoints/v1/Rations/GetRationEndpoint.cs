@@ -18,9 +18,9 @@ public static class GetRationEndpoint
             })
             .WithName(nameof(GetRationEndpoint))
             .WithSummary("gets ration by id")
-            .WithDescription("gets prodct by id")
+            .WithDescription("gets ration by id")
             .Produces<RationResponse>()
-            .RequirePermission("Permissions.Rations.View")
+            .RequirePermission("Permissions.Rations.Search")
             .MapToApiVersion(1);
     }
 }

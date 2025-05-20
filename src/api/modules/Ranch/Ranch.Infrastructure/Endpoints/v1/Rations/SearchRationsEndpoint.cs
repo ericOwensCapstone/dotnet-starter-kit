@@ -24,7 +24,7 @@ public static class SearchRationsEndpoint
             .WithSummary("Gets a list of rations")
             .WithDescription("Gets a list of rations with pagination and filtering support")
             .Produces<PagedList<RationResponse>>()
-            .RequirePermission("Permissions.Rations.View")
+            .RequirePermission("Permissions.Rations.Search")
             .MapToApiVersion(1);
     }
 }

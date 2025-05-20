@@ -10,13 +10,12 @@ public class Contract : AuditableEntity, IAggregateRoot, ITenantEntity, IShareab
 {
     public string? TenantId { get; set; } = string.Empty;
     public Guid? MemberId { get; set; } = Guid.Empty;
-    //TODO Shared
     [SharedWithMembers]
     public List<ContractMemberPage> ContractMemberPages { get; set; } = new();
     public string Name { get; private set; } = string.Empty; // Rule=NotEmpty().MinimumLength(2).MaximumLength(99)
     public string? Description { get; private set; } = string.Empty; // Rule=NotEmpty().MinimumLength(2).MaximumLength(999)
     public Guid? ContractStatusId { get; private set; } = Guid.Empty; // Rule=NotEmpty()
-    public virtual ContractStatus ContractStatus { get; private set; } = default!;
+    public ContractStatus ContractStatus { get; private set; } = default!;
 
     private Contract() { }
 

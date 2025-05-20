@@ -18,9 +18,9 @@ public static class GetContractEndpoint
             })
             .WithName(nameof(GetContractEndpoint))
             .WithSummary("gets contract by id")
-            .WithDescription("gets prodct by id")
+            .WithDescription("gets contract by id")
             .Produces<ContractResponse>()
-            .RequirePermission("Permissions.Contracts.View")
+            .RequirePermission("Permissions.Contracts.Search")
             .MapToApiVersion(1);
     }
 }

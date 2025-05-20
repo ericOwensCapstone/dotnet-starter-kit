@@ -24,7 +24,7 @@ public static class SearchContractsEndpoint
             .WithSummary("Gets a list of contracts")
             .WithDescription("Gets a list of contracts with pagination and filtering support")
             .Produces<PagedList<ContractResponse>>()
-            .RequirePermission("Permissions.Contracts.View")
+            .RequirePermission("Permissions.Contracts.Search")
             .MapToApiVersion(1);
     }
 }

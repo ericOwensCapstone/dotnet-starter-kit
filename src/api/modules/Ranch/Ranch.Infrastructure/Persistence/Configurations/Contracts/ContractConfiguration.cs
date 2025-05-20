@@ -10,6 +10,8 @@ internal sealed class ContractConfiguration : IEntityTypeConfiguration<Contract>
     {
         builder.Property<DateTimeOffset?>("Deleted"); // Define Deleted as a shadow property  
         builder.HasIndex("Name", "TenantId").IsUnique().HasFilter("\"Deleted\" IS NULL");
+        builder.HasIndex("TenantId");
+        builder.HasIndex("MemberId");
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Name).HasMaxLength(99);
         builder.Property(x => x.Description).HasMaxLength(999);

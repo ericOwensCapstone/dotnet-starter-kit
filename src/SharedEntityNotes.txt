@@ -1,9 +1,10 @@
-
+======================================
 For Contract Configuration:
 
 add
 builder.HasIndex(x => x.TenantId);
 
+======================================
 For ContractMemberPage Configuration:
 
 internal sealed class ContractMemberPageConfiguration : IEntityTypeConfiguration<ContractMemberPage>
@@ -23,11 +24,42 @@ internal sealed class ContractMemberPageConfiguration : IEntityTypeConfiguration
     }
 }
 
+======================================
+Once created, do not allow MemberPage deletion
 
+======================================
+Endpoint Permissions:
 
+Update permissions on Seach and Get endpoints to be 
+the Search permissions, not the view permission
 
+======================================
+Issue in cleaner:
 
+Example: ContractStatus using duplication:
 
+using FSH.Starter.WebApi.Ranch.Domain.Contracts;
+using FSH.Starter.WebApi.Ranch.Domain.Contracts;
+using FSH.Starter.WebApi.Ranch.Domain.Contracts;
+using FSH.Starter.WebApi.Ranch.Domain.Contracts;
+using FSH.Starter.WebApi.Ranch.Domain.Contracts;
+using FSH.Starter.WebApi.Ranch.Domain.Contracts;
+using FSH.Starter.WebApi.Ranch.Domain.Contracts;
+using FSH.Starter.WebApi.Ranch.Domain.Contracts;
+using FSH.Framework.Core.Domain;
+using FSH.Framework.Core.Domain.Contracts;
+using FSH.Framework.Core.Tenant.Abstractions;
+using FSH.Starter.WebApi.Ranch.Domain.ContractStatuses.Events;
+using Microsoft.EntityFrameworkCore;
 
+namespace FSH.Starter.WebApi.Ranch.Domain.ContractStatuses;
+public class ContractStatus : AuditableEntity, IAggregateRoot, ITenantEntity, IPublicEntity
+{
 
-    }
+(Please refer to SubEntitySoftDeleteRewriter)
+  
+===================================
+Multiple Classes reference the same entity
+
+In the referenced entity, there would need to be multiple checks in the can be soft deleted
+method, one for each referring class

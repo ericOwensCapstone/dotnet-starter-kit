@@ -47,7 +47,7 @@ public static class FshPermissions
         new("Search MemberPages", FshActions.Search, FshResources.MemberPages, IsBasic: true),
         new("Create MemberPages", FshActions.Create, FshResources.MemberPages),
         new("Update MemberPages", FshActions.Update, FshResources.MemberPages),
-        new("Delete MemberPages", FshActions.Delete, FshResources.MemberPages),
+        new("Delete MemberPages", FshActions.Delete, FshResources.MemberPages, IsRoot: true),
         new("Export MemberPages", FshActions.Export, FshResources.MemberPages),
         // End MemberPage;
         // Start ContractStatus;

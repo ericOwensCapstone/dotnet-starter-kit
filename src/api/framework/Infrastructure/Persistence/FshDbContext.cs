@@ -6,6 +6,7 @@ using FSH.Framework.Core.Exceptions;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Core.Tenant.Abstractions;
 using FSH.Framework.Infrastructure.Tenant;
+using FSH.Starter.Shared.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -180,7 +181,11 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
             }
             else if (entry.Entity is ITenantEntity tenantEntity3 && entry.State == EntityState.Deleted)
             {
-                if (tenantEntity3.TenantId != tenantId)
+                // Special case: Allow root tenant to delete any MemberPage
+                bool isRootTenant = tenantId == TenantConstants.Root.Id;
+                bool isMemberPage = entry.Entity.GetType().Name == "MemberPage";
+                
+                if (tenantEntity3.TenantId != tenantId && !(isRootTenant && isMemberPage))
                 {
                     var entityClrType = entry.Entity.GetType();
                     throw new UnauthorizedAccessException($"You cannot delete another tenant's {entityClrType.Name} entity.");

@@ -3,7 +3,9 @@
     "allow": [
       "Bash(dotnet --list-sdks)",
       "Bash(gh:*)",
-      "Bash(rg:*)"
+      "Bash(rg:*)",
+      "Bash(mkdir:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }

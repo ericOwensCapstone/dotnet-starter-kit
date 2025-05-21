@@ -77,7 +77,7 @@ public partial class MemberPages
                 return _canCreateIt;
             },
             canUpdateEntityFunc: ad => ad.TenantId == CurrentTenantId, 
-            canDeleteEntityFunc: ad => ad.TenantId == CurrentTenantId  
+            canDeleteEntityFunc: ad => CurrentTenantId == "root" // Only root tenant can delete MemberPages
         );
 
         //Start One Per Initialize Code

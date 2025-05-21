@@ -1,0 +1,68 @@
+@page "/ranch/contracts"
+
+<PageHeader Title="Contracts" Header="Contracts" SubHeader="Manage your Contracts." />
+
+<EntityTable @ref="_table" TEntity="ContractResponse" TId="Guid" TRequest="ContractViewModel" Context="@Context">
+
+    <AdvancedSearchContent>
+        <MudSelect T="Guid?" Label="ContractStatus" @bind-Value="SearchContractStatusId">
+            <MudSelectItem T="Guid?" Value="null">All ContractStatuses</MudSelectItem>
+            @foreach (var contractStatus in _contractStatuses)
+            {
+                <MudSelectItem T="Guid?" Value="contractStatus.Id">@contractStatus.Name</MudSelectItem>
+            }
+        </MudSelect>
+    </AdvancedSearchContent>
+
+    <EditFormContent>
+        @* TODO START *@
+        <MudItem xs="12" md="4">
+            <MudSelect T="MemberPageResponse" Label="MemberPage" @bind-Value="SelectedMemberPage" ToStringFunc=@(x => x.Name)>
+                @foreach (var memberPage in _memberPages)
+                {
+                    <MudSelectItem Value="memberPage">@memberPage.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudButton DropShadow="false" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" ButtonType="ButtonType.Button" Color="Color.Secondary" @onclick="AddToMemberPageList">
+                Add to MemberPage List
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" md="12">
+            <MudTable Items="@ApprovedMemberPages" Class="mt-4">
+                <HeaderContent>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Description</MudTh>
+                </HeaderContent>
+                <RowTemplate Context="stagesContext">
+                    <MudTd>@stagesContext.MemberPage.Name</MudTd>
+                    <MudTd>@stagesContext.MemberPage.Description</MudTd>
+                    <MudTd>
+                        <MudButton DropShadow="false" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Remove" Color="Color.Error" Size="Size.Small" @onclick="() => DeleteFromMemberPageList(stagesContext)">
+                            Remove
+                        </MudButton>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudItem>
+
+
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Name" For="@(() => context.Name)" @bind-Value="context.Name" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Description" For="@(() => context.Description)" @bind-Value="context.Description" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudSelect T="Guid?" Label="ContractStatus" @bind-Value="context.ContractStatusId">
+                @foreach(var contractStatus in _contractStatuses)
+                {
+                    <MudSelectItem T="Guid?" Value="contractStatus.Id">@contractStatus.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        @* TODO END *@
+    </EditFormContent>
+
+</EntityTable>

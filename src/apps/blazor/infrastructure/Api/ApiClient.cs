@@ -169,7 +169,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets contract by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets contract by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -181,7 +181,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets contract by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets contract by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -284,7 +284,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets contractStatus by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets contractStatus by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -296,7 +296,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets contractStatus by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets contractStatus by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -399,7 +399,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets memberPage by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets memberPage by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -411,7 +411,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets memberPage by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets memberPage by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -629,7 +629,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets ration by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets ration by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -641,7 +641,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets ration by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets ration by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -2116,7 +2116,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets contract by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets contract by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -2131,7 +2131,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets contract by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets contract by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -2628,7 +2628,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets contractStatus by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets contractStatus by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -2643,7 +2643,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets contractStatus by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets contractStatus by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -3140,7 +3140,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets memberPage by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets memberPage by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -3155,7 +3155,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets memberPage by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets memberPage by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -4164,7 +4164,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets ration by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets ration by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -4179,7 +4179,7 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         /// gets ration by id
         /// </summary>
         /// <remarks>
-        /// gets prodct by id
+        /// gets ration by id
         /// </remarks>
         /// <param name="version">The requested API version</param>
         /// <returns>OK</returns>
@@ -8213,6 +8213,9 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
         [System.Text.Json.Serialization.JsonPropertyName("tenantId")]
         public string? TenantId { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("memberId")]
+        public System.Guid? MemberId { get; set; } = default!;
+
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string? Name { get; set; } = default!;
 
@@ -8320,6 +8323,9 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
 
         [System.Text.Json.Serialization.JsonPropertyName("tenantId")]
         public string? TenantId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("memberId")]
+        public System.Guid? MemberId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string? Name { get; set; } = default!;
@@ -9217,6 +9223,9 @@ namespace FSH.Starter.Blazor.Infrastructure.Api
 
         [System.Text.Json.Serialization.JsonPropertyName("tenantId")]
         public string? TenantId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("memberId")]
+        public System.Guid? MemberId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string? Name { get; set; } = default!;

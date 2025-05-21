@@ -42,22 +42,30 @@ public static class FshPermissions
         new("Update Rations", FshActions.Update, FshResources.Rations),
         new("Delete Rations", FshActions.Delete, FshResources.Rations),
         new("Export Rations", FshActions.Export, FshResources.Rations),
-        // Start MemberAd
-        new("View MemberAds", FshActions.View, FshResources.MemberAds, IsBasic: true),
-        new("Search MemberAds", FshActions.Search, FshResources.MemberAds, IsBasic: true),
-        new("Create MemberAds", FshActions.Create, FshResources.MemberAds),
-        new("Update MemberAds", FshActions.Update, FshResources.MemberAds),
-        new("Delete MemberAds", FshActions.Delete, FshResources.MemberAds),
-        new("Export MemberAds", FshActions.Export, FshResources.MemberAds),
-        // End MemberAd
-        // Start ContractStatus
+        // Start MemberPage;
+        new("View MemberPages", FshActions.View, FshResources.MemberPages, IsBasic: true),
+        new("Search MemberPages", FshActions.Search, FshResources.MemberPages, IsBasic: true),
+        new("Create MemberPages", FshActions.Create, FshResources.MemberPages),
+        new("Update MemberPages", FshActions.Update, FshResources.MemberPages),
+        new("Delete MemberPages", FshActions.Delete, FshResources.MemberPages),
+        new("Export MemberPages", FshActions.Export, FshResources.MemberPages),
+        // End MemberPage;
+        // Start ContractStatus;
         new("View ContractStatuses", FshActions.View, FshResources.ContractStatuses, IsRoot: true),
         new("Search ContractStatuses", FshActions.Search, FshResources.ContractStatuses, IsBasic: true),
         new("Create ContractStatuses", FshActions.Create, FshResources.ContractStatuses, IsRoot: true),
         new("Update ContractStatuses", FshActions.Update, FshResources.ContractStatuses, IsRoot: true),
         new("Delete ContractStatuses", FshActions.Delete, FshResources.ContractStatuses, IsRoot: true),
         new("Export ContractStatuses", FshActions.Export, FshResources.ContractStatuses, IsRoot: true),
-        // End ContractStatus
+        // End ContractStatus;
+        // Start Contract;
+        new("View Contracts", FshActions.View, FshResources.Contracts, IsBasic: true),
+        new("Search Contracts", FshActions.Search, FshResources.Contracts, IsBasic: true),
+        new("Create Contracts", FshActions.Create, FshResources.Contracts),
+        new("Update Contracts", FshActions.Update, FshResources.Contracts),
+        new("Delete Contracts", FshActions.Delete, FshResources.Contracts),
+        new("Export Contracts", FshActions.Export, FshResources.Contracts),
+        // End Contract;
         //TODO PERMISSIONS
 
         //brands

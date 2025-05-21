@@ -10,12 +10,6 @@ using FSH.Starter.WebApi.Ranch.Domain.Rations;
 // Start ContractStatus;
 using FSH.Starter.WebApi.Ranch.Domain.ContractStatuses;
 // End ContractStatus;
-// Start MemberPage;
-using FSH.Starter.WebApi.Ranch.Domain.MemberPages;
-// End MemberPage;
-// Start Contract;
-using FSH.Starter.WebApi.Ranch.Domain.Contracts;
-// End Contract;
 namespace FSH.Starter.WebApi.Ranch.Infrastructure.Persistence;
 public sealed class RanchDbContext : FshDbContext
 {
@@ -27,12 +21,6 @@ public sealed class RanchDbContext : FshDbContext
     // Start ContractStatus;
     public DbSet<ContractStatus> ContractStatuses { get; set; } = null!;
     // End ContractStatus;
-    // Start MemberPage;
-    public DbSet<MemberPage> MemberPages { get; set; } = null!;
-    // End MemberPage;
-    // Start Contract;
-    public DbSet<Contract> Contracts { get; set; } = null!;
-    // End Contract;
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

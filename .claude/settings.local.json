@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet --list-sdks)",
+      "Bash(gh:*)",
+      "Bash(rg:*)"
+    ],
+    "deny": []
+  }
+}

@@ -77,7 +77,7 @@ public partial class HarvestMembers
                 return _canCreateIt;
             },
             canUpdateEntityFunc: ad => ad.TenantId == CurrentTenantId, 
-            canDeleteEntityFunc: ad => ad.TenantId == CurrentTenantId  
+            canDeleteEntityFunc: ad => CurrentTenantId == "root" // Only root tenant can delete HarvestMembers  
         );
 
         //Start One Per Initialize Code

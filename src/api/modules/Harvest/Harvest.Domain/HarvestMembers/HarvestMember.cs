@@ -67,6 +67,12 @@ public class HarvestMember : AuditableEntity, IAggregateRoot, ITenantEntity, IPu
     
     public override (bool CanBeDeleted, string Reason) CanBeSoftDeleted(DbContext context)
     {
+        // Tenant validation is handled in the endpoint and via permissions
+        // This is just a safety check for any entities that should never be deleted
+        
+        // Additional validation logic could be added here if needed,
+        // such as checking if HarvestMember is referenced by important entities
+        
         bool canBeDeleted = true;
         string reason = string.Empty;
         return (canBeDeleted, reason);

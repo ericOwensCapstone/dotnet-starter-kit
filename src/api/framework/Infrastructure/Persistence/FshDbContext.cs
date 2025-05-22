@@ -181,11 +181,12 @@ public class FshDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenant
             }
             else if (entry.Entity is ITenantEntity tenantEntity3 && entry.State == EntityState.Deleted)
             {
-                // Special case: Allow root tenant to delete any MemberPage
+                // Special case: Allow root tenant to delete any MemberPage or HarvestMember
                 bool isRootTenant = tenantId == TenantConstants.Root.Id;
                 bool isMemberPage = entry.Entity.GetType().Name == "MemberPage";
+                bool isHarvestMember = entry.Entity.GetType().Name == "HarvestMember";
                 
-                if (tenantEntity3.TenantId != tenantId && !(isRootTenant && isMemberPage))
+                if (tenantEntity3.TenantId != tenantId && !(isRootTenant && (isMemberPage || isHarvestMember)))
                 {
                     var entityClrType = entry.Entity.GetType();
                     throw new UnauthorizedAccessException($"You cannot delete another tenant's {entityClrType.Name} entity.");

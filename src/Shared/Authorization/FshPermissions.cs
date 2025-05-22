@@ -79,7 +79,7 @@ public static class FshPermissions
         new("Search HarvestMembers", FshActions.Search, FshResources.HarvestMembers, IsBasic: true),
         new("Create HarvestMembers", FshActions.Create, FshResources.HarvestMembers),
         new("Update HarvestMembers", FshActions.Update, FshResources.HarvestMembers),
-        new("Delete HarvestMembers", FshActions.Delete, FshResources.HarvestMembers),
+        new("Delete HarvestMembers", FshActions.Delete, FshResources.HarvestMembers, IsRoot: true),
         new("Export HarvestMembers", FshActions.Export, FshResources.HarvestMembers),
         // End HarvestMember;
         // Start HarvestContract;

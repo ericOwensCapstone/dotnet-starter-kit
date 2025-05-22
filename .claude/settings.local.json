@@ -5,7 +5,8 @@
       "Bash(gh:*)",
       "Bash(rg:*)",
       "Bash(mkdir:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "WebFetch(domain:docs.anthropic.com)"
     ],
     "deny": []
   }

@@ -23,6 +23,9 @@
     <ProjectReference Include="..\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\Ranch\Ranch.Infrastructure\Ranch.Infrastructure.csproj" />
     <!-- Start Project References -->
+    <!-- Start Harvest Project Reference -->
+    <ProjectReference Include="..\modules\Harvest\Harvest.Infrastructure\Harvest.Infrastructure.csproj" />
+    <!-- End Harvest Project Reference -->
     <!-- End Project References -->
 <ProjectReference Include="..\modules\Todo\Todo.csproj" />
   </ItemGroup>

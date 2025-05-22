@@ -32,6 +32,15 @@ public partial class NavMenu
     // Start Contract;
     private bool _canViewContracts;
     // End Contract;
+    // Start HarvestMember;
+    private bool _canViewHarvestMembers;
+    // End HarvestMember;
+    // Start HarvestContractStatus;
+    private bool _canViewHarvestContractStatuses;
+    // End HarvestContractStatus;
+    // Start HarvestContract;
+    private bool _canViewHarvestContracts;
+    // End HarvestContract;
     //TODO ADD CAN VIEWS
 
     private bool CanViewAdministrationGroup => _canViewUsers || _canViewRoles || _canViewTenants;
@@ -60,6 +69,15 @@ public partial class NavMenu
         // Start Contract;
         _canViewContracts = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Contracts);
         // End Contract;
+        // Start HarvestMember;
+        _canViewHarvestMembers = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.HarvestMembers);
+        // End HarvestMember;
+        // Start HarvestContractStatus;
+        _canViewHarvestContractStatuses = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.HarvestContractStatuses);
+        // End HarvestContractStatus;
+        // Start HarvestContract;
+        _canViewHarvestContracts = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.HarvestContracts);
+        // End HarvestContract;
         //TODO ASSIGN CAN VIEWS
     }
 }

@@ -1,0 +1,68 @@
+@page "/ranch/harvestContracts"
+
+<PageHeader Title="HarvestContracts" Header="HarvestContracts" SubHeader="Manage your HarvestContracts." />
+
+<EntityTable @ref="_table" TEntity="HarvestContractResponse" TId="Guid" TRequest="HarvestContractViewModel" Context="@Context">
+
+    <AdvancedSearchContent>
+        <MudSelect T="Guid?" Label="HarvestContractStatus" @bind-Value="SearchHarvestContractStatusId">
+            <MudSelectItem T="Guid?" Value="null">All HarvestContractStatuses</MudSelectItem>
+            @foreach (var harvestContractStatus in _harvestContractStatuses)
+            {
+                <MudSelectItem T="Guid?" Value="harvestContractStatus.Id">@harvestContractStatus.Name</MudSelectItem>
+            }
+        </MudSelect>
+    </AdvancedSearchContent>
+
+    <EditFormContent>
+        @* TODO START *@
+        <MudItem xs="12" md="4">
+            <MudSelect T="HarvestMemberResponse" Label="HarvestMember" @bind-Value="SelectedHarvestMember" ToStringFunc=@(x => x.Name)>
+                @foreach (var harvestMember in _harvestMembers)
+                {
+                    <MudSelectItem Value="harvestMember">@harvestMember.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudButton DropShadow="false" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" ButtonType="ButtonType.Button" Color="Color.Secondary" @onclick="AddToHarvestMemberList">
+                Add to HarvestMember List
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" md="12">
+            <MudTable Items="@ApprovedHarvestMembers" Class="mt-4">
+                <HeaderContent>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Description</MudTh>
+                </HeaderContent>
+                <RowTemplate Context="stagesContext">
+                    <MudTd>@stagesContext.HarvestMember.Name</MudTd>
+                    <MudTd>@stagesContext.HarvestMember.Description</MudTd>
+                    <MudTd>
+                        <MudButton DropShadow="false" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Remove" Color="Color.Error" Size="Size.Small" @onclick="() => DeleteFromHarvestMemberList(stagesContext)">
+                            Remove
+                        </MudButton>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudItem>
+
+
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Name" For="@(() => context.Name)" @bind-Value="context.Name" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="Description" For="@(() => context.Description)" @bind-Value="context.Description" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudSelect T="Guid?" Label="HarvestContractStatus" @bind-Value="context.HarvestContractStatusId">
+                @foreach(var harvestContractStatus in _harvestContractStatuses)
+                {
+                    <MudSelectItem T="Guid?" Value="harvestContractStatus.Id">@harvestContractStatus.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        @* TODO END *@
+    </EditFormContent>
+
+</EntityTable>

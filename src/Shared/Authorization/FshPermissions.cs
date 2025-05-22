@@ -66,6 +66,30 @@ public static class FshPermissions
         new("Delete Contracts", FshActions.Delete, FshResources.Contracts),
         new("Export Contracts", FshActions.Export, FshResources.Contracts),
         // End Contract;
+        // Start HarvestContractStatus;
+        new("View HarvestContractStatuses", FshActions.View, FshResources.HarvestContractStatuses, IsRoot: true),
+        new("Search HarvestContractStatuses", FshActions.Search, FshResources.HarvestContractStatuses, IsBasic: true),
+        new("Create HarvestContractStatuses", FshActions.Create, FshResources.HarvestContractStatuses, IsRoot: true),
+        new("Update HarvestContractStatuses", FshActions.Update, FshResources.HarvestContractStatuses, IsRoot: true),
+        new("Delete HarvestContractStatuses", FshActions.Delete, FshResources.HarvestContractStatuses, IsRoot: true),
+        new("Export HarvestContractStatuses", FshActions.Export, FshResources.HarvestContractStatuses, IsRoot: true),
+        // End HarvestContractStatus;
+        // Start HarvestMember;
+        new("View HarvestMembers", FshActions.View, FshResources.HarvestMembers, IsBasic: true),
+        new("Search HarvestMembers", FshActions.Search, FshResources.HarvestMembers, IsBasic: true),
+        new("Create HarvestMembers", FshActions.Create, FshResources.HarvestMembers),
+        new("Update HarvestMembers", FshActions.Update, FshResources.HarvestMembers),
+        new("Delete HarvestMembers", FshActions.Delete, FshResources.HarvestMembers),
+        new("Export HarvestMembers", FshActions.Export, FshResources.HarvestMembers),
+        // End HarvestMember;
+        // Start HarvestContract;
+        new("View HarvestContracts", FshActions.View, FshResources.HarvestContracts, IsBasic: true),
+        new("Search HarvestContracts", FshActions.Search, FshResources.HarvestContracts, IsBasic: true),
+        new("Create HarvestContracts", FshActions.Create, FshResources.HarvestContracts),
+        new("Update HarvestContracts", FshActions.Update, FshResources.HarvestContracts),
+        new("Delete HarvestContracts", FshActions.Delete, FshResources.HarvestContracts),
+        new("Export HarvestContracts", FshActions.Export, FshResources.HarvestContracts),
+        // End HarvestContract;
         //TODO PERMISSIONS
 
         //brands

@@ -8,6 +8,10 @@ using FSH.Starter.WebApi.Ranch.Application;
 using FSH.Starter.WebApi.Ranch.Infrastructure;
 using FSH.Starter.WebApi.Todo;
 // Start Module Usings
+// Start Harvest Module Usings
+using FSH.Starter.WebApi.Harvest.Application;
+using FSH.Starter.WebApi.Harvest.Infrastructure; 
+// End Harvest Module Usings
 // End Module Usings
 namespace FSH.Starter.WebApi.Host;
 
@@ -23,6 +27,9 @@ public static class Extensions
             typeof(CatalogMetadata).Assembly,
             typeof(RanchMetadata).Assembly,
             // Start Assemblies
+            // Start Harvest Module Assembly
+            typeof(HarvestMetadata).Assembly,
+            // End Harvest Module Assembly
             // End Assemblies
             typeof(TodoModule).Assembly
         };
@@ -38,6 +45,9 @@ public static class Extensions
 
         //register module services
         // Start Module Registrations
+        // Start Harvest Module Registration
+        builder.RegisterHarvestServices();
+        // End Harvest Module Registration
         // End Module Registrations
         builder.RegisterCatalogServices();
         builder.RegisterRanchServices();
@@ -47,6 +57,9 @@ public static class Extensions
         builder.Services.AddCarter(configurator: config =>
         {
             // Start Carter Modules
+            // Start Harvest Carter Module
+            config.WithModule<HarvestModule.Endpoints>();
+            // End Harvest Carter Module
             // End Carter Modules
             config.WithModule<CatalogModule.Endpoints>();
             config.WithModule<RanchModule.Endpoints>();
@@ -62,6 +75,9 @@ public static class Extensions
 
         //register modules
         // Start Use Modules
+        // Start Use Harvest Module
+        app.UseHarvestModule();
+        // End Use Harvest Module
         // End Use Modules
         app.UseCatalogModule();
         app.UseRanchModule();

@@ -19,6 +19,15 @@ public static class FshResources
     // Start Contract;
     public const string Contracts = nameof(Contracts);
     // End Contract;
+    // Start HarvestContractStatus;
+    public const string HarvestContractStatuses = nameof(HarvestContractStatuses);
+    // End HarvestContractStatus;
+    // Start HarvestMember;
+    public const string HarvestMembers = nameof(HarvestMembers);
+    // End HarvestMember;
+    // Start HarvestContract;
+    public const string HarvestContracts = nameof(HarvestContracts);
+    // End HarvestContract;
     //TODO RESOURCES
     public const string Brands = nameof(Brands);
     public const string Todos = nameof(Todos);

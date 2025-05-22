@@ -1,0 +1,12 @@
+
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>FSH.Starter.WebApi.Harvest.Application</RootNamespace>
+    <AssemblyName>FSH.Starter.WebApi.Harvest.Application</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
+    <ProjectReference Include="..\..\..\framework\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Harvest.Domain\Harvest.Domain.csproj" />
+  </ItemGroup>
+</Project>

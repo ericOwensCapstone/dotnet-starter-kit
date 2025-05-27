@@ -312,3 +312,140 @@ canDeleteEntityFunc: ad => CurrentTenantId == "root" // Only root tenant can del
 - `/src/apps/blazor/client/Pages/Harvest/HarvestMembers.razor.cs` - 1 line changed
 
 **Total: 35 lines modified across 5 files**
+
+## Azure AD B2C Migration with Integration Testing Support (2025-05-27)
+
+### Summary
+Designed a migration strategy from JWT-based authentication to Azure AD B2C while maintaining the existing permission system and supporting automated integration testing.
+
+### Key Requirements Identified
+1. **Keep existing permission system** - Permissions are fetched from database, not stored in JWT
+2. **Support integration testing** - Tests need authentication without Azure AD B2C dependency
+3. **Multi-tenant support** - Both root tenant and regular tenant testing scenarios
+4. **Security** - Production must not expose test authentication endpoints
+
+### Architecture Decision: API Key Authentication for Tests
+
+#### Why This Approach
+- Production uses Azure AD B2C exclusively
+- Test/Staging environments support both Azure AD B2C and API Key auth
+- Integration tests can run without Azure dependencies
+- Different API keys map to different tenant contexts
+
+#### Implementation Plan
+
+##### 1. API Key Authentication Handler
+```csharp
+public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationOptions>
+{
+    protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
+    {
+        if (!Request.Headers.TryGetValue("X-API-Key", out var apiKey))
+            return AuthenticateResult.NoResult();
+
+        var testUser = await ValidateApiKeyAndGetTestUser(apiKey);
+        if (testUser == null)
+            return AuthenticateResult.Fail("Invalid API key");
+
+        // Create claims including tenant ID
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, testUser.UserId),
+            new Claim("tenant", testUser.TenantId),
+            // Other required claims
+        };
+
+        var identity = new ClaimsIdentity(claims, Scheme.Name);
+        var principal = new ClaimsPrincipal(identity);
+        return AuthenticateResult.Success(new AuthenticationTicket(principal, Scheme.Name));
+    }
+}
+```
+
+##### 2. Test User Configuration
+```csharp
+private async Task<TestUserConfiguration> ValidateApiKeyAndGetTestUser(string apiKey)
+{
+    var testUsers = new Dictionary<string, TestUserConfiguration>
+    {
+        ["test-key-root"] = new TestUserConfiguration
+        {
+            UserId = "test-root-user-id",
+            TenantId = TenantConstants.Root.Id, // "root"
+            Email = "root@test.local",
+            Roles = new[] { FshRoles.Admin }
+        },
+        ["test-key-tenant1"] = new TestUserConfiguration
+        {
+            UserId = "test-tenant1-user-id", 
+            TenantId = "tenant-123",
+            Email = "user@tenant1.local",
+            Roles = new[] { FshRoles.Basic }
+        }
+    };
+
+    return testUsers.TryGetValue(apiKey, out var testUser) ? testUser : null;
+}
+```
+
+##### 3. Environment-Based Configuration
+```json
+// appsettings.Production.json
+{
+  "Authentication": {
+    "Mode": "AzureADB2C",
+    "EnableTestAuth": false
+  }
+}
+
+// appsettings.Staging.json  
+{
+  "Authentication": {
+    "Mode": "AzureADB2C",
+    "EnableTestAuth": true,
+    "TestAuth": {
+      "AllowedIPs": ["10.0.0.0/8"], // Azure internal only
+      "ApiKeys": [] // From Key Vault
+    }
+  }
+}
+```
+
+### Security Measures
+1. **Production**: Only Azure AD B2C enabled
+2. **Test/Staging**: API Key auth restricted by IP to Azure networks
+3. **API Keys stored in Azure Key Vault**
+4. **Audit logging for test authentication**
+
+### Integration Test Usage
+```csharp
+[Fact]
+public async Task RootTenant_CanDeleteHarvestMembers()
+{
+    var client = CreateAuthenticatedClient("test-key-root");
+    var response = await client.DeleteAsync($"/api/v1/harvest-members/{id}");
+    Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+}
+
+[Fact]
+public async Task RegularTenant_CannotDeleteHarvestMembers()
+{
+    var client = CreateAuthenticatedClient("test-key-tenant1");
+    var response = await client.DeleteAsync($"/api/v1/harvest-members/{id}");
+    Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+}
+```
+
+### Current Status
+- Completed analysis of existing JWT implementation
+- Designed secure API Key authentication for tests
+- Currently setting up Azure AD B2C manually
+- At Step 7 of manual setup: Collecting configuration values
+
+### Next Steps
+1. Complete Azure AD B2C setup
+2. Implement API Key authentication handler
+3. Modify authentication pipeline for environment-based auth
+4. Update Blazor client for Azure AD B2C
+5. Create integration test base classes
+6. Document deployment configurations

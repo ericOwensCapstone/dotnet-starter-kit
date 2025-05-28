@@ -1,5 +1,7 @@
 @page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
 
 <RemoteAuthenticatorView Action="@Action">
     <LogInFailed>
@@ -26,4 +28,128 @@
 
 @code {
     [Parameter] public string? Action { get; set; }
+    
+    [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine($"Authentication.razor: Action = {Action}");
+        
+        // Log the current authentication state
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        Console.WriteLine($"Authentication.razor: User authenticated = {authState.User?.Identity?.IsAuthenticated}");
+        Console.WriteLine($"Authentication.razor: User name = {authState.User?.Identity?.Name}");
+        
+        if (authState.User?.Claims != null)
+        {
+            Console.WriteLine("User claims:");
+            foreach (var claim in authState.User.Claims)
+            {
+                Console.WriteLine($"  {claim.Type}: {claim.Value}");
+            }
+        }
+        
+        await base.OnInitializedAsync();
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && Action == "login-callback")
+        {
+            try
+            {
+                // Check session storage for any auth state
+                var authState = await JS.InvokeAsync<string>("sessionStorage.getItem", "auth_state");
+                var authNonce = await JS.InvokeAsync<string>("sessionStorage.getItem", "auth_nonce");
+                Console.WriteLine($"Authentication.razor: Stored auth state = {authState}");
+                Console.WriteLine($"Authentication.razor: Stored auth nonce = {authNonce}");
+                
+                // Log MSAL state
+                await JS.InvokeVoidAsync("authDebug.logMsalState");
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Authentication.razor: Error checking auth state: {ex.Message}");
+            }
+        }
+        
+        await base.OnAfterRenderAsync(firstRender);
+    }
+    
+    protected override void OnParametersSet()
+    {
+        // Log the authentication action
+        Console.WriteLine($"Authentication.razor: Processing action '{Action}'");
+        Console.WriteLine($"Authentication.razor: Full URL: {Navigation.Uri}");
+        
+        // Get query parameters for debugging
+        var uri = new Uri(Navigation.Uri);
+        
+        if (!string.IsNullOrEmpty(uri.Query))
+        {
+            Console.WriteLine("Query parameters:");
+            var queryString = uri.Query.TrimStart('?');
+            var parameters = queryString.Split('&');
+            
+            foreach (var param in parameters)
+            {
+                var parts = param.Split('=', 2);
+                if (parts.Length == 2)
+                {
+                    var key = Uri.UnescapeDataString(parts[0]);
+                    var value = Uri.UnescapeDataString(parts[1]);
+                    
+                    if (key.ToLower().Contains("error"))
+                    {
+                        Console.Error.WriteLine($"  {key}: {value}");
+                    }
+                    else if (key.ToLower() == "code")
+                    {
+                        Console.WriteLine($"  {key}: [REDACTED - length: {value.Length}]");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"  {key}: {value}");
+                    }
+                }
+            }
+        }
+        else if (!string.IsNullOrEmpty(uri.Fragment))
+        {
+            Console.WriteLine("Fragment parameters:");
+            var fragment = uri.Fragment.TrimStart('#');
+            var parameters = fragment.Split('&');
+            
+            foreach (var param in parameters)
+            {
+                var parts = param.Split('=', 2);
+                if (parts.Length == 2)
+                {
+                    var key = Uri.UnescapeDataString(parts[0]);
+                    var value = Uri.UnescapeDataString(parts[1]);
+                    
+                    if (key.ToLower().Contains("error"))
+                    {
+                        Console.Error.WriteLine($"  {key}: {value}");
+                    }
+                    else if (key.ToLower() == "code")
+                    {
+                        Console.WriteLine($"  {key}: [REDACTED - length: {value.Length}]");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"  {key}: {value}");
+                    }
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("No query or fragment parameters found in callback URL");
+        }
+        
+        base.OnParametersSet();
+    }
+    
 }

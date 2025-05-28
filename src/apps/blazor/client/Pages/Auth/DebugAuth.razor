@@ -1,0 +1,181 @@
+@page "/debug-auth"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [AllowAnonymous]
+@inject NavigationManager Navigation
+@inject IAccessTokenProvider TokenProvider
+
+<PageTitle>Debug Authentication</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-5">
+    <MudPaper Class="pa-4">
+        <MudText Typo="Typo.h4">Authentication Debug Information</MudText>
+        
+        <MudText Typo="Typo.h6" Class="mt-4">Current URL:</MudText>
+        <MudText>@Navigation.Uri</MudText>
+        
+        <MudText Typo="Typo.h6" Class="mt-4">Token Information:</MudText>
+        @if (_tokenResult != null)
+        {
+            <MudSimpleTable>
+                <tbody>
+                    <tr>
+                        <td>Status:</td>
+                        <td>@_tokenResult.Status</td>
+                    </tr>
+                    <tr>
+                        <td>Has Token:</td>
+                        <td>@_hasToken</td>
+                    </tr>
+                </tbody>
+            </MudSimpleTable>
+        }
+        
+        <MudText Typo="Typo.h6" Class="mt-4">Actions:</MudText>
+        
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2"
+                   OnClick="CheckToken">
+            Check Access Token
+        </MudButton>
+        
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="mt-2"
+                   OnClick="TryDirectLogin">
+            Try Direct MSAL Login
+        </MudButton>
+        
+        <MudButton Variant="Variant.Filled" Color="Color.Info" Class="mt-2"
+                   OnClick="CheckMsalState">
+            Check MSAL State
+        </MudButton>
+        
+        @if (!string.IsNullOrEmpty(_debugInfo))
+        {
+            <MudPaper Class="pa-4 mt-4" Outlined="true">
+                <pre>@_debugInfo</pre>
+            </MudPaper>
+        }
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private AccessTokenResult? _tokenResult;
+    private string _debugInfo = "";
+    private bool _hasToken = false;
+    
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckToken();
+    }
+    
+    private async Task CheckToken()
+    {
+        try
+        {
+            var tokenResult = await TokenProvider.RequestAccessToken();
+            _tokenResult = tokenResult;
+            
+            if (tokenResult.TryGetToken(out var token))
+            {
+                _hasToken = true;
+                _debugInfo = $"Token acquired:\nExpires: {token.Expires}\nScopes: {string.Join(", ", token.GrantedScopes)}";
+            }
+            else
+            {
+                _hasToken = false;
+                _debugInfo = $"No token available. Status: {tokenResult.Status}";
+                
+                if (tokenResult.Status == AccessTokenResultStatus.RequiresRedirect)
+                {
+                    _debugInfo += "\nRedirect required - need to login";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _debugInfo = $"Error checking token: {ex.Message}";
+        }
+    }
+    
+    private async Task TryDirectLogin()
+    {
+        try
+        {
+            _debugInfo = "Attempting direct MSAL login...";
+            
+            // Try to trigger login directly via JS
+            await JS.InvokeVoidAsync("eval", @"
+                if (window.AuthenticationService && window.AuthenticationService.signIn) {
+                    console.log('[DebugAuth] Calling signIn directly');
+                    window.AuthenticationService.signIn({ returnUrl: '/debug-auth' });
+                } else {
+                    console.error('[DebugAuth] AuthenticationService.signIn not found');
+                }
+            ");
+            
+            _debugInfo += "\nLogin initiated - check console for details";
+        }
+        catch (Exception ex)
+        {
+            _debugInfo = $"Error during login: {ex.Message}";
+        }
+    }
+    
+    private async Task CheckMsalState()
+    {
+        try
+        {
+            var msalInfo = await JS.InvokeAsync<string>("eval", @"
+                if (window.AuthenticationService) {
+                    const info = {
+                        hasService: true,
+                        hasInstance: !!window.AuthenticationService.instance,
+                        hasMsalInstance: !!window.AuthenticationService.msalInstance,
+                        hasSignIn: typeof window.AuthenticationService.signIn === 'function',
+                        hasGetAccount: typeof window.AuthenticationService.getAccount === 'function'
+                    };
+                    
+                    if (window.AuthenticationService.instance) {
+                        try {
+                            // Try to get configuration
+                            const config = window.AuthenticationService.instance.config || 
+                                         window.AuthenticationService.msalInstance?.config;
+                            if (config) {
+                                info.authority = config.auth?.authority;
+                                info.clientId = config.auth?.clientId;
+                                info.redirectUri = config.auth?.redirectUri;
+                            }
+                        } catch (e) {
+                            info.configError = e.message;
+                        }
+                    }
+                    
+                    // Try to get the actual redirect URI being used
+                    try {
+                        if (window.AuthenticationService.msalInstance && window.AuthenticationService.msalInstance._config) {
+                            info.actualConfig = {
+                                authority: window.AuthenticationService.msalInstance._config.auth?.authority,
+                                clientId: window.AuthenticationService.msalInstance._config.auth?.clientId,
+                                redirectUri: window.AuthenticationService.msalInstance._config.auth?.redirectUri || 
+                                            window.AuthenticationService.msalInstance._config.auth?.redirectUrl
+                            };
+                        }
+                    } catch (e) {
+                        info.actualConfigError = e.message;
+                    }
+                    
+                    return JSON.stringify(info, null, 2);
+                } else {
+                    return JSON.stringify({ hasService: false });
+                }
+            ");
+            
+            _debugInfo = $"MSAL State:\n{msalInfo}";
+        }
+        catch (Exception ex)
+        {
+            _debugInfo = $"Error checking MSAL state: {ex.Message}";
+        }
+    }
+}

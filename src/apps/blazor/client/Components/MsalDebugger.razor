@@ -1,0 +1,32 @@
+@inject IJSRuntime JS
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                // Check if MSAL is loaded
+                var hasMsal = await JS.InvokeAsync<bool>("eval", "typeof window.AuthenticationService !== 'undefined'");
+                Console.WriteLine($"[MsalDebugger] MSAL loaded: {hasMsal}");
+                
+                if (hasMsal)
+                {
+                    // Check MSAL configuration
+                    var config = await JS.InvokeAsync<string>("eval", @"
+                        JSON.stringify({
+                            hasInstance: typeof window.AuthenticationService.instance !== 'undefined',
+                            hasOptions: typeof window.AuthenticationService.msalOptions !== 'undefined'
+                        })
+                    ");
+                    Console.WriteLine($"[MsalDebugger] MSAL config: {config}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[MsalDebugger] Error checking MSAL: {ex.Message}");
+            }
+        }
+    }
+}

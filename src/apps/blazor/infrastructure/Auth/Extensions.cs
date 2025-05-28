@@ -18,22 +18,18 @@ public static class Extensions
             // Use Entra ID authentication
             services.AddMsalAuthentication(options =>
             {
-                // Manually configure MSAL authentication options
-                var entraConfig = config.GetSection("EntraExternalId");
-                options.ProviderOptions.Authentication.Authority = entraConfig["Authority"];
-                options.ProviderOptions.Authentication.ClientId = entraConfig["ClientId"];
-                options.ProviderOptions.Authentication.ValidateAuthority = false;
+                // Bind the configuration
+                config.Bind("EntraExternalId", options.ProviderOptions.Authentication);
                 
-                // Set redirect URIs
-                options.ProviderOptions.Authentication.RedirectUri = entraConfig["RedirectUri"];
-                options.ProviderOptions.Authentication.PostLogoutRedirectUri = entraConfig["PostLogoutRedirectUri"];
-                
-                // Configure for B2C/External ID
-                options.ProviderOptions.Authentication.ResponseType = "code";
+                // Configure login mode
                 options.ProviderOptions.LoginMode = "redirect";
                 
-                // Add API scopes
-                var apiScopes = entraConfig.GetSection("ApiScopes").Get<string[]>();
+                // Add default scopes
+                options.ProviderOptions.DefaultAccessTokenScopes.Add("openid");
+                options.ProviderOptions.DefaultAccessTokenScopes.Add("profile");
+                
+                // Add API scopes from configuration
+                var apiScopes = config.GetSection("EntraExternalId:ApiScopes").Get<string[]>();
                 if (apiScopes != null)
                 {
                     foreach (var scope in apiScopes)
@@ -42,12 +38,18 @@ public static class Extensions
                     }
                 }
                 
+                // For Entra External ID, we need to handle the user flow differently
+                // The policy/user flow is handled by the service itself, not in the URL
+                options.ProviderOptions.Cache.CacheLocation = "localStorage";
+                
                 // Map additional claims
                 options.UserOptions.RoleClaim = "roles";
+                options.UserOptions.NameClaim = "name";
             });
 
             // Register the MSAL authentication service wrapper
             services.AddScoped<IAuthenticationService, MsalAuthenticationService>();
+            services.AddScoped<ITenantMappingService, TenantMappingService>();
             services.AddScoped<IAccessTokenProviderAccessor, AccessTokenProviderAccessor>();
             services.AddScoped<JwtAuthenticationHeaderHandler>();
         }

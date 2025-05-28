@@ -1,0 +1,37 @@
+@implements IDisposable
+@inject AuthenticationStateProvider AuthStateProvider
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        // Subscribe to authentication state changes
+        AuthStateProvider.AuthenticationStateChanged += OnAuthenticationStateChanged;
+        
+        // Log initial state
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        LogAuthState("Initial", authState);
+    }
+    
+    private async void OnAuthenticationStateChanged(Task<AuthenticationState> task)
+    {
+        var authState = await task;
+        LogAuthState("Changed", authState);
+    }
+    
+    private void LogAuthState(string context, AuthenticationState authState)
+    {
+        Console.WriteLine($"[AuthStateDebugger] {context} - User authenticated: {authState.User?.Identity?.IsAuthenticated}");
+        Console.WriteLine($"[AuthStateDebugger] {context} - User name: {authState.User?.Identity?.Name}");
+        Console.WriteLine($"[AuthStateDebugger] {context} - Authentication type: {authState.User?.Identity?.AuthenticationType}");
+        
+        if (authState.User?.Claims?.Any() == true)
+        {
+            Console.WriteLine($"[AuthStateDebugger] {context} - Claims count: {authState.User.Claims.Count()}");
+        }
+    }
+    
+    public void Dispose()
+    {
+        AuthStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChanged;
+    }
+}

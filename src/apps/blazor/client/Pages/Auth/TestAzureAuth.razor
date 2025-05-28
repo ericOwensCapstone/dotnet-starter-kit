@@ -1,0 +1,81 @@
+@page "/test-azure-auth"
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
+@inject NavigationManager Navigation
+
+<PageTitle>Test Azure Authentication</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-5">
+    <MudPaper Class="pa-4">
+        <MudText Typo="Typo.h4">Direct Azure Authentication Test</MudText>
+        
+        <MudText Class="mt-4">
+            This will test direct authentication with Azure Entra External ID without MSAL.
+        </MudText>
+        
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-4"
+                   OnClick="TestDirectAuth">
+            Test Direct Azure Auth
+        </MudButton>
+        
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="mt-4"
+                   OnClick="TestImplicitFlow">
+            Test Implicit Flow (Token)
+        </MudButton>
+        
+        @if (!string.IsNullOrEmpty(_status))
+        {
+            <MudAlert Severity="Severity.Info" Class="mt-4">@_status</MudAlert>
+        }
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private string _status = "";
+    
+    private void TestDirectAuth()
+    {
+        _status = "Redirecting to Azure with authorization code flow...";
+        
+        // Direct OAuth2 authorization code flow
+        var clientId = "bab6b179-6272-436d-8837-297a8dff18db";
+        var redirectUri = Uri.EscapeDataString("https://localhost:7100/authentication/login-callback");
+        var scope = Uri.EscapeDataString("openid profile api://9e5f424e-789b-4776-9d52-5897bf9c638d/access_as_user");
+        var state = Guid.NewGuid().ToString("N");
+        var nonce = Guid.NewGuid().ToString("N");
+        
+        var authUrl = $"https://ohdharvestentraexternalid.ciamlogin.com/ohdharvestentraexternalid.onmicrosoft.com/oauth2/v2.0/authorize?" +
+                     $"client_id={clientId}&" +
+                     $"response_type=code&" +
+                     $"redirect_uri={redirectUri}&" +
+                     $"response_mode=fragment&" +  // Try fragment mode
+                     $"scope={scope}&" +
+                     $"state={state}&" +
+                     $"nonce={nonce}";
+        
+        Navigation.NavigateTo(authUrl, forceLoad: true);
+    }
+    
+    private void TestImplicitFlow()
+    {
+        _status = "Redirecting to Azure with implicit flow...";
+        
+        // Implicit flow (id_token)
+        var clientId = "bab6b179-6272-436d-8837-297a8dff18db";
+        var redirectUri = Uri.EscapeDataString("https://localhost:7100/authentication/login-callback");
+        var scope = Uri.EscapeDataString("openid profile");
+        var state = Guid.NewGuid().ToString("N");
+        var nonce = Guid.NewGuid().ToString("N");
+        
+        var authUrl = $"https://ohdharvestentraexternalid.ciamlogin.com/ohdharvestentraexternalid.onmicrosoft.com/oauth2/v2.0/authorize?" +
+                     $"client_id={clientId}&" +
+                     $"response_type=id_token&" +
+                     $"redirect_uri={redirectUri}&" +
+                     $"response_mode=fragment&" +
+                     $"scope={scope}&" +
+                     $"state={state}&" +
+                     $"nonce={nonce}";
+        
+        Navigation.NavigateTo(authUrl, forceLoad: true);
+    }
+}

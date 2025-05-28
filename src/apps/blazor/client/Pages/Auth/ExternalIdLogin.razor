@@ -1,0 +1,49 @@
+@page "/external-login"
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<PageTitle>Redirecting to Login...</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center text-center" Style="height: 80vh;">
+    <MudPaper Elevation="25" Class="pa-8" Width="100%">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+        <MudText Typo="Typo.h6" Class="mt-4">Redirecting to Microsoft login...</MudText>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Construct the External ID login URL directly
+            var clientId = "bab6b179-6272-436d-8837-297a8dff18db";
+            var redirectUri = Uri.EscapeDataString("https://localhost:7100/authentication/login-callback");
+            var scope = Uri.EscapeDataString("openid profile api://9e5f424e-789b-4776-9d52-5897bf9c638d/access_as_user");
+            var responseType = "code";
+            var responseMode = "query";
+            var state = Guid.NewGuid().ToString("N");
+            var nonce = Guid.NewGuid().ToString("N");
+            
+            // Store state and nonce for validation
+            await JS.InvokeVoidAsync("sessionStorage.setItem", "auth_state", state);
+            await JS.InvokeVoidAsync("sessionStorage.setItem", "auth_nonce", nonce);
+            
+            // Construct the authorization URL for External ID
+            var authUrl = $"https://ohdharvestentraexternalid.ciamlogin.com/ohdharvestentraexternalid.onmicrosoft.com/oauth2/v2.0/authorize?" +
+                         $"client_id={clientId}&" +
+                         $"response_type={responseType}&" +
+                         $"redirect_uri={redirectUri}&" +
+                         $"response_mode={responseMode}&" +
+                         $"scope={scope}&" +
+                         $"state={state}&" +
+                         $"nonce={nonce}&" +
+                         $"prompt=select_account";
+            
+            // Navigate to the external login page
+            Navigation.NavigateTo(authUrl, forceLoad: true);
+        }
+    }
+}

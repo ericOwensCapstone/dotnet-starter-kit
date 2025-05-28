@@ -6,3 +6,20 @@ api app client ID: 9e5f424e-789b-4776-9d52-5897bf9c638d
 blazor app client ID: bab6b179-6272-436d-8837-297a8dff18db
 
 ApiScopes : api://9e5f424e-789b-4776-9d52-5897bf9c638d
+
+
+
+Thank you! I have most of the required values. I just need a couple more:
+
+  1. Password reset flow name: (e.g., passwordreset1)
+  2. Profile editing flow name: (e.g., profileediting1)
+  3. Instance URL: Can you confirm it's
+  https://ohdharvestentraexternalid.ciamlogin.com?
+
+  Also, did you add the access_as_user scope to your API app and grant permissions to
+   the Blazor client app?
+
+  Once I have these final details, I'll proceed with implementing all the code
+  changes.
+
+> password reset flow name: passwordreset1 profile editing flow name: profileediting1

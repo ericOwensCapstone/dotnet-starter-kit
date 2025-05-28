@@ -4,7 +4,6 @@ using FluentValidation;
 using FSH.Framework.Core;
 using FSH.Framework.Core.Origin;
 using FSH.Framework.Infrastructure.Auth;
-using FSH.Framework.Infrastructure.Auth.Jwt;
 using FSH.Framework.Infrastructure.Behaviours;
 using FSH.Framework.Infrastructure.Caching;
 using FSH.Framework.Infrastructure.Cors;
@@ -43,7 +42,7 @@ public static class Extensions
         builder.Services.ConfigureIdentity();
         builder.Services.AddCorsPolicy(builder.Configuration);
         builder.Services.ConfigureFileStorage();
-        builder.Services.ConfigureJwtAuth();
+        builder.Services.ConfigureAuth(builder.Configuration);
         builder.Services.ConfigureOpenApi();
         builder.Services.ConfigureJobs(builder.Configuration);
         builder.Services.ConfigureMailing();

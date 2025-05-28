@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 namespace FSH.Framework.Infrastructure.Auth.Jwt;
-internal static class Extensions
+internal static class JwtExtensions
 {
     internal static IServiceCollection ConfigureJwtAuth(this IServiceCollection services)
     {

@@ -1,0 +1,8 @@
+Tenant ID: a05e8774-ad7f-4bda-855e-1e6872ce12e2
+
+ohdharvestentraexternalid.onmicrosoft.com
+
+api app client ID: 9e5f424e-789b-4776-9d52-5897bf9c638d
+blazor app client ID: bab6b179-6272-436d-8837-297a8dff18db
+
+ApiScopes : api://9e5f424e-789b-4776-9d52-5897bf9c638d

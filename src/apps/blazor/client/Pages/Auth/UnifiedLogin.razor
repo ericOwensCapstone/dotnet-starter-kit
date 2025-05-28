@@ -1,0 +1,59 @@
+@page "/unified-login"
+@attribute [AllowAnonymous]
+@inject IConfiguration Configuration
+@inject NavigationManager Navigation
+@inject IAuthenticationService AuthService
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+<PageTitle>Login</PageTitle>
+
+@if (_useEntraId)
+{
+    <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center text-center" Style="height: 80vh;">
+        <MudPaper Elevation="25" Class="pa-8" Width="100%">
+            <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Large" Color="Color.Primary" Class="mb-4" />
+            <MudText Typo="Typo.h4" GutterBottom="true">Sign In</MudText>
+            <MudText Class="mb-4">Use your organization account to sign in.</MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" 
+                       StartIcon="@Icons.Material.Filled.Login" FullWidth="true"
+                       OnClick="SignInWithEntraId">
+                Sign In with Microsoft
+            </MudButton>
+        </MudPaper>
+    </MudContainer>
+}
+else
+{
+    <Login />
+}
+
+@code {
+    private bool _useEntraId;
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            Console.WriteLine("UnifiedLogin: Initializing...");
+            
+            // Check if Entra ID is configured
+            var entraIdConfig = Configuration.GetSection("EntraExternalId");
+            _useEntraId = entraIdConfig.Exists() && !string.IsNullOrEmpty(entraIdConfig["ClientId"]);
+            
+            Console.WriteLine($"UnifiedLogin: UseEntraId = {_useEntraId}");
+            Console.WriteLine($"UnifiedLogin: ClientId = {entraIdConfig["ClientId"]}");
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"UnifiedLogin: Error during initialization: {ex}");
+            throw;
+        }
+    }
+
+    private void SignInWithEntraId()
+    {
+        Console.WriteLine("UnifiedLogin: SignInWithEntraId called");
+        // Use the standard RemoteAuthenticatorView login action
+        Navigation.NavigateTo($"authentication/{RemoteAuthenticationActions.LogIn}", forceLoad: true);
+    }
+}

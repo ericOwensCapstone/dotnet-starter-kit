@@ -1,0 +1,85 @@
+@page "/test-auth"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager Navigation
+@inject IConfiguration Configuration
+
+<PageTitle>Test Authentication</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-5">
+    <MudPaper Class="pa-4">
+        <MudText Typo="Typo.h4">Authentication Test Page</MudText>
+        
+        <MudText Class="mt-4">Configuration Status:</MudText>
+        <MudSimpleTable Class="mt-2">
+            <tbody>
+                <tr>
+                    <td>Entra ID Configured:</td>
+                    <td>@(_entraConfigured ? "Yes" : "No")</td>
+                </tr>
+                <tr>
+                    <td>Client ID:</td>
+                    <td>@_clientId</td>
+                </tr>
+                <tr>
+                    <td>Authority:</td>
+                    <td>@_authority</td>
+                </tr>
+                <tr>
+                    <td>API Scope:</td>
+                    <td>@_apiScope</td>
+                </tr>
+            </tbody>
+        </MudSimpleTable>
+        
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-4"
+                   OnClick="TestLogin">
+            Test Login
+        </MudButton>
+        
+        @if (!string.IsNullOrEmpty(_error))
+        {
+            <MudAlert Severity="Severity.Error" Class="mt-4">@_error</MudAlert>
+        }
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private bool _entraConfigured;
+    private string _clientId = "Not configured";
+    private string _authority = "Not configured";
+    private string _apiScope = "Not configured";
+    private string _error = "";
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            var entraConfig = Configuration.GetSection("EntraExternalId");
+            _entraConfigured = entraConfig.Exists();
+            
+            if (_entraConfigured)
+            {
+                _clientId = entraConfig["ClientId"] ?? "Missing";
+                _authority = entraConfig["Authority"] ?? "Missing";
+                var scopes = entraConfig.GetSection("ApiScopes").Get<string[]>();
+                _apiScope = scopes?.FirstOrDefault() ?? "Missing";
+            }
+        }
+        catch (Exception ex)
+        {
+            _error = $"Error loading configuration: {ex.Message}";
+        }
+    }
+
+    private void TestLogin()
+    {
+        try
+        {
+            Navigation.NavigateTo("authentication/login", forceLoad: true);
+        }
+        catch (Exception ex)
+        {
+            _error = $"Error navigating to login: {ex.Message}";
+        }
+    }
+}

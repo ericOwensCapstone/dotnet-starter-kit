@@ -1,0 +1,29 @@
+@page "/authentication/{action}"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+<RemoteAuthenticatorView Action="@Action">
+    <LogInFailed>
+        <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center text-center" Style="height: 100vh;">
+            <MudPaper Elevation="25" Class="pa-8" Width="100%">
+                <MudAlert Severity="Severity.Error">
+                    <MudText>There was an error trying to log you in.</MudText>
+                </MudAlert>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/" Class="mt-4">
+                    Return to Home
+                </MudButton>
+            </MudPaper>
+        </MudContainer>
+    </LogInFailed>
+    <CompletingLogOut>
+        <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center text-center" Style="height: 100vh;">
+            <MudPaper Elevation="25" Class="pa-8" Width="100%">
+                <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+                <MudText Typo="Typo.body1" Class="mt-4">Processing logout...</MudText>
+            </MudPaper>
+        </MudContainer>
+    </CompletingLogOut>
+</RemoteAuthenticatorView>
+
+@code {
+    [Parameter] public string? Action { get; set; }
+}

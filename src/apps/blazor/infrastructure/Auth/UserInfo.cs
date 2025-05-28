@@ -8,6 +8,9 @@ public sealed class UserInfo
 {
     public required string UserId { get; init; }
     public required string Name { get; init; }
+    public string? Email { get; init; }
+    public string? TenantId { get; init; }
+    public List<string> Permissions { get; init; } = new();
 
     public const string UserIdClaimType = "sub";
     public const string NameClaimType = "name";

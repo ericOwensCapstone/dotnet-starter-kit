@@ -4,14 +4,23 @@
 
 <PageTitle>Login</PageTitle>
 
-<div class="fsh-center-text">
-    <MudText Typo="Typo.h4" GutterBottom="true">Sign In</MudText>
-    <MudText>
-        Enter your credentials to get started.
-    </MudText>
-</div>
-<br />
-<EditForm Model="@_tokenRequest" OnValidSubmit="SubmitAsync">
+@if (_isRedirectingToB2C)
+{
+    <div class="fsh-center-text">
+        <MudText Typo="Typo.h4" GutterBottom="true">Redirecting to Sign In...</MudText>
+        <MudProgressCircular Indeterminate="true" Size="Size.Large" />
+    </div>
+}
+else
+{
+    <div class="fsh-center-text">
+        <MudText Typo="Typo.h4" GutterBottom="true">Sign In</MudText>
+        <MudText>
+            Enter your credentials to get started.
+        </MudText>
+    </div>
+    <br />
+    <EditForm Model="@_tokenRequest" OnValidSubmit="SubmitAsync">
     <MudGrid>
         <DataAnnotationsValidator />
         <FshValidation @ref="_customValidation" />
@@ -44,3 +53,4 @@
             </MudItem>
         </MudGrid>
     </EditForm>
+}

@@ -6,7 +6,19 @@
       "Bash(rg:*)",
       "Bash(mkdir:*)",
       "Bash(git add:*)",
-      "WebFetch(domain:docs.anthropic.com)"
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(dotnet ef migrations add:*)",
+      "Bash(dotnet build)",
+      "Bash(dotnet nuget locals:*)",
+      "Bash(dotnet restore)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet clean:*)",
+      "Bash(csc:*)",
+      "Bash(dotnet ef database update:*)",
+      "Bash(ss:*)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }

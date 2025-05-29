@@ -71,6 +71,29 @@ public sealed class TokenService : ITokenService
         return await GenerateTokensAndUpdateUser(user, ipAddress);
     }
 
+    public async Task<TokenResponse> GenerateB2CTokenAsync(object userObj, List<Claim> claims, string ipAddress, CancellationToken cancellationToken)
+    {
+        if (userObj is not FshUser user)
+        {
+            throw new ArgumentException("User must be of type FshUser", nameof(userObj));
+        }
+
+        // Validate user state (same checks as regular token generation, but skip password validation)
+        if (!user.IsActive)
+        {
+            throw new UnauthorizedException("user is deactivated");
+        }
+
+        if (!user.EmailConfirmed)
+        {
+            throw new UnauthorizedException("email not confirmed");
+        }
+
+        // For B2C users, we assume they're in the root tenant or handle tenant validation differently
+        // The tenant claim is already included in the provided claims
+
+        return await GenerateTokensAndUpdateUserWithClaims(user, claims, ipAddress);
+    }
 
     public async Task<TokenResponse> RefreshTokenAsync(RefreshTokenCommand request, string ipAddress, CancellationToken cancellationToken)
     {
@@ -113,8 +136,42 @@ public sealed class TokenService : ITokenService
         return new TokenResponse(token, user.RefreshToken, user.RefreshTokenExpiryTime);
     }
 
+    private async Task<TokenResponse> GenerateTokensAndUpdateUserWithClaims(FshUser user, List<Claim> claims, string ipAddress)
+    {
+        // Add standard JWT claims to the provided claims
+        var jwtClaims = new List<Claim>(claims)
+        {
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(FshClaims.IpAddress, ipAddress)
+        };
+
+        string token = GenerateJwtWithClaims(jwtClaims);
+
+        user.RefreshToken = GenerateRefreshToken();
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtOptions.RefreshTokenExpirationInDays);
+
+        await _userManager.UpdateAsync(user);
+
+        await _publisher.Publish(new AuditPublishedEvent(new()
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Operation = "B2C Token Generated",
+                Entity = "Identity",
+                UserId = new Guid(user.Id),
+                DateTime = DateTime.UtcNow,
+            }
+        }));
+
+        return new TokenResponse(token, user.RefreshToken, user.RefreshTokenExpiryTime);
+    }
+
     private string GenerateJwt(FshUser user, string ipAddress) =>
-    GenerateEncryptedToken(GetSigningCredentials(), GetClaims(user, ipAddress));
+        GenerateEncryptedToken(GetSigningCredentials(), GetClaims(user, ipAddress));
+
+    private string GenerateJwtWithClaims(IEnumerable<Claim> claims) =>
+        GenerateEncryptedToken(GetSigningCredentials(), claims);
 
     private SigningCredentials GetSigningCredentials()
     {

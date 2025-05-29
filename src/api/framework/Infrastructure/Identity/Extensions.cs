@@ -1,4 +1,5 @@
 ﻿using FSH.Framework.Core.Audit;
+using FSH.Framework.Core.Auth.ApiKeys;
 using FSH.Framework.Core.Identity.Roles;
 using FSH.Framework.Core.Identity.Tokens;
 using FSH.Framework.Core.Identity.Users.Abstractions;
@@ -36,6 +37,13 @@ internal static class Extensions
         services.AddTransient<IAuditService, AuditService>();
         services.BindDbContext<IdentityDbContext>();
         services.AddScoped<IDbInitializer, IdentityDbInitializer>();
+        
+        // Register AuthenticationDbContext for B2C authentication queries without tenant context
+        services.BindDbContext<AuthenticationDbContext>();
+        
+        // Register repository for ApiKey
+        services.AddKeyedScoped<IRepository<ApiKey>, IdentityRepository<ApiKey>>("identity:apikeys");
+        services.AddKeyedScoped<IReadRepository<ApiKey>, IdentityRepository<ApiKey>>("identity:apikeys");
         services.AddIdentity<FshUser, FshRole>(options =>
            {
                options.Password.RequiredLength = IdentityConstants.PasswordLength;

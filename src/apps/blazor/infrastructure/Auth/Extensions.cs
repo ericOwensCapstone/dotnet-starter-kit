@@ -1,4 +1,5 @@
-﻿using FSH.Starter.Blazor.Infrastructure.Auth.Jwt;
+﻿using FSH.Starter.Blazor.Infrastructure.Auth.AzureB2C;
+using FSH.Starter.Blazor.Infrastructure.Auth.Jwt;
 using FSH.Starter.Shared.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -12,11 +13,62 @@ public static class Extensions
 {
     public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration config)
     {
-        services.AddScoped<AuthenticationStateProvider, JwtAuthenticationService>()
-                .AddScoped(sp => (IAuthenticationService)sp.GetRequiredService<AuthenticationStateProvider>())
-                .AddScoped(sp => (IAccessTokenProvider)sp.GetRequiredService<AuthenticationStateProvider>())
-                .AddScoped<IAccessTokenProviderAccessor, AccessTokenProviderAccessor>()
-                .AddScoped<JwtAuthenticationHeaderHandler>();
+        // Register configuration service
+        services.AddSingleton<IAuthenticationConfigurationService, AuthenticationConfigurationService>();
+        
+        // Get authentication provider
+        var provider = config["AuthenticationOptions:Provider"];
+        var isB2C = string.Equals(provider, "AzureAdB2C", StringComparison.OrdinalIgnoreCase);
+
+        if (isB2C)
+        {
+            // Configure B2C authentication options
+            services.Configure<B2CAuthenticationOptions>(options =>
+            {
+                var b2cConfig = config.GetSection("AuthenticationOptions:AzureAdB2C");
+                var instance = b2cConfig["Instance"];
+                var domain = b2cConfig["Domain"];
+                var policy = b2cConfig["SignUpSignInPolicyId"];
+                
+                // Construct the B2C authority URL
+                options.Authority = $"{instance}/{domain}/{policy}";
+                options.ClientId = b2cConfig["ClientId"] ?? string.Empty;
+                options.ValidateAuthority = b2cConfig.GetValue<bool>("ValidateAuthority", true);
+                
+                // Set default scopes
+                var apiScope = b2cConfig["ApiScope"];
+                options.DefaultScopes = new List<string> { "openid", "offline_access" };
+                if (!string.IsNullOrEmpty(apiScope))
+                {
+                    options.DefaultScopes.Add(apiScope);
+                }
+            });
+
+            // Register B2C authentication service
+            services.AddScoped<B2CAuthenticationService>();
+            services.AddScoped<AuthenticationStateProvider>(sp => 
+            {
+                var authConfig = sp.GetRequiredService<IAuthenticationConfigurationService>();
+                if (authConfig.IsAzureB2C())
+                {
+                    return sp.GetRequiredService<B2CAuthenticationService>();
+                }
+                return sp.GetRequiredService<JwtAuthenticationService>();
+            });
+            services.AddScoped(sp => (IAuthenticationService)sp.GetRequiredService<AuthenticationStateProvider>());
+            services.AddScoped(sp => (IAccessTokenProvider)sp.GetRequiredService<AuthenticationStateProvider>());
+        }
+        else
+        {
+            // Use JWT authentication (existing configuration)
+            services.AddScoped<JwtAuthenticationService>();
+            services.AddScoped<AuthenticationStateProvider, JwtAuthenticationService>();
+            services.AddScoped(sp => (IAuthenticationService)sp.GetRequiredService<AuthenticationStateProvider>());
+            services.AddScoped(sp => (IAccessTokenProvider)sp.GetRequiredService<AuthenticationStateProvider>());
+        }
+
+        services.AddScoped<IAccessTokenProviderAccessor, AccessTokenProviderAccessor>();
+        services.AddScoped<JwtAuthenticationHeaderHandler>();
 
         services.AddAuthorizationCore(RegisterPermissionClaims);
         services.AddCascadingAuthenticationState();

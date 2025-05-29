@@ -48,12 +48,26 @@ public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions
         {
             OnChallenge = context =>
             {
+                Console.WriteLine($"JWT Bearer Challenge triggered - Scheme: {context.Scheme.Name}");
+                Console.WriteLine($"JWT Bearer Error: {context.Error}");
+                Console.WriteLine($"JWT Bearer ErrorDescription: {context.ErrorDescription}");
+                Console.WriteLine($"JWT Bearer Request Path: {context.Request.Path}");
+                
                 context.HandleResponse();
                 if (!context.Response.HasStarted)
                 {
-                    throw new UnauthorizedException();
+                    // Temporarily don't throw to see more details
+                    Console.WriteLine("Setting 401 response instead of throwing exception");
+                    context.Response.StatusCode = 401;
                 }
 
+                return Task.CompletedTask;
+            },
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine($"JWT Bearer Authentication Failed - Scheme: {context.Scheme.Name}");
+                Console.WriteLine($"JWT Bearer Exception: {context.Exception?.Message}");
+                Console.WriteLine($"JWT Bearer Token: {context.Request.Headers["Authorization"].FirstOrDefault()?.Substring(0, 50)}...");
                 return Task.CompletedTask;
             },
             OnForbidden = _ => throw new ForbiddenException(),

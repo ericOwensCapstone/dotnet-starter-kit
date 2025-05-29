@@ -4,6 +4,8 @@ using FluentValidation;
 using FSH.Framework.Core;
 using FSH.Framework.Core.Origin;
 using FSH.Framework.Infrastructure.Auth;
+using FSH.Framework.Infrastructure.Auth.ApiKey.Endpoints;
+using FSH.Framework.Infrastructure.Auth.AzureB2C.Endpoints;
 using FSH.Framework.Infrastructure.Auth.Jwt;
 using FSH.Framework.Infrastructure.Behaviours;
 using FSH.Framework.Infrastructure.Caching;
@@ -43,7 +45,7 @@ public static class Extensions
         builder.Services.ConfigureIdentity();
         builder.Services.AddCorsPolicy(builder.Configuration);
         builder.Services.ConfigureFileStorage();
-        builder.Services.ConfigureJwtAuth();
+        builder.Services.ConfigureAuthentication(builder.Configuration);
         builder.Services.ConfigureOpenApi();
         builder.Services.ConfigureJobs(builder.Configuration);
         builder.Services.ConfigureMailing();
@@ -105,6 +107,8 @@ public static class Extensions
         app.UseAuthorization();
         app.MapTenantEndpoints();
         app.MapIdentityEndpoints();
+        app.MapApiKeyEndpoints();
+        app.MapB2CEndpoints();
 
         // Current user middleware
         app.UseMiddleware<CurrentUserMiddleware>();

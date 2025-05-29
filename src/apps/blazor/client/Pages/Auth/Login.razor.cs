@@ -20,7 +20,6 @@ public partial class Login()
     private FshValidation? _customValidation;
 
     public bool BusySubmitting { get; set; }
-    private bool _isRedirectingToB2C = false;
 
     private readonly TokenGenerationCommand _tokenRequest = new();
     private string TenantId { get; set; } = string.Empty;
@@ -35,28 +34,6 @@ public partial class Login()
         {
             Navigation.NavigateTo("/");
             return;
-        }
-
-        // Check if we're coming from a failed authentication attempt to prevent loops
-        var uri = new Uri(Navigation.Uri);
-        var hasError = uri.Query.Contains("error=");
-        
-        if (hasError)
-        {
-            Console.WriteLine($"Login page loaded with error parameter in URL: {uri.Query}");
-            // Don't redirect again if there was an authentication error
-            return;
-        }
-
-        // If using B2C, redirect to B2C login
-        var authConfig = ServiceProvider.GetService<IAuthenticationConfigurationService>();
-        if (authConfig?.IsAzureB2C() == true)
-        {
-            Console.WriteLine("Redirecting to B2C login...");
-            _isRedirectingToB2C = true;
-            StateHasChanged();
-            await Task.Delay(100); // Brief delay to show loading state
-            await AuthenticationService.LoginAsync(string.Empty, new TokenGenerationCommand());
         }
     }
 

@@ -18,7 +18,8 @@
       "Bash(csc:*)",
       "Bash(dotnet ef database update:*)",
       "Bash(ss:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

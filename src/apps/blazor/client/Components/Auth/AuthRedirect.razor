@@ -1,0 +1,55 @@
+@layout EmptyLayout
+@inject IServiceProvider ServiceProvider
+@inject IAuthenticationService AuthenticationService
+@inject NavigationManager Navigation
+@using FSH.Starter.Blazor.Infrastructure.Auth
+@using FSH.Starter.Blazor.Infrastructure.Api
+
+<style>
+    .auth-redirect-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+    }
+</style>
+
+<div class="auth-redirect-container">
+    <img src="/full-stack-hero-logo.png" style="height:350px; width:350px; opacity:0.8" />
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Check if using B2C
+            var authConfig = ServiceProvider.GetService<IAuthenticationConfigurationService>();
+            if (authConfig?.IsAzureB2C() == true)
+            {
+                // Check for error to prevent redirect loops
+                var uri = new Uri(Navigation.Uri);
+                if (!uri.Query.Contains("error="))
+                {
+                    // Redirect to B2C immediately
+                    await AuthenticationService.LoginAsync(string.Empty, new TokenGenerationCommand());
+                    return;
+                }
+            }
+
+            // For local auth or B2C errors, navigate to login page
+            Navigation.NavigateTo("/login", forceLoad: false);
+        }
+        catch
+        {
+            // Silently handle any errors - just navigate to login
+            Navigation.NavigateTo("/login", forceLoad: false);
+        }
+    }
+}

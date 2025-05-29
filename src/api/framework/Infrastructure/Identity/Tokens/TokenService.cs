@@ -147,11 +147,12 @@ public sealed class TokenService : ITokenService
 
         string token = GenerateJwtWithClaims(jwtClaims);
 
-        user.RefreshToken = GenerateRefreshToken();
-        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtOptions.RefreshTokenExpirationInDays);
+        // For B2C users, generate a refresh token but don't update the user entity
+        // to avoid EF Core tracking conflicts since the user came from a different context
+        var refreshToken = GenerateRefreshToken();
+        var refreshTokenExpiry = DateTime.UtcNow.AddDays(_jwtOptions.RefreshTokenExpirationInDays);
 
-        await _userManager.UpdateAsync(user);
-
+        // Only publish audit event without trying to update the user entity
         await _publisher.Publish(new AuditPublishedEvent(new()
         {
             new()
@@ -164,7 +165,7 @@ public sealed class TokenService : ITokenService
             }
         }));
 
-        return new TokenResponse(token, user.RefreshToken, user.RefreshTokenExpiryTime);
+        return new TokenResponse(token, refreshToken, refreshTokenExpiry);
     }
 
     private string GenerateJwt(FshUser user, string ipAddress) =>

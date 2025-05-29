@@ -202,12 +202,64 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
 
     private static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
     {
+        var claims = new List<Claim>();
         var payload = jwt.Split('.')[1];
         var jsonBytes = ParseBase64WithoutPadding(payload);
         var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-        
-        return keyValuePairs?.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString() ?? string.Empty)) 
-            ?? Enumerable.Empty<Claim>();
+
+        if (keyValuePairs is not null)
+        {
+            // Handle roles array (similar to JwtAuthenticationService)
+            keyValuePairs.TryGetValue(ClaimTypes.Role, out object? roles);
+            if (roles is not null)
+            {
+                string? rolesString = roles.ToString();
+                if (!string.IsNullOrEmpty(rolesString))
+                {
+                    if (rolesString.Trim().StartsWith("["))
+                    {
+                        string[]? parsedRoles = JsonSerializer.Deserialize<string[]>(rolesString);
+                        if (parsedRoles is not null)
+                        {
+                            claims.AddRange(parsedRoles.Select(role => new Claim(ClaimTypes.Role, role)));
+                        }
+                    }
+                    else
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, rolesString));
+                    }
+                }
+                keyValuePairs.Remove(ClaimTypes.Role);
+            }
+
+            // Handle permissions array
+            keyValuePairs.TryGetValue("permission", out object? permissions);
+            if (permissions is not null)
+            {
+                string? permissionsString = permissions.ToString();
+                if (!string.IsNullOrEmpty(permissionsString))
+                {
+                    if (permissionsString.Trim().StartsWith("["))
+                    {
+                        string[]? parsedPermissions = JsonSerializer.Deserialize<string[]>(permissionsString);
+                        if (parsedPermissions is not null)
+                        {
+                            claims.AddRange(parsedPermissions.Select(permission => new Claim("permission", permission)));
+                        }
+                    }
+                    else
+                    {
+                        claims.Add(new Claim("permission", permissionsString));
+                    }
+                }
+                keyValuePairs.Remove("permission");
+            }
+
+            // Add remaining claims
+            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString() ?? string.Empty)));
+        }
+
+        return claims;
     }
 
     private static byte[] ParseBase64WithoutPadding(string base64)

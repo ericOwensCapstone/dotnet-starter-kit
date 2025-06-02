@@ -19,7 +19,11 @@
       "Bash(dotnet ef database update:*)",
       "Bash(ss:*)",
       "Bash(grep:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(chmod:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet run:*)",
+      "Bash(git reset:*)"
     ],
     "deny": []
   },

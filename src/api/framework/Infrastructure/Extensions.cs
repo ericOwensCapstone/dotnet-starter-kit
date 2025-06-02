@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Asp.Versioning.Conventions;
+using Carter;
 using FluentValidation;
 using FSH.Framework.Core;
 using FSH.Framework.Core.Origin;
@@ -112,16 +113,6 @@ public static class Extensions
 
         // Current user middleware
         app.UseMiddleware<CurrentUserMiddleware>();
-
-        // Register API versions
-        var versions = app.NewApiVersionSet()
-                    .HasApiVersion(1)
-                    .HasApiVersion(2)
-                    .ReportApiVersions()
-                    .Build();
-
-        // Map versioned endpoint
-        app.MapGroup("api/v{version:apiVersion}").WithApiVersionSet(versions);
 
         return app;
     }

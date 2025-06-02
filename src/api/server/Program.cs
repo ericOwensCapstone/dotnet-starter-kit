@@ -1,4 +1,5 @@
 using FSH.Framework.Infrastructure;
+using FSH.Framework.Infrastructure.Configuration;
 using FSH.Framework.Infrastructure.Logging.Serilog;
 using FSH.Starter.WebApi.Host;
 using Serilog;
@@ -8,6 +9,13 @@ Log.Information("server booting up..");
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+    
+    // Add Key Vault configuration
+    builder.Configuration.AddKeyVaultSecrets(builder.Environment);
+    
+    // Add User Secrets ID for development
+    builder.Configuration.AddUserSecrets<Program>(optional: true, reloadOnChange: true);
+    
     builder.ConfigureFshFramework();
     builder.RegisterModules();
 
@@ -28,3 +36,5 @@ finally
     Log.Information("server shutting down..");
     await Log.CloseAndFlushAsync();
 }
+
+public partial class Program { }

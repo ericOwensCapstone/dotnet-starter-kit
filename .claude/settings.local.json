@@ -23,7 +23,9 @@
       "Bash(chmod:*)",
       "Bash(dotnet restore:*)",
       "Bash(dotnet run:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   },

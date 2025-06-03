@@ -12,6 +12,7 @@ using FSH.Framework.Infrastructure.Behaviours;
 using FSH.Framework.Infrastructure.Caching;
 using FSH.Framework.Infrastructure.Cors;
 using FSH.Framework.Infrastructure.Exceptions;
+using FSH.Framework.Infrastructure.Graph;
 using FSH.Framework.Infrastructure.Identity;
 using FSH.Framework.Infrastructure.Jobs;
 using FSH.Framework.Infrastructure.Logging.Serilog;
@@ -47,6 +48,7 @@ public static class Extensions
         builder.Services.AddCorsPolicy(builder.Configuration);
         builder.Services.ConfigureFileStorage();
         builder.Services.ConfigureAuthentication(builder.Configuration);
+        builder.Services.AddGraphServices(builder.Configuration);
         builder.Services.ConfigureOpenApi();
         builder.Services.ConfigureJobs(builder.Configuration);
         builder.Services.ConfigureMailing();
@@ -105,14 +107,15 @@ public static class Extensions
             RequestPath = new PathString("/assets")
         });
         app.UseAuthentication();
+        
+        // Current user middleware - MUST be after authentication but before authorization
+        app.UseMiddleware<CurrentUserMiddleware>();
+        
         app.UseAuthorization();
         app.MapTenantEndpoints();
         app.MapIdentityEndpoints();
         app.MapApiKeyEndpoints();
         app.MapB2CEndpoints();
-
-        // Current user middleware
-        app.UseMiddleware<CurrentUserMiddleware>();
 
         return app;
     }

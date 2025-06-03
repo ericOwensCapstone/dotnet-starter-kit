@@ -25,13 +25,24 @@ public class FshJobFilter : IClientFilter
         using var scope = _services.CreateScope();
 
         var httpContext = scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>()?.HttpContext;
-        _ = httpContext ?? throw new InvalidOperationException("Can't create a TenantJob without HttpContext.");
+        
+        // During application startup or background processing, there might not be an HTTP context
+        if (httpContext == null)
+        {
+            Logger.InfoFormat("No HttpContext available for job {0}.{1}, using system context", 
+                context.Job.Method.ReflectedType?.FullName, context.Job.Method.Name);
+            
+            // Set default/system context parameters
+            context.SetJobParameter(TenantConstants.Identifier, "root"); // Use root tenant for system jobs
+            context.SetJobParameter(QueryStringKeys.UserId, "system"); // Use system user for background jobs
+            return;
+        }
 
-        var tenantInfo = scope.ServiceProvider.GetRequiredService<IMultiTenantContextAccessor>().MultiTenantContext.TenantInfo;
-        context.SetJobParameter(TenantConstants.Identifier, tenantInfo);
+        var tenantInfo = scope.ServiceProvider.GetRequiredService<IMultiTenantContextAccessor>().MultiTenantContext?.TenantInfo;
+        context.SetJobParameter(TenantConstants.Identifier, tenantInfo?.Identifier ?? "root");
 
         string? userId = httpContext.User.GetUserId();
-        context.SetJobParameter(QueryStringKeys.UserId, userId);
+        context.SetJobParameter(QueryStringKeys.UserId, userId ?? "system");
     }
 
     public void OnCreated(CreatedContext context) =>

@@ -2,9 +2,10 @@
 using FSH.Starter.Shared.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace FSH.Framework.Infrastructure.Auth.Policy;
-public sealed class RequiredPermissionAuthorizationHandler(IUserService userService) : AuthorizationHandler<PermissionAuthorizationRequirement>
+public sealed class RequiredPermissionAuthorizationHandler(IUserService userService, ILogger<RequiredPermissionAuthorizationHandler> logger) : AuthorizationHandler<PermissionAuthorizationRequirement>
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionAuthorizationRequirement requirement)
     {
@@ -23,9 +24,35 @@ public sealed class RequiredPermissionAuthorizationHandler(IUserService userServ
             context.Succeed(requirement);
             return;
         }
-        if (context.User?.GetUserId() is { } userId && await userService.HasPermissionAsync(userId, requiredPermissions.First()))
+
+        var requiredPermission = requiredPermissions.First();
+        logger.LogDebug("Checking permission {Permission} for user", requiredPermission);
+
+        // First check if the permission is already in the JWT claims
+        // This is important for B2C tokens where permissions are embedded in the token
+        var hasPermissionClaim = context.User?.Claims
+            .Any(c => c.Type == FshClaims.Permission && c.Value == requiredPermission) ?? false;
+
+        if (hasPermissionClaim)
         {
+            logger.LogDebug("Permission {Permission} found in JWT claims", requiredPermission);
             context.Succeed(requirement);
+            return;
         }
+
+        // If not in JWT claims, check the database (for locally generated tokens)
+        // This maintains backward compatibility with existing local authentication
+        if (context.User?.GetUserId() is { } userId)
+        {
+            logger.LogDebug("Permission {Permission} not in JWT claims, checking database for user {UserId}", requiredPermission, userId);
+            if (await userService.HasPermissionAsync(userId, requiredPermission))
+            {
+                logger.LogDebug("Permission {Permission} found in database for user {UserId}", requiredPermission, userId);
+                context.Succeed(requirement);
+                return;
+            }
+        }
+
+        logger.LogWarning("Permission {Permission} denied - not found in JWT claims or database", requiredPermission);
     }
 }

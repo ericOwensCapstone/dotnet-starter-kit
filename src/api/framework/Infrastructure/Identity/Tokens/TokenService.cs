@@ -193,8 +193,9 @@ public sealed class TokenService : ITokenService
         return tokenHandler.WriteToken(token);
     }
 
-    private List<Claim> GetClaims(FshUser user, string ipAddress) =>
-        new List<Claim>
+    private List<Claim> GetClaims(FshUser user, string ipAddress)
+    {
+        var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(ClaimTypes.NameIdentifier, user.Id),
@@ -207,6 +208,14 @@ public sealed class TokenService : ITokenService
             new(FshClaims.Tenant, _multiTenantContextAccessor!.MultiTenantContext.TenantInfo!.Id),
             new(FshClaims.ImageUrl, user.ImageUrl == null ? string.Empty : user.ImageUrl.ToString())
         };
+
+        // Note: For performance reasons, we don't include roles and permissions in local JWT tokens.
+        // These are fetched from the database on each request via the authorization handler.
+        // This allows for real-time permission changes without requiring users to re-authenticate.
+        // B2C tokens include permissions because they can't be refreshed as easily.
+
+        return claims;
+    }
     private static string GenerateRefreshToken()
     {
         byte[] randomNumber = new byte[32];

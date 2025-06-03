@@ -21,10 +21,13 @@ public class JwtAuthenticationHeaderHandler : DelegatingHandler
         {
             if (await _tokenProviderAccessor.TokenProvider.GetAccessTokenAsync() is string token)
             {
+                Console.WriteLine($"JwtAuthenticationHeaderHandler: Adding token to request for {request.RequestUri?.AbsolutePath}");
+                Console.WriteLine($"Token preview: {token[..Math.Min(50, token.Length)]}...");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
             else
             {
+                Console.WriteLine($"JwtAuthenticationHeaderHandler: No token available for {request.RequestUri?.AbsolutePath}, redirecting to login");
                 _navigation.NavigateTo("/login");
             }
         }

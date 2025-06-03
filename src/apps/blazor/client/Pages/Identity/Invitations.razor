@@ -1,0 +1,131 @@
+@page "/invitations"
+
+@inject IAuthenticationService Authentication
+
+<PageHeader Title="User Invitations" Header="User Invitations" SubHeader="Manage user invitations for your tenants." />
+
+<EntityTable @ref="EntityTable" TEntity="UserInvitationViewModel" TId="Guid" TRequest="CreateInvitationRequest" Context="@Context"
+    @bind-SearchString="_searchString">
+    <EditFormContent>
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" For="@(() => context.Email)" @bind-Value="context.Email" Label="Email" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" For="@(() => context.DisplayName)" @bind-Value="context.DisplayName" Label="Display Name" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" For="@(() => context.FirstName)" @bind-Value="context.FirstName" Label="First Name" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" For="@(() => context.LastName)" @bind-Value="context.LastName" Label="Last Name" />
+        </MudItem>
+        @if (_isRootAdmin)
+        {
+            <MudItem xs="12" md="6">
+                <MudTextField T="string" For="@(() => context.TenantId)" @bind-Value="context.TenantId" Label="Tenant ID" />
+            </MudItem>
+        }
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" For="@(() => context.Role)" @bind-Value="context.Role" Label="Role" />
+        </MudItem>
+    </EditFormContent>
+    <ExtraActions>
+        @if (context.Status == InvitationStatus._0 || context.Status == InvitationStatus._5)
+        {
+            <MudMenuItem OnClick="@(() => ResendInvitationAsync(context.Id))">Resend Invitation</MudMenuItem>
+        }
+        <MudMenuItem OnClick="@(() => ViewInvitationDetails(context.Id))">
+            @((context.ShowDetails == true) ? "Hide" : "Show") Invitation Details
+        </MudMenuItem>
+        @if (context.Status != InvitationStatus._2 && context.Status != InvitationStatus._4)
+        {
+            <MudMenuItem Style="color:red!important" OnClick="@(() => CancelInvitationAsync(context.Id))">Cancel Invitation</MudMenuItem>
+        }
+    </ExtraActions>
+
+    <ChildRowContent>
+        @if (context.ShowDetails)
+        {
+            <MudTr>
+                <td colspan="8">
+                    <MudCard Outlined style="margin: 10px !important;">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudAlert Severity="Severity.Info" typo="Typo.body1">Details for Invitation :
+                                    <strong>@context.Email</strong>
+                                </MudAlert>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <table class="mud-table-root">
+                                <tbody class="mud-table-body">
+                                    <tr class="mud-table-row">
+                                        <td>Status</td>
+                                        <td>
+                                            @{
+                                                var color = context.Status switch
+                                                {
+                                                    InvitationStatus._0 => Color.Warning,  // Pending
+                                                    InvitationStatus._1 => Color.Info,     // Sent
+                                                    InvitationStatus._2 => Color.Success,  // Accepted
+                                                    InvitationStatus._3 => Color.Dark,     // Expired
+                                                    InvitationStatus._4 => Color.Error,    // Cancelled
+                                                    InvitationStatus._5 => Color.Error,    // Failed
+                                                    _ => Color.Default
+                                                };
+                                            }
+                                            <MudChip T="string" Label="true" Color="@color">@context.Status</MudChip>
+                                        </td>
+                                    </tr>
+                                    <tr class="mud-table-row">
+                                        <td>Invited By</td>
+                                        <td>@context.InvitedBy</td>
+                                    </tr>
+                                    <tr class="mud-table-row">
+                                        <td>Tenant</td>
+                                        <td>@context.TenantId</td>
+                                    </tr>
+                                    @if (!string.IsNullOrEmpty(context.B2CUserId))
+                                    {
+                                        <tr class="mud-table-row">
+                                            <td>B2C User ID</td>
+                                            <td>@context.B2CUserId</td>
+                                        </tr>
+                                    }
+                                    @if (context.SentAt.HasValue)
+                                    {
+                                        <tr class="mud-table-row">
+                                            <td>Sent At</td>
+                                            <td>@context.SentAt.Value.ToString("MMM dd, yyyy HH:mm")</td>
+                                        </tr>
+                                    }
+                                    @if (context.AcceptedAt.HasValue)
+                                    {
+                                        <tr class="mud-table-row">
+                                            <td>Accepted At</td>
+                                            <td>@context.AcceptedAt.Value.ToString("MMM dd, yyyy HH:mm")</td>
+                                        </tr>
+                                    }
+                                    @if (!string.IsNullOrEmpty(context.ErrorMessage))
+                                    {
+                                        <tr class="mud-table-row">
+                                            <td>Error</td>
+                                            <td>
+                                                <MudText Color="Color.Error">@context.ErrorMessage</MudText>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr class="mud-table-row">
+                                        <td>Retry Count</td>
+                                        <td>@context.RetryCount</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </MudCardContent>
+                    </MudCard>
+                </td>
+            </MudTr>
+        }
+    </ChildRowContent>
+
+</EntityTable>

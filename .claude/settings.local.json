@@ -25,7 +25,8 @@
       "Bash(dotnet run:*)",
       "Bash(git reset:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(dotnet user-secrets:*)"
     ],
     "deny": []
   },

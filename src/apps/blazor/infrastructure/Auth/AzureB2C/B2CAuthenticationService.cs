@@ -181,6 +181,8 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
     {
         var token = await _localStorage.GetItemAsync<string>(StorageConstants.Local.AuthToken);
         
+        Console.WriteLine($"B2CAuthenticationService.RequestAccessToken: Token from localStorage: {(string.IsNullOrEmpty(token) ? "NULL/EMPTY" : $"{token[..Math.Min(50, token.Length)]}...")}");
+        
         if (!string.IsNullOrEmpty(token))
         {
             return new AccessTokenResult(
@@ -189,6 +191,7 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
                 null);
         }
 
+        Console.WriteLine("B2CAuthenticationService.RequestAccessToken: No token found, requiring redirect");
         return new AccessTokenResult(
             AccessTokenResultStatus.RequiresRedirect,
             null,

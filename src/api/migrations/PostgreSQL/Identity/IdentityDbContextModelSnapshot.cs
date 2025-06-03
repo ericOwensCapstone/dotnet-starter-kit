@@ -122,6 +122,122 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Identity
                     b.ToTable("ApiKeys", "identity");
                 });
 
+            modelBuilder.Entity("FSH.Framework.Core.Identity.Invitations.UserInvitation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("AcceptedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("AcceptedByUserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.Property<string>("B2CUserId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasMaxLength(128)
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("Deleted")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(254)
+                        .HasColumnType("character varying(254)");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("InvitationToken")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("InvitedBy")
+                        .IsRequired()
+                        .HasMaxLength(254)
+                        .HasColumnType("character varying(254)");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasMaxLength(128)
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Role")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime?>("SentAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .HasDatabaseName("IX_UserInvitations_Email");
+
+                    b.HasIndex("ExpiresAt")
+                        .HasDatabaseName("IX_UserInvitations_ExpiresAt");
+
+                    b.HasIndex("InvitationToken")
+                        .IsUnique()
+                        .HasDatabaseName("IX_UserInvitations_InvitationToken");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("IX_UserInvitations_Status");
+
+                    b.HasIndex("TenantId")
+                        .HasDatabaseName("IX_UserInvitations_TenantId");
+
+                    b.HasIndex("Email", "TenantId")
+                        .HasDatabaseName("IX_UserInvitations_Email_TenantId");
+
+                    b.ToTable("UserInvitations", "identity");
+                });
+
             modelBuilder.Entity("FSH.Framework.Infrastructure.Identity.RoleClaims.FshRoleClaim", b =>
                 {
                     b.Property<int>("Id")
@@ -220,6 +336,9 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Identity
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
+
+                    b.Property<Guid?>("InvitationId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");

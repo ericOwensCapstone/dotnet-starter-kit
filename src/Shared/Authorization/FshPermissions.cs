@@ -28,6 +28,12 @@ public static class FshPermissions
         new("View RoleClaims", FshActions.View, FshResources.RoleClaims),
         new("Update RoleClaims", FshActions.Update, FshResources.RoleClaims),
         
+        //user invitations  
+        new("View UserInvitations", FshActions.View, FshResources.UserInvitations),
+        new("Create UserInvitations", FshActions.Create, FshResources.UserInvitations),
+        new("Update UserInvitations", FshActions.Update, FshResources.UserInvitations),
+        new("Delete UserInvitations", FshActions.Delete, FshResources.UserInvitations),
+        
         //products
         new("View Products", FshActions.View, FshResources.Products, IsBasic: true),
         new("Search Products", FshActions.Search, FshResources.Products, IsBasic: true),

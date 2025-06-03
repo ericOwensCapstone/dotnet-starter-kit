@@ -23,6 +23,7 @@ public partial class NavMenu
     private bool _canViewTenants;
     private bool _canViewAuditTrails;
     private bool _canViewRations;
+    private bool _canViewUserInvitations;
     // Start MemberPage;
     private bool _canViewMemberPages;
     // End MemberPage;
@@ -43,7 +44,7 @@ public partial class NavMenu
     // End HarvestContract;
     //TODO ADD CAN VIEWS
 
-    private bool CanViewAdministrationGroup => _canViewUsers || _canViewRoles || _canViewTenants;
+    private bool CanViewAdministrationGroup => _canViewUsers || _canViewRoles || _canViewTenants || _canViewUserInvitations;
 
     
     protected override async Task OnParametersSetAsync()
@@ -59,6 +60,7 @@ public partial class NavMenu
         _canViewTenants = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Tenants);
         _canViewAuditTrails = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.AuditTrails);
         _canViewRations = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.Rations);
+        _canViewUserInvitations = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.UserInvitations);
  
         // Start MemberPage;
         _canViewMemberPages = await AuthService.HasPermissionAsync(user, FshActions.View, FshResources.MemberPages);

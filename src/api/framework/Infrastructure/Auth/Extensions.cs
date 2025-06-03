@@ -8,6 +8,7 @@ using FSH.Framework.Infrastructure.Auth.AzureB2C;
 using FSH.Framework.Infrastructure.Auth.Jwt;
 using FSH.Framework.Infrastructure.Auth.Policy;
 using FSH.Framework.Infrastructure.Identity.Tokens;
+using FSH.Starter.Shared.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -113,13 +114,22 @@ internal static class Extensions
                     OnTokenValidated = async context =>
                     {
                         Console.WriteLine("B2C Token validated successfully");
+                        Console.WriteLine($"Original claims count: {context.Principal?.Claims.Count() ?? 0}");
+                        
                         var userMappingService = context.HttpContext.RequestServices.GetRequiredService<IB2CUserMappingService>();
                         var user = await userMappingService.GetOrCreateUserFromB2CClaimsAsync(context.Principal!);
                         var claims = await userMappingService.GetUserClaimsAsync(user);
                         
+                        Console.WriteLine($"Claims after user mapping: {claims.Count}");
+                        foreach (var claim in claims.Where(c => c.Type == FshClaims.Permission))
+                        {
+                            Console.WriteLine($"Permission claim: {claim.Value}");
+                        }
+                        
                         var identity = new System.Security.Claims.ClaimsIdentity(claims, "AzureADB2C");
                         context.Principal = new System.Security.Claims.ClaimsPrincipal(identity);
                         Console.WriteLine($"B2C User mapped successfully: {user.Email}");
+                        Console.WriteLine($"Final principal claims count: {context.Principal.Claims.Count()}");
                     }
                 };
             });

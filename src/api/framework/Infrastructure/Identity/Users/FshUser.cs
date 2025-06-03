@@ -11,4 +11,5 @@ public class FshUser : IdentityUser
     public DateTime RefreshTokenExpiryTime { get; set; }
 
     public string? ObjectId { get; set; }
+    public Guid? InvitationId { get; set; } // Link to the invitation that created this user
 }

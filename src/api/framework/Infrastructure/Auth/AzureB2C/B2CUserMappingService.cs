@@ -3,8 +3,10 @@ using Finbuckle.MultiTenant;
 using Finbuckle.MultiTenant.Abstractions;
 using FSH.Framework.Core.Auth;
 using FSH.Framework.Core.Exceptions;
+using FSH.Framework.Core.Identity.Invitations;
 using FSH.Framework.Core.Identity.Users.Abstractions;
 using FSH.Framework.Core.Persistence;
+using FSH.Framework.Infrastructure.Graph.Services;
 using FSH.Framework.Infrastructure.Identity.Persistence;
 using FSH.Framework.Infrastructure.Identity.Roles;
 using FSH.Framework.Infrastructure.Identity.Users;
@@ -24,17 +26,26 @@ public class B2CUserMappingService : IB2CUserMappingService
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<B2CUserMappingService> _logger;
     private readonly AzureAdB2COptions _b2cOptions;
+    private readonly IInvitationService _invitationService;
+    private readonly UserManager<FshUser> _userManager;
+    private readonly IGraphService _graphService;
 
     public B2CUserMappingService(
         AuthenticationDbContext authDbContext,
         IServiceProvider serviceProvider,
         ILogger<B2CUserMappingService> logger,
-        IOptions<AuthenticationOptions> authOptions)
+        IOptions<AuthenticationOptions> authOptions,
+        IInvitationService invitationService,
+        UserManager<FshUser> userManager,
+        IGraphService graphService)
     {
         _authDbContext = authDbContext;
         _serviceProvider = serviceProvider;
         _logger = logger;
         _b2cOptions = authOptions.Value.AzureAdB2C ?? new AzureAdB2COptions();
+        _invitationService = invitationService;
+        _userManager = userManager;
+        _graphService = graphService;
     }
 
     public async Task<FshUser> GetOrCreateUserFromB2CClaimsAsync(ClaimsPrincipal principal, CancellationToken cancellationToken = default)
@@ -60,22 +71,18 @@ public class B2CUserMappingService : IB2CUserMappingService
         var givenName = principal.FindFirst("given_name")?.Value ?? principal.FindFirst(ClaimTypes.GivenName)?.Value;
         var surname = principal.FindFirst("family_name")?.Value ?? principal.FindFirst(ClaimTypes.Surname)?.Value;
 
-        _logger.LogInformation("Extracted claims - ObjectId: {ObjectId}, Email: {Email}, DisplayName: {DisplayName}", 
-            objectId ?? "NULL", email ?? "NULL", displayName ?? "NULL");
+        // Extract custom attributes if available
+        var tenantId = principal.FindFirst("extension_TenantId")?.Value;
+        var userStatus = principal.FindFirst("extension_UserStatus")?.Value;
+
+        _logger.LogInformation("Extracted claims - ObjectId: {ObjectId}, Email: {Email}, DisplayName: {DisplayName}, TenantId: {TenantId}, UserStatus: {UserStatus}", 
+            objectId ?? "NULL", email ?? "NULL", displayName ?? "NULL", tenantId ?? "NULL", userStatus ?? "NULL");
 
         if (string.IsNullOrEmpty(objectId) || string.IsNullOrEmpty(email))
         {
             _logger.LogError("Missing required B2C claims - ObjectId: {ObjectId}, Email: {Email}", 
                 objectId ?? "NULL", email ?? "NULL");
             throw new UnauthorizedException("Invalid B2C token - missing required claims");
-        }
-
-        // Check if this B2C user should be mapped to a specific local user
-        string mappedEmail = email;
-        if (_b2cOptions.UserMappings.TryGetValue(email, out var targetEmail))
-        {
-            mappedEmail = targetEmail;
-            _logger.LogInformation("Mapping B2C user {B2CEmail} to local user {LocalEmail}", email, targetEmail);
         }
 
         // First try to find user by B2C Object ID
@@ -97,21 +104,20 @@ public class B2CUserMappingService : IB2CUserMappingService
             }
         }
 
+        // If user not found by ObjectId, try by email
         if (user == null)
         {
             try
             {
-                // Try to find by mapped email first
-                _logger.LogInformation("Searching for user by mapped email: {MappedEmail}", mappedEmail);
+                _logger.LogInformation("Searching for user by email: {Email}", email);
                 user = await _authDbContext.Users
-                    .FirstOrDefaultAsync(u => u.Email == mappedEmail, cancellationToken);
+                    .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
                 
-                _logger.LogInformation("User found by mapped email: {Found}", user != null);
+                _logger.LogInformation("User found by email: {Found}", user != null);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error searching for user by email: {MappedEmail}", mappedEmail);
-                // Continue to user creation if email search fails
+                _logger.LogError(ex, "Error searching for user by email: {Email}", email);
             }
 
             if (user != null)
@@ -130,16 +136,116 @@ public class B2CUserMappingService : IB2CUserMappingService
                     // Continue anyway - user is found, linking can be done later
                 }
             }
+        }
+
+        // If user still not found, check if they have a valid invitation
+        if (user == null)
+        {
+            _logger.LogInformation("User not found in system. Checking for valid invitations for email: {Email}", email);
+            
+            // Look for invitations for this email
+            var invitations = await _invitationService.GetInvitationsByUserAsync(email, cancellationToken);
+            var validInvitation = invitations
+                .Where(i => i.Status == InvitationStatus.Sent && !i.IsExpired)
+                .OrderByDescending(i => i.Created)
+                .FirstOrDefault();
+
+            if (validInvitation != null)
+            {
+                _logger.LogInformation("Found valid invitation {InvitationId} for {Email} in tenant {TenantId}. Auto-provisioning user.", 
+                    validInvitation.Id, email, validInvitation.TenantId);
+
+                try
+                {
+                    // Create new user from invitation
+                    user = new FshUser
+                    {
+                        UserName = email,
+                        Email = email,
+                        FirstName = givenName ?? validInvitation.FirstName,
+                        LastName = surname ?? validInvitation.LastName,
+                        EmailConfirmed = true, // B2C handles email verification
+                        ObjectId = objectId,
+                        IsActive = true
+                    };
+
+                    // Create user with UserManager to handle all the setup
+                    var result = await _userManager.CreateAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                        _logger.LogError("Failed to create user from invitation: {Errors}", errors);
+                        throw new CustomException($"Failed to create user account: {errors}");
+                    }
+
+                    // Assign the user to the tenant from the invitation
+                    await AssignUserToTenantAsync(user.Id, validInvitation.TenantId, cancellationToken);
+
+                    // Assign role if specified in invitation
+                    if (!string.IsNullOrEmpty(validInvitation.Role))
+                    {
+                        await _userManager.AddToRoleAsync(user, validInvitation.Role);
+                        _logger.LogInformation("Assigned role {Role} to user {UserId}", validInvitation.Role, user.Id);
+                    }
+
+                    // Mark invitation as accepted
+                    await _invitationService.AcceptInvitationAsync(validInvitation.InvitationToken, user.Id, cancellationToken);
+
+                    // Update B2C user status to Active
+                    try
+                    {
+                        await _graphService.UpdateUserCustomAttributesAsync(
+                            objectId,
+                            new Dictionary<string, object>
+                            {
+                                ["UserStatus"] = "Active",
+                                ["TenantId"] = validInvitation.TenantId
+                            },
+                            cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to update B2C user attributes for {ObjectId}", objectId);
+                    }
+
+                    _logger.LogInformation("Successfully auto-provisioned user {Email} from invitation {InvitationId}", 
+                        email, validInvitation.Id);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error auto-provisioning user from invitation");
+                    throw new CustomException($"Failed to provision user account from invitation: {ex.Message}");
+                }
+            }
             else
             {
-                // No existing user found - fail authentication
-                _logger.LogWarning("No existing user found for B2C user. B2C Email: {B2CEmail}, Mapped Email: {MappedEmail}, ObjectId: {ObjectId}", 
-                    email, mappedEmail, objectId);
-                throw new UnauthorizedException($"No user account found. Please contact your administrator to create an account for {email}.");
+                // No valid invitation found - check for legacy user mappings
+                if (_b2cOptions.UserMappings.TryGetValue(email, out var targetEmail))
+                {
+                    _logger.LogInformation("Checking legacy mapping: B2C user {B2CEmail} maps to {TargetEmail}", email, targetEmail);
+                    user = await _authDbContext.Users
+                        .FirstOrDefaultAsync(u => u.Email == targetEmail, cancellationToken);
+                    
+                    if (user != null)
+                    {
+                        // Link the user to B2C
+                        user.ObjectId = objectId;
+                        _authDbContext.Users.Update(user);
+                        await _authDbContext.SaveChangesAsync(cancellationToken);
+                        _logger.LogInformation("Linked legacy mapped user {Email} to B2C ObjectId {ObjectId}", user.Email, objectId);
+                    }
+                }
+                
+                if (user == null)
+                {
+                    _logger.LogWarning("No valid invitation or existing user found for B2C user {Email}, ObjectId: {ObjectId}", 
+                        email, objectId);
+                    throw new UnauthorizedException($"No user account found for {email}. Please contact your administrator to request access.");
+                }
             }
         }
 
-        // Store the tenant info on the user object for later use
+        // Validate tenant assignment
         var userTenantId = await GetUserTenantIdAsync(user.Id, cancellationToken);
         
         if (string.IsNullOrEmpty(userTenantId))
@@ -148,7 +254,7 @@ public class B2CUserMappingService : IB2CUserMappingService
             throw new UnauthorizedException("User has no tenant assignment.");
         }
 
-        // Load the tenant info and store it on the user object temporarily
+        // Load the tenant info
         var tenantInfo = await _authDbContext.Tenants
             .FirstOrDefaultAsync(t => t.Id == userTenantId, cancellationToken);
             
@@ -158,10 +264,51 @@ public class B2CUserMappingService : IB2CUserMappingService
             throw new UnauthorizedException("User's tenant not found.");
         }
 
-        _logger.LogInformation("Found tenant {TenantId} for user {UserId}", tenantInfo.Id, user.Id);
+        if (!tenantInfo.IsActive)
+        {
+            _logger.LogWarning("User {UserId} attempted to access inactive tenant {TenantId}", user.Id, tenantInfo.Id);
+            throw new UnauthorizedException("Your organization's account is not active. Please contact support.");
+        }
 
-        // Return the user - we'll pass tenant info separately to GetUserClaimsAsync
+        _logger.LogInformation("Found active tenant {TenantId} for user {UserId}", tenantInfo.Id, user.Id);
+
         return user;
+    }
+    
+    private async Task AssignUserToTenantAsync(string userId, string tenantId, CancellationToken cancellationToken)
+    {
+        // Update user's TenantId using raw SQL to avoid multi-tenant context issues
+        using var command = _authDbContext.Database.GetDbConnection().CreateCommand();
+        command.CommandText = "UPDATE identity.\"Users\" SET \"TenantId\" = @tenantId WHERE \"Id\" = @userId";
+        
+        var tenantParam = command.CreateParameter();
+        tenantParam.ParameterName = "@tenantId";
+        tenantParam.Value = tenantId;
+        command.Parameters.Add(tenantParam);
+        
+        var userParam = command.CreateParameter();
+        userParam.ParameterName = "@userId";
+        userParam.Value = userId;
+        command.Parameters.Add(userParam);
+        
+        await _authDbContext.Database.OpenConnectionAsync(cancellationToken);
+        
+        try
+        {
+            var rowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
+            if (rowsAffected != 1)
+            {
+                _logger.LogError("Failed to assign user {UserId} to tenant {TenantId}. Rows affected: {RowsAffected}", 
+                    userId, tenantId, rowsAffected);
+                throw new CustomException("Failed to assign user to tenant.");
+            }
+            
+            _logger.LogInformation("Successfully assigned user {UserId} to tenant {TenantId}", userId, tenantId);
+        }
+        finally
+        {
+            await _authDbContext.Database.CloseConnectionAsync();
+        }
     }
     
     private async Task<string?> GetUserTenantIdAsync(string userId, CancellationToken cancellationToken)

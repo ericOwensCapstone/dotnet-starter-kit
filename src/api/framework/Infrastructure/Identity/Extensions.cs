@@ -1,11 +1,13 @@
 ﻿using FSH.Framework.Core.Audit;
 using FSH.Framework.Core.Auth.ApiKeys;
+using FSH.Framework.Core.Identity.Invitations;
 using FSH.Framework.Core.Identity.Roles;
 using FSH.Framework.Core.Identity.Tokens;
 using FSH.Framework.Core.Identity.Users.Abstractions;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Auth;
 using FSH.Framework.Infrastructure.Identity.Audit;
+using FSH.Framework.Infrastructure.Identity.Invitations;
 using FSH.Framework.Infrastructure.Identity.Persistence;
 using FSH.Framework.Infrastructure.Identity.Roles;
 using FSH.Framework.Infrastructure.Identity.Roles.Endpoints;
@@ -14,6 +16,7 @@ using FSH.Framework.Infrastructure.Identity.Tokens.Endpoints;
 using FSH.Framework.Infrastructure.Identity.Users;
 using FSH.Framework.Infrastructure.Identity.Users.Endpoints;
 using FSH.Framework.Infrastructure.Identity.Users.Services;
+using FSH.Framework.Infrastructure.Identity.Invitations.Endpoints;
 using FSH.Framework.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +26,7 @@ using Microsoft.Extensions.DependencyInjection;
 using IdentityConstants = FSH.Starter.Shared.Authorization.IdentityConstants;
 
 namespace FSH.Framework.Infrastructure.Identity;
-internal static class Extensions
+public static class Extensions
 {
     internal static IServiceCollection ConfigureIdentity(this IServiceCollection services)
     {
@@ -44,6 +47,12 @@ internal static class Extensions
         // Register repository for ApiKey
         services.AddKeyedScoped<IRepository<ApiKey>, IdentityRepository<ApiKey>>("identity:apikeys");
         services.AddKeyedScoped<IReadRepository<ApiKey>, IdentityRepository<ApiKey>>("identity:apikeys");
+        
+        // Register repository for UserInvitations
+        services.AddScoped<IInvitationRepository, InvitationRepository>();
+        
+        // Register invitation service
+        services.AddScoped<IInvitationService, InvitationService>();
         services.AddIdentity<FshUser, FshRole>(options =>
            {
                options.Password.RequiredLength = IdentityConstants.PasswordLength;
@@ -68,7 +77,14 @@ internal static class Extensions
 
         var roles = app.MapGroup("api/roles").WithTags("roles");
         roles.MapRoleEndpoints();
+        
+        app.MapInvitationEndpoints();
 
         return app;
+    }
+    
+    public static void ScheduleIdentityJobs(this IServiceProvider serviceProvider)
+    {
+        serviceProvider.ScheduleInvitationJobs();
     }
 }

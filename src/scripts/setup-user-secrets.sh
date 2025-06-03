@@ -24,8 +24,12 @@ dotnet user-secrets set "HangfireOptions:Password" "YOUR_HANGFIRE_PASSWORD"
 # Mail service password
 dotnet user-secrets set "MailOptions:Password" "YOUR_MAIL_PASSWORD"
 
-# Graph API Client Secret
+# Graph API Settings
+dotnet user-secrets set "GraphApi:TenantId" "YOUR_B2C_TENANT_ID"
+dotnet user-secrets set "GraphApi:ClientId" "YOUR_GRAPH_API_CLIENT_ID"
 dotnet user-secrets set "GraphApi:ClientSecret" "YOUR_GRAPH_API_CLIENT_SECRET"
+dotnet user-secrets set "GraphApi:B2CExtensionAppClientId" "YOUR_EXTENSION_APP_ID_WITHOUT_HYPHENS"
+dotnet user-secrets set "GraphApi:B2CDomain" "yourb2ctenant.onmicrosoft.com"
 
 echo -e "\033[32mUser secrets have been configured!\033[0m"
 echo ""

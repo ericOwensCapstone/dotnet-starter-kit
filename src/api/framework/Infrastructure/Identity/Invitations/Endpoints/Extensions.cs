@@ -9,6 +9,7 @@ public static class Extensions
     {
         var apiGroup = builder.MapGroup("api/invitations");
 
+        apiGroup.MapSearchInvitationsEndpoint();
         apiGroup.MapCreateInvitationEndpoint();
         apiGroup.MapGetInvitationEndpoint();
         apiGroup.MapGetInvitationsByTenantEndpoint();

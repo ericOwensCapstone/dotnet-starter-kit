@@ -3,15 +3,19 @@ using FSH.Framework.Core.Domain.Contracts;
 using FSH.Framework.Core.Exceptions;
 using FSH.Framework.Core.Identity.Invitations;
 using FSH.Framework.Core.Identity.Invitations.Features;
+using FSH.Framework.Core.Identity.Invitations.Features.SearchInvitations;
+using FSH.Framework.Core.Identity.Invitations.Specifications;
 using FSH.Framework.Core.Identity.Users.Abstractions;
 using FSH.Framework.Core.Mail;
 using FSH.Framework.Core.Origin;
+using FSH.Framework.Core.Paging;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Core.Tenant.Abstractions;
 using FSH.Framework.Infrastructure.Graph.Models;
 using FSH.Framework.Infrastructure.Graph.Services;
 using FSH.Framework.Infrastructure.Identity.Users;
 using FSH.Framework.Infrastructure.Tenant;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -218,6 +222,16 @@ public class InvitationService : IInvitationService
     public async Task<UserInvitation?> GetInvitationByTokenAsync(string token, CancellationToken cancellationToken = default)
     {
         return await _invitationRepository.GetByTokenAsync(token, cancellationToken);
+    }
+
+    public async Task<PagedList<InvitationDto>> SearchInvitationsAsync(SearchInvitationsQuery request, CancellationToken cancellationToken = default)
+    {
+        var spec = new InvitationsByPaginationFilterSpec(request);
+        
+        var items = await _invitationRepository.ListAsync(spec, cancellationToken);
+        var totalCount = await _invitationRepository.CountAsync(spec, cancellationToken);
+        
+        return new PagedList<InvitationDto>(items, request.PageNumber, request.PageSize, totalCount);
     }
 
     public async Task<List<UserInvitation>> GetPendingInvitationsAsync(string? tenantId = null, CancellationToken cancellationToken = default)

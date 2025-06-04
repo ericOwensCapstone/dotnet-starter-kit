@@ -14,6 +14,7 @@ public class GraphService : IGraphService
 {
     private readonly GraphServiceClient _graphClient;
     private readonly GraphApiOptions _options;
+
     private readonly ILogger<GraphService> _logger;
     private readonly string _extensionPrefix;
 

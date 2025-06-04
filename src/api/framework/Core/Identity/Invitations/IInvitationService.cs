@@ -1,4 +1,6 @@
 using FSH.Framework.Core.Identity.Invitations.Features;
+using FSH.Framework.Core.Identity.Invitations.Features.SearchInvitations;
+using FSH.Framework.Core.Paging;
 
 namespace FSH.Framework.Core.Identity.Invitations;
 
@@ -12,6 +14,7 @@ public interface IInvitationService
     Task<UserInvitation?> GetInvitationByTokenAsync(string token, CancellationToken cancellationToken = default);
     
     // Invitation Queries
+    Task<PagedList<InvitationDto>> SearchInvitationsAsync(SearchInvitationsQuery request, CancellationToken cancellationToken = default);
     Task<List<UserInvitation>> GetPendingInvitationsAsync(string? tenantId = null, CancellationToken cancellationToken = default);
     Task<List<UserInvitation>> GetInvitationsByTenantAsync(string tenantId, CancellationToken cancellationToken = default);
     Task<List<UserInvitation>> GetInvitationsByUserAsync(string userEmail, CancellationToken cancellationToken = default);

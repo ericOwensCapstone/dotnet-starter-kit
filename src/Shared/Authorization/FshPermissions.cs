@@ -30,9 +30,11 @@ public static class FshPermissions
         
         //user invitations  
         new("View UserInvitations", FshActions.View, FshResources.UserInvitations),
+        new("Search UserInvitations", FshActions.Search, FshResources.UserInvitations),
         new("Create UserInvitations", FshActions.Create, FshResources.UserInvitations),
         new("Update UserInvitations", FshActions.Update, FshResources.UserInvitations),
         new("Delete UserInvitations", FshActions.Delete, FshResources.UserInvitations),
+        new("Export UserInvitations", FshActions.Export, FshResources.UserInvitations),
         
         //products
         new("View Products", FshActions.View, FshResources.Products, IsBasic: true),

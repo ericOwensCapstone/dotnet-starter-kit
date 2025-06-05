@@ -116,7 +116,9 @@ public partial class Invitations
 
                 await _client.CreateInvitationAsync(command);
             },
-            hasExtraActionsFunc: () => true
+            hasExtraActionsFunc: () => true,
+            canUpdateEntityFunc: (invitation) => false, // Disable edit for all invitations
+            canDeleteEntityFunc: (invitation) => false  // Disable delete for all invitations
         );
 
         // Note: For autocomplete, we'll load tenants on-demand via SearchTenants method

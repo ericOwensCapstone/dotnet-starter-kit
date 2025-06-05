@@ -1,0 +1,69 @@
+@page "/accept-invitation"
+@layout EmptyLayout
+@using FSH.Starter.Blazor.Infrastructure.Auth
+
+<PageTitle>Accept Invitation</PageTitle>
+
+<MudContainer Class="mud-height-full d-flex justify-center align-center">
+    <MudPaper Elevation="25" Class="pa-8" Style="min-width: 400px;">
+        <div class="text-center mb-6">
+            <MudIcon Icon="Icons.Material.Filled.Email" Color="Color.Primary" Size="Size.Large" Class="mb-4" />
+            <MudText Typo="Typo.h4" Class="mb-2">Accept Invitation</MudText>
+            
+            @if (_isLoading)
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="mb-4" />
+                <MudText Typo="Typo.body1" Color="Color.Secondary">
+                    Validating your invitation...
+                </MudText>
+            }
+            else if (_hasError)
+            {
+                <MudAlert Severity="Severity.Error" Class="mb-4">
+                    @_errorMessage
+                </MudAlert>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="GoToLogin">
+                    Go to Login
+                </MudButton>
+            }
+            else
+            {
+                @if (!string.IsNullOrEmpty(_invitedUserName))
+                {
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        Welcome, <strong>@_invitedUserName</strong>!
+                    </MudText>
+                }
+                @if (!string.IsNullOrEmpty(_invitedUserEmail))
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-3">
+                        @_invitedUserEmail
+                    </MudText>
+                }
+                <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mb-4">
+                    Click the button below to create your account and accept this invitation.
+                </MudText>
+                
+                <MudButton Variant="Variant.Filled" 
+                           Color="Color.Primary" 
+                           FullWidth="true"
+                           Size="Size.Large"
+                           StartIcon="Icons.Material.Filled.PersonAdd"
+                           OnClick="AcceptAndSignUp">
+                    Create Account & Accept Invitation
+                </MudButton>
+                
+                <MudDivider Class="my-4" />
+                
+                <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-2">
+                    Already have an account?
+                </MudText>
+                <MudButton Variant="Variant.Text" 
+                           Color="Color.Primary" 
+                           OnClick="GoToLogin">
+                    Sign In Instead
+                </MudButton>
+            }
+        </div>
+    </MudPaper>
+</MudContainer>

@@ -16,6 +16,7 @@ public static class Extensions
         apiGroup.MapResendInvitationEndpoint();
         apiGroup.MapCancelInvitationEndpoint();
         apiGroup.MapExtendInvitationExpirationEndpoint();
+        apiGroup.MapValidateInvitationTokenEndpoint();
         apiGroup.MapAcceptInvitationEndpoint();
     }
 }

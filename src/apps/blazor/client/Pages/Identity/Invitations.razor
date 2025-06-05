@@ -86,46 +86,36 @@
     </EditFormContent>
     <ExtraActions>
         <MudMenuItem OnClick="@(() => ViewInvitationDetailsAsync(context.Id))">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <MudIcon Icon="Icons.Material.Filled.Visibility" Size="Size.Small" />
-                View Details
-            </div>
+            <MudIcon Icon="Icons.Material.Filled.Visibility" Size="Size.Small" />
+            View Details
         </MudMenuItem>
         
         <MudMenuItem OnClick="@(() => CopyInvitationLinkAsync(context.Id))">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <MudIcon Icon="Icons.Material.Filled.ContentCopy" Size="Size.Small" />
-                Copy Invitation Link
-            </div>
+            <MudIcon Icon="Icons.Material.Filled.ContentCopy" Size="Size.Small" />
+            Copy Invitation Link
         </MudMenuItem>
         
         @if (context.Status == InvitationStatus._0 || context.Status == InvitationStatus._5)
         {
             <MudMenuItem OnClick="@(() => ResendInvitationAsync(context.Id))">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <MudIcon Icon="Icons.Material.Filled.Send" Size="Size.Small" />
-                    Resend Invitation
-                </div>
+                <MudIcon Icon="Icons.Material.Filled.Send" Size="Size.Small" />
+                Resend Invitation
             </MudMenuItem>
         }
         
         @if (context.Status != InvitationStatus._2 && context.Status != InvitationStatus._4 && context.Status != InvitationStatus._3)
         {
             <MudMenuItem OnClick="@(() => ExtendInvitationAsync(context.Id))">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <MudIcon Icon="Icons.Material.Filled.Schedule" Size="Size.Small" />
-                    Extend Expiration
-                </div>
+                <MudIcon Icon="Icons.Material.Filled.Schedule" Size="Size.Small" />
+                Extend Expiration
             </MudMenuItem>
         }
         
         @if (context.Status != InvitationStatus._2 && context.Status != InvitationStatus._4)
         {
             <MudMenuItem Style="color:red!important" OnClick="@(() => CancelInvitationAsync(context.Id))">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <MudIcon Icon="Icons.Material.Filled.Cancel" Size="Size.Small" />
-                    Cancel Invitation
-                </div>
+                <MudIcon Icon="Icons.Material.Filled.Cancel" Size="Size.Small" />
+                Cancel Invitation
             </MudMenuItem>
         }
     </ExtraActions>

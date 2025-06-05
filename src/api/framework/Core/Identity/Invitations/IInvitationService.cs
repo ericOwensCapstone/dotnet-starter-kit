@@ -1,4 +1,5 @@
 using FSH.Framework.Core.Identity.Invitations.Features;
+using FSH.Framework.Core.Identity.Invitations.Features.ExtendInvitationExpiration;
 using FSH.Framework.Core.Identity.Invitations.Features.SearchInvitations;
 using FSH.Framework.Core.Paging;
 
@@ -10,6 +11,7 @@ public interface IInvitationService
     Task<CreateInvitationResponse> CreateInvitationAsync(CreateInvitationRequest request, CancellationToken cancellationToken = default);
     Task<bool> ResendInvitationAsync(Guid invitationId, CancellationToken cancellationToken = default);
     Task<bool> CancelInvitationAsync(Guid invitationId, CancellationToken cancellationToken = default);
+    Task<ExtendInvitationExpirationResponse> ExtendInvitationExpirationAsync(ExtendInvitationExpirationRequest request, CancellationToken cancellationToken = default);
     Task<UserInvitation?> GetInvitationAsync(Guid invitationId, CancellationToken cancellationToken = default);
     Task<UserInvitation?> GetInvitationByTokenAsync(string token, CancellationToken cancellationToken = default);
     

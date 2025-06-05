@@ -1,10 +1,13 @@
 using FSH.Starter.Blazor.Client.Components;
+using FSH.Starter.Blazor.Client.Components.Dialogs;
 using FSH.Starter.Blazor.Client.Components.EntityTable;
 using FSH.Starter.Blazor.Infrastructure.Api;
 using FSH.Starter.Shared.Authorization;
 using Mapster;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.JSInterop;
+using MudBlazor;
 
 namespace FSH.Starter.Blazor.Client.Pages.Identity;
 
@@ -13,6 +16,9 @@ public partial class Invitations
 {
     [Inject]
     protected IApiClient _client { get; set; } = default!;
+    
+    [Inject]
+    protected IJSRuntime JSRuntime { get; set; } = default!;
 
     protected EntityServerTableContext<InvitationDto, Guid, CreateInvitationRequest> Context { get; set; } = default!;
 
@@ -222,6 +228,80 @@ public partial class Invitations
         if (result)
         {
             await EntityTable.ReloadDataAsync();
+        }
+    }
+
+    private async Task ViewInvitationDetailsAsync(Guid id)
+    {
+        try
+        {
+            var invitation = await _client.GetInvitationAsync(id);
+            var parameters = new DialogParameters
+            {
+                { nameof(InvitationDetailsDialog.Invitation), invitation }
+            };
+            
+            var options = new DialogOptions
+            {
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true,
+                CloseButton = true
+            };
+
+            await DialogService.ShowAsync<InvitationDetailsDialog>("Invitation Details", parameters, options);
+        }
+        catch (Exception ex)
+        {
+            Toast.Add($"Failed to load invitation details: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private async Task CopyInvitationLinkAsync(Guid id)
+    {
+        try
+        {
+            var invitation = await _client.GetInvitationAsync(id);
+            var invitationUrl = $"{Navigation.BaseUri}accept-invitation?token={invitation.InvitationToken}";
+            
+            await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", invitationUrl);
+            Toast.Add("Invitation link copied to clipboard!", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            Toast.Add($"Failed to copy invitation link: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private async Task ExtendInvitationAsync(Guid id)
+    {
+        try
+        {
+            var invitation = await _client.GetInvitationAsync(id);
+            var parameters = new DialogParameters
+            {
+                { nameof(ExtendInvitationDialog.InvitationId), id },
+                { nameof(ExtendInvitationDialog.CurrentExpiration), invitation.ExpiresAt }
+            };
+            
+            var options = new DialogOptions
+            {
+                MaxWidth = MaxWidth.Small,
+                FullWidth = true,
+                CloseButton = true
+            };
+
+            var dialog = await DialogService.ShowAsync<ExtendInvitationDialog>("Extend Invitation", parameters, options);
+            var result = await dialog.Result;
+            
+            if (!result.Canceled && result.Data is bool success && success)
+            {
+                await EntityTable.ReloadDataAsync();
+                Toast.Add("Invitation expiration extended successfully!", Severity.Success);
+            }
+        }
+        catch (Exception ex)
+        {
+            Toast.Add($"Failed to extend invitation: {ex.Message}", Severity.Error);
         }
     }
     

@@ -4,6 +4,7 @@ using FSH.Framework.Core.Domain.Contracts;
 using FSH.Framework.Core.Exceptions;
 using FSH.Framework.Core.Identity.Invitations;
 using FSH.Framework.Core.Identity.Invitations.Features;
+using FSH.Framework.Core.Identity.Invitations.Features.ExtendInvitationExpiration;
 using FSH.Framework.Core.Identity.Invitations.Features.SearchInvitations;
 using FSH.Framework.Core.Identity.Invitations.Specifications;
 using FSH.Framework.Core.Identity.Users.Abstractions;
@@ -220,6 +221,53 @@ public class InvitationService : IInvitationService
         }
 
         return true;
+    }
+
+    public async Task<ExtendInvitationExpirationResponse> ExtendInvitationExpirationAsync(ExtendInvitationExpirationRequest request, CancellationToken cancellationToken = default)
+    {
+        var invitation = await _invitationRepository.GetByIdAsync(request.InvitationId, cancellationToken);
+        if (invitation == null)
+        {
+            throw new NotFoundException($"Invitation {request.InvitationId} not found.");
+        }
+
+        var previousExpiration = invitation.ExpiresAt;
+
+        try
+        {
+            invitation.ExtendExpiration(request.NewExpirationDate);
+            await _invitationRepository.UpdateAsync(invitation, cancellationToken);
+            await _invitationRepository.SaveChangesAsync(cancellationToken);
+
+            // If invitation was expired and had a B2C user, re-enable them
+            if (invitation.Status == InvitationStatus.Sent && !string.IsNullOrEmpty(invitation.B2CUserId))
+            {
+                try
+                {
+                    await _graphService.EnableUserAsync(invitation.B2CUserId, cancellationToken);
+                    _logger.LogInformation("Re-enabled B2C user {B2CUserId} for extended invitation {InvitationId}", 
+                        invitation.B2CUserId, request.InvitationId);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to re-enable B2C user {B2CUserId} for extended invitation {InvitationId}", 
+                        invitation.B2CUserId, request.InvitationId);
+                }
+            }
+
+            return new ExtendInvitationExpirationResponse
+            {
+                InvitationId = request.InvitationId,
+                NewExpirationDate = request.NewExpirationDate,
+                PreviousExpirationDate = previousExpiration,
+                Success = true
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to extend invitation {InvitationId} expiration", request.InvitationId);
+            throw;
+        }
     }
 
     public async Task<UserInvitation?> GetInvitationAsync(Guid invitationId, CancellationToken cancellationToken = default)

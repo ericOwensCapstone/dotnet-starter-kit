@@ -117,6 +117,31 @@ public class UserInvitation : AuditableEntity, IAggregateRoot
         LastModified = DateTimeOffset.UtcNow;
     }
 
+    public void ExtendExpiration(DateTime newExpirationDate)
+    {
+        if (Status == InvitationStatus.Accepted)
+            throw new InvalidOperationException("Cannot extend expiration of an accepted invitation");
+
+        if (Status == InvitationStatus.Cancelled)
+            throw new InvalidOperationException("Cannot extend expiration of a cancelled invitation");
+
+        if (newExpirationDate <= DateTime.UtcNow)
+            throw new ArgumentException("New expiration date must be in the future");
+
+        if (newExpirationDate <= ExpiresAt)
+            throw new ArgumentException("New expiration date must be later than the current expiration");
+
+        ExpiresAt = newExpirationDate;
+        
+        // If invitation was expired, change status back to Sent (if it was previously sent)
+        if (Status == InvitationStatus.Expired && !string.IsNullOrEmpty(B2CUserId))
+        {
+            Status = InvitationStatus.Sent;
+        }
+        
+        LastModified = DateTimeOffset.UtcNow;
+    }
+
     public bool IsExpired => DateTime.UtcNow > ExpiresAt;
     public bool CanBeRetried => Status == InvitationStatus.Failed && RetryCount < 3;
     public bool IsActive => Status == InvitationStatus.Sent && !IsExpired;

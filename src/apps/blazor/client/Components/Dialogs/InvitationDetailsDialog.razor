@@ -1,0 +1,108 @@
+@using FSH.Starter.Blazor.Infrastructure.Api
+
+<MudDialog>
+    <DialogContent>
+        <MudContainer Style="max-width: none;">
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6">Basic Information</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudStack Spacing="3">
+                                <div>
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Email</MudText>
+                                    <MudText Typo="Typo.body1">@Invitation.Email</MudText>
+                                </div>
+                                <div>
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Display Name</MudText>
+                                    <MudText Typo="Typo.body1">@Invitation.DisplayName</MudText>
+                                </div>
+                                <div>
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Target Tenant</MudText>
+                                    <MudText Typo="Typo.body1">@Invitation.TargetTenantId</MudText>
+                                </div>
+                                <div>
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Role</MudText>
+                                    <MudText Typo="Typo.body1">@(Invitation.Role ?? "N/A")</MudText>
+                                </div>
+                            </MudStack>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+                
+                <MudItem xs="12" md="6">
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6">Status & Timing</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudStack Spacing="3">
+                                <div>
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Status</MudText>
+                                    <MudChip T="string" Color="GetStatusColor()" Size="Size.Small">
+                                        @GetStatusDisplayName()
+                                    </MudChip>
+                                </div>
+                                <div>
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Created</MudText>
+                                    <MudText Typo="Typo.body1">@Invitation.Created.ToString("MMM dd, yyyy HH:mm")</MudText>
+                                </div>
+                                <div>
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Expires</MudText>
+                                    <MudText Typo="Typo.body1" Style="@GetExpirationStyle()">
+                                        @Invitation.ExpiresAt.ToString("MMM dd, yyyy HH:mm")
+                                        @if (IsExpired())
+                                        {
+                                            <MudText Typo="Typo.caption" Class="mud-error-text">(Expired)</MudText>
+                                        }
+                                        else
+                                        {
+                                            <MudText Typo="Typo.caption" Class="mud-text-secondary">(@GetTimeRemaining())</MudText>
+                                        }
+                                    </MudText>
+                                </div>
+                            </MudStack>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+
+                <MudItem xs="12">
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6">System Information</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudGrid>
+                                <MudItem xs="12" md="6">
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Invitation ID</MudText>
+                                    <MudText Typo="Typo.body2" Style="font-family: monospace;">@Invitation.Id</MudText>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Owner Tenant</MudText>
+                                    <MudText Typo="Typo.body2">@(Invitation.TenantId ?? "N/A")</MudText>
+                                </MudItem>
+                                <MudItem xs="12">
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Invitation Token</MudText>
+                                    <MudText Typo="Typo.body2" Style="font-family: monospace; word-break: break-all;">
+                                        @GetMaskedToken()
+                                    </MudText>
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Close">Close</MudButton>
+    </DialogActions>
+</MudDialog>

@@ -1,0 +1,63 @@
+@using FSH.Starter.Blazor.Infrastructure.Api
+
+<MudDialog>
+    <DialogContent>
+        <MudContainer Style="max-width: none;">
+            <MudStack Spacing="4">
+                <MudText Typo="Typo.h6">Extend Invitation Expiration</MudText>
+                
+                <MudAlert Severity="Severity.Info">
+                    <MudText>Current expiration: <strong>@CurrentExpiration.ToString("MMM dd, yyyy HH:mm")</strong></MudText>
+                    @if (IsCurrentlyExpired())
+                    {
+                        <MudText Class="mud-error-text">This invitation has already expired.</MudText>
+                    }
+                </MudAlert>
+
+                <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
+                    <DataAnnotationsValidator />
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudDatePicker 
+                                @bind-Date="_model.NewExpirationDate" 
+                                Label="New Expiration Date"
+                                MinDate="DateTime.Today"
+                                MaxDate="DateTime.Today.AddDays(365)"
+                                For="@(() => _model.NewExpirationDate)"
+                                Placeholder="Select new expiration date"
+                                Editable="true" />
+                        </MudItem>
+                        
+                        <MudItem xs="12">
+                            <MudTimePicker 
+                                @bind-Time="_model.NewExpirationTime" 
+                                Label="New Expiration Time"
+                                For="@(() => _model.NewExpirationTime)"
+                                AmPm="true" />
+                        </MudItem>
+                        
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                                New expiration: <strong>@GetCombinedDateTime().ToString("MMM dd, yyyy HH:mm")</strong>
+                            </MudText>
+                        </MudItem>
+                    </MudGrid>
+                </EditForm>
+            </MudStack>
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit" Disabled="_isProcessing">
+            @if (_isProcessing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                <MudText Class="ms-2">Extending...</MudText>
+            }
+            else
+            {
+                <MudText>Extend</MudText>
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>

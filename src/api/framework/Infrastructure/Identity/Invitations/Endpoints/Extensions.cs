@@ -15,6 +15,7 @@ public static class Extensions
         apiGroup.MapGetInvitationsByTenantEndpoint();
         apiGroup.MapResendInvitationEndpoint();
         apiGroup.MapCancelInvitationEndpoint();
+        apiGroup.MapExtendInvitationExpirationEndpoint();
         apiGroup.MapAcceptInvitationEndpoint();
     }
 }

@@ -5,11 +5,16 @@ namespace FSH.Framework.Core.Identity.Invitations;
 
 public class UserInvitation : AuditableEntity, IAggregateRoot
 {
+    // Ownership properties (for data privacy - who created this invitation)
+    public string? TenantId { get; set; }
+    public Guid? MemberId { get; set; }
+    
+    // Invitation specific properties
     public string Email { get; private set; } = default!;
     public string DisplayName { get; private set; } = default!;
     public string? FirstName { get; private set; }
     public string? LastName { get; private set; }
-    public string TenantId { get; private set; } = default!;
+    public string TargetTenantId { get; private set; } = default!;
     public string InvitedBy { get; private set; } = default!;
     public string? Role { get; private set; }
     public InvitationStatus Status { get; private set; }
@@ -29,7 +34,7 @@ public class UserInvitation : AuditableEntity, IAggregateRoot
     public static UserInvitation Create(
         string email,
         string displayName,
-        string tenantId,
+        string targetTenantId,
         string invitedBy,
         string? firstName = null,
         string? lastName = null,
@@ -43,7 +48,7 @@ public class UserInvitation : AuditableEntity, IAggregateRoot
             DisplayName = displayName,
             FirstName = firstName,
             LastName = lastName,
-            TenantId = tenantId,
+            TargetTenantId = targetTenantId,
             InvitedBy = invitedBy,
             Role = role,
             Status = InvitationStatus.Pending,

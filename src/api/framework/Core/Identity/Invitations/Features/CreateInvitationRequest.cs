@@ -8,7 +8,7 @@ public class CreateInvitationRequest
     public string DisplayName { get; set; } = default!;
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public string TenantId { get; set; } = default!;
+    public string TargetTenantId { get; set; } = default!;
     public string? Role { get; set; }
     public bool SendInvitationEmail { get; set; } = true;
     public string? CustomMessage { get; set; }
@@ -36,7 +36,7 @@ public class CreateInvitationRequestValidator : AbstractValidator<CreateInvitati
             .MaximumLength(50)
             .When(x => !string.IsNullOrEmpty(x.LastName));
 
-        RuleFor(x => x.TenantId)
+        RuleFor(x => x.TargetTenantId)
             .NotEmpty();
 
         RuleFor(x => x.Role)

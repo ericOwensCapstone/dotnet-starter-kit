@@ -1,6 +1,7 @@
 ﻿using Finbuckle.MultiTenant;
 using Finbuckle.MultiTenant.Abstractions;
 using FSH.Framework.Core.Exceptions;
+using FSH.Framework.Core.Paging;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Core.Tenant.Abstractions;
 using FSH.Framework.Core.Tenant.Dtos;
@@ -100,6 +101,37 @@ public sealed class TenantService : ITenantService
     {
         var tenants = (await _tenantStore.GetAllAsync().ConfigureAwait(false)).Adapt<List<TenantDetail>>();
         return tenants;
+    }
+
+    public async Task<PagedList<TenantDetail>> SearchAsync(string? searchTerm = null, int page = 1, int size = 10, string orderBy = "name")
+    {
+        var allTenants = (await _tenantStore.GetAllAsync().ConfigureAwait(false)).Adapt<List<TenantDetail>>();
+        
+        // Filter by search term if provided
+        var filtered = allTenants.AsEnumerable();
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            filtered = allTenants.Where(t => 
+                t.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                t.Id.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+        }
+
+        // Apply ordering
+        filtered = orderBy.ToLowerInvariant() switch
+        {
+            "name" => filtered.OrderBy(t => t.Name),
+            "id" => filtered.OrderBy(t => t.Id),
+            _ => filtered.OrderBy(t => t.Name)
+        };
+
+        // Apply pagination
+        var totalCount = filtered.Count();
+        var items = filtered
+            .Skip((page - 1) * size)
+            .Take(size)
+            .ToList();
+
+        return new PagedList<TenantDetail>(items, page, size, totalCount);
     }
 
     public async Task<TenantDetail> GetByIdAsync(string id) =>

@@ -7,7 +7,8 @@ public class InvitationDto
     public string? DisplayName { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public string TenantId { get; set; } = default!;
+    public string? TenantId { get; set; }
+    public string TargetTenantId { get; set; } = default!;
     public string? InvitedBy { get; set; }
     public string? Role { get; set; }
     public InvitationStatus Status { get; set; }

@@ -152,8 +152,8 @@ public class B2CUserMappingService : IB2CUserMappingService
 
             if (validInvitation != null)
             {
-                _logger.LogInformation("Found valid invitation {InvitationId} for {Email} in tenant {TenantId}. Auto-provisioning user.", 
-                    validInvitation.Id, email, validInvitation.TenantId);
+                _logger.LogInformation("Found valid invitation {InvitationId} for {Email} targeting tenant {TargetTenantId}. Auto-provisioning user.", 
+                    validInvitation.Id, email, validInvitation.TargetTenantId);
 
                 try
                 {
@@ -178,8 +178,8 @@ public class B2CUserMappingService : IB2CUserMappingService
                         throw new CustomException($"Failed to create user account: {errors}");
                     }
 
-                    // Assign the user to the tenant from the invitation
-                    await AssignUserToTenantAsync(user.Id, validInvitation.TenantId, cancellationToken);
+                    // Assign the user to the target tenant from the invitation
+                    await AssignUserToTenantAsync(user.Id, validInvitation.TargetTenantId, cancellationToken);
 
                     // Assign role if specified in invitation
                     if (!string.IsNullOrEmpty(validInvitation.Role))
@@ -199,7 +199,7 @@ public class B2CUserMappingService : IB2CUserMappingService
                             new Dictionary<string, object>
                             {
                                 ["UserStatus"] = "Active",
-                                ["TenantId"] = validInvitation.TenantId
+                                ["TenantId"] = validInvitation.TargetTenantId
                             },
                             cancellationToken);
                     }

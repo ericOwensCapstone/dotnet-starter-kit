@@ -10,6 +10,7 @@ public static class Extensions
         var tenantGroup = app.MapGroup("api/tenants").WithTags("tenants");
         tenantGroup.MapRegisterTenantEndpoint();
         tenantGroup.MapGetTenantsEndpoint();
+        tenantGroup.MapSearchTenantsEndpoint();
         tenantGroup.MapGetTenantByIdEndpoint();
         tenantGroup.MapUpgradeTenantSubscriptionEndpoint();
         tenantGroup.MapActivateTenantEndpoint();

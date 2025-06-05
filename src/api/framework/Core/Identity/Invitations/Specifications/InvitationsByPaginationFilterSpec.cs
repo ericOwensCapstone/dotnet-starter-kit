@@ -9,7 +9,14 @@ public class InvitationsByPaginationFilterSpec : EntitiesByPaginationFilterSpec<
     public InvitationsByPaginationFilterSpec(SearchInvitationsQuery request)
         : base(request)
     {
-        Query.Where(x => string.IsNullOrEmpty(request.TenantId) || x.TenantId == request.TenantId);
+        // Note: Tenant ownership filtering is handled by InvitationRepository.GetFilteredInvitations()
+        // to ensure proper data privacy based on current user context
+        
+        // Filter by target tenant (where user will be invited) if specified
+        if (!string.IsNullOrEmpty(request.TargetTenantId))
+        {
+            Query.Where(x => x.TargetTenantId == request.TargetTenantId);
+        }
         
         if (request.Status.HasValue)
         {
@@ -25,6 +32,7 @@ public class InvitationsByPaginationFilterSpec : EntitiesByPaginationFilterSpec<
             DisplayName = x.DisplayName,
             Status = x.Status,
             TenantId = x.TenantId,
+            TargetTenantId = x.TargetTenantId,
             Role = x.Role,
             ExpiresAt = x.ExpiresAt,
             Created = x.Created.DateTime

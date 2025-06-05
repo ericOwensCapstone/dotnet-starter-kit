@@ -24,6 +24,28 @@ public partial class Invitations
     private string CurrentTenantId { get; set; } = default!;
     private bool _isRootAdmin;
     private List<TenantDetail> _availableTenants = new();
+    private List<RoleDto> _availableRoles = new();
+    private TenantDetail? _selectedTenant;
+
+    private TenantDetail? SelectedTenant
+    {
+        get => _selectedTenant;
+        set
+        {
+            _selectedTenant = value;
+            StateHasChanged();
+        }
+    }
+
+    // Method to get the current TenantId for the form
+    private string GetCurrentTenantId()
+    {
+        if (_isRootAdmin)
+        {
+            return _selectedTenant?.Id ?? string.Empty;
+        }
+        return CurrentTenantId;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -39,8 +61,8 @@ public partial class Invitations
             {
                 new(invitation => invitation.Email, "Email"),
                 new(invitation => invitation.DisplayName, "Display Name"),
-                new(invitation => invitation.Status, "Status", Type: typeof(InvitationStatus)),
-                new(invitation => invitation.TenantId, "Tenant"),
+                new(invitation => GetStatusDisplayName(invitation.Status), "Status"),
+                new(invitation => invitation.TargetTenantId, "Target Tenant"),
                 new(invitation => invitation.Role ?? "N/A", "Role"),
                 new(invitation => invitation.ExpiresAt.ToString("MMM dd, yyyy HH:mm"), "Expires At"),
                 new(invitation => invitation.Created.ToString("MMM dd, yyyy HH:mm"), "Created")
@@ -59,11 +81,19 @@ public partial class Invitations
             },
             getDefaultsFunc: async () =>
             {
-                // Pre-populate TenantId for tenant admin
-                return new CreateInvitationRequest
+                // Pre-populate TargetTenantId for tenant admin
+                var defaults = new CreateInvitationRequest
                 {
-                    TenantId = _isRootAdmin ? null : CurrentTenantId
+                    TargetTenantId = _isRootAdmin ? null : CurrentTenantId
                 };
+                
+                // Clear selected tenant for new invitations
+                if (_isRootAdmin)
+                {
+                    _selectedTenant = null;
+                }
+                
+                return defaults;
             },
             createFunc: async invitation =>
             {
@@ -73,7 +103,7 @@ public partial class Invitations
                     DisplayName = invitation.DisplayName,
                     FirstName = invitation.FirstName,
                     LastName = invitation.LastName,
-                    TenantId = _isRootAdmin ? invitation.TenantId : CurrentTenantId,
+                    TargetTenantId = _isRootAdmin ? (_selectedTenant?.Id ?? invitation.TargetTenantId) : CurrentTenantId,
                     Role = invitation.Role,
                     SendInvitationEmail = true
                 };
@@ -83,18 +113,89 @@ public partial class Invitations
             hasExtraActionsFunc: () => true
         );
 
-        // Load available tenants for root admin after Context initialization
-        if (_isRootAdmin)
+        // Note: For autocomplete, we'll load tenants on-demand via SearchTenants method
+        // No need to preload all tenants here anymore
+
+        // Load available roles for dropdown
+        try
         {
-            try
+            _availableRoles = (await _client.GetRolesEndpointAsync()).ToList();
+        }
+        catch
+        {
+            // If API call fails, fall back to empty list
+            _availableRoles = new List<RoleDto>();
+        }
+    }
+
+    private async Task<IEnumerable<TenantDetail>> SearchTenants(string searchTerm, CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
             {
-                _availableTenants = (await _client.GetTenantsEndpointAsync()).ToList();
+                // Initial load: Show first 10 tenants alphabetically
+                var query = new SearchTenantsQuery 
+                { 
+                    PageNumber = 1, 
+                    PageSize = 10, 
+                    OrderBy = "name" 
+                };
+                var result = await _client.SearchTenantsEndpointAsync(query);
+                return result.Items ?? new List<TenantDetail>();
             }
-            catch
+            else if (searchTerm.Length >= 2)
             {
-                // If API call fails, fall back to empty list
-                _availableTenants = new List<TenantDetail>();
+                // Search mode: Filter by term, return top 20 matches
+                var query = new SearchTenantsQuery 
+                { 
+                    SearchTerm = searchTerm,
+                    PageNumber = 1, 
+                    PageSize = 20, 
+                    OrderBy = "name" 
+                };
+                var result = await _client.SearchTenantsEndpointAsync(query);
+                return result.Items ?? new List<TenantDetail>();
             }
+            
+            return new List<TenantDetail>();
+        }
+        catch
+        {
+            // If API call fails, fall back to legacy method
+            return await SearchTenantsLegacy(searchTerm, cancellationToken);
+        }
+    }
+
+    private async Task<IEnumerable<TenantDetail>> SearchTenantsLegacy(string searchTerm, CancellationToken cancellationToken)
+    {
+        // Fallback method using the old GetTenantsEndpointAsync
+        try
+        {
+            var allTenants = await _client.GetTenantsEndpointAsync(cancellationToken);
+            var tenantList = allTenants.ToList();
+            
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                // Initial load: Show first 10 tenants alphabetically
+                return tenantList.Where(t => t.IsActive).OrderBy(t => t.Name).Take(10);
+            }
+            else if (searchTerm.Length >= 2)
+            {
+                // Search mode: Filter by term
+                return tenantList
+                    .Where(t => t.IsActive && 
+                               (t.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                                t.Id.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
+                    .OrderBy(t => t.Name)
+                    .Take(20);
+            }
+            
+            return new List<TenantDetail>();
+        }
+        catch
+        {
+            return new List<TenantDetail>();
         }
     }
 
@@ -122,5 +223,19 @@ public partial class Invitations
         {
             await EntityTable.ReloadDataAsync();
         }
+    }
+    
+    private static string GetStatusDisplayName(InvitationStatus status)
+    {
+        return status switch
+        {
+            InvitationStatus._0 => "Pending",
+            InvitationStatus._1 => "Sent",
+            InvitationStatus._2 => "Accepted",
+            InvitationStatus._3 => "Expired",
+            InvitationStatus._4 => "Cancelled",
+            InvitationStatus._5 => "Failed",
+            _ => status.ToString()
+        };
     }
 }

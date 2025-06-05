@@ -1,4 +1,5 @@
-﻿using FSH.Framework.Core.Tenant.Dtos;
+﻿using FSH.Framework.Core.Paging;
+using FSH.Framework.Core.Tenant.Dtos;
 using FSH.Framework.Core.Tenant.Features.CreateTenant;
 
 namespace FSH.Framework.Core.Tenant.Abstractions;
@@ -6,6 +7,8 @@ namespace FSH.Framework.Core.Tenant.Abstractions;
 public interface ITenantService
 {
     Task<List<TenantDetail>> GetAllAsync();
+    
+    Task<PagedList<TenantDetail>> SearchAsync(string? searchTerm = null, int page = 1, int size = 10, string orderBy = "name");
 
     Task<bool> ExistsWithIdAsync(string id);
 

@@ -29,7 +29,14 @@ public class UserInvitationConfiguration : IEntityTypeConfiguration<UserInvitati
         builder.Property(x => x.LastName)
             .HasMaxLength(50);
 
+        // Ownership properties (for data privacy)
         builder.Property(x => x.TenantId)
+            .HasMaxLength(64);
+
+        builder.Property(x => x.MemberId);
+
+        // Target tenant for the invitation
+        builder.Property(x => x.TargetTenantId)
             .HasMaxLength(64)
             .IsRequired();
 
@@ -65,6 +72,9 @@ public class UserInvitationConfiguration : IEntityTypeConfiguration<UserInvitati
         builder.HasIndex(x => x.TenantId)
             .HasDatabaseName("IX_UserInvitations_TenantId");
 
+        builder.HasIndex(x => x.TargetTenantId)
+            .HasDatabaseName("IX_UserInvitations_TargetTenantId");
+
         builder.HasIndex(x => x.InvitationToken)
             .IsUnique()
             .HasDatabaseName("IX_UserInvitations_InvitationToken");
@@ -72,8 +82,8 @@ public class UserInvitationConfiguration : IEntityTypeConfiguration<UserInvitati
         builder.HasIndex(x => x.Status)
             .HasDatabaseName("IX_UserInvitations_Status");
 
-        builder.HasIndex(x => new { x.Email, x.TenantId })
-            .HasDatabaseName("IX_UserInvitations_Email_TenantId");
+        builder.HasIndex(x => new { x.Email, x.TargetTenantId })
+            .HasDatabaseName("IX_UserInvitations_Email_TargetTenantId");
 
         builder.HasIndex(x => x.ExpiresAt)
             .HasDatabaseName("IX_UserInvitations_ExpiresAt");

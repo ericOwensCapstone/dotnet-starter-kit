@@ -6,5 +6,6 @@ namespace FSH.Framework.Core.Identity.Invitations.Features.SearchInvitations;
 public class SearchInvitationsQuery : PaginationFilter, IRequest<PagedList<InvitationDto>>
 {
     public string? TenantId { get; set; }
+    public string? TargetTenantId { get; set; }
     public InvitationStatus? Status { get; set; }
 }

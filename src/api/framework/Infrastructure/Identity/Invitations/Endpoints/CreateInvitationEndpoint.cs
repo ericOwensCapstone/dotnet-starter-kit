@@ -39,14 +39,14 @@ public static class CreateInvitationEndpoint
         }
         
         var logger = loggerFactory.CreateLogger("CreateInvitationEndpoint");
-        logger.LogInformation("Processing invitation request for {Email} to tenant {TenantId}", 
-            request.Email, request.TenantId);
+        logger.LogInformation("Processing invitation request for {Email} to target tenant {TargetTenantId}", 
+            request.Email, request.TargetTenantId);
 
         // Check permissions - user must be able to create users in the target tenant
         var currentUserTenant = currentUser.GetTenant();
 
         // If inviting to a different tenant, user must have root permissions
-        if (request.TenantId != currentUserTenant)
+        if (request.TargetTenantId != currentUserTenant)
         {
             if (!currentUser.IsInRole(FshRoles.Admin))
             {

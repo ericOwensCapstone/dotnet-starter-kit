@@ -102,6 +102,12 @@ internal sealed class IdentityDbInitializer(
             return;
         }
 
+        // Only seed admin user for root tenant - other tenant admins should be created through invitation process
+        if (multiTenantContextAccessor.MultiTenantContext.TenantInfo?.Id != TenantConstants.Root.Id)
+        {
+            return;
+        }
+
         if (await userManager.Users.FirstOrDefaultAsync(u => u.Email == multiTenantContextAccessor.MultiTenantContext.TenantInfo!.AdminEmail)
             is not FshUser adminUser)
         {

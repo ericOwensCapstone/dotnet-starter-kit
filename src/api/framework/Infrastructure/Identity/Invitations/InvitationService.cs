@@ -1,4 +1,5 @@
 using Ardalis.Specification;
+using Finbuckle.MultiTenant.Abstractions;
 using FSH.Framework.Core.Domain.Contracts;
 using FSH.Framework.Core.Exceptions;
 using FSH.Framework.Core.Identity.Invitations;
@@ -32,6 +33,7 @@ public class InvitationService : IInvitationService
     private readonly UserManager<FshUser> _userManager;
     private readonly ITenantService _tenantService;
     private readonly ICurrentUser _currentUser;
+    private readonly IMultiTenantContextAccessor<FshTenantInfo> _tenantContextAccessor;
     private readonly OriginOptions _originOptions;
     private readonly ILogger<InvitationService> _logger;
 
@@ -42,6 +44,7 @@ public class InvitationService : IInvitationService
         UserManager<FshUser> userManager,
         ITenantService tenantService,
         ICurrentUser currentUser,
+        IMultiTenantContextAccessor<FshTenantInfo> tenantContextAccessor,
         IOptions<OriginOptions> originOptions,
         ILogger<InvitationService> logger)
     {
@@ -51,17 +54,18 @@ public class InvitationService : IInvitationService
         _userManager = userManager;
         _tenantService = tenantService;
         _currentUser = currentUser;
+        _tenantContextAccessor = tenantContextAccessor;
         _originOptions = originOptions.Value;
         _logger = logger;
     }
 
     public async Task<CreateInvitationResponse> CreateInvitationAsync(CreateInvitationRequest request, CancellationToken cancellationToken = default)
     {
-        // Validate tenant exists
-        var tenant = await _tenantService.GetByIdAsync(request.TenantId);
-        if (tenant == null)
+        // Validate target tenant exists
+        var targetTenant = await _tenantService.GetByIdAsync(request.TargetTenantId);
+        if (targetTenant == null)
         {
-            throw new NotFoundException($"Tenant {request.TenantId} not found.");
+            throw new NotFoundException($"Target tenant {request.TargetTenantId} not found.");
         }
 
         // Check if user already exists in the system
@@ -72,7 +76,7 @@ public class InvitationService : IInvitationService
         }
 
         // Check for existing active invitation
-        if (await _invitationRepository.ExistsActiveInvitationAsync(request.Email, request.TenantId, cancellationToken))
+        if (await _invitationRepository.ExistsActiveInvitationAsync(request.Email, request.TargetTenantId, cancellationToken))
         {
             throw new CustomException($"An active invitation already exists for {request.Email} in this tenant.");
         }
@@ -88,12 +92,16 @@ public class InvitationService : IInvitationService
         var invitation = UserInvitation.Create(
             request.Email,
             request.DisplayName,
-            request.TenantId,
+            request.TargetTenantId,
             _currentUser.GetUserEmail() ?? "System",
             request.FirstName,
             request.LastName,
             request.Role,
             request.ExpiresAt);
+
+        // Manually set ownership properties (since IdentityDbContext doesn't auto-set ITenantEntity)
+        invitation.TenantId = _currentUser.GetTenant();
+        invitation.MemberId = _tenantContextAccessor.MultiTenantContext?.TenantInfo?.MemberId;
 
         await _invitationRepository.AddAsync(invitation, cancellationToken);
         await _invitationRepository.SaveChangesAsync(cancellationToken);
@@ -111,7 +119,7 @@ public class InvitationService : IInvitationService
                     GivenName = request.FirstName,
                     Surname = request.LastName,
                     Mail = request.Email,
-                    TenantId = request.TenantId,
+                    TenantId = request.TargetTenantId,
                     InvitedBy = _currentUser.GetUserEmail() ?? "System",
                     InvitationDate = DateTime.UtcNow,
                     UserStatus = "Invited"
@@ -143,7 +151,7 @@ public class InvitationService : IInvitationService
         bool emailSent = false;
         if (request.SendInvitationEmail && invitation.Status == InvitationStatus.Sent)
         {
-            emailSent = await SendInvitationEmailAsync(invitation, tenant.Name, cancellationToken);
+            emailSent = await SendInvitationEmailAsync(invitation, targetTenant.Name, cancellationToken);
         }
 
         return new CreateInvitationResponse
@@ -151,7 +159,7 @@ public class InvitationService : IInvitationService
             InvitationId = invitation.Id,
             Email = invitation.Email,
             DisplayName = invitation.DisplayName,
-            TenantId = invitation.TenantId,
+            TargetTenantId = invitation.TargetTenantId,
             Status = invitation.Status,
             ExpiresAt = invitation.ExpiresAt,
             B2CUserId = b2cUserId,
@@ -177,13 +185,13 @@ public class InvitationService : IInvitationService
             throw new CustomException("Cannot resend an expired invitation.");
         }
 
-        var tenant = await _tenantService.GetByIdAsync(invitation.TenantId);
-        if (tenant == null)
+        var targetTenant = await _tenantService.GetByIdAsync(invitation.TargetTenantId);
+        if (targetTenant == null)
         {
-            throw new NotFoundException($"Tenant {invitation.TenantId} not found.");
+            throw new NotFoundException($"Target tenant {invitation.TargetTenantId} not found.");
         }
 
-        return await SendInvitationEmailAsync(invitation, tenant.Name, cancellationToken);
+        return await SendInvitationEmailAsync(invitation, targetTenant.Name, cancellationToken);
     }
 
     public async Task<bool> CancelInvitationAsync(Guid invitationId, CancellationToken cancellationToken = default)
@@ -226,22 +234,57 @@ public class InvitationService : IInvitationService
 
     public async Task<PagedList<InvitationDto>> SearchInvitationsAsync(SearchInvitationsQuery request, CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("SearchInvitationsAsync called with: TenantId={TenantId}, TargetTenantId={TargetTenantId}, Status={Status}, PageNumber={PageNumber}, PageSize={PageSize}", 
+            request.TenantId, request.TargetTenantId, request.Status, request.PageNumber, request.PageSize);
+        
+        // Debug: Log all invitations in database first
+        if (_invitationRepository is InvitationRepository repo)
+        {
+            await repo.LogAllInvitationsAsync();
+        }
+        
+        // Workaround: If this looks like a default request (no filters set), clear the status filter
+        if (string.IsNullOrEmpty(request.TenantId) && 
+            string.IsNullOrEmpty(request.TargetTenantId) && 
+            string.IsNullOrEmpty(request.Keyword) &&
+            request.Status == InvitationStatus.Pending)
+        {
+            _logger.LogInformation("Detected default search request - clearing Status filter to show all invitations");
+            request.Status = null;
+        }
+        
         var spec = new InvitationsByPaginationFilterSpec(request);
         
         var items = await _invitationRepository.ListAsync(spec, cancellationToken);
         var totalCount = await _invitationRepository.CountAsync(spec, cancellationToken);
         
+        _logger.LogInformation("SearchInvitationsAsync results: Found {TotalCount} total items, returning {ItemCount} items for page {PageNumber}", 
+            totalCount, items.Count, request.PageNumber);
+        
+        if (items.Any())
+        {
+            foreach (var item in items)
+            {
+                _logger.LogInformation("Found invitation: Id={Id}, Email={Email}, TenantId={TenantId}, TargetTenantId={TargetTenantId}, Status={Status}", 
+                    item.Id, item.Email, item.TenantId, item.TargetTenantId, item.Status);
+            }
+        }
+        else
+        {
+            _logger.LogWarning("No invitations found for current user");
+        }
+        
         return new PagedList<InvitationDto>(items, request.PageNumber, request.PageSize, totalCount);
     }
 
-    public async Task<List<UserInvitation>> GetPendingInvitationsAsync(string? tenantId = null, CancellationToken cancellationToken = default)
+    public async Task<List<UserInvitation>> GetPendingInvitationsAsync(string? targetTenantId = null, CancellationToken cancellationToken = default)
     {
-        return await _invitationRepository.GetPendingAsync(tenantId, cancellationToken);
+        return await _invitationRepository.GetPendingAsync(targetTenantId, cancellationToken);
     }
 
-    public async Task<List<UserInvitation>> GetInvitationsByTenantAsync(string tenantId, CancellationToken cancellationToken = default)
+    public async Task<List<UserInvitation>> GetInvitationsByTenantAsync(string targetTenantId, CancellationToken cancellationToken = default)
     {
-        return await _invitationRepository.GetByTenantAsync(tenantId, cancellationToken);
+        return await _invitationRepository.GetByTenantAsync(targetTenantId, cancellationToken);
     }
 
     public async Task<List<UserInvitation>> GetInvitationsByUserAsync(string userEmail, CancellationToken cancellationToken = default)
@@ -269,7 +312,7 @@ public class InvitationService : IInvitationService
                         GivenName = invitation.FirstName,
                         Surname = invitation.LastName,
                         Mail = invitation.Email,
-                        TenantId = invitation.TenantId,
+                        TenantId = invitation.TargetTenantId,
                         InvitedBy = invitation.InvitedBy,
                         InvitationDate = DateTime.UtcNow,
                         UserStatus = "Invited"
@@ -366,12 +409,12 @@ public class InvitationService : IInvitationService
         return true;
     }
 
-    public async Task<bool> IsEmailInvitedAsync(string email, string? tenantId = null, CancellationToken cancellationToken = default)
+    public async Task<bool> IsEmailInvitedAsync(string email, string? targetTenantId = null, CancellationToken cancellationToken = default)
     {
         ISpecification<UserInvitation> spec;
-        if (!string.IsNullOrEmpty(tenantId))
+        if (!string.IsNullOrEmpty(targetTenantId))
         {
-            spec = new InvitationsByEmailAndTenantSpec(email, tenantId);
+            spec = new InvitationsByEmailAndTenantSpec(email, targetTenantId);
         }
         else
         {
@@ -381,9 +424,9 @@ public class InvitationService : IInvitationService
         return await _invitationRepository.AnyAsync(spec, cancellationToken);
     }
 
-    public async Task<bool> HasPendingInvitationAsync(string email, string tenantId, CancellationToken cancellationToken = default)
+    public async Task<bool> HasPendingInvitationAsync(string email, string targetTenantId, CancellationToken cancellationToken = default)
     {
-        return await _invitationRepository.ExistsActiveInvitationAsync(email, tenantId, cancellationToken);
+        return await _invitationRepository.ExistsActiveInvitationAsync(email, targetTenantId, cancellationToken);
     }
 
     private async Task<bool> SendInvitationEmailAsync(UserInvitation invitation, string tenantName, CancellationToken cancellationToken)

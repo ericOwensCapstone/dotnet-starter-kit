@@ -22,37 +22,66 @@
         @if (_isRootAdmin)
         {
             <MudItem xs="12" md="6">
-                @if (_availableTenants.Any())
-                {
-                    <MudSelect T="string" For="@(() => context.TenantId)" @bind-Value="context.TenantId" 
-                              Label="Tenant" Placeholder="Select a tenant" 
-                              AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
-                        @foreach (var tenant in _availableTenants.Where(t => t.IsActive))
-                        {
-                            <MudSelectItem T="string" Value="@tenant.Id">
-                                @tenant.Name (@tenant.Id)
-                            </MudSelectItem>
-                        }
-                    </MudSelect>
-                }
-                else
-                {
-                    <MudTextField T="string" For="@(() => context.TenantId)" @bind-Value="context.TenantId" Label="Tenant ID" 
-                                 HelperText="Enter the tenant ID manually" />
-                }
+                <MudAutocomplete T="TenantDetail" 
+                                Value="SelectedTenant"
+                                ValueChanged="@((TenantDetail tenant) => { SelectedTenant = tenant; context.TargetTenantId = tenant?.Id ?? string.Empty; })"
+                                SearchFunc="SearchTenantsLegacy"
+                                ToStringFunc="@(tenant => tenant?.Name ?? string.Empty)"
+                                Label="Tenant"
+                                Placeholder="Type to search tenants..."
+                                MinCharacters="0"
+                                ShowProgressIndicator="true"
+                                ProgressIndicatorColor="Color.Primary"
+                                MaxItems="null"
+                                Clearable="true"
+                                CoerceText="false"
+                                CoerceValue="true">
+                    <ItemTemplate Context="tenant">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <MudIcon Icon="@(tenant.IsActive ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)" 
+                                    Color="@(tenant.IsActive ? Color.Success : Color.Error)" Size="Size.Small" />
+                            <div>
+                                <div style="font-weight: 500;">@tenant.Name</div>
+                                <div style="font-size: 0.75rem; color: var(--mud-palette-text-secondary);">@tenant.Id</div>
+                            </div>
+                        </div>
+                    </ItemTemplate>
+                    <NoItemsTemplate>
+                        <div style="padding: 8px; color: var(--mud-palette-text-secondary);">
+                            <span>Type to search tenants...</span>
+                        </div>
+                    </NoItemsTemplate>
+                </MudAutocomplete>
             </MudItem>
         }
         else
         {
             @* Tenant admin sees read-only field with their tenant *@
             <MudItem xs="12" md="6">
-                <MudTextField T="string" For="@(() => context.TenantId)" @bind-Value="context.TenantId" 
-                             Label="Tenant ID" ReadOnly="true" 
+                <MudTextField T="string" For="@(() => context.TargetTenantId)" @bind-Value="context.TargetTenantId" 
+                             Label="Target Tenant ID" ReadOnly="true" 
                              HelperText="Your tenant (read-only)" />
             </MudItem>
         }
         <MudItem xs="12" md="6">
-            <MudTextField T="string" For="@(() => context.Role)" @bind-Value="context.Role" Label="Role" />
+            @if (_availableRoles.Any())
+            {
+                <MudSelect T="string" For="@(() => context.Role)" @bind-Value="context.Role" 
+                          Label="Role" Placeholder="Select a role" 
+                          AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+                    @foreach (var role in _availableRoles)
+                    {
+                        <MudSelectItem T="string" Value="@role.Name">
+                            @role.Name
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            }
+            else
+            {
+                <MudTextField T="string" For="@(() => context.Role)" @bind-Value="context.Role" Label="Role" 
+                             HelperText="Enter the role name manually" />
+            }
         </MudItem>
     </EditFormContent>
     <ExtraActions>

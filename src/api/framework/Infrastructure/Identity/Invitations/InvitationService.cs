@@ -107,10 +107,49 @@ public class InvitationService : IInvitationService
         await _invitationRepository.AddAsync(invitation, cancellationToken);
         await _invitationRepository.SaveChangesAsync(cancellationToken);
 
-        // Create B2C user if doesn't exist
+        // Create B2C invitation if user doesn't exist
         string? b2cUserId = b2cUser?.Id;
-        if (b2cUser == null)
+        if (b2cUser == null && request.SendInvitationEmail)
         {
+            try
+            {
+                // Create B2C invitation which will send the email
+                var acceptUrl = $"{_originOptions.OriginUrl}/authentication/login-callback?invitation={invitation.InvitationToken}";
+                var graphInvitation = new GraphInvitation
+                {
+                    Email = request.Email,
+                    DisplayName = request.DisplayName,
+                    TenantId = request.TargetTenantId,
+                    InvitedBy = _currentUser.GetUserEmail() ?? "System",
+                    RedirectUrl = acceptUrl,
+                    SendInvitationMessage = true,
+                    CustomizedMessageBody = $"You have been invited to join {targetTenant.Name}. Click the link below to accept the invitation and create your account."
+                };
+
+                b2cUserId = await _graphService.CreateInvitationAsync(graphInvitation, cancellationToken);
+                
+                invitation.MarkAsSent(b2cUserId);
+                await _invitationRepository.UpdateAsync(invitation, cancellationToken);
+                await _invitationRepository.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to create B2C invitation for {Email}", request.Email);
+                invitation.MarkAsFailed($"Failed to create B2C invitation: {ex.Message}");
+                await _invitationRepository.UpdateAsync(invitation, cancellationToken);
+                await _invitationRepository.SaveChangesAsync(cancellationToken);
+            }
+        }
+        else if (b2cUser != null)
+        {
+            // User already exists in B2C
+            invitation.MarkAsSent(b2cUserId);
+            await _invitationRepository.UpdateAsync(invitation, cancellationToken);
+            await _invitationRepository.SaveChangesAsync(cancellationToken);
+        }
+        else
+        {
+            // Not sending email but user doesn't exist - create disabled user as before
             try
             {
                 var temporaryPassword = await _graphService.GenerateTemporaryPassword();
@@ -141,19 +180,9 @@ public class InvitationService : IInvitationService
                 await _invitationRepository.SaveChangesAsync(cancellationToken);
             }
         }
-        else
-        {
-            invitation.MarkAsSent(b2cUserId);
-            await _invitationRepository.UpdateAsync(invitation, cancellationToken);
-            await _invitationRepository.SaveChangesAsync(cancellationToken);
-        }
 
-        // Send invitation email
-        bool emailSent = false;
-        if (request.SendInvitationEmail && invitation.Status == InvitationStatus.Sent)
-        {
-            emailSent = await SendInvitationEmailAsync(invitation, targetTenant.Name, cancellationToken);
-        }
+        // Email is sent by B2C if we created an invitation
+        bool emailSent = request.SendInvitationEmail && b2cUser == null && invitation.Status == InvitationStatus.Sent;
 
         return new CreateInvitationResponse
         {

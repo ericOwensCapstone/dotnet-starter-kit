@@ -14,6 +14,8 @@ namespace FSH.Starter.Blazor.Infrastructure;
 public static class Extensions
 {
     private const string ClientName = "FullStackHero.API";
+    public const string B2CClientName = "FullStackHero.B2C.API";
+    
     public static IServiceCollection AddClientServices(this IServiceCollection services, IConfiguration config)
     {
         services.AddMudServices(configuration =>
@@ -27,6 +29,8 @@ public static class Extensions
         services.AddBlazoredLocalStorage();
         services.AddAuthentication(config);
         services.AddTransient<IApiClient, ApiClient>();
+        
+        // Main HTTP client with JWT authentication
         services.AddHttpClient(ClientName, client =>
         {
             client.DefaultRequestHeaders.AcceptLanguage.Clear();
@@ -36,6 +40,15 @@ public static class Extensions
            .AddHttpMessageHandler<JwtAuthenticationHeaderHandler>()
            .Services
            .AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(ClientName));
+           
+        // B2C HTTP client WITHOUT JWT authentication handler (for token exchange)
+        services.AddHttpClient(B2CClientName, client =>
+        {
+            client.DefaultRequestHeaders.AcceptLanguage.Clear();
+            client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(CultureInfo.DefaultThreadCurrentCulture?.TwoLetterISOLanguageName);
+            client.BaseAddress = new Uri(config["ApiBaseUrl"]!);
+        }); // No JWT handler for B2C operations
+        
         services.AddTransient<IClientPreferenceManager, ClientPreferenceManager>();
         services.AddTransient<IPreference, ClientPreference>();
         services.AddNotifications();

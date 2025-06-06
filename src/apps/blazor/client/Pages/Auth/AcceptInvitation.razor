@@ -44,13 +44,21 @@
                     Click the button below to create your account and accept this invitation.
                 </MudText>
                 
+                <MudAlert Severity="Severity.Info" Class="mb-4">
+                    <MudText Typo="Typo.body2">
+                        You'll be redirected to create your account. Your email 
+                        <strong>@_invitedUserEmail</strong> will be pre-filled. 
+                        Click <strong>"Sign up now"</strong> at the bottom to complete registration.
+                    </MudText>
+                </MudAlert>
+                
                 <MudButton Variant="Variant.Filled" 
                            Color="Color.Primary" 
                            FullWidth="true"
                            Size="Size.Large"
                            StartIcon="Icons.Material.Filled.PersonAdd"
                            OnClick="AcceptAndSignUp">
-                    Create Account & Accept Invitation
+                    Continue to Create Account
                 </MudButton>
                 
                 <MudDivider Class="my-4" />

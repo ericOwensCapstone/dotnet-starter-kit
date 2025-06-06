@@ -4,15 +4,8 @@ public class AuthenticationOptions
 {
     public const string SectionName = "AuthenticationOptions";
     
-    public AuthenticationProvider Provider { get; set; } = AuthenticationProvider.Local;
-    public AzureAdB2COptions? AzureAdB2C { get; set; }
+    public AzureAdB2COptions AzureAdB2C { get; set; } = new();
     public ApiKeyOptions? ApiKeys { get; set; }
-}
-
-public enum AuthenticationProvider
-{
-    Local,
-    AzureAdB2C
 }
 
 public class AzureAdB2COptions

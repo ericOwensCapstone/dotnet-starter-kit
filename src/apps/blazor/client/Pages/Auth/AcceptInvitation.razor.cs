@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using FSH.Starter.Blazor.Infrastructure.Api;
 using FSH.Starter.Blazor.Infrastructure.Auth;
 using Microsoft.AspNetCore.Components;
@@ -9,6 +10,7 @@ public partial class AcceptInvitation
 {
     [Inject] private IApiClient ApiClient { get; set; } = default!;
     [Inject] private IAuthenticationService AuthenticationService { get; set; } = default!;
+    [Inject] private ILocalStorageService localStorage { get; set; } = default!;
 
     private bool _isLoading = true;
     private bool _hasError = false;
@@ -82,7 +84,7 @@ public partial class AcceptInvitation
         }
     }
 
-    private void AcceptAndSignUp()
+    private async Task AcceptAndSignUp()
     {
         if (string.IsNullOrEmpty(_invitationToken))
         {
@@ -92,11 +94,13 @@ public partial class AcceptInvitation
 
         try
         {
-            // Navigate to B2C authentication
-            // The B2C auto-provisioning will automatically find and accept 
-            // any valid invitation for the user's email address
+            // Store the invitation token in localStorage so it can be retrieved after B2C authentication
+            await localStorage.SetItemAsync("pendingInvitationToken", _invitationToken);
+            
+            // Navigate to B2C authentication with the invited email as a hint
+            // This will pre-populate the email field in B2C
             var returnUrl = "/";
-            AuthenticationService.NavigateToExternalLogin(returnUrl);
+            AuthenticationService.NavigateToExternalLogin(returnUrl, _invitedUserEmail);
         }
         catch (Exception ex)
         {

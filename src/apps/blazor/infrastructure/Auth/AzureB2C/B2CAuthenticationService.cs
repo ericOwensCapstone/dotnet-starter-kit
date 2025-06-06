@@ -18,28 +18,31 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
     private readonly ILocalStorageService _localStorage;
     private readonly IApiClient _apiClient;
     private readonly IOptions<B2CAuthenticationOptions> _options;
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
 
     public B2CAuthenticationService(
         NavigationManager navigation,
         ILocalStorageService localStorage,
         IApiClient apiClient,
         IOptions<B2CAuthenticationOptions> options,
-        HttpClient httpClient)
+        IHttpClientFactory httpClientFactory)
     {
         _navigation = navigation;
         _localStorage = localStorage;
         _apiClient = apiClient;
         _options = options;
-        _httpClient = httpClient;
+        _httpClientFactory = httpClientFactory;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         var token = await _localStorage.GetItemAsync<string>(StorageConstants.Local.AuthToken);
         
+        Console.WriteLine($"B2CAuthenticationService.GetAuthenticationStateAsync: Token: {(string.IsNullOrEmpty(token) ? "NULL/EMPTY" : $"[{token.Length} chars]")}");
+        
         if (string.IsNullOrEmpty(token))
         {
+            Console.WriteLine("B2CAuthenticationService.GetAuthenticationStateAsync: Returning unauthenticated state");
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
@@ -47,13 +50,14 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
         var identity = new ClaimsIdentity(claims, "jwt");
         var user = new ClaimsPrincipal(identity);
         
+        Console.WriteLine($"B2CAuthenticationService.GetAuthenticationStateAsync: Returning authenticated state with {claims.Count()} claims");
         return new AuthenticationState(user);
     }
 
-    public async Task<bool> LoginAsync(string tenantId, TokenGenerationCommand request)
+
+    public void NavigateToExternalLogin(string returnUrl, string? loginHint = null)
     {
-        // B2C uses redirect-based flow, not direct login
-        // Redirect to B2C login
+        // For B2C, redirect directly to B2C sign-up flow
         var b2cOptions = _options.Value;
         var redirectUri = new Uri(_navigation.BaseUri).GetLeftPart(UriPartial.Authority) + "/authentication/login-callback";
         var loginUrl = $"{b2cOptions.Authority}/oauth2/v2.0/authorize" +
@@ -63,41 +67,38 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
             $"&scope={Uri.EscapeDataString(string.Join(" ", b2cOptions.DefaultScopes))}" +
             $"&response_mode=fragment" +
             $"&nonce={Guid.NewGuid()}" +
-            $"&state={Guid.NewGuid()}";
+            $"&state={Uri.EscapeDataString(returnUrl)}"; // Pass return URL in state
+
+        // Add login_hint if provided (pre-populates email field)
+        if (!string.IsNullOrEmpty(loginHint))
+        {
+            loginUrl += $"&login_hint={Uri.EscapeDataString(loginHint)}";
+        }
 
         _navigation.NavigateTo(loginUrl, true);
-        return false; // Login will complete after redirect
-    }
-
-    public void NavigateToExternalLogin(string returnUrl)
-    {
-        // For B2C, navigate to login which will redirect to B2C
-        _navigation.NavigateTo($"/auth/login?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
     }
 
     public async Task ReLoginAsync(string returnUrl)
     {
-        // For B2C, just navigate to login
-        await LoginAsync(string.Empty, new TokenGenerationCommand());
+        // For B2C, logout and redirect to login
+        await LogoutAsync();
+        NavigateToExternalLogin(returnUrl);
     }
 
     public async Task<bool> ExchangeB2CTokenAsync(string b2cToken)
     {
         try
         {
-            Console.WriteLine($"Attempting to exchange B2C token...");
+            // Use the B2C-specific HttpClient that doesn't have JWT authentication handler
+            using var httpClient = _httpClientFactory.CreateClient(FSH.Starter.Blazor.Infrastructure.Extensions.B2CClientName);
             
             // Exchange B2C token for local JWT
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", b2cToken);
-            var response = await _httpClient.PostAsync("/b2c/token", null);
-            
-            Console.WriteLine($"Token exchange response status: {response.StatusCode}");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", b2cToken);
+            var response = await httpClient.PostAsync("/b2c/token", null);
             
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Token exchange response content: {content}");
-                
                 var tokenResponse = JsonSerializer.Deserialize<FSH.Starter.Blazor.Shared.TokenResponse>(content, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
@@ -105,28 +106,25 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
 
                 if (tokenResponse != null && !string.IsNullOrEmpty(tokenResponse.Token))
                 {
-                    Console.WriteLine("Successfully received token response, storing in local storage");
+                    Console.WriteLine("B2CAuthenticationService.ExchangeB2CTokenAsync: Storing tokens in localStorage");
                     await _localStorage.SetItemAsync(StorageConstants.Local.AuthToken, tokenResponse.Token);
                     await _localStorage.SetItemAsync(StorageConstants.Local.RefreshToken, tokenResponse.RefreshToken);
                     
+                    Console.WriteLine("B2CAuthenticationService.ExchangeB2CTokenAsync: Notifying authentication state change");
+                    // Notify authentication state change
                     NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+                    
+                    // Give a small delay to ensure the state change propagates
+                    await Task.Delay(50);
+                    
+                    Console.WriteLine("B2CAuthenticationService.ExchangeB2CTokenAsync: Token exchange completed successfully");
                     return true;
                 }
-                else
-                {
-                    Console.WriteLine("Token response was null or invalid");
-                }
-            }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Token exchange failed with status {response.StatusCode}: {errorContent}");
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error exchanging B2C token: {ex.Message}");
-            Console.WriteLine($"Stack trace: {ex.StackTrace}");
         }
         
         return false;
@@ -181,17 +179,18 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
     {
         var token = await _localStorage.GetItemAsync<string>(StorageConstants.Local.AuthToken);
         
-        Console.WriteLine($"B2CAuthenticationService.RequestAccessToken: Token from localStorage: {(string.IsNullOrEmpty(token) ? "NULL/EMPTY" : $"{token[..Math.Min(50, token.Length)]}...")}");
+        Console.WriteLine($"B2CAuthenticationService.RequestAccessToken: Token from localStorage: {(string.IsNullOrEmpty(token) ? "NULL/EMPTY" : $"[{token.Length} chars]")}");
         
         if (!string.IsNullOrEmpty(token))
         {
+            Console.WriteLine("B2CAuthenticationService.RequestAccessToken: Returning SUCCESS with token");
             return new AccessTokenResult(
                 AccessTokenResultStatus.Success,
                 new AccessToken { Value = token },
                 null);
         }
 
-        Console.WriteLine("B2CAuthenticationService.RequestAccessToken: No token found, requiring redirect");
+        Console.WriteLine("B2CAuthenticationService.RequestAccessToken: Returning REQUIRES_REDIRECT");
         return new AccessTokenResult(
             AccessTokenResultStatus.RequiresRedirect,
             null,

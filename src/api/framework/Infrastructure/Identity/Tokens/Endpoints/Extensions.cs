@@ -7,7 +7,6 @@ internal static class Extensions
     public static IEndpointRouteBuilder MapTokenEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapRefreshTokenEndpoint();
-        app.MapTokenGenerationEndpoint();
         return app;
     }
 

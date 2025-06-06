@@ -6,7 +6,6 @@ using Finbuckle.MultiTenant.Abstractions;
 using FSH.Framework.Core.Auth.Jwt;
 using FSH.Framework.Core.Exceptions;
 using FSH.Framework.Core.Identity.Tokens;
-using FSH.Framework.Core.Identity.Tokens.Features.Generate;
 using FSH.Framework.Core.Identity.Tokens.Features.Refresh;
 using FSH.Framework.Core.Identity.Tokens.Models;
 using FSH.Framework.Infrastructure.Auth.Jwt;
@@ -34,42 +33,6 @@ public sealed class TokenService : ITokenService
         _publisher = publisher;
     }
 
-    public async Task<TokenResponse> GenerateTokenAsync(TokenGenerationCommand request, string ipAddress, CancellationToken cancellationToken)
-    {
-        var currentTenant = _multiTenantContextAccessor!.MultiTenantContext.TenantInfo;
-        if (currentTenant == null) throw new UnauthorizedException();
-        if (string.IsNullOrWhiteSpace(currentTenant.Id)
-           || await _userManager.FindByEmailAsync(request.Email.Trim().Normalize()) is not { } user
-           || !await _userManager.CheckPasswordAsync(user, request.Password))
-        {
-            throw new UnauthorizedException();
-        }
-
-        if (!user.IsActive)
-        {
-            throw new UnauthorizedException("user is deactivated");
-        }
-
-        if (!user.EmailConfirmed)
-        {
-            throw new UnauthorizedException("email not confirmed");
-        }
-
-        if (currentTenant.Id != TenantConstants.Root.Id)
-        {
-            if (!currentTenant.IsActive)
-            {
-                throw new UnauthorizedException($"tenant {currentTenant.Id} is deactivated");
-            }
-
-            if (DateTime.UtcNow > currentTenant.ValidUpto)
-            {
-                throw new UnauthorizedException($"tenant {currentTenant.Id} validity has expired");
-            }
-        }
-
-        return await GenerateTokensAndUpdateUser(user, ipAddress);
-    }
 
     public async Task<TokenResponse> GenerateB2CTokenAsync(object userObj, List<Claim> claims, string ipAddress, CancellationToken cancellationToken)
     {

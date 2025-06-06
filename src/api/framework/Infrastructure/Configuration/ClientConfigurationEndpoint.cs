@@ -36,10 +36,10 @@ public class ClientConfigurationEndpoint : ICarterModule
         {
             Authentication = new ClientAuthenticationConfiguration
             {
-                Provider = authConfig.Provider.ToString(),
-                AzureAdB2C = azureB2COptions != null && authConfig.Provider == AuthenticationProvider.AzureAdB2C ? new ClientAzureAdB2CConfiguration
+                Provider = "AzureAdB2C",
+                AzureAdB2C = azureB2COptions != null ? new ClientAzureAdB2CConfiguration
                 {
-                    Enabled = authConfig.Provider == AuthenticationProvider.AzureAdB2C,
+                    Enabled = true,
                     TenantId = azureB2COptions.TenantId,
                     ClientId = azureB2COptions.ClientId,
                     Instance = azureB2COptions.Instance,
@@ -68,7 +68,7 @@ public class ClientConfiguration
 
 public class ClientAuthenticationConfiguration
 {
-    public string Provider { get; set; } = "Local";
+    public string Provider { get; set; } = "AzureAdB2C";
     public ClientAzureAdB2CConfiguration? AzureAdB2C { get; set; }
 }
 

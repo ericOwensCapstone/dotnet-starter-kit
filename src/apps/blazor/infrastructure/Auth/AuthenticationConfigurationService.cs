@@ -4,7 +4,6 @@ namespace FSH.Starter.Blazor.Infrastructure.Auth;
 
 public interface IAuthenticationConfigurationService
 {
-    AuthenticationProvider GetProvider();
     bool IsAzureB2C();
 }
 
@@ -17,19 +16,5 @@ public class AuthenticationConfigurationService : IAuthenticationConfigurationSe
         _configuration = configuration;
     }
 
-    public AuthenticationProvider GetProvider()
-    {
-        var provider = _configuration["AuthenticationOptions:Provider"];
-        return Enum.TryParse<AuthenticationProvider>(provider, out var result) 
-            ? result 
-            : AuthenticationProvider.Local;
-    }
-
-    public bool IsAzureB2C() => GetProvider() == AuthenticationProvider.AzureAdB2C;
-}
-
-public enum AuthenticationProvider
-{
-    Local,
-    AzureAdB2C
+    public bool IsAzureB2C() => true; // Always use B2C
 }

@@ -37,8 +37,8 @@
                 var uri = new Uri(Navigation.Uri);
                 if (!uri.Query.Contains("error="))
                 {
-                    // Redirect to B2C immediately
-                    await AuthenticationService.LoginAsync(string.Empty, new TokenGenerationCommand());
+                    // For B2C, navigate to external login (B2C)
+                    AuthenticationService.NavigateToExternalLogin("/");
                     return;
                 }
             }

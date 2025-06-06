@@ -28,7 +28,8 @@
       "Bash(git push:*)",
       "Bash(dotnet user-secrets:*)",
       "WebFetch(domain:mudblazor.com)",
-      "Bash(docker-compose up:*)"
+      "Bash(docker-compose up:*)",
+      "Bash(true)"
     ],
     "deny": []
   },

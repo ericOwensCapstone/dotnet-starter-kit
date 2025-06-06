@@ -28,7 +28,7 @@ internal static class Extensions
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        // Configure JWT options (still needed for local JWT generation)
+        // Configure JWT options (needed for B2C token generation)
         services.AddOptions<JwtOptions>()
             .BindConfiguration(nameof(JwtOptions))
             .ValidateDataAnnotations()
@@ -48,7 +48,7 @@ internal static class Extensions
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         });
 
-        // Always add JWT Bearer for backward compatibility
+        // Add local JWT Bearer for tokens generated after B2C authentication
         services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();
         authBuilder.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, null!);
 
@@ -59,8 +59,8 @@ internal static class Extensions
                 ApiKeyAuthenticationDefaults.AuthenticationScheme, null);
         }
 
-        // Add Azure AD B2C if configured for B2C provider
-        if (authOptions.Provider == AuthenticationProvider.AzureAdB2C && authOptions.AzureAdB2C != null)
+        // Add Azure AD B2C
+        if (authOptions.AzureAdB2C != null)
         {
             authBuilder.AddJwtBearer("AzureADB2C", options =>
             {
@@ -140,38 +140,26 @@ internal static class Extensions
         {
             options.ForwardDefaultSelector = context =>
             {
-                Console.WriteLine($"Policy selector called for path: {context.Request.Path}");
-                Console.WriteLine($"Auth provider configured: {authOptions.Provider}");
-                
                 // Check for API Key first
                 if (authOptions.ApiKeys?.Enabled == true && 
                     context.Request.Headers.ContainsKey(authOptions.ApiKeys.HeaderName))
                 {
-                    Console.WriteLine("Routing to API Key authentication scheme");
                     return ApiKeyAuthenticationDefaults.AuthenticationScheme;
                 }
 
                 var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
-                Console.WriteLine($"Authorization header: {authHeader?.Substring(0, Math.Min(50, authHeader?.Length ?? 0))}...");
-                
                 if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
                 {
                     var token = authHeader.Substring("Bearer ".Length).Trim();
                     
-                    Console.WriteLine($"Checking if token is B2C. Provider: {authOptions.Provider}");
-                    var isB2C = IsPotentialB2CToken(token);
-                    Console.WriteLine($"Is B2C token: {isB2C}");
-                    
-                    // Try to determine if this is a B2C token by checking the issuer
-                    if (authOptions.Provider == AuthenticationProvider.AzureAdB2C && isB2C)
+                    // Check if this is a B2C token by looking for B2C-specific claims
+                    if (IsB2CToken(token))
                     {
-                        Console.WriteLine("Routing to B2C authentication scheme");
                         return "AzureADB2C";
                     }
                 }
 
-                Console.WriteLine("Routing to default JWT authentication scheme");
-                // Default to JWT Bearer (local authentication)
+                // Default to local JWT Bearer (for tokens generated after B2C auth)
                 return JwtBearerDefaults.AuthenticationScheme;
             };
         });
@@ -186,23 +174,15 @@ internal static class Extensions
         return services;
     }
 
-    private static bool IsPotentialB2CToken(string token)
+    private static bool IsB2CToken(string token)
     {
         try
         {
-            Console.WriteLine("Analyzing token to determine if it's B2C...");
-            
-            // Simple check: B2C tokens typically have 3 parts (header.payload.signature)
+            // Simple check: decode the payload to look for B2C-specific claims
             var parts = token.Split('.');
-            if (parts.Length != 3) 
-            {
-                Console.WriteLine($"Token has {parts.Length} parts, not 3");
-                return false;
-            }
+            if (parts.Length != 3) return false;
 
-            // Decode the payload to check for B2C-specific claims
             var payload = parts[1];
-            
             // Add padding if needed
             switch (payload.Length % 4)
             {
@@ -213,20 +193,13 @@ internal static class Extensions
             var payloadBytes = Convert.FromBase64String(payload);
             var payloadJson = Encoding.UTF8.GetString(payloadBytes);
             
-            Console.WriteLine($"Token payload snippet: {payloadJson.Substring(0, Math.Min(200, payloadJson.Length))}...");
-            
             // Check for B2C-specific claims
-            var hasB2CLogin = payloadJson.Contains("b2clogin.com");
-            var hasTfp = payloadJson.Contains("tfp");
-            var hasB2CPolicy = payloadJson.Contains("B2C_");
-            
-            Console.WriteLine($"B2C indicators - b2clogin.com: {hasB2CLogin}, tfp: {hasTfp}, B2C_: {hasB2CPolicy}");
-            
-            return hasB2CLogin || hasTfp || hasB2CPolicy;
+            return payloadJson.Contains("b2clogin.com") || 
+                   payloadJson.Contains("tfp") || 
+                   payloadJson.Contains("B2C_");
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"Error analyzing token: {ex.Message}");
             return false;
         }
     }

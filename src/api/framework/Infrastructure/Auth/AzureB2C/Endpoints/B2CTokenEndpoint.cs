@@ -40,6 +40,18 @@ public static class B2CTokenEndpoint
                     // Get or create user from B2C claims
                     var fshUser = await userMappingService.GetOrCreateUserFromB2CClaimsAsync(user, ct);
                     
+                    // Additional validation: If user was created from invitation, verify email matches
+                    var email = user.FindFirst("emails")?.Value ?? 
+                               user.FindFirst("email")?.Value ?? 
+                               user.FindFirst(ClaimTypes.Email)?.Value;
+                    
+                    if (!string.IsNullOrEmpty(email) && !string.Equals(fshUser.Email, email, StringComparison.OrdinalIgnoreCase))
+                    {
+                        var logger = context.RequestServices.GetRequiredService<ILogger<IB2CUserMappingService>>();
+                        logger.LogWarning("Email mismatch detected. B2C email: {B2CEmail}, User email: {UserEmail}", email, fshUser.Email);
+                        return Results.Unauthorized();
+                    }
+                    
                     // Get user claims with all permissions and roles
                     var userClaims = await userMappingService.GetUserClaimsAsync(fshUser, ct);
 

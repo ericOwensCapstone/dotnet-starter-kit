@@ -64,6 +64,7 @@ else if (!_isB2C || _hasError)
 
 @code {
     [Parameter] public string Action { get; set; } = string.Empty;
+    [CascadingParameter] public Task<AuthenticationState> AuthState { get; set; } = default!;
     
     private bool _hasError = false;
     private string _errorMessage = string.Empty;
@@ -102,13 +103,9 @@ else if (!_isB2C || _hasError)
     {
         try
         {
-            Console.WriteLine($"Handling B2C callback for URL: {Navigation.Uri}");
-            
             // Get the B2C token from the URL fragment
             var uri = new Uri(Navigation.Uri);
             var fragment = await JS.InvokeAsync<string>("eval", "window.location.hash");
-            
-            Console.WriteLine($"URL fragment: {fragment}");
             
             if (!string.IsNullOrEmpty(fragment))
             {
@@ -126,46 +123,75 @@ else if (!_isB2C || _hasError)
                 
                 if (!string.IsNullOrEmpty(token))
                 {
-                    Console.WriteLine($"Found token, attempting exchange. Token length: {token.Length}");
-                    
                     // Exchange B2C token for local JWT
                     var b2cService = ServiceProvider.GetService<B2CAuthenticationService>();
                     if (b2cService != null)
                     {
-                        Console.WriteLine("Found B2C service, calling ExchangeB2CTokenAsync");
                         var success = await b2cService.ExchangeB2CTokenAsync(token);
-                        
-                        Console.WriteLine($"Token exchange result: {success}");
                         
                         if (success)
                         {
-                            Console.WriteLine("Token exchange successful, navigating to home");
-                            Navigation.NavigateTo("/");
-                            return;
+                            Console.WriteLine("Authentication.razor: Token exchange successful, verifying directly with B2C service");
+                            
+                            // Wait a moment for state propagation
+                            await Task.Delay(100);
+                            
+                            // Verify directly with the B2C service instead of relying on cascading AuthState
+                            var directAuthState = await b2cService.GetAuthenticationStateAsync();
+                            if (directAuthState.User.Identity?.IsAuthenticated == true)
+                            {
+                                Console.WriteLine("Authentication.razor: Direct B2C auth state confirmed, forcing global state refresh");
+                                
+                                // Force the global authentication state to be updated
+                                // by triggering the cascading authentication state to refresh
+                                await Task.Delay(200); // Give more time for state propagation
+                                
+                                // Force a state refresh by causing a re-render
+                                StateHasChanged();
+                                await Task.Delay(100);
+                                
+                                Console.WriteLine("Authentication.razor: Navigating to home with force reload");
+                                Navigation.NavigateTo("/", forceLoad: true);
+                                return;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Authentication.razor: Direct B2C auth state not authenticated yet, waiting longer");
+                                await Task.Delay(500);
+                                directAuthState = await b2cService.GetAuthenticationStateAsync();
+                                if (directAuthState.User.Identity?.IsAuthenticated == true)
+                                {
+                                    Console.WriteLine("Authentication.razor: Direct B2C auth state confirmed after retry, forcing final state refresh");
+                                    
+                                    // Force final state refresh
+                                    StateHasChanged();
+                                    await Task.Delay(100);
+                                    
+                                    Console.WriteLine("Authentication.razor: Navigating to home with force reload (retry)");
+                                    Navigation.NavigateTo("/", forceLoad: true);
+                                    return;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Authentication.razor: Direct B2C auth state still not authenticated, showing error");
+                                    ShowB2CError("Authentication completed but state not updated. Please try again.");
+                                    return;
+                                }
+                            }
                         }
                         else
                         {
-                            Console.WriteLine("Token exchange failed");
+                            Console.WriteLine("Authentication.razor: Token exchange failed");
                         }
                     }
-                    else
-                    {
-                        Console.WriteLine("B2C service not found");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("No token found in URL parameters");
                 }
             }
             
             // If we get here, something went wrong
-            Console.WriteLine("B2C authentication failed, showing error page");
             ShowB2CError("Authentication failed. Please try again.");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error handling B2C callback: {ex.Message}");
             ShowB2CError("An error occurred during authentication. Please try again.");
         }
     }

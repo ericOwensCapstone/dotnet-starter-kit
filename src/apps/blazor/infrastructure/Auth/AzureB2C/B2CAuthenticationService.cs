@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 
 namespace FSH.Starter.Blazor.Infrastructure.Auth.AzureB2C;
 
@@ -19,19 +20,22 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
     private readonly IApiClient _apiClient;
     private readonly IOptions<B2CAuthenticationOptions> _options;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IConfiguration _configuration;
 
     public B2CAuthenticationService(
         NavigationManager navigation,
         ILocalStorageService localStorage,
         IApiClient apiClient,
         IOptions<B2CAuthenticationOptions> options,
-        IHttpClientFactory httpClientFactory)
+        IHttpClientFactory httpClientFactory,
+        IConfiguration configuration)
     {
         _navigation = navigation;
         _localStorage = localStorage;
         _apiClient = apiClient;
         _options = options;
         _httpClientFactory = httpClientFactory;
+        _configuration = configuration;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -57,14 +61,39 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
 
     public void NavigateToExternalLogin(string returnUrl, string? loginHint = null)
     {
-        // For B2C, redirect directly to B2C sign-up flow
-        var b2cOptions = _options.Value;
+        Console.WriteLine($"B2CAuthenticationService.NavigateToExternalLogin: returnUrl={returnUrl}, loginHint={loginHint}");
+        
+        var b2cSection = _configuration.GetSection("AuthenticationOptions:AzureAdB2C");
+        var instance = b2cSection["Instance"];
+        var domain = b2cSection["Domain"];
+        var clientId = b2cSection["ClientId"];
+        var apiScope = b2cSection["ApiScope"];
+        
         var redirectUri = new Uri(_navigation.BaseUri).GetLeftPart(UriPartial.Authority) + "/authentication/login-callback";
-        var loginUrl = $"{b2cOptions.Authority}/oauth2/v2.0/authorize" +
-            $"?client_id={b2cOptions.ClientId}" +
+        
+        // Determine which policy to use based on whether we have a login hint (invitation scenario)
+        string policyId;
+        if (!string.IsNullOrEmpty(loginHint))
+        {
+            // Use the custom sign-up policy for invitations
+            policyId = b2cSection["SignUpInvitationPolicyId"] ?? "B2C_1A_signup_invitation";
+            Console.WriteLine($"B2CAuthenticationService: Using invitation policy: {policyId}");
+        }
+        else
+        {
+            // Use the regular sign-in policy
+            policyId = b2cSection["SignInPolicyId"] ?? "B2C_1_signin";
+            Console.WriteLine($"B2CAuthenticationService: Using regular sign-in policy: {policyId}");
+        }
+        
+        // Construct the authority URL with the appropriate policy
+        var authority = $"{instance}/{domain}/{policyId}";
+        
+        var loginUrl = $"{authority}/oauth2/v2.0/authorize" +
+            $"?client_id={clientId}" +
             $"&response_type=id_token token" +
             $"&redirect_uri={Uri.EscapeDataString(redirectUri)}" +
-            $"&scope={Uri.EscapeDataString(string.Join(" ", b2cOptions.DefaultScopes))}" +
+            $"&scope={Uri.EscapeDataString($"openid offline_access {apiScope}")}" +
             $"&response_mode=fragment" +
             $"&nonce={Guid.NewGuid()}" +
             $"&state={Uri.EscapeDataString(returnUrl)}"; // Pass return URL in state
@@ -73,8 +102,13 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
         if (!string.IsNullOrEmpty(loginHint))
         {
             loginUrl += $"&login_hint={Uri.EscapeDataString(loginHint)}";
+            // For custom policies, we don't add prompt parameter as it might interfere
+            // The custom policy should handle the signup flow
+            // Add domain_hint to skip home realm discovery
+            loginUrl += "&domain_hint=live.com";
         }
 
+        Console.WriteLine($"B2CAuthenticationService: Final login URL: {loginUrl}");
         _navigation.NavigateTo(loginUrl, true);
     }
 
@@ -92,9 +126,9 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
             // Use the B2C-specific HttpClient that doesn't have JWT authentication handler
             using var httpClient = _httpClientFactory.CreateClient(FSH.Starter.Blazor.Infrastructure.Extensions.B2CClientName);
             
-            // Exchange B2C token for local JWT
+            // Exchange B2C token for local JWT using the public endpoint
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", b2cToken);
-            var response = await httpClient.PostAsync("/b2c/token", null);
+            var response = await httpClient.PostAsync("/api/public/b2c-token", null);
             
             if (response.IsSuccessStatusCode)
             {

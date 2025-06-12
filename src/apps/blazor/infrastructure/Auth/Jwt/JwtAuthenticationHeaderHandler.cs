@@ -19,8 +19,14 @@ public class JwtAuthenticationHeaderHandler : DelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        // skip token endpoints
-        if (request.RequestUri?.AbsolutePath.Contains("/token") is not true)
+        var path = request.RequestUri?.AbsolutePath;
+        
+        // Skip authentication for public endpoints
+        bool isPublicEndpoint = path?.Contains("/token") == true ||
+                               path?.Contains("/api/invitations/validate/") == true ||
+                               path?.Contains("/api/public/") == true;
+        
+        if (!isPublicEndpoint)
         {
             Console.WriteLine($"JwtAuthenticationHeaderHandler: Processing request to {request.RequestUri?.AbsolutePath}");
             
@@ -58,7 +64,7 @@ public class JwtAuthenticationHeaderHandler : DelegatingHandler
         }
         else
         {
-            Console.WriteLine($"JwtAuthenticationHeaderHandler: Skipping token endpoint: {request.RequestUri?.AbsolutePath}");
+            Console.WriteLine($"JwtAuthenticationHeaderHandler: Skipping public endpoint: {request.RequestUri?.AbsolutePath}");
         }
 
         return await base.SendAsync(request, cancellationToken);

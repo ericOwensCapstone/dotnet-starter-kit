@@ -11,13 +11,14 @@ namespace FSH.Framework.Infrastructure.Identity.Invitations;
 
 public class InvitationRepository : RepositoryBase<UserInvitation>, IInvitationRepository, IReadRepository<UserInvitation>, IRepository<UserInvitation>
 {
+    private readonly IdentityDbContext _dbContext;
     private readonly ICurrentUser _currentUser;
     private readonly ILogger<InvitationRepository>? _logger;
     
     public InvitationRepository(IdentityDbContext context, ICurrentUser currentUser, ILogger<InvitationRepository>? logger = null) : base(context)
     {
-        _dbContext = context;
-        _currentUser = currentUser;
+        _dbContext = context ?? throw new ArgumentNullException(nameof(context));
+        _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
         _logger = logger;
     }
 
@@ -25,20 +26,36 @@ public class InvitationRepository : RepositoryBase<UserInvitation>, IInvitationR
     {
         var query = _dbContext.Set<UserInvitation>().AsQueryable();
         
-        // All users (including root admin) can only see invitations they created (by TenantId ownership)
-        var currentTenantId = _currentUser.GetTenant();
-        var currentUserId = _currentUser.GetUserId();
-        var userEmail = _currentUser.GetUserEmail();
-        
-        _logger?.LogInformation("GetFilteredInvitations - Current User: {UserId}, Email: {Email}, TenantId: {TenantId}", 
-            currentUserId, userEmail, currentTenantId);
-        
-        var filteredQuery = query.Where(x => x.TenantId == currentTenantId);
-        
-        // Debug: Log the generated SQL query
-        _logger?.LogInformation("Repository filter SQL: {Query}", filteredQuery.ToQueryString());
-        
-        return filteredQuery;
+        // Check if user is authenticated
+        if (_currentUser.IsAuthenticated())
+        {
+            // All users (including root admin) can only see invitations they created (by TenantId ownership)
+            var currentTenantId = _currentUser.GetTenant();
+            var currentUserId = _currentUser.GetUserId();
+            var userEmail = _currentUser.GetUserEmail();
+            
+            _logger?.LogInformation("GetFilteredInvitations - Current User: {UserId}, Email: {Email}, TenantId: {TenantId}", 
+                currentUserId, userEmail, currentTenantId);
+            
+            var filteredQuery = query.Where(x => x.TenantId == currentTenantId);
+            
+            // Debug: Log the generated SQL query
+            try
+            {
+                _logger?.LogInformation("Repository filter SQL: {Query}", filteredQuery.ToQueryString());
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogWarning(ex, "Unable to get query string for logging");
+            }
+            
+            return filteredQuery;
+        }
+        else
+        {
+            _logger?.LogInformation("GetFilteredInvitations - Anonymous access, no filtering applied");
+            return query;
+        }
     }
     
     // Debug method to log all invitations in database (no filtering)
@@ -68,9 +85,70 @@ public class InvitationRepository : RepositoryBase<UserInvitation>, IInvitationR
 
     public async Task<UserInvitation?> GetByTokenAsync(string token, CancellationToken cancellationToken = default)
     {
-        // Token lookup doesn't need tenant filtering for invitation acceptance
-        return await _dbContext.Set<UserInvitation>()
-            .FirstOrDefaultAsync(x => x.InvitationToken == token, cancellationToken);
+        if (string.IsNullOrEmpty(token))
+        {
+            _logger?.LogWarning("GetByTokenAsync called with null or empty token");
+            return null;
+        }
+
+        try
+        {
+            _logger?.LogInformation("GetByTokenAsync: Looking for invitation with token: {Token}", token);
+            
+            // Token lookup doesn't need tenant filtering for invitation acceptance
+            // First, let's check if we can access the UserInvitation set
+            var invitationSet = _dbContext.Set<UserInvitation>();
+            if (invitationSet == null)
+            {
+                _logger?.LogError("GetByTokenAsync: Unable to get UserInvitation DbSet");
+                throw new InvalidOperationException("Unable to access UserInvitation entities");
+            }
+            
+            // Log the SQL query that will be executed
+            var query = invitationSet.Where(x => x.InvitationToken != null && x.InvitationToken == token);
+            
+            // ToQueryString() can fail with anonymous access, so wrap in try-catch
+            try
+            {
+                _logger?.LogInformation("GetByTokenAsync: Executing query: {Query}", query.ToQueryString());
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogWarning(ex, "Unable to get query string for logging");
+            }
+            
+            var invitation = await query.FirstOrDefaultAsync(cancellationToken);
+            
+            if (invitation == null)
+            {
+                _logger?.LogWarning("GetByTokenAsync: No invitation found for token: {Token}", token);
+                
+                // Let's check if there are any invitations at all
+                var totalCount = await invitationSet.CountAsync(cancellationToken);
+                _logger?.LogInformation("GetByTokenAsync: Total invitations in database: {Count}", totalCount);
+                
+                // Log a few sample tokens to help debug
+                var sampleTokens = await invitationSet
+                    .Where(x => x.InvitationToken != null)
+                    .Select(x => x.InvitationToken)
+                    .Take(5)
+                    .ToListAsync(cancellationToken);
+                    
+                _logger?.LogInformation("GetByTokenAsync: Sample invitation tokens: {Tokens}", string.Join(", ", sampleTokens));
+            }
+            else
+            {
+                _logger?.LogInformation("GetByTokenAsync: Found invitation - Id: {Id}, Email: {Email}, Status: {Status}",
+                    invitation.Id, invitation.Email, invitation.Status);
+            }
+            
+            return invitation;
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex, "Error retrieving invitation by token: {Token}", token);
+            throw;
+        }
     }
 
     public async Task<UserInvitation?> GetByEmailAndTenantAsync(string email, string targetTenantId, CancellationToken cancellationToken = default)
@@ -131,8 +209,6 @@ public class InvitationRepository : RepositoryBase<UserInvitation>, IInvitationR
                      cancellationToken);
     }
 
-    private readonly IdentityDbContext _dbContext;
-    
     public override async Task<UserInvitation?> GetByIdAsync<TId>(TId id, CancellationToken cancellationToken = default)
     {
         return await GetFilteredInvitations()

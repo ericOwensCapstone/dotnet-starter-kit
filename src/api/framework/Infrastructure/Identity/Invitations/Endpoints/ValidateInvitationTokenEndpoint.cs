@@ -9,7 +9,7 @@ public static class ValidateInvitationTokenEndpoint
 {
     public static void MapValidateInvitationTokenEndpoint(this IEndpointRouteBuilder builder)
     {
-        builder.MapGet("invitations/validate/{token}", ValidateInvitationToken)
+        builder.MapGet("validate/{token}", ValidateInvitationToken)
             .WithName(nameof(ValidateInvitationToken))
             .WithSummary("Validate invitation token")
             .WithDescription("Validates an invitation token and returns invitation details if valid")

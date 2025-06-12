@@ -29,6 +29,7 @@ namespace FSH.Framework.Infrastructure.Identity.Invitations;
 public class InvitationService : IInvitationService
 {
     private readonly IInvitationRepository _invitationRepository;
+    private readonly IAnonymousInvitationRepository _anonymousInvitationRepository;
     private readonly IGraphService _graphService;
     private readonly IMailService _mailService;
     private readonly UserManager<FshUser> _userManager;
@@ -40,6 +41,7 @@ public class InvitationService : IInvitationService
 
     public InvitationService(
         IInvitationRepository invitationRepository,
+        IAnonymousInvitationRepository anonymousInvitationRepository,
         IGraphService graphService,
         IMailService mailService,
         UserManager<FshUser> userManager,
@@ -50,6 +52,7 @@ public class InvitationService : IInvitationService
         ILogger<InvitationService> logger)
     {
         _invitationRepository = invitationRepository;
+        _anonymousInvitationRepository = anonymousInvitationRepository;
         _graphService = graphService;
         _mailService = mailService;
         _userManager = userManager;
@@ -306,7 +309,17 @@ public class InvitationService : IInvitationService
 
     public async Task<UserInvitation?> GetInvitationByTokenAsync(string token, CancellationToken cancellationToken = default)
     {
-        return await _invitationRepository.GetByTokenAsync(token, cancellationToken);
+        try
+        {
+            // Use anonymous repository for token lookups to bypass tenant filtering
+            // This is needed for public invitation validation endpoints
+            return await _anonymousInvitationRepository.GetByTokenAsync(token, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting invitation by token");
+            throw;
+        }
     }
 
     public async Task<PagedList<InvitationDto>> SearchInvitationsAsync(SearchInvitationsQuery request, CancellationToken cancellationToken = default)

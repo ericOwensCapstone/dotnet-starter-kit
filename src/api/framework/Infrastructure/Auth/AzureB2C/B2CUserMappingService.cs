@@ -65,9 +65,18 @@ public class B2CUserMappingService : IB2CUserMappingService
         // B2C emails claim is typically an array, try different approaches
         var email = principal.FindFirst("emails")?.Value ?? 
                    principal.FindFirst("email")?.Value ?? 
-                   principal.FindFirst(ClaimTypes.Email)?.Value;
+                   principal.FindFirst(ClaimTypes.Email)?.Value ?? 
+                   principal.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value ?? 
+                   principal.FindFirst("signInNames.emailAddress")?.Value;
         
         var displayName = principal.FindFirst("name")?.Value ?? principal.FindFirst(ClaimTypes.Name)?.Value;
+        
+        // For invitation flow, check if email is stored in displayName temporarily
+        if (string.IsNullOrEmpty(email) && displayName != null && displayName.Contains("@"))
+        {
+            _logger.LogWarning("Email not found in standard claims, checking if displayName contains email");
+            email = displayName;
+        }
         var givenName = principal.FindFirst("given_name")?.Value ?? principal.FindFirst(ClaimTypes.GivenName)?.Value;
         var surname = principal.FindFirst("family_name")?.Value ?? principal.FindFirst(ClaimTypes.Surname)?.Value;
 
@@ -78,11 +87,17 @@ public class B2CUserMappingService : IB2CUserMappingService
         _logger.LogInformation("Extracted claims - ObjectId: {ObjectId}, Email: {Email}, DisplayName: {DisplayName}, TenantId: {TenantId}, UserStatus: {UserStatus}", 
             objectId ?? "NULL", email ?? "NULL", displayName ?? "NULL", tenantId ?? "NULL", userStatus ?? "NULL");
 
-        if (string.IsNullOrEmpty(objectId) || string.IsNullOrEmpty(email))
+        if (string.IsNullOrEmpty(objectId))
         {
-            _logger.LogError("Missing required B2C claims - ObjectId: {ObjectId}, Email: {Email}", 
-                objectId ?? "NULL", email ?? "NULL");
-            throw new UnauthorizedException("Invalid B2C token - missing required claims");
+            _logger.LogError("Missing required B2C ObjectId claim: {ObjectId}", objectId ?? "NULL");
+            throw new UnauthorizedException("Invalid B2C token - missing ObjectId claim");
+        }
+
+        // For invitation flow, email might not be in the token yet
+        if (string.IsNullOrEmpty(email))
+        {
+            _logger.LogWarning("Email claim missing in B2C token. This might be an invitation acceptance flow.");
+            // We'll try to get email from other sources later
         }
 
         // First try to find user by B2C Object ID
@@ -141,6 +156,31 @@ public class B2CUserMappingService : IB2CUserMappingService
         // If user still not found, check if they have a valid invitation
         if (user == null)
         {
+            // If email is missing, try to get it from the B2C user's stored data or invitation token
+            if (string.IsNullOrEmpty(email))
+            {
+                _logger.LogInformation("Email missing from B2C token. Attempting to retrieve from Graph API for ObjectId: {ObjectId}", objectId);
+                try
+                {
+                    var graphUser = await _graphService.GetUserByIdAsync(objectId, cancellationToken);
+                    if (graphUser != null)
+                    {
+                        email = graphUser.Mail ?? graphUser.UserPrincipalName;
+                        _logger.LogInformation("Retrieved email from Graph API: {Email}", email);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to retrieve user from Graph API");
+                }
+            }
+
+            if (string.IsNullOrEmpty(email))
+            {
+                _logger.LogError("Unable to determine user email for ObjectId: {ObjectId}", objectId);
+                throw new UnauthorizedException("Invalid B2C token - unable to determine user email");
+            }
+
             _logger.LogInformation("User not found in system. Checking for valid invitations for email: {Email}", email);
             
             // Look for invitations for this email

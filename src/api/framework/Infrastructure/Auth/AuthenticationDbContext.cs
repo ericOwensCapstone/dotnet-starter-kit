@@ -4,6 +4,7 @@ using FSH.Framework.Infrastructure.Identity.Users;
 using FSH.Framework.Infrastructure.Identity.Roles;
 using FSH.Framework.Infrastructure.Identity.RoleClaims;
 using FSH.Framework.Infrastructure.Tenant;
+using FSH.Framework.Core.Identity.Invitations;
 using Shared.Constants;
 
 namespace FSH.Framework.Infrastructure.Auth;
@@ -24,6 +25,7 @@ public class AuthenticationDbContext : DbContext
     public DbSet<IdentityUserRole<string>> UserRoles => Set<IdentityUserRole<string>>();
     public DbSet<FshRoleClaim> RoleClaims => Set<FshRoleClaim>();
     public DbSet<FshTenantInfo> Tenants => Set<FshTenantInfo>();
+    public DbSet<UserInvitation> UserInvitations => Set<UserInvitation>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -35,6 +37,7 @@ public class AuthenticationDbContext : DbContext
         modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles", SchemaNames.Identity);
         modelBuilder.Entity<FshRoleClaim>().ToTable("RoleClaims", SchemaNames.Identity);
         modelBuilder.Entity<FshTenantInfo>().ToTable("Tenants", SchemaNames.Tenant);
+        modelBuilder.Entity<UserInvitation>().ToTable("UserInvitations", SchemaNames.Identity);
 
         // Configure the composite key for UserRoles
         modelBuilder.Entity<IdentityUserRole<string>>()
@@ -52,5 +55,22 @@ public class AuthenticationDbContext : DbContext
             .WithMany()
             .HasForeignKey(ur => ur.RoleId)
             .IsRequired();
+            
+        // Configure UserInvitation without multi-tenancy
+        modelBuilder.Entity<UserInvitation>(builder =>
+        {
+            builder.HasKey(x => x.Id);
+            
+            builder.Property(x => x.Email)
+                .HasMaxLength(254)
+                .IsRequired();
+                
+            builder.Property(x => x.InvitationToken)
+                .HasMaxLength(100)
+                .IsRequired();
+                
+            builder.HasIndex(x => x.InvitationToken)
+                .IsUnique();
+        });
     }
 }

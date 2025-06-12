@@ -9,6 +9,7 @@ public static class Extensions
     {
         var apiGroup = builder.MapGroup("api/invitations");
 
+        // Authenticated endpoints
         apiGroup.MapSearchInvitationsEndpoint();
         apiGroup.MapCreateInvitationEndpoint();
         apiGroup.MapGetInvitationEndpoint();
@@ -16,6 +17,8 @@ public static class Extensions
         apiGroup.MapResendInvitationEndpoint();
         apiGroup.MapCancelInvitationEndpoint();
         apiGroup.MapExtendInvitationExpirationEndpoint();
+        
+        // Public/Anonymous endpoints - these need AllowAnonymous to work
         apiGroup.MapValidateInvitationTokenEndpoint();
         apiGroup.MapAcceptInvitationEndpoint();
     }

@@ -51,6 +51,9 @@ public static class Extensions
         // Register repository for UserInvitations
         services.AddScoped<IInvitationRepository, InvitationRepository>();
         
+        // Register anonymous invitation repository for public endpoints
+        services.AddScoped<IAnonymousInvitationRepository, AnonymousInvitationRepository>();
+        
         // Register invitation service
         services.AddScoped<IInvitationService, InvitationService>();
         services.AddIdentity<FshUser, FshRole>(options =>

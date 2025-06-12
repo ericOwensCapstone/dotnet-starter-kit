@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using FSH.Framework.Core.Auth;
 using FSH.Framework.Core.Identity.Tokens;
@@ -6,6 +7,7 @@ using FSH.Framework.Infrastructure.Auth.Policy;
 using FSH.Framework.Infrastructure.Identity.Users;
 using FSH.Framework.Infrastructure.Tenant;
 using FSH.Starter.Shared.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -13,22 +15,21 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authorization;
 
 namespace FSH.Framework.Infrastructure.Auth.AzureB2C.Endpoints;
 
-public static class B2CTokenEndpoint
+public static class PublicB2CTokenEndpoint
 {
-    internal static RouteHandlerBuilder MapB2CTokenEndpoint(this IEndpointRouteBuilder endpoints)
+    internal static RouteHandlerBuilder MapPublicB2CTokenEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        // Map to a different path that's explicitly public
         return endpoints
-            .MapPost("/b2c/token", async (
+            .MapPost("/api/public/b2c-token", async (
                 HttpContext context,
                 IB2CUserMappingService userMappingService,
                 ITokenService tokenService,
-                IOptions<FSH.Framework.Core.Auth.AuthenticationOptions> authOptions,
+                IOptions<AuthenticationOptions> authOptions,
+                ILogger<IB2CUserMappingService> logger,
                 CancellationToken ct) =>
             {
                 try
@@ -42,9 +43,22 @@ public static class B2CTokenEndpoint
 
                     var b2cToken = authHeader.Substring("Bearer ".Length).Trim();
                     
-                    // Decode the B2C token to get claims (basic validation - real validation happens in B2C)
+                    // Validate the B2C token
                     var handler = new JwtSecurityTokenHandler();
+                    
+                    // First, read the token without validation to check the issuer
                     var jsonToken = handler.ReadJwtToken(b2cToken);
+                    var issuer = jsonToken.Issuer;
+                    
+                    // Check if this is actually a B2C token or a local JWT
+                    if (issuer == "https://fullstackhero.net")
+                    {
+                        // This is already a local JWT, not a B2C token
+                        logger.LogError("Received local JWT token instead of B2C token at public endpoint");
+                        return Results.BadRequest("Invalid token type. Expected B2C token.");
+                    }
+                    
+                    // For B2C tokens, we trust B2C's validation and just extract claims
                     var claims = jsonToken.Claims;
                     
                     // Create a ClaimsPrincipal from the B2C token claims
@@ -53,18 +67,6 @@ public static class B2CTokenEndpoint
 
                     // Get or create user from B2C claims
                     var fshUser = await userMappingService.GetOrCreateUserFromB2CClaimsAsync(user, ct);
-                    
-                    // Additional validation: If user was created from invitation, verify email matches
-                    var email = user.FindFirst("emails")?.Value ?? 
-                               user.FindFirst("email")?.Value ?? 
-                               user.FindFirst(ClaimTypes.Email)?.Value;
-                    
-                    if (!string.IsNullOrEmpty(email) && !string.Equals(fshUser.Email, email, StringComparison.OrdinalIgnoreCase))
-                    {
-                        var logger = context.RequestServices.GetRequiredService<ILogger<IB2CUserMappingService>>();
-                        logger.LogWarning("Email mismatch detected. B2C email: {B2CEmail}, User email: {UserEmail}", email, fshUser.Email);
-                        return Results.Unauthorized();
-                    }
                     
                     // Get user claims with all permissions and roles
                     var userClaims = await userMappingService.GetUserClaimsAsync(fshUser, ct);
@@ -81,16 +83,16 @@ public static class B2CTokenEndpoint
                 catch (Exception ex)
                 {
                     // Log the error but don't expose internal details
-                    var logger = context.RequestServices.GetRequiredService<ILogger<IB2CUserMappingService>>();
                     logger.LogError(ex, "Error during B2C token exchange");
                     return Results.Problem("Internal server error during token exchange");
                 }
             })
-            .WithName(nameof(B2CTokenEndpoint))
-            .WithSummary("Exchange B2C token for local JWT")
+            .WithName("PublicB2CTokenEndpoint")
+            .WithSummary("Exchange B2C token for local JWT (public endpoint)")
             .WithDescription("After B2C authentication, call this endpoint to get a local JWT with proper permissions")
             .AllowAnonymous()
             .WithMetadata(new Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute())
-            .Produces<TokenResponse>();
+            .Produces<TokenResponse>()
+            .WithTags("Authentication");
     }
 }

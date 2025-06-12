@@ -28,7 +28,7 @@ public class IdentityDbContext : MultiTenantIdentityDbContext<FshUser,
     public IdentityDbContext(IMultiTenantContextAccessor<FshTenantInfo> multiTenantContextAccessor, DbContextOptions<IdentityDbContext> options, IOptions<DatabaseOptions> settings) : base(multiTenantContextAccessor, options)
     {
         _settings = settings.Value;
-        TenantInfo = multiTenantContextAccessor.MultiTenantContext.TenantInfo!;
+        TenantInfo = multiTenantContextAccessor?.MultiTenantContext?.TenantInfo!;
     }
 
     public DbSet<AuditTrail> AuditTrails { get; set; }
@@ -43,9 +43,14 @@ public class IdentityDbContext : MultiTenantIdentityDbContext<FshUser,
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (!string.IsNullOrWhiteSpace(TenantInfo?.ConnectionString))
+        // For anonymous access (like invitation validation), use the default connection string
+        var connectionString = !string.IsNullOrWhiteSpace(TenantInfo?.ConnectionString) 
+            ? TenantInfo.ConnectionString 
+            : _settings.ConnectionString;
+            
+        if (!string.IsNullOrWhiteSpace(connectionString))
         {
-            optionsBuilder.ConfigureDatabase(_settings.Provider, TenantInfo.ConnectionString);
+            optionsBuilder.ConfigureDatabase(_settings.Provider, connectionString);
         }
     }
 }

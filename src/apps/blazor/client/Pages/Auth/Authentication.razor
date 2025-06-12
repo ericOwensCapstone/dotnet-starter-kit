@@ -4,9 +4,13 @@
 @using FSH.Starter.Blazor.Infrastructure.Auth.AzureB2C
 @using Microsoft.Extensions.DependencyInjection
 @using Microsoft.AspNetCore.Authorization
+@using Blazored.LocalStorage
+@using FSH.Starter.Blazor.Infrastructure.Api
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
 @inject IServiceProvider ServiceProvider
+@inject ILocalStorageService LocalStorage
+@inject IApiClient ApiClient
 
 @if (_isB2C && !_hasError)
 {
@@ -107,7 +111,7 @@ else if (!_isB2C || _hasError)
             var uri = new Uri(Navigation.Uri);
             var fragment = await JS.InvokeAsync<string>("eval", "window.location.hash");
             
-            if (!string.IsNullOrEmpty(fragment))
+            if (!string.IsNullOrEmpty(fragment) && fragment.Length > 1)
             {
                 var parameters = ParseFragment(fragment);
                 
@@ -123,6 +127,7 @@ else if (!_isB2C || _hasError)
                 
                 if (!string.IsNullOrEmpty(token))
                 {
+                    Console.WriteLine("Authentication.razor: Found B2C token in URL fragment");
                     // Exchange B2C token for local JWT
                     var b2cService = ServiceProvider.GetService<B2CAuthenticationService>();
                     if (b2cService != null)
@@ -140,7 +145,17 @@ else if (!_isB2C || _hasError)
                             var directAuthState = await b2cService.GetAuthenticationStateAsync();
                             if (directAuthState.User.Identity?.IsAuthenticated == true)
                             {
-                                Console.WriteLine("Authentication.razor: Direct B2C auth state confirmed, forcing global state refresh");
+                                Console.WriteLine("Authentication.razor: Direct B2C auth state confirmed, checking for pending invitation");
+                                
+                                // Check if there's a pending invitation to accept
+                                var pendingInvitationToken = await LocalStorage.GetItemAsync<string>("pendingInvitationToken");
+                                if (!string.IsNullOrEmpty(pendingInvitationToken))
+                                {
+                                    Console.WriteLine("Authentication.razor: Found pending invitation token, clearing it");
+                                    // Clear the pending invitation token
+                                    // The invitation is automatically processed server-side when the B2C user is provisioned
+                                    await LocalStorage.RemoveItemAsync("pendingInvitationToken");
+                                }
                                 
                                 // Force the global authentication state to be updated
                                 // by triggering the cascading authentication state to refresh
@@ -185,14 +200,40 @@ else if (!_isB2C || _hasError)
                         }
                     }
                 }
+                else
+                {
+                    Console.WriteLine("Authentication.razor: No B2C token found in URL fragment");
+                    // No token in fragment, check if user is already authenticated
+                    await CheckExistingAuthentication();
+                }
             }
-            
-            // If we get here, something went wrong
-            ShowB2CError("Authentication failed. Please try again.");
+            else
+            {
+                Console.WriteLine("Authentication.razor: No URL fragment found");
+                // No fragment at all, check if user is already authenticated
+                await CheckExistingAuthentication();
+            }
         }
         catch (Exception ex)
         {
+            Console.WriteLine($"Authentication.razor: Error in HandleB2CCallback: {ex.Message}");
             ShowB2CError("An error occurred during authentication. Please try again.");
+        }
+    }
+
+    private async Task CheckExistingAuthentication()
+    {
+        // Check if the user is already authenticated
+        var authState = await AuthState;
+        if (authState.User.Identity?.IsAuthenticated == true)
+        {
+            Console.WriteLine("Authentication.razor: User already authenticated, redirecting to home");
+            Navigation.NavigateTo("/", forceLoad: true);
+        }
+        else
+        {
+            Console.WriteLine("Authentication.razor: No authentication found");
+            ShowB2CError("Authentication failed. Please try again.");
         }
     }
 

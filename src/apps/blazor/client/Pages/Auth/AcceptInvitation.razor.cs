@@ -19,9 +19,26 @@ public partial class AcceptInvitation
     private string? _invitedUserEmail;
     private string? _invitedUserName;
 
+    public AcceptInvitation()
+    {
+        Console.WriteLine("AcceptInvitation: Constructor called");
+    }
+
     protected override async Task OnInitializedAsync()
     {
-        await ValidateInvitationTokenAsync();
+        Console.WriteLine("AcceptInvitation.OnInitializedAsync: Starting");
+        try
+        {
+            await ValidateInvitationTokenAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"AcceptInvitation.OnInitializedAsync: Exception - {ex.Message}");
+            _hasError = true;
+            _errorMessage = "An error occurred while loading the invitation.";
+            _isLoading = false;
+        }
+        Console.WriteLine("AcceptInvitation.OnInitializedAsync: Completed");
     }
 
     private async Task ValidateInvitationTokenAsync()
@@ -31,13 +48,27 @@ public partial class AcceptInvitation
             // Extract the token from the query string
             var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
             var query = uri.Query;
-            if (!string.IsNullOrEmpty(query) && query.Contains("token="))
+            Console.WriteLine($"AcceptInvitation: Full URI: {Navigation.Uri}");
+            Console.WriteLine($"AcceptInvitation: Query string: {query}");
+            
+            if (!string.IsNullOrEmpty(query))
             {
-                var tokenParam = query.Split('&').FirstOrDefault(p => p.Contains("token="));
-                if (tokenParam != null)
+                // Remove the leading '?' if present
+                if (query.StartsWith("?"))
                 {
-                    _invitationToken = tokenParam.Split('=')[1];
-                    _invitationToken = Uri.UnescapeDataString(_invitationToken);
+                    query = query.Substring(1);
+                }
+                
+                var queryParams = query.Split('&');
+                foreach (var param in queryParams)
+                {
+                    var parts = param.Split('=');
+                    if (parts.Length == 2 && parts[0] == "token")
+                    {
+                        _invitationToken = Uri.UnescapeDataString(parts[1]);
+                        Console.WriteLine($"AcceptInvitation: Extracted token: {_invitationToken}");
+                        break;
+                    }
                 }
             }
 
@@ -51,25 +82,30 @@ public partial class AcceptInvitation
             // Validate the token with the API
             try
             {
+                Console.WriteLine($"AcceptInvitation: Validating token: {_invitationToken}");
                 var validationResult = await ApiClient.ValidateInvitationTokenAsync(_invitationToken);
                 _invitedUserEmail = validationResult.Email;
                 _invitedUserName = validationResult.DisplayName;
                 _hasError = false;
+                Console.WriteLine($"AcceptInvitation: Validation successful - Email: {_invitedUserEmail}, Name: {_invitedUserName}");
             }
             catch (ApiException apiEx) when (apiEx.StatusCode == 404)
             {
                 _hasError = true;
                 _errorMessage = "This invitation link is not valid. Please check your invitation email.";
+                Console.WriteLine($"AcceptInvitation: 404 error - {_errorMessage}");
             }
             catch (ApiException apiEx) when (apiEx.StatusCode == 400)
             {
                 _hasError = true;
                 _errorMessage = apiEx.Message ?? "This invitation cannot be accepted.";
+                Console.WriteLine($"AcceptInvitation: 400 error - {_errorMessage}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _hasError = true;
                 _errorMessage = "Unable to validate your invitation. Please try again later.";
+                Console.WriteLine($"AcceptInvitation: General error - {ex.Message}");
             }
         }
         catch (Exception)
@@ -94,16 +130,20 @@ public partial class AcceptInvitation
 
         try
         {
+            Console.WriteLine($"AcceptInvitation.AcceptAndSignUp: Email={_invitedUserEmail}, Token={_invitationToken}");
+            
             // Store the invitation token in localStorage so it can be retrieved after B2C authentication
             await localStorage.SetItemAsync("pendingInvitationToken", _invitationToken);
             
             // Navigate to B2C authentication with the invited email as a hint
             // This will pre-populate the email field in B2C
             var returnUrl = "/";
+            Console.WriteLine($"AcceptInvitation.AcceptAndSignUp: Calling NavigateToExternalLogin with email hint: {_invitedUserEmail}");
             AuthenticationService.NavigateToExternalLogin(returnUrl, _invitedUserEmail);
         }
         catch (Exception ex)
         {
+            Console.WriteLine($"AcceptInvitation.AcceptAndSignUp Error: {ex.Message}");
             Toast.Add($"Failed to redirect to sign-up: {ex.Message}", Severity.Error);
         }
     }

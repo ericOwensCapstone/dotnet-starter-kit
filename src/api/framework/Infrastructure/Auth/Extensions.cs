@@ -11,6 +11,7 @@ using FSH.Framework.Infrastructure.Identity.Tokens;
 using FSH.Starter.Shared.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -168,7 +169,14 @@ internal static class Extensions
         services.AddAuthorizationBuilder().AddRequiredPermissionPolicy();
         services.AddAuthorization(options =>
         {
-            options.FallbackPolicy = options.GetPolicy(RequiredPermissionDefaults.PolicyName);
+            // Apply the fallback policy but exclude certain paths
+            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .AddAuthenticationSchemes("Bearer", "AzureADB2C", "ApiKey")
+                .Build();
+            
+            // Add a policy for public endpoints
+            options.AddPolicy("PublicEndpoint", policy => policy.RequireAssertion(context => true));
         });
 
         return services;

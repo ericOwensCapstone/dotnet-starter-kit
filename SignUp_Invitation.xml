@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TrustFrameworkPolicy
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06"
+  PolicySchemaVersion="0.3.0.0"
+  TenantId="ohdharvestadb2c.onmicrosoft.com"
+  PolicyId="B2C_1A_SIGNUP_INVITATION"
+  PublicPolicyUri="http://ohdharvestadb2c.onmicrosoft.com/B2C_1A_SIGNUP_INVITATION">
+
+  <BasePolicy>
+    <TenantId>ohdharvestadb2c.onmicrosoft.com</TenantId>
+    <PolicyId>B2C_1A_TrustFrameworkExtensions</PolicyId>
+  </BasePolicy>
+
+  <RelyingParty>
+    <DefaultUserJourney ReferenceId="SignUpInvitation" />
+    <TechnicalProfile Id="PolicyProfile">
+      <DisplayName>PolicyProfile</DisplayName>
+      <Protocol Name="OpenIdConnect" />
+      <OutputClaims>
+        <OutputClaim ClaimTypeReferenceId="displayName" />
+        <OutputClaim ClaimTypeReferenceId="givenName" />
+        <OutputClaim ClaimTypeReferenceId="surname" />
+        <OutputClaim ClaimTypeReferenceId="email" PartnerClaimType="emails" />
+        <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="sub"/>
+        <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="oid"/>
+        <OutputClaim ClaimTypeReferenceId="tenantId" PartnerClaimType="tid"/>
+        <OutputClaim ClaimTypeReferenceId="extension_TenantId" />
+        <OutputClaim ClaimTypeReferenceId="extension_UserStatus" />
+        <OutputClaim ClaimTypeReferenceId="extension_InvitedBy" />
+        <OutputClaim ClaimTypeReferenceId="extension_InvitationDate" />
+      </OutputClaims>
+      <SubjectNamingInfo ClaimType="sub" />
+    </TechnicalProfile>
+  </RelyingParty>
+</TrustFrameworkPolicy>

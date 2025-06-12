@@ -7,6 +7,7 @@ internal static class Extensions
     public static IEndpointRouteBuilder MapB2CEndpoints(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapB2CTokenEndpoint();
+        endpoints.MapPublicB2CTokenEndpoint();
         return endpoints;
     }
 }

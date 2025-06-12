@@ -29,7 +29,8 @@
       "Bash(dotnet user-secrets:*)",
       "WebFetch(domain:mudblazor.com)",
       "Bash(docker-compose up:*)",
-      "Bash(true)"
+      "Bash(true)",
+      "Bash(mv:*)"
     ],
     "deny": []
   },

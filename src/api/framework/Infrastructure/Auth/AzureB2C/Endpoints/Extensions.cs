@@ -8,6 +8,9 @@ internal static class Extensions
     {
         endpoints.MapB2CTokenEndpoint();
         endpoints.MapPublicB2CTokenEndpoint();
+        endpoints.MapB2CValidateInvitationEndpoint();
+        endpoints.MapB2CPreRegistrationValidationEndpoint();
+        endpoints.MapB2CPostRegistrationEndpoint();
         return endpoints;
     }
 }

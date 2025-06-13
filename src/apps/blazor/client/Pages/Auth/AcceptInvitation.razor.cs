@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using FSH.Starter.Blazor.Infrastructure.Api;
 using FSH.Starter.Blazor.Infrastructure.Auth;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Configuration;
 using MudBlazor;
 
 namespace FSH.Starter.Blazor.Client.Pages.Auth;
@@ -11,6 +12,7 @@ public partial class AcceptInvitation
     [Inject] private IApiClient ApiClient { get; set; } = default!;
     [Inject] private IAuthenticationService AuthenticationService { get; set; } = default!;
     [Inject] private ILocalStorageService localStorage { get; set; } = default!;
+    [Inject] private IConfiguration Configuration { get; set; } = default!;
 
     private bool _isLoading = true;
     private bool _hasError = false;
@@ -135,11 +137,32 @@ public partial class AcceptInvitation
             // Store the invitation token in localStorage so it can be retrieved after B2C authentication
             await localStorage.SetItemAsync("pendingInvitationToken", _invitationToken);
             
-            // Navigate to B2C authentication with the invited email as a hint
-            // This will pre-populate the email field in B2C
+            // For invitation acceptance, we need to use the custom B2C invitation acceptance policy
+            var clientId = Configuration["AuthenticationOptions:AzureAdB2C:ClientId"];
+            var instance = Configuration["AuthenticationOptions:AzureAdB2C:Instance"];
+            var domain = Configuration["AuthenticationOptions:AzureAdB2C:Domain"];
+            var apiScope = Configuration["AuthenticationOptions:AzureAdB2C:ApiScope"];
+            
+            // Use the invitation acceptance policy
+            var policyId = "B2C_1A_invitation_acceptance";
+            var authority = $"{instance}/{domain}/{policyId}";
+            
+            var redirectUri = new Uri(Navigation.BaseUri).GetLeftPart(UriPartial.Authority) + "/authentication/login-callback";
             var returnUrl = "/";
-            Console.WriteLine($"AcceptInvitation.AcceptAndSignUp: Calling NavigateToExternalLogin with email hint: {_invitedUserEmail}");
-            AuthenticationService.NavigateToExternalLogin(returnUrl, _invitedUserEmail);
+            
+            // Construct the URL with the invitation token as a parameter
+            var loginUrl = $"{authority}/oauth2/v2.0/authorize" +
+                $"?client_id={clientId}" +
+                $"&response_type=id_token token" +
+                $"&redirect_uri={Uri.EscapeDataString(redirectUri)}" +
+                $"&scope={Uri.EscapeDataString($"openid offline_access {apiScope}")}" +
+                $"&response_mode=fragment" +
+                $"&nonce={Guid.NewGuid()}" +
+                $"&state={Uri.EscapeDataString(returnUrl)}" +
+                $"&invitationToken={Uri.EscapeDataString(_invitationToken)}";
+
+            Console.WriteLine($"AcceptInvitation.AcceptAndSignUp: Navigating to B2C invitation acceptance policy");
+            Navigation.NavigateTo(loginUrl, true);
         }
         catch (Exception ex)
         {

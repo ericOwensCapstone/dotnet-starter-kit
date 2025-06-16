@@ -53,9 +53,15 @@ public static class Extensions
         
         // Register anonymous invitation repository for public endpoints
         services.AddScoped<IAnonymousInvitationRepository, AnonymousInvitationRepository>();
+        services.AddScoped<AnonymousInvitationRepository>();
         
         // Register invitation service
         services.AddScoped<IInvitationService, InvitationService>();
+        
+        // Register anonymous invitation service for B2C endpoints
+        services.AddScoped<AnonymousInvitationService>();
+        // Register as keyed service for B2C endpoints
+        services.AddKeyedScoped<IInvitationService, AnonymousInvitationService>("anonymous");
         services.AddIdentity<FshUser, FshRole>(options =>
            {
                options.Password.RequiredLength = IdentityConstants.PasswordLength;

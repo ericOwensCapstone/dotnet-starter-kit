@@ -22,8 +22,5 @@ public static class Extensions
         apiGroup.MapValidateInvitationTokenEndpoint();
         apiGroup.MapAcceptInvitationEndpoint();
         
-        // B2C Integration endpoints (outside the auth group for anonymous access)
-        builder.MapB2CValidateEndpoint();
-        builder.MapB2CAcceptEndpoint();
     }
 }

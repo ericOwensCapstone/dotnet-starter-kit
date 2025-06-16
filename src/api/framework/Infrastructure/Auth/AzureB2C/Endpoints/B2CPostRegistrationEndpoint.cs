@@ -1,10 +1,12 @@
 using FSH.Framework.Core.Identity.Invitations;
+using FSH.Framework.Infrastructure.Identity.Invitations;
 using FSH.Framework.Infrastructure.Identity.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace FSH.Framework.Infrastructure.Auth.AzureB2C.Endpoints;

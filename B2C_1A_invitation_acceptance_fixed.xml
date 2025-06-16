@@ -73,23 +73,23 @@
           <DisplayName>Validate Invitation Token</DisplayName>
           <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.RestfulProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
           <Metadata>
-            <Item Key="ServiceUrl">https://eric-owens.ngrok.io/api/b2c/invitations/validate</Item>
-            <Item Key="SendClaimsIn">Body</Item>
+            <Item Key="ServiceUrl">https://eric-owens.ngrok.io/api/public/b2c/invitations/validate/{invitationToken}</Item>
+            <Item Key="SendClaimsIn">Url</Item>
             <Item Key="AuthenticationType">None</Item>
             <Item Key="AllowInsecureAuthInProduction">false</Item>
             <Item Key="ClaimTypeOnWhichToEnable">invitationToken</Item>
             <Item Key="ClaimValueOnWhichToEnable">.*</Item>
           </Metadata>
           <InputClaims>
-            <InputClaim ClaimTypeReferenceId="invitationToken" PartnerClaimType="invitationToken" />
+            <InputClaim ClaimTypeReferenceId="invitationToken" />
           </InputClaims>
           <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="isValidInvitation" PartnerClaimType="isValid" />
             <OutputClaim ClaimTypeReferenceId="email" PartnerClaimType="email" />
             <OutputClaim ClaimTypeReferenceId="displayName" PartnerClaimType="displayName" />
-            <OutputClaim ClaimTypeReferenceId="givenName" PartnerClaimType="givenName" />
-            <OutputClaim ClaimTypeReferenceId="surname" PartnerClaimType="surname" />
-            <OutputClaim ClaimTypeReferenceId="extension_TenantId" PartnerClaimType="extension_TenantId" />
-            <OutputClaim ClaimTypeReferenceId="isValidInvitation" PartnerClaimType="isValidInvitation" />
+            <OutputClaim ClaimTypeReferenceId="givenName" PartnerClaimType="firstName" />
+            <OutputClaim ClaimTypeReferenceId="surname" PartnerClaimType="lastName" />
+            <OutputClaim ClaimTypeReferenceId="extension_TenantId" PartnerClaimType="targetTenantId" />
           </OutputClaims>
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
         </TechnicalProfile>
@@ -98,14 +98,16 @@
           <DisplayName>Accept Invitation</DisplayName>
           <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.RestfulProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
           <Metadata>
-            <Item Key="ServiceUrl">https://eric-owens.ngrok.io/api/b2c/invitations/accept</Item>
+            <Item Key="ServiceUrl">https://eric-owens.ngrok.io/api/public/b2c/invitations/post-registration</Item>
             <Item Key="SendClaimsIn">Body</Item>
             <Item Key="AuthenticationType">None</Item>
             <Item Key="AllowInsecureAuthInProduction">false</Item>
           </Metadata>
           <InputClaims>
-            <InputClaim ClaimTypeReferenceId="invitationToken" PartnerClaimType="invitationToken" />
+            <InputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="objectId" />
             <InputClaim ClaimTypeReferenceId="email" PartnerClaimType="email" />
+            <InputClaim ClaimTypeReferenceId="invitationToken" PartnerClaimType="invitationToken" />
+            <InputClaim ClaimTypeReferenceId="extension_TenantId" PartnerClaimType="tenantId" />
           </InputClaims>
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
         </TechnicalProfile>

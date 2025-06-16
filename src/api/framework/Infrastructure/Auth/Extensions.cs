@@ -169,7 +169,7 @@ internal static class Extensions
         services.AddAuthorizationBuilder().AddRequiredPermissionPolicy();
         services.AddAuthorization(options =>
         {
-            // Apply the fallback policy but exclude certain paths
+            // Apply the fallback policy - but it won't apply to endpoints with AllowAnonymous
             options.FallbackPolicy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .AddAuthenticationSchemes("Bearer", "AzureADB2C", "ApiKey")

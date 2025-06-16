@@ -28,6 +28,7 @@ using FSH.Starter.Aspire.ServiceDefaults;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -112,10 +113,40 @@ public static class Extensions
         app.UseMiddleware<CurrentUserMiddleware>();
         
         app.UseAuthorization();
+        
+        // Add middleware to log all requests to /api/public
+        app.Use(async (context, next) =>
+        {
+            if (context.Request.Path.StartsWithSegments("/api/public"))
+            {
+                var reqLogger = context.RequestServices.GetRequiredService<ILogger<WebApplication>>();
+                reqLogger.LogInformation("=== PUBLIC API REQUEST ===");
+                reqLogger.LogInformation("Path: {Path}", context.Request.Path);
+                reqLogger.LogInformation("Method: {Method}", context.Request.Method);
+                reqLogger.LogInformation("QueryString: {QueryString}", context.Request.QueryString);
+                reqLogger.LogInformation("Headers: {@Headers}", context.Request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString()));
+            }
+            await next();
+        });
+        
+        // Add logging for endpoint mapping
+        var logger = app.Services.GetRequiredService<ILogger<WebApplication>>();
+        logger.LogInformation("=== STARTING ENDPOINT MAPPING ===");
+        
+        logger.LogInformation("Mapping Tenant Endpoints...");
         app.MapTenantEndpoints();
+        
+        logger.LogInformation("Mapping Identity Endpoints...");
         app.MapIdentityEndpoints();
+        
+        logger.LogInformation("Mapping ApiKey Endpoints...");
         app.MapApiKeyEndpoints();
+        
+        logger.LogInformation("About to map B2C Endpoints...");
         app.MapB2CEndpoints();
+        logger.LogInformation("B2C Endpoints mapped successfully");
+        
+        logger.LogInformation("=== ENDPOINT MAPPING COMPLETE ===");
 
         return app;
     }

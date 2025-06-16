@@ -1,3 +1,5 @@
+using Ardalis.Specification;
+using Ardalis.Specification.EntityFrameworkCore;
 using FSH.Framework.Core.Identity.Invitations;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Identity.Persistence;
@@ -62,6 +64,55 @@ public class AnonymousInvitationRepository : IAnonymousInvitationRepository
         catch (Exception ex)
         {
             _logger?.LogError(ex, "Error retrieving invitation by token: {Token}", token);
+            throw;
+        }
+    }
+
+    public async Task<UserInvitation?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            using var context = new AnonymousIdentityDbContext(_dbContextOptions, _databaseOptions);
+            return await context.UserInvitations
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex, "Error retrieving invitation by id: {Id}", id);
+            throw;
+        }
+    }
+
+    public async Task<UserInvitation?> FirstOrDefaultAsync(ISpecification<UserInvitation> specification, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            using var context = new AnonymousIdentityDbContext(_dbContextOptions, _databaseOptions);
+            return await context.UserInvitations
+                .WithSpecification(specification)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex, "Error retrieving invitation by specification");
+            throw;
+        }
+    }
+
+    public async Task UpdateAsync(UserInvitation invitation, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            using var context = new AnonymousIdentityDbContext(_dbContextOptions, _databaseOptions);
+            context.UserInvitations.Update(invitation);
+            await context.SaveChangesAsync(cancellationToken);
+            
+            _logger?.LogInformation("Updated invitation {Id} with status {Status}", invitation.Id, invitation.Status);
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex, "Error updating invitation: {Id}", invitation.Id);
             throw;
         }
     }

@@ -1,7 +1,9 @@
 using FSH.Framework.Core.Identity.Invitations;
+using FSH.Framework.Infrastructure.Identity.Invitations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 

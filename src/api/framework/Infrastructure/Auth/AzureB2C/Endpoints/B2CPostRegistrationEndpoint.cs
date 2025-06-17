@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Threading;
 
 namespace FSH.Framework.Infrastructure.Auth.AzureB2C.Endpoints;
 
@@ -15,18 +16,36 @@ public static class B2CPostRegistrationEndpoint
 {
     internal static RouteHandlerBuilder MapB2CPostRegistrationEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        // Add a GET endpoint for testing
+        endpoints.MapGet("/api/public/b2c/invitations/post-registration", () =>
+        {
+            var testLogger = endpoints.ServiceProvider.GetService<ILogger<IInvitationService>>();
+            testLogger?.LogInformation("=== B2C POST-REGISTRATION TEST ENDPOINT HIT (GET) ===");
+            return Results.Ok(new { message = "B2C Post-Registration Endpoint is reachable", timestamp = DateTime.UtcNow });
+        })
+        .AllowAnonymous()
+        .WithMetadata(new Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute());
+
         return endpoints
             .MapPost("/api/public/b2c/invitations/post-registration", async (
                 B2CPostRegistrationRequest request,
-                IInvitationService invitationService,
-                UserManager<FshUser> userManager,
-                ILogger<IInvitationService> logger,
-                CancellationToken cancellationToken) =>
+                HttpContext context,
+                IServiceProvider serviceProvider,
+                ILogger<IInvitationService> logger) =>
             {
                 try
                 {
+                    logger.LogInformation("=== B2C POST-REGISTRATION ENDPOINT HIT ===");
                     logger.LogInformation("B2C post-registration processing for ObjectId: {ObjectId}, Email: {Email}, Token: {Token}", 
                         request.ObjectId, request.Email, request.InvitationToken);
+                    
+                    // Create a timeout for B2C operations (B2C expects quick responses)
+                    using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+                    var cancellationToken = cts.Token;
+                    
+                    // Get services manually to avoid DI issues
+                    var invitationService = serviceProvider.GetRequiredService<AnonymousInvitationService>();
+                    var userManager = serviceProvider.GetRequiredService<UserManager<FshUser>>();
 
                     // Validate required fields
                     if (string.IsNullOrEmpty(request.ObjectId) || 
@@ -66,17 +85,34 @@ public static class B2CPostRegistrationEndpoint
                     }
 
                     // Find the user by ObjectId
-                    var user = await userManager.Users
-                        .FirstOrDefaultAsync(u => u.ObjectId == request.ObjectId, cancellationToken);
+                    FshUser? user = null;
+                    try
+                    {
+                        user = await userManager.Users
+                            .FirstOrDefaultAsync(u => u.ObjectId == request.ObjectId, cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, "Error finding user by ObjectId: {ObjectId}", request.ObjectId);
+                    }
 
                     if (user == null)
                     {
                         logger.LogWarning("User not found with ObjectId: {ObjectId} after B2C registration", request.ObjectId);
-                        // User might not be synced yet, return success to avoid blocking B2C flow
+                        
+                        // The user hasn't been synced to the app database yet
+                        // This is expected since the user was just created in B2C
+                        // We'll accept the invitation anyway to not block the B2C flow
+                        
+                        // We can't mark the invitation as accepted yet because we need a userId
+                        // The invitation will be accepted when the user first logs in and gets synced
+                        logger.LogInformation("Invitation {InvitationId} will be accepted after user sync", invitation.Id);
+                        
                         return Results.Ok(new B2CPostRegistrationResponse
                         {
                             Success = true,
-                            Message = "User registration acknowledged. Synchronization pending."
+                            Message = "User registration acknowledged. User sync pending.",
+                            TenantId = invitation.TargetTenantId
                         });
                     }
 
@@ -86,6 +122,10 @@ public static class B2CPostRegistrationEndpoint
                         await invitationService.AcceptInvitationAsync(invitation.InvitationToken, user.Id, cancellationToken);
                         logger.LogInformation("Invitation {InvitationId} marked as accepted for user {UserId}", 
                             invitation.Id, user.Id);
+                    }
+                    else
+                    {
+                        logger.LogInformation("Invitation {InvitationId} already accepted", invitation.Id);
                     }
 
                     return Results.Ok(new B2CPostRegistrationResponse

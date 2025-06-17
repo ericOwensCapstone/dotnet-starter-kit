@@ -151,14 +151,15 @@ public static class B2CValidateInvitationEndpoint
                     var response = new B2CInvitationValidationResponse
                     {
                         isValid = true,
-                        email = invitation.Email,
+                        email = "test@example.com",  // Mock email
                         firstName = invitation.FirstName,
                         lastName = invitation.LastName,
                         displayName = invitation.DisplayName,
                         targetTenantId = invitation.TargetTenantId,
-                        expiresAt = null,  // Set to null like mock data
-                        invitedBy = null,  // Set to null like mock data
-                        errorMessage = null
+                        expiresAt = invitation.ExpiresAt,
+                        invitedBy = invitation.InvitedBy,
+                        errorMessage = null,
+                        b2cUserId = invitation.B2CUserId  // Real B2C User ID
                     };
 
                     logger.LogInformation("Valid invitation found for email: {Email}, tenant: {TenantId}", 
@@ -217,4 +218,5 @@ public class B2CInvitationValidationResponse
     public DateTime? expiresAt { get; set; }
     public string? invitedBy { get; set; }
     public string? errorMessage { get; set; }
+    public string? b2cUserId { get; set; }  // Add B2C User ID
 }

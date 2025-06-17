@@ -44,11 +44,11 @@
 
     <ContentDefinitions>
       <ContentDefinition Id="api.localaccount.invitation">
-        <LoadUri>~/tenant/templates/AzureBlue/unified.cshtml</LoadUri>
+        <LoadUri>~/tenant/templates/AzureBlue/selfasserted.cshtml</LoadUri>
         <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
-        <DataUri>urn:com:microsoft:aad:b2c:elements:contract:unifiedssp:2.1.0</DataUri>
+        <DataUri>urn:com:microsoft:aad:b2c:elements:contract:selfasserted:2.1.0</DataUri>
         <Metadata>
-          <Item Key="DisplayName">Invitation Acceptance</Item>
+          <Item Key="DisplayName">Set Your Password</Item>
         </Metadata>
       </ContentDefinition>
 
@@ -237,6 +237,8 @@
           <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
           <Metadata>
             <Item Key="ContentDefinitionReferenceId">api.localaccount.invitation</Item>
+            <Item Key="setting.showSignupLink">false</Item>
+            <Item Key="setting.showCancelButton">false</Item>
           </Metadata>
           <InputClaims>
             <InputClaim ClaimTypeReferenceId="objectId" />

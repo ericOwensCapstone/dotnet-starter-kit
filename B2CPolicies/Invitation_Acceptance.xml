@@ -46,15 +46,34 @@
           <DisplayName>B2C User ID</DisplayName>
           <DataType>string</DataType>
         </ClaimType>
+        
+        <!-- Override existing claims to make them read-only in this policy -->
+        <ClaimType Id="email">
+          <DisplayName>Email Address</DisplayName>
+          <DataType>string</DataType>
+          <UserInputType>Readonly</UserInputType>
+        </ClaimType>
+        
+        <ClaimType Id="givenName">
+          <DisplayName>First Name</DisplayName>
+          <DataType>string</DataType>
+          <UserInputType>Readonly</UserInputType>
+        </ClaimType>
+        
+        <ClaimType Id="surname">
+          <DisplayName>Last Name</DisplayName>
+          <DataType>string</DataType>
+          <UserInputType>Readonly</UserInputType>
+        </ClaimType>
       </ClaimsSchema>
 
       <ContentDefinitions>
         <ContentDefinition Id="api.localaccount.invitation">
-          <LoadUri>~/tenant/templates/AzureBlue/unified.cshtml</LoadUri>
+          <LoadUri>~/tenant/templates/AzureBlue/selfasserted.cshtml</LoadUri>
           <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
-          <DataUri>urn:com:microsoft:aad:b2c:elements:contract:unifiedssp:2.1.0</DataUri>
+          <DataUri>urn:com:microsoft:aad:b2c:elements:contract:selfasserted:2.1.0</DataUri>
           <Metadata>
-            <Item Key="DisplayName">Invitation Acceptance</Item>
+            <Item Key="DisplayName">Set Your Password</Item>
           </Metadata>
         </ContentDefinition>
 
@@ -224,6 +243,10 @@
             <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
             <Metadata>
               <Item Key="ContentDefinitionReferenceId">api.localaccount.invitation</Item>
+              <Item Key="setting.showSignupLink">false</Item>
+              <Item Key="setting.showCancelButton">false</Item>
+              <Item Key="EnforceEmailVerification">false</Item>
+              <Item Key="setting.inputVerificationDelayTimeInMilliseconds">0</Item>
             </Metadata>
             <InputClaims>
               <InputClaim ClaimTypeReferenceId="objectId" />
@@ -234,13 +257,14 @@
             </InputClaims>
             <DisplayClaims>
               <DisplayClaim ClaimTypeReferenceId="email" Required="true" />
-              <DisplayClaim ClaimTypeReferenceId="newPassword" Required="true" />
-              <DisplayClaim ClaimTypeReferenceId="reenterPassword" Required="true" />
               <DisplayClaim ClaimTypeReferenceId="givenName" Required="true" />
               <DisplayClaim ClaimTypeReferenceId="surname" Required="true" />
+              <DisplayClaim ClaimTypeReferenceId="newPassword" Required="true" />
+              <DisplayClaim ClaimTypeReferenceId="reenterPassword" Required="true" />
             </DisplayClaims>
             <OutputClaims>
               <OutputClaim ClaimTypeReferenceId="objectId" />
+              <OutputClaim ClaimTypeReferenceId="email" />
               <OutputClaim ClaimTypeReferenceId="newPassword" Required="true" />
               <OutputClaim ClaimTypeReferenceId="reenterPassword" Required="true" />
               <OutputClaim ClaimTypeReferenceId="givenName" />

@@ -151,7 +151,7 @@ public static class B2CValidateInvitationEndpoint
                     var response = new B2CInvitationValidationResponse
                     {
                         isValid = true,
-                        email = "test@example.com",  // Mock email
+                        email = invitation.Email,  // Real email from invitation
                         firstName = invitation.FirstName,
                         lastName = invitation.LastName,
                         displayName = invitation.DisplayName,

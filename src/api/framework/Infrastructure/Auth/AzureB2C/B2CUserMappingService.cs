@@ -11,6 +11,7 @@ using FSH.Framework.Infrastructure.Identity.Persistence;
 using FSH.Framework.Infrastructure.Identity.Roles;
 using FSH.Framework.Infrastructure.Identity.Users;
 using FSH.Framework.Infrastructure.Tenant;
+using FSH.Framework.Infrastructure.Identity.Invitations;
 using FSH.Starter.Shared.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ public class B2CUserMappingService : IB2CUserMappingService
     private readonly ILogger<B2CUserMappingService> _logger;
     private readonly AzureAdB2COptions _b2cOptions;
     private readonly IInvitationService _invitationService;
+    private readonly AnonymousInvitationService _anonymousInvitationService;
     private readonly UserManager<FshUser> _userManager;
     private readonly IGraphService _graphService;
 
@@ -36,6 +38,7 @@ public class B2CUserMappingService : IB2CUserMappingService
         ILogger<B2CUserMappingService> logger,
         IOptions<AuthenticationOptions> authOptions,
         IInvitationService invitationService,
+        AnonymousInvitationService anonymousInvitationService,
         UserManager<FshUser> userManager,
         IGraphService graphService)
     {
@@ -44,6 +47,7 @@ public class B2CUserMappingService : IB2CUserMappingService
         _logger = logger;
         _b2cOptions = authOptions.Value.AzureAdB2C ?? new AzureAdB2COptions();
         _invitationService = invitationService;
+        _anonymousInvitationService = anonymousInvitationService;
         _userManager = userManager;
         _graphService = graphService;
     }
@@ -183,8 +187,8 @@ public class B2CUserMappingService : IB2CUserMappingService
 
             _logger.LogInformation("User not found in system. Checking for valid invitations for email: {Email}", email);
             
-            // Look for invitations for this email
-            var invitations = await _invitationService.GetInvitationsByUserAsync(email, cancellationToken);
+            // Look for invitations for this email - use anonymous service since we're in B2C context without tenant
+            var invitations = await _anonymousInvitationService.GetInvitationsByEmailAsync(email, cancellationToken);
             var validInvitation = invitations
                 .Where(i => i.Status == InvitationStatus.Sent && !i.IsExpired)
                 .OrderByDescending(i => i.Created)

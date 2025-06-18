@@ -66,6 +66,11 @@ public sealed class AnonymousInvitationService : IInvitationService
     {
         return await _repository.FirstOrDefaultAsync(new InvitationsByEmailSpec(email), cancellationToken);
     }
+    
+    public async Task<List<UserInvitation>> GetInvitationsByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        return await _repository.ListAsync(new InvitationsByEmailSpec(email), cancellationToken);
+    }
 
     public async Task<bool> AcceptInvitationAsync(string token, string userId, CancellationToken cancellationToken = default)
     {

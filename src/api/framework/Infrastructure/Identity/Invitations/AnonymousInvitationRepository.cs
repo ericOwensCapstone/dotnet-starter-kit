@@ -116,6 +116,22 @@ public class AnonymousInvitationRepository : IAnonymousInvitationRepository
             throw;
         }
     }
+
+    public async Task<List<UserInvitation>> ListAsync(ISpecification<UserInvitation> specification, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            using var context = new AnonymousIdentityDbContext(_dbContextOptions, _databaseOptions);
+            return await context.UserInvitations
+                .WithSpecification(specification)
+                .ToListAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex, "Error retrieving invitations by specification");
+            throw;
+        }
+    }
 }
 
 /// <summary>

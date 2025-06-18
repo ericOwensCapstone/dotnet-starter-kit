@@ -86,11 +86,12 @@ public static class B2CPostRegistrationEndpoint
                         });
                     }
 
-                    // Find the user by ObjectId using direct query to avoid multi-tenant issues
+                    // Find the user by ObjectId, bypassing tenant filtering since we don't have tenant context yet
                     FshUser? user = null;
                     try
                     {
                         user = await authDbContext.Users
+                            .IgnoreQueryFilters()
                             .FirstOrDefaultAsync(u => u.ObjectId == request.ObjectId, cancellationToken);
                     }
                     catch (Exception ex)
@@ -136,7 +137,7 @@ public static class B2CPostRegistrationEndpoint
                                     @emailConfirmed, NULL, @securityStamp, @concurrencyStamp,
                                     NULL, false, false, NULL,
                                     true, 0, @firstName, @lastName,
-                                    NULL, @isActive, NULL, NULL,
+                                    NULL, @isActive, NULL, @refreshTokenExpiryTime,
                                     @objectId, @tenantId
                                 )";
 
@@ -151,6 +152,7 @@ public static class B2CPostRegistrationEndpoint
                             command.Parameters.Add(CreateParameter(command, "@firstName", user.FirstName));
                             command.Parameters.Add(CreateParameter(command, "@lastName", user.LastName));
                             command.Parameters.Add(CreateParameter(command, "@isActive", user.IsActive));
+                            command.Parameters.Add(CreateParameter(command, "@refreshTokenExpiryTime", DateTime.UtcNow));
                             command.Parameters.Add(CreateParameter(command, "@objectId", user.ObjectId));
                             command.Parameters.Add(CreateParameter(command, "@tenantId", invitation.TargetTenantId));
 

@@ -1,6 +1,8 @@
 using FSH.Framework.Core.Identity.Invitations;
 using FSH.Framework.Infrastructure.Identity.Invitations;
 using FSH.Framework.Infrastructure.Identity.Users;
+using FSH.Framework.Infrastructure.Identity.Persistence;
+using FSH.Framework.Infrastructure.Identity.Roles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -45,7 +47,7 @@ public static class B2CPostRegistrationEndpoint
                     
                     // Get services manually to avoid DI issues
                     var invitationService = serviceProvider.GetRequiredService<AnonymousInvitationService>();
-                    var userManager = serviceProvider.GetRequiredService<UserManager<FshUser>>();
+                    var authDbContext = serviceProvider.GetRequiredService<AuthenticationDbContext>();
 
                     // Validate required fields
                     if (string.IsNullOrEmpty(request.ObjectId) || 
@@ -84,11 +86,11 @@ public static class B2CPostRegistrationEndpoint
                         });
                     }
 
-                    // Find the user by ObjectId
+                    // Find the user by ObjectId using direct query to avoid multi-tenant issues
                     FshUser? user = null;
                     try
                     {
-                        user = await userManager.Users
+                        user = await authDbContext.Users
                             .FirstOrDefaultAsync(u => u.ObjectId == request.ObjectId, cancellationToken);
                     }
                     catch (Exception ex)
@@ -98,22 +100,93 @@ public static class B2CPostRegistrationEndpoint
 
                     if (user == null)
                     {
-                        logger.LogWarning("User not found with ObjectId: {ObjectId} after B2C registration", request.ObjectId);
+                        logger.LogInformation("User not found with ObjectId: {ObjectId}. Creating new user from invitation.", request.ObjectId);
                         
-                        // The user hasn't been synced to the app database yet
-                        // This is expected since the user was just created in B2C
-                        // We'll accept the invitation anyway to not block the B2C flow
-                        
-                        // We can't mark the invitation as accepted yet because we need a userId
-                        // The invitation will be accepted when the user first logs in and gets synced
-                        logger.LogInformation("Invitation {InvitationId} will be accepted after user sync", invitation.Id);
-                        
-                        return Results.Ok(new B2CPostRegistrationResponse
+                        // Create new user from invitation directly in database
+                        user = new FshUser
                         {
-                            Success = true,
-                            Message = "User registration acknowledged. User sync pending.",
-                            TenantId = invitation.TargetTenantId
-                        });
+                            Id = Guid.NewGuid().ToString(),
+                            UserName = request.Email,
+                            NormalizedUserName = request.Email.ToUpperInvariant(),
+                            Email = request.Email,
+                            NormalizedEmail = request.Email.ToUpperInvariant(),
+                            FirstName = invitation.FirstName ?? string.Empty,
+                            LastName = invitation.LastName ?? string.Empty,
+                            EmailConfirmed = true, // B2C handles email verification
+                            ObjectId = request.ObjectId,
+                            IsActive = true,
+                            SecurityStamp = Guid.NewGuid().ToString(),
+                            ConcurrencyStamp = Guid.NewGuid().ToString()
+                        };
+
+                        try
+                        {
+                            // Create user using raw SQL to bypass tenant filtering
+                            using var command = authDbContext.Database.GetDbConnection().CreateCommand();
+                            command.CommandText = @"
+                                INSERT INTO identity.""Users"" (
+                                    ""Id"", ""UserName"", ""NormalizedUserName"", ""Email"", ""NormalizedEmail"",
+                                    ""EmailConfirmed"", ""PasswordHash"", ""SecurityStamp"", ""ConcurrencyStamp"",
+                                    ""PhoneNumber"", ""PhoneNumberConfirmed"", ""TwoFactorEnabled"", ""LockoutEnd"",
+                                    ""LockoutEnabled"", ""AccessFailedCount"", ""FirstName"", ""LastName"",
+                                    ""ImageUrl"", ""IsActive"", ""RefreshToken"", ""RefreshTokenExpiryTime"",
+                                    ""ObjectId"", ""TenantId""
+                                ) VALUES (
+                                    @id, @userName, @normalizedUserName, @email, @normalizedEmail,
+                                    @emailConfirmed, NULL, @securityStamp, @concurrencyStamp,
+                                    NULL, false, false, NULL,
+                                    true, 0, @firstName, @lastName,
+                                    NULL, @isActive, NULL, NULL,
+                                    @objectId, @tenantId
+                                )";
+
+                            command.Parameters.Add(CreateParameter(command, "@id", user.Id));
+                            command.Parameters.Add(CreateParameter(command, "@userName", user.UserName));
+                            command.Parameters.Add(CreateParameter(command, "@normalizedUserName", user.NormalizedUserName));
+                            command.Parameters.Add(CreateParameter(command, "@email", user.Email));
+                            command.Parameters.Add(CreateParameter(command, "@normalizedEmail", user.NormalizedEmail));
+                            command.Parameters.Add(CreateParameter(command, "@emailConfirmed", user.EmailConfirmed));
+                            command.Parameters.Add(CreateParameter(command, "@securityStamp", user.SecurityStamp));
+                            command.Parameters.Add(CreateParameter(command, "@concurrencyStamp", user.ConcurrencyStamp));
+                            command.Parameters.Add(CreateParameter(command, "@firstName", user.FirstName));
+                            command.Parameters.Add(CreateParameter(command, "@lastName", user.LastName));
+                            command.Parameters.Add(CreateParameter(command, "@isActive", user.IsActive));
+                            command.Parameters.Add(CreateParameter(command, "@objectId", user.ObjectId));
+                            command.Parameters.Add(CreateParameter(command, "@tenantId", invitation.TargetTenantId));
+
+                            await authDbContext.Database.OpenConnectionAsync(cancellationToken);
+                            
+                            var rowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
+                            
+                            await authDbContext.Database.CloseConnectionAsync();
+                            
+                            if (rowsAffected != 1)
+                            {
+                                logger.LogError("Failed to create user. Rows affected: {RowsAffected}", rowsAffected);
+                                throw new InvalidOperationException("Failed to create user in database.");
+                            }
+                            
+                            logger.LogInformation("Created user {UserId} in database with TenantId {TenantId}", user.Id, invitation.TargetTenantId);
+
+                            // Note: Role assignment will be handled during first sign-in by B2CUserMappingService
+                            // This avoids multi-tenant context issues in the anonymous endpoint
+                            if (!string.IsNullOrEmpty(invitation.Role))
+                            {
+                                logger.LogInformation("User will be assigned role {Role} during first sign-in", invitation.Role);
+                            }
+
+                            logger.LogInformation("Successfully created user {UserId} from invitation {InvitationId}", 
+                                user.Id, invitation.Id);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.LogError(ex, "Failed to create user in database");
+                            return Results.Ok(new B2CPostRegistrationResponse
+                            {
+                                Success = false,
+                                ErrorMessage = "Failed to create user account."
+                            });
+                        }
                     }
 
                     // Mark invitation as accepted if not already
@@ -156,6 +229,55 @@ public static class B2CPostRegistrationEndpoint
             .Produces<B2CPostRegistrationResponse>()
             .Produces(StatusCodes.Status400BadRequest)
             .WithTags("B2C Integration");
+    }
+
+    private static async Task AssignUserToTenantAsync(
+        AuthenticationDbContext authDbContext, 
+        string userId, 
+        string tenantId, 
+        ILogger logger,
+        CancellationToken cancellationToken)
+    {
+        // Update user's TenantId using raw SQL to avoid multi-tenant context issues
+        using var command = authDbContext.Database.GetDbConnection().CreateCommand();
+        command.CommandText = "UPDATE identity.\"Users\" SET \"TenantId\" = @tenantId WHERE \"Id\" = @userId";
+        
+        var tenantParam = command.CreateParameter();
+        tenantParam.ParameterName = "@tenantId";
+        tenantParam.Value = tenantId;
+        command.Parameters.Add(tenantParam);
+        
+        var userParam = command.CreateParameter();
+        userParam.ParameterName = "@userId";
+        userParam.Value = userId;
+        command.Parameters.Add(userParam);
+        
+        await authDbContext.Database.OpenConnectionAsync(cancellationToken);
+        
+        try
+        {
+            var rowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
+            if (rowsAffected != 1)
+            {
+                logger.LogError("Failed to assign user {UserId} to tenant {TenantId}. Rows affected: {RowsAffected}", 
+                    userId, tenantId, rowsAffected);
+                throw new InvalidOperationException("Failed to assign user to tenant.");
+            }
+            
+            logger.LogInformation("Successfully assigned user {UserId} to tenant {TenantId}", userId, tenantId);
+        }
+        finally
+        {
+            await authDbContext.Database.CloseConnectionAsync();
+        }
+    }
+
+    private static System.Data.Common.DbParameter CreateParameter(System.Data.Common.DbCommand command, string name, object value)
+    {
+        var parameter = command.CreateParameter();
+        parameter.ParameterName = name;
+        parameter.Value = value ?? DBNull.Value;
+        return parameter;
     }
 }
 

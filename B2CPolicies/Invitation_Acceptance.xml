@@ -270,6 +270,7 @@
               <OutputClaim ClaimTypeReferenceId="givenName" />
               <OutputClaim ClaimTypeReferenceId="surname" />
               <OutputClaim ClaimTypeReferenceId="extension_TenantId" />
+              <OutputClaim ClaimTypeReferenceId="authenticationSource" DefaultValue="localAccountAuthentication" />
             </OutputClaims>
             <ValidationTechnicalProfiles>
               <ValidationTechnicalProfile ReferenceId="AAD-UserWritePasswordUsingObjectId" />
@@ -415,6 +416,7 @@
     <RelyingParty>
       <DefaultUserJourney ReferenceId="InvitationAcceptance" />
       <UserJourneyBehaviors>
+        <SingleSignOn Scope="Suppressed" />
         <JourneyInsights TelemetryEngine="ApplicationInsights" InstrumentationKey="78688977-41a7-462c-b8a0-eaa7f21eff79" DeveloperMode="true" ClientEnabled="true" ServerEnabled="true" TelemetryVersion="1.0.0" />
       </UserJourneyBehaviors>
       <TechnicalProfile Id="PolicyProfile">

@@ -33,22 +33,26 @@ public static class B2CInvitationLandingEndpoint
                 // Validate the invitation
                 var invitation = await invitationService.GetInvitationByTokenAsync(token);
                 
+                // Get client origin for redirects
+                var clientOrigin = originOptions.Value.OriginUrl?.ToString().TrimEnd('/') ?? 
+                                 $"{context.Request.Scheme}://{context.Request.Host}";
+                
                 if (invitation == null)
                 {
                     logger.LogWarning("Invalid invitation token: {Token}", token);
-                    return Results.Content(GetErrorPage("Invalid invitation", "This invitation link is invalid or has expired."), "text/html");
+                    return Results.Content(GetErrorPage("Invalid invitation", "This invitation link is invalid or has expired.", clientOrigin), "text/html");
                 }
                 
                 if (invitation.Status == FSH.Framework.Core.Identity.Invitations.InvitationStatus.Accepted)
                 {
                     logger.LogInformation("Invitation already accepted: {Token}", token);
-                    return Results.Content(GetErrorPage("Invitation already used", "This invitation has already been accepted."), "text/html");
+                    return Results.Content(GetErrorPage("Invitation already used", "This invitation has already been accepted.", clientOrigin), "text/html");
                 }
                 
                 if (invitation.IsExpired)
                 {
                     logger.LogWarning("Expired invitation: {Token}", token);
-                    return Results.Content(GetErrorPage("Invitation expired", "This invitation has expired. Please request a new one."), "text/html");
+                    return Results.Content(GetErrorPage("Invitation expired", "This invitation has expired. Please request a new one.", clientOrigin), "text/html");
                 }
                 
                 // Get B2C configuration
@@ -56,12 +60,10 @@ public static class B2CInvitationLandingEndpoint
                 if (b2cOptions == null)
                 {
                     logger.LogError("B2C configuration not found");
-                    return Results.Content(GetErrorPage("Configuration error", "System configuration error. Please contact support."), "text/html");
+                    return Results.Content(GetErrorPage("Configuration error", "System configuration error. Please contact support.", clientOrigin), "text/html");
                 }
                 
                 // Build the redirect URI - use the client app's callback path
-                var clientOrigin = originOptions.Value.OriginUrl?.ToString().TrimEnd('/') ?? 
-                                 $"{context.Request.Scheme}://{context.Request.Host}";
                 var redirectUri = $"{clientOrigin}/authentication/login-callback";
                 
                 logger.LogInformation("Client Origin: {ClientOrigin}, Redirect URI: {RedirectUri}", clientOrigin, redirectUri);
@@ -71,13 +73,22 @@ public static class B2CInvitationLandingEndpoint
                 var tenantName = invitation.TargetTenantId;
                 
                 // Build the B2C sign-up URL with the invitation token
-                var signUpUrl = $"{b2cOptions.PolicyAuthority.Replace("/B2C_1_signin/", "/B2C_1A_invitation_acceptance/")}" +
+                // Construct the authority URL for the invitation acceptance policy
+                // PolicyAuthority already includes /v2.0, so we need to build the URL differently
+                var policyId = "B2C_1A_invitation_acceptance";
+                var authority = $"{b2cOptions.Instance}/{b2cOptions.Domain}/{policyId}";
+                
+                // Get API scope from configuration
+                var apiScope = b2cOptions.ApiScope;
+                
+                var signUpUrl = $"{authority}/oauth2/v2.0/authorize" +
                                $"?client_id={b2cOptions.ClientId}" +
-                               $"&nonce=defaultNonce" +
+                               $"&response_type=id_token%20token" +
                                $"&redirect_uri={Uri.EscapeDataString(redirectUri)}" +
-                               $"&scope=openid%20offline_access" +
-                               $"&response_type=code" +
-                               $"&prompt=login" +
+                               $"&scope={Uri.EscapeDataString($"openid offline_access {apiScope}")}" +
+                               $"&response_mode=fragment" +
+                               $"&nonce={Guid.NewGuid()}" +
+                               $"&state={Uri.EscapeDataString("/")}" +
                                $"&invitationToken={token}";
                 
                 // Return the landing page HTML
@@ -86,7 +97,8 @@ public static class B2CInvitationLandingEndpoint
                     invitation.Email,
                     tenantName,
                     invitation.InvitedBy,
-                    signUpUrl
+                    signUpUrl,
+                    clientOrigin
                 );
                 
                 logger.LogInformation("Returning invitation landing page HTML with length: {Length}", html.Length);
@@ -104,7 +116,7 @@ public static class B2CInvitationLandingEndpoint
             .ProducesValidationProblem();
     }
     
-    private static string GetLandingPage(string displayName, string email, string tenantName, string invitedBy, string signUpUrl)
+    private static string GetLandingPage(string displayName, string email, string tenantName, string invitedBy, string signUpUrl, string clientOrigin)
     {
         return $@"
 <!DOCTYPE html>
@@ -305,7 +317,7 @@ public static class B2CInvitationLandingEndpoint
                 <p class='text-secondary mb-2'>
                     Already have an account?
                 </p>
-                <a href='/auth/login' class='text-link'>
+                <a href='{clientOrigin}/auth/login' class='text-link'>
                     Sign In Instead
                 </a>
             </div>
@@ -315,7 +327,7 @@ public static class B2CInvitationLandingEndpoint
 </html>";
     }
     
-    private static string GetErrorPage(string title, string message)
+    private static string GetErrorPage(string title, string message, string clientOrigin)
     {
         return $@"
 <!DOCTYPE html>
@@ -420,7 +432,7 @@ public static class B2CInvitationLandingEndpoint
             </svg>
             <h1>{title}</h1>
             <p class='error-message'>{message}</p>
-            <a href='/auth/login' class='button'>Go to Login</a>
+            <a href='{clientOrigin}/auth/login' class='button'>Go to Login</a>
         </div>
     </div>
 </body>

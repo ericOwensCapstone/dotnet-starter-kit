@@ -1,9 +1,6 @@
 using Blazored.LocalStorage;
 using FSH.Starter.Blazor.Infrastructure.Api;
-using FSH.Starter.Blazor.Infrastructure.Auth;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Configuration;
-using MudBlazor;
 using System.Web;
 
 namespace FSH.Starter.Blazor.Client.Pages.Auth;
@@ -11,195 +8,432 @@ namespace FSH.Starter.Blazor.Client.Pages.Auth;
 public partial class AcceptInvitation
 {
     [Inject] private IApiClient ApiClient { get; set; } = default!;
-    [Inject] private IAuthenticationService AuthenticationService { get; set; } = default!;
     [Inject] private ILocalStorageService localStorage { get; set; } = default!;
-    [Inject] private IConfiguration Configuration { get; set; } = default!;
 
-    private bool _isLoading = true;
-    private bool _hasError = false;
-    private string _errorMessage = string.Empty;
+    private string _pageHtml = string.Empty;
+    private string _tenantName = string.Empty;
     private string? _invitationToken;
-    private string? _invitedUserEmail;
-    private string? _invitedUserName;
-
-    public AcceptInvitation()
-    {
-        Console.WriteLine("AcceptInvitation: Constructor called");
-    }
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("AcceptInvitation.OnInitializedAsync: Starting");
+        Console.WriteLine("AcceptInvitationStyled.OnInitializedAsync: Starting");
         
-        // Extract token from URL and redirect to styled landing page
+        // Extract token from URL
         var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
         var query = uri.Query;
         
         if (!string.IsNullOrEmpty(query))
         {
-            // Parse query string manually
             var queryString = query.StartsWith("?") ? query.Substring(1) : query;
             var queryParams = HttpUtility.ParseQueryString(queryString);
-            var token = queryParams["token"];
+            _invitationToken = queryParams["token"];
             
-            if (!string.IsNullOrEmpty(token))
+            if (!string.IsNullOrEmpty(_invitationToken))
             {
-                Console.WriteLine($"AcceptInvitation: Redirecting to styled landing page with token: {token}");
-                
-                // Redirect to the API's styled landing page
-                var apiBaseUrl = Navigation.BaseUri.Replace("7100", "7000").Replace("54553", "54552");
-                var styledLandingUrl = $"{apiBaseUrl}api/public/invitation/{token}";
-                
-                Navigation.NavigateTo(styledLandingUrl, true);
+                Console.WriteLine($"AcceptInvitationStyled: Token found: {_invitationToken}");
+                await LoadInvitationPage();
                 return;
             }
         }
         
         // If no token, show error
-        try
-        {
-            await ValidateInvitationTokenAsync();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"AcceptInvitation.OnInitializedAsync: Exception - {ex.Message}");
-            _hasError = true;
-            _errorMessage = "An error occurred while loading the invitation.";
-            _isLoading = false;
-        }
-        Console.WriteLine("AcceptInvitation.OnInitializedAsync: Completed");
+        _pageHtml = GetErrorPage("Invalid invitation", "This invitation link is invalid or has expired.", Navigation.BaseUri);
     }
 
-    private async Task ValidateInvitationTokenAsync()
+    private async Task LoadInvitationPage()
     {
         try
         {
-            // Extract the token from the query string
-            var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
-            var query = uri.Query;
-            Console.WriteLine($"AcceptInvitation: Full URI: {Navigation.Uri}");
-            Console.WriteLine($"AcceptInvitation: Query string: {query}");
-            
-            if (!string.IsNullOrEmpty(query))
-            {
-                // Remove the leading '?' if present
-                if (query.StartsWith("?"))
-                {
-                    query = query.Substring(1);
-                }
-                
-                var queryParams = query.Split('&');
-                foreach (var param in queryParams)
-                {
-                    var parts = param.Split('=');
-                    if (parts.Length == 2 && parts[0] == "token")
-                    {
-                        _invitationToken = Uri.UnescapeDataString(parts[1]);
-                        Console.WriteLine($"AcceptInvitation: Extracted token: {_invitationToken}");
-                        break;
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(_invitationToken))
-            {
-                _hasError = true;
-                _errorMessage = "No invitation token provided. Please check your invitation link.";
-                return;
-            }
-
             // Validate the token with the API
-            try
-            {
-                Console.WriteLine($"AcceptInvitation: Validating token: {_invitationToken}");
-                var validationResult = await ApiClient.ValidateInvitationTokenAsync(_invitationToken);
-                _invitedUserEmail = validationResult.Email;
-                _invitedUserName = validationResult.DisplayName;
-                _hasError = false;
-                Console.WriteLine($"AcceptInvitation: Validation successful - Email: {_invitedUserEmail}, Name: {_invitedUserName}");
-            }
-            catch (ApiException apiEx) when (apiEx.StatusCode == 404)
-            {
-                _hasError = true;
-                _errorMessage = "This invitation link is not valid. Please check your invitation email.";
-                Console.WriteLine($"AcceptInvitation: 404 error - {_errorMessage}");
-            }
-            catch (ApiException apiEx) when (apiEx.StatusCode == 400)
-            {
-                _hasError = true;
-                _errorMessage = apiEx.Message ?? "This invitation cannot be accepted.";
-                Console.WriteLine($"AcceptInvitation: 400 error - {_errorMessage}");
-            }
-            catch (Exception ex)
-            {
-                _hasError = true;
-                _errorMessage = "Unable to validate your invitation. Please try again later.";
-                Console.WriteLine($"AcceptInvitation: General error - {ex.Message}");
-            }
-        }
-        catch (Exception)
-        {
-            _hasError = true;
-            _errorMessage = "An error occurred while processing your invitation. Please try again.";
-        }
-        finally
-        {
-            _isLoading = false;
-            StateHasChanged();
-        }
-    }
-
-    private async Task AcceptAndSignUp()
-    {
-        if (string.IsNullOrEmpty(_invitationToken))
-        {
-            Toast.Add("Invalid invitation token.", Severity.Error);
-            return;
-        }
-
-        try
-        {
-            Console.WriteLine($"AcceptInvitation.AcceptAndSignUp: Email={_invitedUserEmail}, Token={_invitationToken}");
+            Console.WriteLine($"AcceptInvitationStyled: Validating token: {_invitationToken}");
+            var validationResult = await ApiClient.ValidateInvitationTokenAsync(_invitationToken!);
             
-            // Store the invitation token in localStorage so it can be retrieved after B2C authentication
-            await localStorage.SetItemAsync("pendingInvitationToken", _invitationToken);
-            
-            // For invitation acceptance, we need to use the custom B2C invitation acceptance policy
-            var clientId = Configuration["AuthenticationOptions:AzureAdB2C:ClientId"];
-            var instance = Configuration["AuthenticationOptions:AzureAdB2C:Instance"];
-            var domain = Configuration["AuthenticationOptions:AzureAdB2C:Domain"];
-            var apiScope = Configuration["AuthenticationOptions:AzureAdB2C:ApiScope"];
+            // Get B2C configuration
+            var clientId = Config["AuthenticationOptions:AzureAdB2C:ClientId"];
+            var instance = Config["AuthenticationOptions:AzureAdB2C:Instance"];
+            var domain = Config["AuthenticationOptions:AzureAdB2C:Domain"];
+            var apiScope = Config["AuthenticationOptions:AzureAdB2C:ApiScope"];
             
             // Use the invitation acceptance policy
             var policyId = "B2C_1A_invitation_acceptance";
             var authority = $"{instance}/{domain}/{policyId}";
             
             var redirectUri = new Uri(Navigation.BaseUri).GetLeftPart(UriPartial.Authority) + "/authentication/login-callback";
-            var returnUrl = "/";
             
-            // Construct the URL with the invitation token as a parameter
-            var loginUrl = $"{authority}/oauth2/v2.0/authorize" +
+            // Construct the B2C URL with the invitation token as a parameter
+            var signUpUrl = $"{authority}/oauth2/v2.0/authorize" +
                 $"?client_id={clientId}" +
                 $"&response_type=id_token token" +
                 $"&redirect_uri={Uri.EscapeDataString(redirectUri)}" +
                 $"&scope={Uri.EscapeDataString($"openid offline_access {apiScope}")}" +
                 $"&response_mode=fragment" +
                 $"&nonce={Guid.NewGuid()}" +
-                $"&state={Uri.EscapeDataString(returnUrl)}" +
-                $"&invitationToken={Uri.EscapeDataString(_invitationToken)}";
+                $"&state={Uri.EscapeDataString("/")}" +
+                $"&invitationToken={Uri.EscapeDataString(_invitationToken!)}";
 
-            Console.WriteLine($"AcceptInvitation.AcceptAndSignUp: Navigating to B2C invitation acceptance policy");
-            Navigation.NavigateTo(loginUrl, true);
+            Console.WriteLine($"AcceptInvitationStyled: Sign-up URL: {signUpUrl}");
+            
+            // For now, use the tenant ID as the tenant name
+            _tenantName = validationResult.TargetTenantId ?? string.Empty;
+            
+            _pageHtml = GetLandingPage(
+                validationResult.DisplayName,
+                validationResult.Email,
+                _tenantName,
+                validationResult.InvitedBy,
+                signUpUrl,
+                Navigation.BaseUri
+            );
+        }
+        catch (ApiException apiEx) when (apiEx.StatusCode == 404)
+        {
+            _pageHtml = GetErrorPage("Invalid invitation", "This invitation link is not valid. Please check your invitation email.", Navigation.BaseUri);
+            Console.WriteLine($"AcceptInvitationStyled: 404 error - Invalid invitation");
+        }
+        catch (ApiException apiEx) when (apiEx.StatusCode == 400)
+        {
+            var message = apiEx.Message ?? "This invitation cannot be accepted.";
+            if (message.Contains("already been accepted"))
+            {
+                _pageHtml = GetErrorPage("Invitation already used", "This invitation has already been accepted.", Navigation.BaseUri);
+            }
+            else if (message.Contains("expired"))
+            {
+                _pageHtml = GetErrorPage("Invitation expired", "This invitation has expired. Please request a new one.", Navigation.BaseUri);
+            }
+            else
+            {
+                _pageHtml = GetErrorPage("Invalid invitation", message, Navigation.BaseUri);
+            }
+            Console.WriteLine($"AcceptInvitationStyled: 400 error - {message}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"AcceptInvitation.AcceptAndSignUp Error: {ex.Message}");
-            Toast.Add($"Failed to redirect to sign-up: {ex.Message}", Severity.Error);
+            _pageHtml = GetErrorPage("Error", "Unable to validate your invitation. Please try again later.", Navigation.BaseUri);
+            Console.WriteLine($"AcceptInvitationStyled: General error - {ex.Message}");
         }
     }
 
-    private void GoToLogin()
+    private static string GetLandingPage(string displayName, string email, string tenantName, string invitedBy, string signUpUrl, string clientOrigin)
     {
-        Navigation.NavigateTo("/login");
+        return $@"
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Accept Invitation - {tenantName}</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap' rel='stylesheet' />
+    <style>
+        :root {{
+            --primary-color: rgba(76,175,80,1);
+            --primary-dark: rgba(56,142,60,1);
+            --secondary-color: rgba(33,150,243,1);
+            --background-color: #1b1f22;
+            --surface-color: #202528;
+            --error-color: #f44336;
+            --text-primary: rgba(255,255,255, 0.70);
+            --text-secondary: rgba(255,255,255, 0.50);
+            --border-radius: 5px;
+            --elevation-1: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+            --elevation-25: 0px 8px 10px -5px rgba(0,0,0,0.2), 0px 16px 24px 2px rgba(0,0,0,0.14), 0px 6px 30px 5px rgba(0,0,0,0.12);
+            --info-background: #1e3a5f;
+            --divider-color: #e0e0e036;
+        }}
+        
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background-color: var(--background-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }}
+        
+        .container {{
+            width: 100%;
+            max-width: 400px;
+            padding: 16px;
+        }}
+        
+        .paper {{
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--elevation-25);
+            padding: 32px;
+        }}
+        
+        .text-center {{
+            text-align: center;
+        }}
+        
+        .icon {{
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            display: block;
+            fill: var(--primary-color);
+        }}
+        
+        h1 {{
+            font-size: 2.125rem;
+            font-weight: 400;
+            line-height: 1.235;
+            letter-spacing: 0.00735em;
+            margin-bottom: 8px;
+        }}
+        
+        .subtitle {{
+            font-size: 1rem;
+            line-height: 1.5;
+            letter-spacing: 0.00938em;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }}
+        
+        .info-section {{
+            background-color: var(--info-background);
+            border: 1px solid var(--divider-color);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            margin-bottom: 24px;
+        }}
+        
+        .info-section p {{
+            font-size: 0.875rem;
+            line-height: 1.43;
+            letter-spacing: 0.01071em;
+            margin-bottom: 8px;
+        }}
+        
+        .info-section p:last-child {{
+            margin-bottom: 0;
+        }}
+        
+        .info-section strong {{
+            font-weight: 500;
+        }}
+        
+        .button {{
+            display: inline-block;
+            width: 100%;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.02857em;
+            text-transform: uppercase;
+            text-align: center;
+            box-shadow: var(--elevation-1);
+            transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+                        box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        }}
+        
+        .button:hover {{
+            background-color: var(--primary-dark);
+            box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+        }}
+        
+        .divider {{
+            margin: 24px 0;
+            height: 1px;
+            background-color: var(--divider-color);
+        }}
+        
+        .text-secondary {{
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.43;
+            letter-spacing: 0.01071em;
+        }}
+        
+        .text-link {{
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }}
+        
+        .text-link:hover {{
+            text-decoration: underline;
+        }}
+        
+        .mb-2 {{ margin-bottom: 8px; }}
+        .mb-3 {{ margin-bottom: 12px; }}
+        .mb-4 {{ margin-bottom: 16px; }}
+        .mb-6 {{ margin-bottom: 24px; }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='paper'>
+            <div class='text-center mb-6'>
+                <svg class='icon' viewBox='0 0 24 24'>
+                    <path d='M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z' />
+                </svg>
+                <h1>Accept Invitation</h1>
+                
+                <p class='subtitle mb-2'>
+                    Welcome, <strong>{displayName}</strong>!
+                </p>
+                <p class='text-secondary mb-3'>
+                    {email}
+                </p>
+                <p class='subtitle mb-4'>
+                    Click the button below to create your account and accept this invitation.
+                </p>
+                
+                <div class='info-section'>
+                    <p>
+                        You've been invited to join <strong>{tenantName}</strong> by <strong>{invitedBy}</strong>.
+                    </p>
+                    <p>
+                        Your email <strong>{email}</strong> will be pre-filled.
+                    </p>
+                    <p>
+                        Click <strong>""Sign up now""</strong> at the bottom to complete registration.
+                    </p>
+                </div>
+                
+                <a href='{signUpUrl}' class='button'>
+                    Continue to Create Account
+                </a>
+                
+                <div class='divider'></div>
+                
+                <p class='text-secondary mb-2'>
+                    Already have an account?
+                </p>
+                <a href='{clientOrigin}login' class='text-link'>
+                    Sign In Instead
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>";
+    }
+    
+    private static string GetErrorPage(string title, string message, string clientOrigin)
+    {
+        return $@"
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>{title}</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap' rel='stylesheet' />
+    <style>
+        :root {{
+            --primary-color: rgba(76,175,80,1);
+            --error-color: #f44336;
+            --background-color: #1b1f22;
+            --surface-color: #202528;
+            --text-primary: rgba(255,255,255, 0.70);
+            --text-secondary: rgba(255,255,255, 0.50);
+            --border-radius: 5px;
+            --elevation-25: 0px 8px 10px -5px rgba(0,0,0,0.2), 0px 16px 24px 2px rgba(0,0,0,0.14), 0px 6px 30px 5px rgba(0,0,0,0.12);
+        }}
+        
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background-color: var(--background-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }}
+        
+        .container {{
+            width: 100%;
+            max-width: 400px;
+            padding: 16px;
+        }}
+        
+        .paper {{
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--elevation-25);
+            padding: 32px;
+            text-align: center;
+        }}
+        
+        .error-icon {{
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            display: block;
+            fill: var(--error-color);
+        }}
+        
+        h1 {{
+            font-size: 2.125rem;
+            font-weight: 400;
+            line-height: 1.235;
+            letter-spacing: 0.00735em;
+            margin-bottom: 16px;
+        }}
+        
+        .error-message {{
+            font-size: 1rem;
+            line-height: 1.5;
+            letter-spacing: 0.00938em;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }}
+        
+        .button {{
+            display: inline-block;
+            padding: 8px 16px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.02857em;
+            text-transform: uppercase;
+            border: 1px solid var(--primary-color);
+            transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        }}
+        
+        .button:hover {{
+            background-color: rgba(76, 175, 80, 0.08);
+        }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='paper'>
+            <svg class='error-icon' viewBox='0 0 24 24'>
+                <path d='M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z' />
+            </svg>
+            <h1>{title}</h1>
+            <p class='error-message'>{message}</p>
+            <a href='{clientOrigin}login' class='button'>Go to Login</a>
+        </div>
+    </div>
+</body>
+</html>";
     }
 }

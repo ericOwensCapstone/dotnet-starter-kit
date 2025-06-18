@@ -523,7 +523,7 @@ public class InvitationService : IInvitationService
     {
         try
         {
-            var acceptUrl = $"{_originOptions.OriginUrl}/accept-invitation?token={invitation.InvitationToken}";
+            var acceptUrl = $"{_originOptions.OriginUrl}/api/public/invitation/{invitation.InvitationToken}";
             var subject = string.Format(EmailTemplates.UserInvitation.Subject, tenantName);
             var body = EmailTemplates.UserInvitation.GetHtmlBody(
                 tenantName,

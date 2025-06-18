@@ -4,6 +4,7 @@ using FSH.Starter.Blazor.Infrastructure.Auth;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using MudBlazor;
+using System.Web;
 
 namespace FSH.Starter.Blazor.Client.Pages.Auth;
 
@@ -29,6 +30,32 @@ public partial class AcceptInvitation
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("AcceptInvitation.OnInitializedAsync: Starting");
+        
+        // Extract token from URL and redirect to styled landing page
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        var query = uri.Query;
+        
+        if (!string.IsNullOrEmpty(query))
+        {
+            // Parse query string manually
+            var queryString = query.StartsWith("?") ? query.Substring(1) : query;
+            var queryParams = HttpUtility.ParseQueryString(queryString);
+            var token = queryParams["token"];
+            
+            if (!string.IsNullOrEmpty(token))
+            {
+                Console.WriteLine($"AcceptInvitation: Redirecting to styled landing page with token: {token}");
+                
+                // Redirect to the API's styled landing page
+                var apiBaseUrl = Navigation.BaseUri.Replace("7100", "7000").Replace("54553", "54552");
+                var styledLandingUrl = $"{apiBaseUrl}api/public/invitation/{token}";
+                
+                Navigation.NavigateTo(styledLandingUrl, true);
+                return;
+            }
+        }
+        
+        // If no token, show error
         try
         {
             await ValidateInvitationTokenAsync();

@@ -116,6 +116,8 @@ public partial class AcceptInvitation
 
     private static string GetLandingPage(string displayName, string email, string tenantName, string invitedBy, string signUpUrl, string clientOrigin)
     {
+        // Original design with icon and blue info box (commented out for easy restoration)
+        /*
         return $@"
 <!DOCTYPE html>
 <html lang='en'>
@@ -303,6 +305,190 @@ public partial class AcceptInvitation
                     </p>
                     <p>
                         Click <strong>""Sign up now""</strong> at the bottom to complete registration.
+                    </p>
+                </div>
+                
+                <a href='{signUpUrl}' class='button'>
+                    Continue to Create Account
+                </a>
+                
+                <div class='divider'></div>
+                
+                <p class='text-secondary mb-2'>
+                    Already have an account?
+                </p>
+                <a href='{clientOrigin}login' class='text-link'>
+                    Sign In Instead
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>";
+        */
+        
+        // Simplified design without icon and info box
+        return $@"
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Accept Invitation - {tenantName}</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap' rel='stylesheet' />
+    <style>
+        :root {{
+            --primary-color: rgba(76,175,80,1);
+            --primary-dark: rgba(56,142,60,1);
+            --secondary-color: rgba(33,150,243,1);
+            --background-color: #1b1f22;
+            --surface-color: #202528;
+            --error-color: #f44336;
+            --text-primary: rgba(255,255,255, 0.70);
+            --text-secondary: rgba(255,255,255, 0.50);
+            --border-radius: 5px;
+            --elevation-1: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+            --elevation-25: 0px 8px 10px -5px rgba(0,0,0,0.2), 0px 16px 24px 2px rgba(0,0,0,0.14), 0px 6px 30px 5px rgba(0,0,0,0.12);
+            --info-background: #1e3a5f;
+            --divider-color: #e0e0e036;
+        }}
+        
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background-color: var(--background-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }}
+        
+        .container {{
+            width: 100%;
+            max-width: 400px;
+            padding: 16px;
+        }}
+        
+        .paper {{
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--elevation-25);
+            padding: 32px;
+        }}
+        
+        .text-center {{
+            text-align: center;
+        }}
+        
+        .image-placeholder {{
+            height: 64px;
+            margin-bottom: 16px;
+            /* Space reserved for future image */
+        }}
+        
+        h1 {{
+            font-size: 2.125rem;
+            font-weight: 400;
+            line-height: 1.235;
+            letter-spacing: 0.00735em;
+            margin-bottom: 24px;
+        }}
+        
+        .user-info {{
+            margin-bottom: 24px;
+        }}
+        
+        .subtitle {{
+            font-size: 1rem;
+            line-height: 1.5;
+            letter-spacing: 0.00938em;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }}
+        
+        .text-secondary {{
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.43;
+            letter-spacing: 0.01071em;
+        }}
+        
+        .button {{
+            display: inline-block;
+            width: 100%;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.02857em;
+            text-transform: uppercase;
+            text-align: center;
+            box-shadow: var(--elevation-1);
+            transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+                        box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+            margin-top: 24px;
+        }}
+        
+        .button:hover {{
+            background-color: var(--primary-dark);
+            box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+        }}
+        
+        .divider {{
+            margin: 24px 0;
+            height: 1px;
+            background-color: var(--divider-color);
+        }}
+        
+        .text-link {{
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }}
+        
+        .text-link:hover {{
+            text-decoration: underline;
+        }}
+        
+        .mb-2 {{ margin-bottom: 8px; }}
+        .mb-3 {{ margin-bottom: 12px; }}
+        .mb-4 {{ margin-bottom: 16px; }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='paper'>
+            <div class='text-center'>
+                <div class='image-placeholder'>
+                    <!-- Space reserved for future image -->
+                </div>
+                
+                <h1>
+                    OHD Harvest<br />
+                    Marketplace<br />
+                    Invitation
+                </h1>
+                
+                <div class='user-info'>
+                    <p class='subtitle mb-2'>
+                        Welcome, <strong>{displayName}</strong>!
+                    </p>
+                    <p class='text-secondary mb-3'>
+                        {email}
+                    </p>
+                    <p class='subtitle'>
+                        Click the button below to create your account and accept this invitation.
                     </p>
                 </div>
                 

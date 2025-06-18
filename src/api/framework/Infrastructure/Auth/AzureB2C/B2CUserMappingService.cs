@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using Finbuckle.MultiTenant;
 using Finbuckle.MultiTenant.Abstractions;
@@ -52,6 +53,7 @@ public class B2CUserMappingService : IB2CUserMappingService
         _graphService = graphService;
     }
 
+    //TODO [System.Diagnostics.DebuggerHidden]
     public async Task<FshUser> GetOrCreateUserFromB2CClaimsAsync(ClaimsPrincipal principal, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Processing B2C claims for user authentication");
@@ -289,6 +291,229 @@ public class B2CUserMappingService : IB2CUserMappingService
             }
         }
 
+        // Check if user has any roles assigned (this handles users created by B2CPostRegistrationEndpoint)
+        if (user != null && !string.IsNullOrEmpty(user.Email))
+        {
+            try
+            {
+                // Try to get roles, but this might fail if we don't have tenant context yet
+                var userRoles = await _userManager.GetRolesAsync(user);
+                if (userRoles == null || userRoles.Count == 0)
+                {
+                    _logger.LogInformation("User {UserId} has no roles assigned. Checking for invitation to assign role.", user.Id);
+                
+                // Look for a valid invitation to get the role
+                var invitations = await _anonymousInvitationService.GetInvitationsByEmailAsync(user.Email, cancellationToken);
+                var acceptedInvitation = invitations
+                    .Where(i => i.Status == InvitationStatus.Accepted && !string.IsNullOrEmpty(i.Role))
+                    .OrderByDescending(i => i.AcceptedAt)
+                    .FirstOrDefault();
+                
+                if (acceptedInvitation != null)
+                {
+                    _logger.LogInformation("Found accepted invitation with role {Role} for user {UserId}. Assigning role.", 
+                        acceptedInvitation.Role, user.Id);
+                    
+                    try
+                    {
+                        // Get the role ID for the role name using raw SQL to access TenantId
+                        string? roleId = null;
+                        using (var roleCommand = _authDbContext.Database.GetDbConnection().CreateCommand())
+                        {
+                            roleCommand.CommandText = @"
+                                SELECT ""Id"" FROM identity.""Roles"" 
+                                WHERE ""Name"" = @roleName AND ""TenantId"" = @tenantId";
+                            
+                            roleCommand.Parameters.Add(CreateParameter(roleCommand, "@roleName", acceptedInvitation.Role));
+                            roleCommand.Parameters.Add(CreateParameter(roleCommand, "@tenantId", acceptedInvitation.TargetTenantId));
+                            
+                            await _authDbContext.Database.OpenConnectionAsync(cancellationToken);
+                            try
+                            {
+                                var result = await roleCommand.ExecuteScalarAsync(cancellationToken);
+                                roleId = result?.ToString();
+                            }
+                            finally
+                            {
+                                await _authDbContext.Database.CloseConnectionAsync();
+                            }
+                        }
+                            
+                        if (!string.IsNullOrEmpty(roleId))
+                        {
+                            // Use raw SQL to insert into UserRoles table to bypass tenant filtering
+                            using var command = _authDbContext.Database.GetDbConnection().CreateCommand();
+                            command.CommandText = @"
+                                INSERT INTO identity.""UserRoles"" (""UserId"", ""RoleId"", ""TenantId"")
+                                SELECT @userId, @roleId, @tenantId
+                                WHERE NOT EXISTS (
+                                    SELECT 1 FROM identity.""UserRoles"" 
+                                    WHERE ""UserId"" = @userId AND ""RoleId"" = @roleId AND ""TenantId"" = @tenantId
+                                )";
+                            
+                            command.Parameters.Add(CreateParameter(command, "@userId", user.Id));
+                            command.Parameters.Add(CreateParameter(command, "@roleId", roleId));
+                            command.Parameters.Add(CreateParameter(command, "@tenantId", acceptedInvitation.TargetTenantId));
+                            
+                            await _authDbContext.Database.OpenConnectionAsync(cancellationToken);
+                            
+                            try
+                            {
+                                var rowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
+                                if (rowsAffected > 0)
+                                {
+                                    _logger.LogInformation("Successfully assigned role {Role} to user {UserId} using raw SQL", 
+                                        acceptedInvitation.Role, user.Id);
+                                }
+                                else
+                                {
+                                    _logger.LogInformation("Role {Role} already assigned to user {UserId}", 
+                                        acceptedInvitation.Role, user.Id);
+                                }
+                            }
+                            finally
+                            {
+                                await _authDbContext.Database.CloseConnectionAsync();
+                            }
+                        }
+                        else
+                        {
+                            _logger.LogError("Role {Role} not found for tenant {TenantId}", 
+                                acceptedInvitation.Role, acceptedInvitation.TargetTenantId);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error assigning role to user {UserId}", user.Id);
+                        // Continue - user can still log in without role
+                    }
+                }
+                else
+                {
+                    _logger.LogWarning("No accepted invitation found with role for user {UserId}", user.Id);
+                }
+            }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation("Unable to check roles due to missing tenant context. Will check via raw SQL.");
+                
+                // If we can't use UserManager due to tenant context issues, check roles via raw SQL
+                bool hasRoles = false;
+                using (var command = _authDbContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+                        SELECT COUNT(*) FROM identity.""UserRoles"" 
+                        WHERE ""UserId"" = @userId";
+                    
+                    command.Parameters.Add(CreateParameter(command, "@userId", user.Id));
+                    
+                    await _authDbContext.Database.OpenConnectionAsync(cancellationToken);
+                    try
+                    {
+                        var result = await command.ExecuteScalarAsync(cancellationToken);
+                        hasRoles = Convert.ToInt32(result) > 0;
+                    }
+                    finally
+                    {
+                        await _authDbContext.Database.CloseConnectionAsync();
+                    }
+                }
+                
+                if (!hasRoles)
+                {
+                    _logger.LogInformation("User {UserId} has no roles assigned (checked via SQL). Checking for invitation to assign role.", user.Id);
+                    
+                    // Look for a valid invitation to get the role
+                    var invitations = await _anonymousInvitationService.GetInvitationsByEmailAsync(user.Email, cancellationToken);
+                    var acceptedInvitation = invitations
+                        .Where(i => i.Status == InvitationStatus.Accepted && !string.IsNullOrEmpty(i.Role))
+                        .OrderByDescending(i => i.AcceptedAt)
+                        .FirstOrDefault();
+                    
+                    if (acceptedInvitation != null)
+                    {
+                        _logger.LogInformation("Found accepted invitation with role {Role} for user {UserId}. Assigning role.", 
+                            acceptedInvitation.Role, user.Id);
+                        
+                        try
+                        {
+                            // Get the role ID for the role name using raw SQL to access TenantId
+                            string? roleId = null;
+                            using (var roleCommand = _authDbContext.Database.GetDbConnection().CreateCommand())
+                            {
+                                roleCommand.CommandText = @"
+                                    SELECT ""Id"" FROM identity.""Roles"" 
+                                    WHERE ""Name"" = @roleName AND ""TenantId"" = @tenantId";
+                                
+                                roleCommand.Parameters.Add(CreateParameter(roleCommand, "@roleName", acceptedInvitation.Role));
+                                roleCommand.Parameters.Add(CreateParameter(roleCommand, "@tenantId", acceptedInvitation.TargetTenantId));
+                                
+                                await _authDbContext.Database.OpenConnectionAsync(cancellationToken);
+                                try
+                                {
+                                    var result = await roleCommand.ExecuteScalarAsync(cancellationToken);
+                                    roleId = result?.ToString();
+                                }
+                                finally
+                                {
+                                    await _authDbContext.Database.CloseConnectionAsync();
+                                }
+                            }
+                                
+                            if (!string.IsNullOrEmpty(roleId))
+                            {
+                                // Use raw SQL to insert into UserRoles table to bypass tenant filtering
+                                using var command = _authDbContext.Database.GetDbConnection().CreateCommand();
+                                command.CommandText = @"
+                                    INSERT INTO identity.""UserRoles"" (""UserId"", ""RoleId"", ""TenantId"")
+                                    SELECT @userId, @roleId, @tenantId
+                                    WHERE NOT EXISTS (
+                                        SELECT 1 FROM identity.""UserRoles"" 
+                                        WHERE ""UserId"" = @userId AND ""RoleId"" = @roleId AND ""TenantId"" = @tenantId
+                                    )";
+                                
+                                command.Parameters.Add(CreateParameter(command, "@userId", user.Id));
+                                command.Parameters.Add(CreateParameter(command, "@roleId", roleId));
+                                command.Parameters.Add(CreateParameter(command, "@tenantId", acceptedInvitation.TargetTenantId));
+                                
+                                await _authDbContext.Database.OpenConnectionAsync(cancellationToken);
+                                
+                                try
+                                {
+                                    var rowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
+                                    if (rowsAffected > 0)
+                                    {
+                                        _logger.LogInformation("Successfully assigned role {Role} to user {UserId} using raw SQL", 
+                                            acceptedInvitation.Role, user.Id);
+                                    }
+                                    else
+                                    {
+                                        _logger.LogInformation("Role {Role} already assigned to user {UserId}", 
+                                            acceptedInvitation.Role, user.Id);
+                                    }
+                                }
+                                finally
+                                {
+                                    await _authDbContext.Database.CloseConnectionAsync();
+                                }
+                            }
+                            else
+                            {
+                                _logger.LogError("Role {Role} not found for tenant {TenantId}", 
+                                    acceptedInvitation.Role, acceptedInvitation.TargetTenantId);
+                            }
+                        }
+                        catch (Exception assignEx)
+                        {
+                            _logger.LogError(assignEx, "Error assigning role to user {UserId}", user.Id);
+                            // Continue - user can still log in without role
+                        }
+                    }
+                }
+            }
+        }
+
         // Validate tenant assignment
         var userTenantId = await GetUserTenantIdAsync(user.Id, cancellationToken);
         
@@ -377,6 +602,14 @@ public class B2CUserMappingService : IB2CUserMappingService
         {
             await _authDbContext.Database.CloseConnectionAsync();
         }
+    }
+
+    private static System.Data.Common.DbParameter CreateParameter(System.Data.Common.DbCommand command, string name, object value)
+    {
+        var parameter = command.CreateParameter();
+        parameter.ParameterName = name;
+        parameter.Value = value ?? DBNull.Value;
+        return parameter;
     }
 
     public async Task<List<Claim>> GetUserClaimsAsync(FshUser user, CancellationToken cancellationToken = default)

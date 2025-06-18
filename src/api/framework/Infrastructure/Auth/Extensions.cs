@@ -21,6 +21,7 @@ namespace FSH.Framework.Infrastructure.Auth;
 
 internal static class Extensions
 {
+    [System.Diagnostics.DebuggerHidden]
     internal static IServiceCollection ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         // Configure authentication options

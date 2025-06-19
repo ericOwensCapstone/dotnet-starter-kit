@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - OHD Harvest Marketplace</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary-color: rgba(76,175,80,1);
+            --primary-dark: rgba(56,142,60,1);
+            --error-color: #ff6b6b;
+            --background-color: #1b1f22;
+            --surface-color: #202528;
+            --text-primary: rgba(255,255,255, 0.70);
+            --text-secondary: rgba(255,255,255, 0.50);
+            --border-radius: 5px;
+            --elevation-25: 0px 8px 10px -5px rgba(0,0,0,0.2), 0px 16px 24px 2px rgba(0,0,0,0.14), 0px 6px 30px 5px rgba(0,0,0,0.12);
+        }
+        
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 16px;
+        }
+        
+        .paper {
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--elevation-25);
+            padding: 32px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.125rem;
+            font-weight: 400;
+            line-height: 1.235;
+            letter-spacing: 0.00735em;
+            margin-bottom: 32px;
+            color: var(--text-primary);
+        }
+        
+        .error-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 24px;
+            display: block;
+            fill: var(--error-color);
+        }
+        
+        .error-title {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--error-color);
+            margin-bottom: 24px;
+        }
+        
+        /* Minimal B2C styling */
+        #api {
+            background: transparent;
+            margin-bottom: 24px;
+        }
+        
+        /* Let B2C handle most error styling, just adjust colors */
+        #api .error {
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            text-align: left;
+            background-color: rgba(244, 67, 54, 0.1);
+            border: 1px solid var(--error-color);
+            border-radius: var(--border-radius);
+            padding: 16px;
+        }
+        
+        #api .error p {
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+        
+        #api .error p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Style links */
+        #api a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        #api a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Go Back button */
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.02857em;
+            text-transform: uppercase;
+            border: 1px solid var(--primary-color);
+            transition: background-color 0.2s;
+            margin-top: 24px;
+        }
+        
+        .button:hover {
+            background-color: rgba(76, 175, 80, 0.08);
+        }
+        
+        /* Technical details if shown */
+        .error-details {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .error-code {
+            font-family: 'Courier New', monospace;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="paper">
+            <h1>
+                OHD Harvest<br />
+                Marketplace
+            </h1>
+            
+            <svg class="error-icon" viewBox="0 0 24 24">
+                <path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+            </svg>
+            
+            <h2 class="error-title">Something went wrong</h2>
+            
+            <div id="api"></div>
+            
+            <a href="javascript:history.back()" class="button">Go Back</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - OHD Harvest Marketplace</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary-color: rgba(76,175,80,1);
+            --primary-dark: rgba(56,142,60,1);
+            --background-color: #1b1f22;
+            --surface-color: #202528;
+            --text-primary: rgba(255,255,255, 0.70);
+            --border-radius: 5px;
+            --elevation-25: 0px 8px 10px -5px rgba(0,0,0,0.2), 0px 16px 24px 2px rgba(0,0,0,0.14), 0px 6px 30px 5px rgba(0,0,0,0.12);
+        }
+        
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 16px;
+        }
+        
+        .paper {
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--elevation-25);
+            padding: 32px;
+        }
+        
+        h1 {
+            font-size: 2.125rem;
+            font-weight: 400;
+            line-height: 1.235;
+            letter-spacing: 0.00735em;
+            margin-bottom: 32px;
+            text-align: center;
+            color: var(--text-primary);
+        }
+        
+        /* Only the absolute minimum B2C overrides */
+        .intro h2 {
+            display: none;
+        }
+        
+        /* Hide itemLevel errors by default (from official template) */
+        .attrEntry .itemLevel {
+            display: none;
+        }
+        
+        /* Basic input styling for dark theme */
+        #api input[type="text"],
+        #api input[type="email"],
+        #api input[type="password"] {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.23);
+            border-radius: var(--border-radius);
+            padding: 12px 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        #api input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        #api label {
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        /* Button styling */
+        #api button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 12px 24px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.02857em;
+            text-transform: uppercase;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+            transition: background-color 0.2s;
+        }
+        
+        #api button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Style error text for better visibility on dark background */
+        #api .error {
+            color: #ff6b6b; /* Lighter red that shows better on dark background */
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+        
+        /* Add spacing between form fields */
+        #api .entry-item {
+            margin-bottom: 20px;
+        }
+        
+        /* Use JavaScript to move forgot password link after render */
+        
+        /* Style links */
+        #api a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        #api a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Sign up link styling */
+        .create {
+            margin-top: 24px;
+            text-align: center;
+        }
+        
+        .create p {
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="paper">
+            <h1>
+                OHD Harvest<br />
+                Marketplace
+            </h1>
+            <div id="api"></div>
+        </div>
+    </div>
+    <script>
+        // Move forgot password link below sign in button
+        function reorganizeForm() {
+            const forgotPasswordLink = document.querySelector('#api .localAccount .password-label a[id*="forgotPassword"]');
+            const buttonsContainer = document.querySelector('#api .localAccount .buttons');
+            
+            if (forgotPasswordLink && buttonsContainer) {
+                // Create a container for the forgot password link
+                const forgotContainer = document.createElement('div');
+                forgotContainer.className = 'forgot-password';
+                forgotContainer.style.textAlign = 'center';
+                forgotContainer.style.marginTop = '20px';
+                
+                // Move the link to the new container
+                forgotContainer.appendChild(forgotPasswordLink);
+                
+                // Insert after the buttons
+                buttonsContainer.parentNode.insertBefore(forgotContainer, buttonsContainer.nextSibling);
+            }
+        }
+        
+        // Run when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', reorganizeForm);
+        } else {
+            reorganizeForm();
+        }
+        
+        // Also run after a delay to catch dynamically loaded content
+        setTimeout(reorganizeForm, 100);
+        setTimeout(reorganizeForm, 500);
+        
+        // Watch for B2C form changes
+        const observer = new MutationObserver(function(mutations) {
+            reorganizeForm();
+        });
+        
+        if (document.getElementById('api')) {
+            observer.observe(document.getElementById('api'), { childList: true, subtree: true });
+        }
+    </script>
+</body>
+</html>

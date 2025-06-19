@@ -30,7 +30,11 @@
       "WebFetch(domain:mudblazor.com)",
       "Bash(docker-compose up:*)",
       "Bash(true)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(sed:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl:*)"
     ],
     "deny": []
   },

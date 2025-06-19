@@ -69,7 +69,7 @@
 
       <ContentDefinitions>
         <ContentDefinition Id="api.localaccount.invitation">
-          <LoadUri>~/tenant/templates/AzureBlue/selfasserted.cshtml</LoadUri>
+          <LoadUri>https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/selfasserted.html</LoadUri>
           <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
           <DataUri>urn:com:microsoft:aad:b2c:elements:contract:selfasserted:2.1.0</DataUri>
           <Metadata>
@@ -78,7 +78,7 @@
         </ContentDefinition>
 
         <ContentDefinition Id="api.error.invitation">
-          <LoadUri>~/tenant/templates/AzureBlue/exception.cshtml</LoadUri>
+          <LoadUri>https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/error.html</LoadUri>
           <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
           <DataUri>urn:com:microsoft:aad:b2c:elements:contract:globalexception:1.2.1</DataUri>
           <Metadata>

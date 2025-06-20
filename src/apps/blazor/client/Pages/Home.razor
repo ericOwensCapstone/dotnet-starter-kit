@@ -1,6 +1,23 @@
 ﻿@page "/"
 @using System.Security.Claims
 
+<style>
+    .home-page-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('/cornfield.png');
+        background-size: cover;
+        background-position: center top;
+        background-repeat: no-repeat;
+        z-index: -1;
+    }
+</style>
+
+<div class="home-page-container"></div>
+
 <MudContainer>
     <MudGrid>
 @*         <MudItem xs="12" sm="12" md="12">

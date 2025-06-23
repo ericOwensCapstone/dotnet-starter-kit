@@ -1,14 +1,71 @@
 ﻿using System.Security.Claims;
 using FSH.Framework.Core.Identity.Users.Dtos;
-using FSH.Framework.Core.Identity.Users.Features.AssignUserRole;
-using FSH.Framework.Core.Identity.Users.Features.ChangePassword;
-using FSH.Framework.Core.Identity.Users.Features.ForgotPassword;
-using FSH.Framework.Core.Identity.Users.Features.RegisterUser;
-using FSH.Framework.Core.Identity.Users.Features.ResetPassword;
-using FSH.Framework.Core.Identity.Users.Features.ToggleUserStatus;
-using FSH.Framework.Core.Identity.Users.Features.UpdateUser;
+using FSH.Framework.Core.Storage.File.Features;
 
 namespace FSH.Framework.Core.Identity.Users.Abstractions;
+
+// Command types used in this interface
+public class ToggleUserStatusCommand
+{
+    public string UserId { get; set; } = default!;
+    public bool ActivateUser { get; set; }
+}
+
+public class RegisterUserCommand
+{
+    public string FirstName { get; set; } = default!;
+    public string LastName { get; set; } = default!;
+    public string Email { get; set; } = default!;
+    public string UserName { get; set; } = default!;
+    public string Password { get; set; } = default!;
+    public string ConfirmPassword { get; set; } = default!;
+    public string? PhoneNumber { get; set; }
+}
+
+public class RegisterUserResponse
+{
+    public string UserId { get; set; }
+    
+    public RegisterUserResponse(string userId)
+    {
+        UserId = userId;
+    }
+}
+
+public class UpdateUserCommand
+{
+    public string FirstName { get; set; } = default!;
+    public string LastName { get; set; } = default!;
+    public string? PhoneNumber { get; set; }
+    public FileUploadCommand? Image { get; set; }
+    public bool DeleteCurrentImage { get; set; }
+}
+
+public class ForgotPasswordCommand
+{
+    public string Email { get; set; } = default!;
+}
+
+public class ResetPasswordCommand
+{
+    public string Email { get; set; } = default!;
+    public string Password { get; set; } = default!;
+    public string Token { get; set; } = default!;
+}
+
+public class ChangePasswordCommand
+{
+    public string CurrentPassword { get; set; } = default!;
+    public string NewPassword { get; set; } = default!;
+    public string ConfirmNewPassword { get; set; } = default!;
+}
+
+public class AssignUserRoleCommand
+{
+    public List<UserRoleDetail> UserRoles { get; set; } = new();
+}
+
+
 public interface IUserService
 {
     Task<bool> ExistsWithNameAsync(string name);

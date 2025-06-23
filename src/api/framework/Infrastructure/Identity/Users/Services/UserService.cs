@@ -6,10 +6,7 @@ using FSH.Framework.Core.Caching;
 using FSH.Framework.Core.Exceptions;
 using FSH.Framework.Core.Identity.Users.Abstractions;
 using FSH.Framework.Core.Identity.Users.Dtos;
-using FSH.Framework.Core.Identity.Users.Features.AssignUserRole;
-using FSH.Framework.Core.Identity.Users.Features.RegisterUser;
-using FSH.Framework.Core.Identity.Users.Features.ToggleUserStatus;
-using FSH.Framework.Core.Identity.Users.Features.UpdateUser;
+// Command types are now defined in IUserService.cs in Abstractions namespace
 using FSH.Framework.Core.Jobs;
 using FSH.Framework.Core.Mail;
 using FSH.Framework.Core.Storage;

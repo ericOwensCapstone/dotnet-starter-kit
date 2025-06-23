@@ -361,4 +361,59 @@ public class GraphService : IGraphService
             $"{_extensionPrefix}UserStatus"
         };
     }
+
+    public async Task<bool> PermanentlyDeleteUserAsync(string objectId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            // In B2C, deleted users are moved to directory/deletedItems
+            // To permanently delete, we need to delete from the deletedItems collection
+            await _graphClient.Directory.DeletedItems[objectId].DeleteAsync(requestConfiguration => { }, cancellationToken);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to permanently delete user {ObjectId} from B2C", objectId);
+            return false;
+        }
+    }
+
+    public async Task<List<GraphUser>> GetDeletedUsersAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var deletedItems = await _graphClient.Directory.DeletedItems.GraphUser.GetAsync(requestConfiguration =>
+            {
+                requestConfiguration.QueryParameters.Select = GetUserSelectProperties();
+            }, cancellationToken);
+
+            var deletedUsers = new List<GraphUser>();
+
+            if (deletedItems?.Value != null)
+            {
+                foreach (var user in deletedItems.Value)
+                {
+                    deletedUsers.Add(MapToGraphUser(user));
+                }
+            }
+
+            // Handle pagination if needed
+            var pageIterator = PageIterator<User, UserCollectionResponse>
+                .CreatePageIterator(_graphClient, deletedItems, (user) =>
+                {
+                    deletedUsers.Add(MapToGraphUser(user));
+                    return true;
+                });
+
+            await pageIterator.IterateAsync(cancellationToken);
+
+            _logger.LogInformation("Retrieved {Count} deleted users from B2C", deletedUsers.Count);
+            return deletedUsers;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to retrieve deleted users from B2C");
+            return new List<GraphUser>();
+        }
+    }
 }

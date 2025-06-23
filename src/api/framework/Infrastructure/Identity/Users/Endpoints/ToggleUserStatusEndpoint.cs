@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using FSH.Framework.Core.Identity.Users.Abstractions;
-using FSH.Framework.Core.Identity.Users.Features.ToggleUserStatus;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

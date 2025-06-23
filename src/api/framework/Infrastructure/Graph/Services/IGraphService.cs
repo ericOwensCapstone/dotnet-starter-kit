@@ -16,6 +16,10 @@ public interface IGraphService
     Task<bool> UpdateUserCustomAttributesAsync(string userId, Dictionary<string, object> attributes, CancellationToken cancellationToken = default);
     Task<bool> DeleteUserAsync(string userId, CancellationToken cancellationToken = default);
     
+    // B2C Deleted User Management
+    Task<bool> PermanentlyDeleteUserAsync(string objectId, CancellationToken cancellationToken = default);
+    Task<List<GraphUser>> GetDeletedUsersAsync(CancellationToken cancellationToken = default);
+    
     // User Status Management
     Task<bool> EnableUserAsync(string userId, CancellationToken cancellationToken = default);
     Task<bool> DisableUserAsync(string userId, CancellationToken cancellationToken = default);

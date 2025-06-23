@@ -21,6 +21,10 @@ internal static class Extensions
         app.MapGetUserRolesEndpoint();
         app.MapGetUserAuditTrailEndpoint();
         app.MapConfirmEmailEndpoint();
+        app.MapDeleteUserCompletelyEndpoint();
+        app.MapPurgeAllDeletedB2CUsersEndpoint();
+        app.MapSearchUsersAcrossTenantsEndpoint();
+        app.MapGetUserRolesAcrossTenantsEndpoint();
         return app;
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text;
 using FSH.Framework.Core.Exceptions;
-using FSH.Framework.Core.Identity.Users.Features.ChangePassword;
-using FSH.Framework.Core.Identity.Users.Features.ForgotPassword;
-using FSH.Framework.Core.Identity.Users.Features.ResetPassword;
+using FSH.Framework.Core.Identity.Users.Abstractions;
 using FSH.Framework.Core.Mail;
 using Microsoft.AspNetCore.WebUtilities;
 
@@ -63,7 +61,7 @@ internal sealed partial class UserService
 
         _ = user ?? throw new NotFoundException("user not found");
 
-        var result = await userManager.ChangePasswordAsync(user, request.Password, request.NewPassword);
+        var result = await userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
 
         if (!result.Succeeded)
         {

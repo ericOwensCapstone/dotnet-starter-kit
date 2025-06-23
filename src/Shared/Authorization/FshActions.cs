@@ -10,4 +10,5 @@ public static class FshActions
     public const string Generate = nameof(Generate);
     public const string Clean = nameof(Clean);
     public const string UpgradeSubscription = nameof(UpgradeSubscription);
+    public const string ManageAll = nameof(ManageAll);
 }

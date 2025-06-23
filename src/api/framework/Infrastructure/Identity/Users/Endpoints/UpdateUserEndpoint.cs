@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using FSH.Framework.Core.Exceptions;
 using FSH.Framework.Core.Identity.Users.Abstractions;
-using FSH.Framework.Core.Identity.Users.Features.UpdateUser;
 using FSH.Framework.Infrastructure.Auth.Policy;
 using FSH.Starter.Shared.Authorization;
 using MediatR;

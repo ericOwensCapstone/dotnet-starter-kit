@@ -339,6 +339,58 @@ Task<List<Microsoft.Graph.Models.User>> GetDeletedUsersAsync();
 - Test "Purge All" shows count of deleted users
 - After purge, verify B2C portal shows no deleted users
 
+**Step 4.4: Implement Cross-Tenant User Search**
+- Create new endpoint in `/src/api/framework/Infrastructure/Identity/Users/Endpoints/SearchUsersAcrossTenantsEndpoint.cs`
+- Endpoint should:
+  ```csharp
+  .MapGet("/search-all", async (string? searchTerm, int pageSize = 10, TenantFreeDbContext dbContext) =>
+  {
+      var query = dbContext.Users.AsQueryable();
+      
+      if (!string.IsNullOrWhiteSpace(searchTerm) && searchTerm.Length >= 2)
+      {
+          query = query.Where(u => 
+              u.Email.Contains(searchTerm) ||
+              u.FirstName.Contains(searchTerm) ||
+              u.LastName.Contains(searchTerm) ||
+              u.UserName.Contains(searchTerm));
+      }
+      
+      var users = await query
+          .OrderBy(u => u.Email)
+          .Take(pageSize)
+          .Select(u => new UserDetail
+          {
+              Id = u.Id,
+              Email = u.Email,
+              FirstName = u.FirstName,
+              LastName = u.LastName,
+              UserName = u.UserName,
+              PhoneNumber = u.PhoneNumber,
+              IsActive = u.IsActive
+          })
+          .ToListAsync();
+          
+      return Results.Ok(users);
+  })
+  .RequirePermission(FshActions.ManageAll, FshResources.Users)
+  ```
+- Add to Extensions.cs MapUserEndpoints method
+
+**Step 4.5: Update Blazor Client**
+- After creating endpoint, regenerate API client using nswag
+- Update `/src/apps/blazor/client/Pages/Admin/UserManagement.razor.cs`:
+  - Replace `var allUsers = await ApiClient.GetUsersListEndpointAsync();`
+  - With: `var allUsers = await ApiClient.SearchUsersAcrossTenantsEndpointAsync(searchString, 20);`
+  - Remove the TODO comment about cross-tenant search
+
+**🧪 Test Point 4.5:**
+- Create users in multiple tenants (e.g., "testuser1@tenant1.com", "testuser2@tenant2.com")
+- Login as root admin
+- Navigate to /admin/user-management
+- Search for "testuser" - should see users from ALL tenants
+- Verify tenant information is displayed for each user
+
 ### Phase 5: Security Hardening
 
 **Context**: B2C endpoints need protection from unauthorized access while allowing legitimate B2C service calls
@@ -480,3 +532,42 @@ Task<List<Microsoft.Graph.Models.User>> GetDeletedUsersAsync();
   - 5 attempts per IP per hour
   - 20 attempts per token per day
 - **Consider**: Using Azure Front Door or application-level rate limiting
+
+### 2. Fix Architecture Issues with Command Types and IUserService
+- **Priority**: Medium
+- **Architecture Impact**: Violates DDD principles and causes compilation issues
+- **Current Problem**: 
+  - IUserService interface is defined in Core project
+  - Interface references command types (RegisterUserCommand, ChangePasswordCommand, etc.)
+  - These command types don't exist in Core, causing compilation errors
+  - Actual implementation uses inline command definitions in endpoints
+- **Temporary Fix Applied**: 
+  - Command types were defined directly in IUserService.cs file as a workaround
+- **Proper Long-term Solutions**:
+  
+  **Option 1: Move Command Types to Core (Recommended)**
+  - Create proper command/query types in Core project under:
+    - `/src/api/framework/Core/Identity/Users/Commands/`
+    - `/src/api/framework/Core/Identity/Users/Queries/`
+  - These would be DTOs/contracts that don't contain business logic
+  - Keep IUserService in Core as the domain service interface
+  - Benefits: Maintains proper DDD separation, Core defines contracts
+  
+  **Option 2: Move IUserService to Infrastructure**
+  - Move IUserService from Core to Infrastructure
+  - Keep command types defined inline or in Infrastructure
+  - Update all references to use Infrastructure namespace
+  - Benefits: Simpler, keeps implementation details in Infrastructure
+  - Drawbacks: Core loses the service abstraction
+
+- **Implementation Steps for Option 1**:
+  1. Create command type files in Core project
+  2. Move command classes from IUserService.cs to separate files
+  3. Update namespaces and using statements
+  4. Ensure UserService implementation still compiles
+  5. Update endpoints to use the Core command types
+  
+- **Files Affected**:
+  - `/src/api/framework/Core/Identity/Users/Abstractions/IUserService.cs`
+  - `/src/api/framework/Infrastructure/Identity/Users/Services/UserService.cs`
+  - All user-related endpoints in Infrastructure

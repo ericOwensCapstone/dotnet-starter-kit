@@ -81,5 +81,9 @@
         {
             <MudNavLink Href="/tenants" Icon="@Icons.Material.Filled.GroupWork" Disabled="!_canViewTenants">Tenants</MudNavLink>
         }
+        @if (_canManageAllUsers)
+        {
+            <MudNavLink Href="/admin/user-management" Icon="@Icons.Material.Filled.ManageAccounts">User Management</MudNavLink>
+        }
     }
 </MudNavMenu>

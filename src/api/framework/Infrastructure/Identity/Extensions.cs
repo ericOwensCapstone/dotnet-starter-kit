@@ -44,6 +44,9 @@ public static class Extensions
         // Register AuthenticationDbContext for B2C authentication queries without tenant context
         services.BindDbContext<AuthenticationDbContext>();
         
+        // Register TenantFreeDbContext for operations that need to bypass multi-tenant filtering
+        services.BindDbContext<TenantFreeDbContext>();
+        
         // Register repository for ApiKey
         services.AddKeyedScoped<IRepository<ApiKey>, IdentityRepository<ApiKey>>("identity:apikeys");
         services.AddKeyedScoped<IReadRepository<ApiKey>, IdentityRepository<ApiKey>>("identity:apikeys");

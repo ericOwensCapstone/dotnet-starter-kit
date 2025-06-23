@@ -23,8 +23,8 @@
                         OnAdornmentClick="@(() => TogglePasswordVisibility(true))" />
                 </MudItem>
                 <MudItem xs="12">
-                    <MudTextField T="string" @bind-Value="_passwordModel.Password"
-                        For="@(() => _passwordModel.Password)" Label="Current Password" Variant="Variant.Outlined"
+                    <MudTextField T="string" @bind-Value="_passwordModel.CurrentPassword"
+                        For="@(() => _passwordModel.CurrentPassword)" Label="Current Password" Variant="Variant.Outlined"
                         InputType="_currentPasswordInput" Adornment="Adornment.End"
                         AdornmentIcon="@_currentPasswordInputIcon"
                         OnAdornmentClick="@(() => TogglePasswordVisibility(false))" />

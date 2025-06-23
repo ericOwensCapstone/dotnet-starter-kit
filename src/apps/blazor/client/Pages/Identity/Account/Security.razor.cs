@@ -22,7 +22,7 @@ public partial class Security
             _customValidation,
             "Password Changed!"))
         {
-            _passwordModel.Password = string.Empty;
+            _passwordModel.CurrentPassword = string.Empty;
             _passwordModel.NewPassword = string.Empty;
             _passwordModel.ConfirmNewPassword = string.Empty;
         }

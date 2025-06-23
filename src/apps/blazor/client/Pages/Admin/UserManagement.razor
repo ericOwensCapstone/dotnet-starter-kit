@@ -1,0 +1,148 @@
+@page "/admin/user-management"
+@using FSH.Starter.Blazor.Infrastructure.Api
+@using FSH.Starter.Shared.Authorization
+
+@inject IApiClient ApiClient
+@inject IAuthenticationService Authentication
+
+<PageHeader Title="User Management" Header="User Management" SubHeader="Manage all users across all tenants." />
+
+<AuthorizeView>
+    <Authorized>
+        <MudCard>
+            <MudCardContent>
+                <MudGrid>
+                    <MudItem xs="12" md="6">
+                        <MudAutocomplete T="UserDetail" 
+                                        Label="Search Users Across All Tenants" 
+                                        Value="_selectedUser"
+                                        ValueChanged="OnUserSelected"
+                                        SearchFunc="SearchUsersAsync"
+                                        ToStringFunc="@(user => user?.Email ?? string.Empty)"
+                                        ResetValueOnEmptyText="true"
+                                        Clearable="true"
+                                        CoerceText="false"
+                                        Immediate="true"
+                                        AdornmentIcon="@Icons.Material.Filled.Search"
+                                        AdornmentColor="Color.Primary">
+                            <ItemTemplate Context="user">
+                                <MudText Typo="Typo.body2">@user.Email</MudText>
+                                <MudText Typo="Typo.caption">
+                                    @($"{user.FirstName} {user.LastName}".Trim())
+                                    @if (_userTenantMap.TryGetValue(user.Id.ToString(), out var userWithTenant) && !string.IsNullOrEmpty(userWithTenant.TenantName))
+                                    {
+                                        <text> - @userWithTenant.TenantName</text>
+                                    }
+                                </MudText>
+                            </ItemTemplate>
+                        </MudAutocomplete>
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudButton Variant="Variant.Filled" 
+                                  Color="Color.Warning" 
+                                  StartIcon="@Icons.Material.Filled.DeleteSweep"
+                                  OnClick="ShowPurgeB2CUsersDialog"
+                                  Disabled="@_isPurging">
+                            @if (_isPurging)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                <MudText Class="ms-2">Purging...</MudText>
+                            }
+                            else
+                            {
+                                @:Purge All B2C Deleted Users
+                            }
+                        </MudButton>
+                    </MudItem>
+                </MudGrid>
+                
+                @if (_selectedUser != null)
+                {
+                    <MudCard Class="mt-4" Outlined="true">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6">Selected User Details</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudGrid>
+                                <MudItem xs="12" md="6">
+                                    <MudText Typo="Typo.subtitle2" Class="mud-text-secondary">Email</MudText>
+                                    <MudText Typo="Typo.body1">@_selectedUser.Email</MudText>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudText Typo="Typo.subtitle2" Class="mud-text-secondary">Name</MudText>
+                                    <MudText Typo="Typo.body1">@($"{_selectedUser.FirstName} {_selectedUser.LastName}".Trim())</MudText>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudText Typo="Typo.subtitle2" Class="mud-text-secondary">User ID</MudText>
+                                    <MudText Typo="Typo.body1">@_selectedUser.Id</MudText>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudText Typo="Typo.subtitle2" Class="mud-text-secondary">Tenant</MudText>
+                                    <MudText Typo="Typo.body1">@(_selectedUserTenantName ?? "No tenant assigned")</MudText>
+                                </MudItem>
+                                @if (_userRoles != null && _userRoles.Any())
+                                {
+                                    <MudItem xs="12">
+                                        <MudText Typo="Typo.subtitle2" Class="mud-text-secondary">Roles</MudText>
+                                        <MudChipSet T="string">
+                                            @foreach (var role in _userRoles)
+                                            {
+                                                <MudChip T="string" Size="Size.Small" Color="Color.Primary">@role</MudChip>
+                                            }
+                                        </MudChipSet>
+                                    </MudItem>
+                                }
+                            </MudGrid>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Filled" 
+                                      Color="Color.Error" 
+                                      StartIcon="@Icons.Material.Filled.Delete"
+                                      OnClick="ShowDeleteUserDialog"
+                                      Disabled="@_isDeleting">
+                                @if (_isDeleting)
+                                {
+                                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                    <MudText Class="ms-2">Deleting...</MudText>
+                                }
+                                else
+                                {
+                                    @:Delete User Completely
+                                }
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                }
+                
+                @if (_operationResult != null)
+                {
+                    <MudAlert Severity="@(_operationResult.Success ? Severity.Success : Severity.Error)" 
+                              Class="mt-4" 
+                              Variant="Variant.Filled">
+                        @_operationResult.Message
+                        @if (_operationResult.Details != null && _operationResult.Details.Any())
+                        {
+                            <MudList T="string" Dense="true" Class="mt-2">
+                                @foreach (var detail in _operationResult.Details)
+                                {
+                                    <MudListItem T="string">
+                                        <MudIcon Icon="@(detail.Success ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Error)" 
+                                                 Color="@(detail.Success ? Color.Success : Color.Error)" 
+                                                 Size="Size.Small" 
+                                                 Class="me-2" />
+                                        @detail.Message
+                                    </MudListItem>
+                                }
+                            </MudList>
+                        }
+                    </MudAlert>
+                }
+            </MudCardContent>
+        </MudCard>
+    </Authorized>
+    <NotAuthorized>
+        <MudAlert Severity="Severity.Error">You do not have permission to access this page.</MudAlert>
+    </NotAuthorized>
+</AuthorizeView>

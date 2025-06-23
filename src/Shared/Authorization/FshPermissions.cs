@@ -19,6 +19,7 @@ public static class FshPermissions
         new("Update Users", FshActions.Update, FshResources.Users),
         new("Delete Users", FshActions.Delete, FshResources.Users),
         new("Export Users", FshActions.Export, FshResources.Users),
+        new("Manage All Users", FshActions.ManageAll, FshResources.Users, IsRoot: true),
         new("View UserRoles", FshActions.View, FshResources.UserRoles),
         new("Update UserRoles", FshActions.Update, FshResources.UserRoles),
         new("View Roles", FshActions.View, FshResources.Roles),

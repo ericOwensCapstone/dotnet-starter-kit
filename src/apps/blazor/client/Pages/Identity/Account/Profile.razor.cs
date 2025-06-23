@@ -19,7 +19,8 @@ public partial class Profile
     [Inject]
     protected IApiClient PersonalClient { get; set; } = default!;
 
-    private readonly UpdateUserCommand _profileModel = new();
+    private readonly UpdateUserCommand _updateCommand = new();
+    private readonly ProfileModel _profileModel = new();
 
     private string? _imageUrl;
     private string? _userId;
@@ -36,11 +37,17 @@ public partial class Profile
             _profileModel.FirstName = user.GetFirstName() ?? string.Empty;
             _profileModel.LastName = user.GetSurname() ?? string.Empty;
             _profileModel.PhoneNumber = user.GetPhoneNumber();
+            _profileModel.Id = _userId ?? string.Empty;
+            
+            // Initialize update command with current values
+            _updateCommand.FirstName = _profileModel.FirstName;
+            _updateCommand.LastName = _profileModel.LastName;
+            _updateCommand.PhoneNumber = _profileModel.PhoneNumber;
+            
             if (user.GetImageUrl() != null)
             {
                 _imageUrl = user.GetImageUrl()!.ToString();
             }
-            if (_userId is not null) _profileModel.Id = _userId;
         }
 
         if (_profileModel.FirstName?.Length > 0)
@@ -51,8 +58,13 @@ public partial class Profile
 
     private async Task UpdateProfileAsync()
     {
+        // Copy display model values to update command
+        _updateCommand.FirstName = _profileModel.FirstName;
+        _updateCommand.LastName = _profileModel.LastName;
+        _updateCommand.PhoneNumber = _profileModel.PhoneNumber;
+        
         if (await ApiHelper.ExecuteCallGuardedAsync(
-            () => PersonalClient.UpdateUserEndpointAsync(_profileModel), Toast, _customValidation))
+            () => PersonalClient.UpdateUserEndpointAsync(_updateCommand), Toast, _customValidation))
         {
             Toast.Add("Your Profile has been updated. Please Login again to Continue.", Severity.Success);
             await AuthService.ReLoginAsync(Navigation.Uri);
@@ -77,7 +89,7 @@ public partial class Profile
             byte[]? buffer = new byte[imageFile.Size];
             await imageFile.OpenReadStream(AppConstants.MaxAllowedSize).ReadAsync(buffer);
             string? base64String = $"data:{AppConstants.StandardImageFormat};base64,{Convert.ToBase64String(buffer)}";
-            _profileModel.Image = new FileUploadCommand() { Name = fileName, Data = base64String, Extension = extension };
+            _updateCommand.Image = new FileUploadCommand() { Name = fileName, Data = base64String, Extension = extension };
 
             await UpdateProfileAsync();
         }
@@ -95,8 +107,17 @@ public partial class Profile
         var result = await dialog.Result;
         if (!result!.Canceled)
         {
-            _profileModel.DeleteCurrentImage = true;
+            _updateCommand.DeleteCurrentImage = true;
             await UpdateProfileAsync();
         }
+    }
+    
+    private class ProfileModel
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string? PhoneNumber { get; set; }
     }
 }

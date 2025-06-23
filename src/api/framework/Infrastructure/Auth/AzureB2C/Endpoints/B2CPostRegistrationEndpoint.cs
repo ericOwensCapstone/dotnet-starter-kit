@@ -1,7 +1,7 @@
 using FSH.Framework.Core.Identity.Invitations;
 using FSH.Framework.Infrastructure.Identity.Invitations;
 using FSH.Framework.Infrastructure.Identity.Users;
-using FSH.Framework.Infrastructure.Identity.Persistence;
+using FSH.Framework.Infrastructure.Persistence;
 using FSH.Framework.Infrastructure.Identity.Roles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Threading;
+using System.Linq;
 
 namespace FSH.Framework.Infrastructure.Auth.AzureB2C.Endpoints;
 
@@ -47,7 +48,7 @@ public static class B2CPostRegistrationEndpoint
                     
                     // Get services manually to avoid DI issues
                     var invitationService = serviceProvider.GetRequiredService<AnonymousInvitationService>();
-                    var authDbContext = serviceProvider.GetRequiredService<AuthenticationDbContext>();
+                    var tenantFreeDbContext = serviceProvider.GetRequiredService<TenantFreeDbContext>();
 
                     // Validate required fields
                     if (string.IsNullOrEmpty(request.ObjectId) || 
@@ -86,18 +87,9 @@ public static class B2CPostRegistrationEndpoint
                         });
                     }
 
-                    // Find the user by ObjectId, bypassing tenant filtering since we don't have tenant context yet
-                    FshUser? user = null;
-                    try
-                    {
-                        user = await authDbContext.Users
-                            .IgnoreQueryFilters()
-                            .FirstOrDefaultAsync(u => u.ObjectId == request.ObjectId, cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "Error finding user by ObjectId: {ObjectId}", request.ObjectId);
-                    }
+                    // Find the user by ObjectId using TenantFreeDbContext
+                    var user = await tenantFreeDbContext.Users
+                        .FirstOrDefaultAsync(u => u.ObjectId == request.ObjectId, cancellationToken);
 
                     if (user == null)
                     {
@@ -122,59 +114,50 @@ public static class B2CPostRegistrationEndpoint
 
                         try
                         {
-                            // Create user using raw SQL to bypass tenant filtering
-                            using var command = authDbContext.Database.GetDbConnection().CreateCommand();
-                            command.CommandText = @"
-                                INSERT INTO identity.""Users"" (
-                                    ""Id"", ""UserName"", ""NormalizedUserName"", ""Email"", ""NormalizedEmail"",
-                                    ""EmailConfirmed"", ""PasswordHash"", ""SecurityStamp"", ""ConcurrencyStamp"",
-                                    ""PhoneNumber"", ""PhoneNumberConfirmed"", ""TwoFactorEnabled"", ""LockoutEnd"",
-                                    ""LockoutEnabled"", ""AccessFailedCount"", ""FirstName"", ""LastName"",
-                                    ""ImageUrl"", ""IsActive"", ""RefreshToken"", ""RefreshTokenExpiryTime"",
-                                    ""ObjectId"", ""TenantId""
-                                ) VALUES (
-                                    @id, @userName, @normalizedUserName, @email, @normalizedEmail,
-                                    @emailConfirmed, NULL, @securityStamp, @concurrencyStamp,
-                                    NULL, false, false, NULL,
-                                    true, 0, @firstName, @lastName,
-                                    NULL, @isActive, NULL, @refreshTokenExpiryTime,
-                                    @objectId, @tenantId
-                                )";
-
-                            command.Parameters.Add(CreateParameter(command, "@id", user.Id));
-                            command.Parameters.Add(CreateParameter(command, "@userName", user.UserName));
-                            command.Parameters.Add(CreateParameter(command, "@normalizedUserName", user.NormalizedUserName));
-                            command.Parameters.Add(CreateParameter(command, "@email", user.Email));
-                            command.Parameters.Add(CreateParameter(command, "@normalizedEmail", user.NormalizedEmail));
-                            command.Parameters.Add(CreateParameter(command, "@emailConfirmed", user.EmailConfirmed));
-                            command.Parameters.Add(CreateParameter(command, "@securityStamp", user.SecurityStamp));
-                            command.Parameters.Add(CreateParameter(command, "@concurrencyStamp", user.ConcurrencyStamp));
-                            command.Parameters.Add(CreateParameter(command, "@firstName", user.FirstName));
-                            command.Parameters.Add(CreateParameter(command, "@lastName", user.LastName));
-                            command.Parameters.Add(CreateParameter(command, "@isActive", user.IsActive));
-                            command.Parameters.Add(CreateParameter(command, "@refreshTokenExpiryTime", DateTime.UtcNow));
-                            command.Parameters.Add(CreateParameter(command, "@objectId", user.ObjectId));
-                            command.Parameters.Add(CreateParameter(command, "@tenantId", invitation.TargetTenantId));
-
-                            await authDbContext.Database.OpenConnectionAsync(cancellationToken);
+                            // Add user to TenantFreeDbContext
+                            tenantFreeDbContext.Users.Add(user);
                             
-                            var rowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
+                            // Set TenantId shadow property
+                            tenantFreeDbContext.Entry(user).Property("TenantId").CurrentValue = invitation.TargetTenantId;
                             
-                            await authDbContext.Database.CloseConnectionAsync();
-                            
-                            if (rowsAffected != 1)
-                            {
-                                logger.LogError("Failed to create user. Rows affected: {RowsAffected}", rowsAffected);
-                                throw new InvalidOperationException("Failed to create user in database.");
-                            }
+                            await tenantFreeDbContext.SaveChangesAsync(cancellationToken);
                             
                             logger.LogInformation("Created user {UserId} in database with TenantId {TenantId}", user.Id, invitation.TargetTenantId);
 
-                            // Note: Role assignment will be handled during first sign-in by B2CUserMappingService
-                            // This avoids multi-tenant context issues in the anonymous endpoint
+                            // Assign role from invitation if specified
                             if (!string.IsNullOrEmpty(invitation.Role))
                             {
-                                logger.LogInformation("User will be assigned role {Role} during first sign-in", invitation.Role);
+                                logger.LogInformation("Assigning role {Role} to user {UserId}", invitation.Role, user.Id);
+                                
+                                // Get the role using TenantFreeDbContext with shadow property
+                                var role = await tenantFreeDbContext.Roles
+                                    .Where(r => r.Name == invitation.Role && EF.Property<string>(r, "TenantId") == invitation.TargetTenantId)
+                                    .FirstOrDefaultAsync(cancellationToken);
+                                    
+                                if (role != null)
+                                {
+                                    // Create new UserRole
+                                    var newUserRole = new IdentityUserRole<string>
+                                    {
+                                        UserId = user.Id,
+                                        RoleId = role.Id
+                                    };
+                                    
+                                    tenantFreeDbContext.UserRoles.Add(newUserRole);
+                                    
+                                    // Set TenantId shadow property
+                                    tenantFreeDbContext.Entry(newUserRole).Property("TenantId").CurrentValue = invitation.TargetTenantId;
+                                    
+                                    await tenantFreeDbContext.SaveChangesAsync(cancellationToken);
+                                    
+                                    logger.LogInformation("Successfully assigned role {Role} to user {UserId} in tenant {TenantId}", 
+                                        invitation.Role, user.Id, invitation.TargetTenantId);
+                                }
+                                else
+                                {
+                                    logger.LogWarning("Role {Role} not found for tenant {TenantId}", 
+                                        invitation.Role, invitation.TargetTenantId);
+                                }
                             }
 
                             logger.LogInformation("Successfully created user {UserId} from invitation {InvitationId}", 
@@ -233,54 +216,6 @@ public static class B2CPostRegistrationEndpoint
             .WithTags("B2C Integration");
     }
 
-    private static async Task AssignUserToTenantAsync(
-        AuthenticationDbContext authDbContext, 
-        string userId, 
-        string tenantId, 
-        ILogger logger,
-        CancellationToken cancellationToken)
-    {
-        // Update user's TenantId using raw SQL to avoid multi-tenant context issues
-        using var command = authDbContext.Database.GetDbConnection().CreateCommand();
-        command.CommandText = "UPDATE identity.\"Users\" SET \"TenantId\" = @tenantId WHERE \"Id\" = @userId";
-        
-        var tenantParam = command.CreateParameter();
-        tenantParam.ParameterName = "@tenantId";
-        tenantParam.Value = tenantId;
-        command.Parameters.Add(tenantParam);
-        
-        var userParam = command.CreateParameter();
-        userParam.ParameterName = "@userId";
-        userParam.Value = userId;
-        command.Parameters.Add(userParam);
-        
-        await authDbContext.Database.OpenConnectionAsync(cancellationToken);
-        
-        try
-        {
-            var rowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
-            if (rowsAffected != 1)
-            {
-                logger.LogError("Failed to assign user {UserId} to tenant {TenantId}. Rows affected: {RowsAffected}", 
-                    userId, tenantId, rowsAffected);
-                throw new InvalidOperationException("Failed to assign user to tenant.");
-            }
-            
-            logger.LogInformation("Successfully assigned user {UserId} to tenant {TenantId}", userId, tenantId);
-        }
-        finally
-        {
-            await authDbContext.Database.CloseConnectionAsync();
-        }
-    }
-
-    private static System.Data.Common.DbParameter CreateParameter(System.Data.Common.DbCommand command, string name, object value)
-    {
-        var parameter = command.CreateParameter();
-        parameter.ParameterName = name;
-        parameter.Value = value ?? DBNull.Value;
-        return parameter;
-    }
 }
 
 public class B2CPostRegistrationRequest

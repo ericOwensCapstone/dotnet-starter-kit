@@ -73,14 +73,14 @@ public partial class AcceptInvitation
 
             Console.WriteLine($"AcceptInvitationStyled: Sign-up URL: {signUpUrl}");
             
-            // For now, use the tenant ID as the tenant name
-            _tenantName = validationResult.TargetTenantId ?? string.Empty;
+            // For security, don't show personal details before email verification
+            _tenantName = "OHD Harvest Marketplace";
             
             _pageHtml = GetLandingPage(
-                validationResult.DisplayName,
-                validationResult.Email,
-                _tenantName,
-                validationResult.InvitedBy,
+                null, // Don't show display name
+                validationResult.Email, // Email is still needed for B2C
+                null, // Don't show tenant name
+                null, // Don't show inviter
                 signUpUrl,
                 Navigation.BaseUri
             );
@@ -114,7 +114,7 @@ public partial class AcceptInvitation
         }
     }
 
-    private static string GetLandingPage(string displayName, string email, string tenantName, string invitedBy, string signUpUrl, string clientOrigin)
+    private static string GetLandingPage(string? displayName, string email, string? tenantName, string? invitedBy, string signUpUrl, string clientOrigin)
     {
         // Original design with icon and blue info box (commented out for easy restoration)
         /*
@@ -155,6 +155,11 @@ public partial class AcceptInvitation
             line-height: 1.5;
             color: var(--text-primary);
             background-color: var(--background-color);
+            background-image: url('https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield.png');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -309,7 +314,7 @@ public partial class AcceptInvitation
                 </div>
                 
                 <a href='{signUpUrl}' class='button'>
-                    Continue to Create Account
+                    Continue to Verify Email
                 </a>
                 
                 <div class='divider'></div>
@@ -365,6 +370,11 @@ public partial class AcceptInvitation
             line-height: 1.5;
             color: var(--text-primary);
             background-color: var(--background-color);
+            background-image: url('https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield.png');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -476,24 +486,23 @@ public partial class AcceptInvitation
                 
                 <h1>
                     OHD Harvest<br />
-                    Marketplace<br />
-                    Invitation
+                    Marketplace
                 </h1>
                 
                 <div class='user-info'>
-                    <p class='subtitle mb-2'>
-                        Welcome, <strong>{displayName}</strong>!
-                    </p>
-                    <p class='text-secondary mb-3'>
-                        {email}
+                    <h2 style='font-size: 1.5rem; font-weight: 400; margin-bottom: 16px;'>
+                        Email Verification Required
+                    </h2>
+                    <p class='subtitle'>
+                        To accept this invitation, you must verify your email address.
                     </p>
                     <p class='subtitle'>
-                        Click the button below to create your account and accept this invitation.
+                        Click below to continue with the verification process.
                     </p>
                 </div>
                 
                 <a href='{signUpUrl}' class='button'>
-                    Continue to Create Account
+                    Continue to Verify Email
                 </a>
                 
                 <div class='divider'></div>
@@ -545,6 +554,11 @@ public partial class AcceptInvitation
             line-height: 1.5;
             color: var(--text-primary);
             background-color: var(--background-color);
+            background-image: url('https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield.png');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             align-items: center;

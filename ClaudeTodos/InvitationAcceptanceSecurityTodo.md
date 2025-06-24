@@ -117,40 +117,99 @@
 ### Phase 3: Secure Invitation Landing Page
 
 **Current Security Issues**:
-- File: `/src/api/framework/Infrastructure/Auth/AzureB2C/Endpoints/B2CInvitationLandingEndpoint.cs`
-- Currently displays (lines 290-301):
+- File: `/src/apps/blazor/client/Pages/Auth/AcceptInvitation.razor.cs`
+- Currently displays (lines 79-86):
   - Recipient's full name and email
   - Inviting person's name
   - Target tenant name
 - Anyone with the invitation link can see this information
 
-**Step 3.1: Update B2CInvitationLandingEndpoint**
-- Replace `GetLandingPage` method to show minimal info:
+**Step 3.1: Eliminate Unused Server Endpoint**
+- Delete `/src/api/framework/Infrastructure/Auth/AzureB2C/Endpoints/B2CInvitationLandingEndpoint.cs`
+- This endpoint is not used; the Blazor page handles invitation acceptance
+
+**Step 3.2: Create Email Verification Template**
+- Create `/b2ctemplates/emailverification.html`
+- Use same styling as `unified.html`:
+  - Cornfield background image
+  - Dark theme colors
+  - Same fonts and styling
+- Include OHD Harvest Marketplace branding at top:
   ```html
-  <h1>Email Verification Required</h1>
+  <h1>
+      OHD Harvest<br />
+      Marketplace
+  </h1>
+  ```
+- Template will be used by B2C email verification step
+
+**Step 3.3: Update ValidateInvitationTokenAsync API**
+- Modify the API endpoint that `AcceptInvitation.razor.cs` calls
+- For initial validation (no verifiedEmail claim):
+  - Return only `isValid: true` and `email`
+  - Do NOT return: displayName, invitedBy, targetTenantId
+- Keep the invitation data for later retrieval after email verification
+
+**Step 3.4: Update AcceptInvitation.razor.cs**
+- Add cornfield background to match app's aesthetic:
+  - Update CSS in `GetLandingPage` method to include cornfield background image
+  - Use same background as home page and loading screen
+  - Add to body style: `background-image: url('https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield.png');`
+  - Include background-size, background-position, background-repeat, background-attachment properties
+- Include OHD Harvest Marketplace branding at top of page:
+  ```html
+  <h1>
+      OHD Harvest<br />
+      Marketplace
+  </h1>
+  ```
+- Below the branding, show minimal info:
+  ```html
+  <h2>Email Verification Required</h2>
   <p>To accept this invitation, you must verify your email address.</p>
   <p>Click below to continue with the verification process.</p>
   ```
-- Keep invitation token in B2C redirect URL (line 92)
-- Remove parameters from GetLandingPage call:
-  - Remove: displayName, email, tenantName, invitedBy
-  - Keep only: signUpUrl
-- Update error pages to be generic as well
+- Remove personal details from display (lines 80-84)
+- Keep invitation token in B2C redirect URL
+- Update error pages to be generic as well and include:
+  - Cornfield background
+  - OHD Harvest Marketplace branding at top
 
-**Step 3.2: Update B2C Custom Policy**
+**Step 3.5: Update B2CValidateInvitationEndpoint**
+- File: `/src/api/framework/Infrastructure/Auth/AzureB2C/Endpoints/B2CValidateInvitationEndpoint.cs`
+- Check for presence of `verifiedEmail` claim in request
+- If `verifiedEmail` is present, return full invitation details:
+  - displayName, firstName, lastName, targetTenantId, b2cUserId
+- If `verifiedEmail` is NOT present, return only:
+  - email and isValid
+- This allows B2C to get minimal info initially, then full details after email verification
+
+**Step 3.6: Update B2C Custom Policy**
 - File: `/B2CPolicies/Invitation_Acceptance.xml`
 - Policy name: `B2C_1A_invitation_acceptance`
 
 **B2C Policy Changes Required**:
 
-1. **Add Email Verification Technical Profile** (after line 173, before closing `</TechnicalProfiles>`):
+1. **Add Content Definition for Email Verification** (in ContentDefinitions section):
+   ```xml
+   <ContentDefinition Id="api.localaccount.emailverification">
+     <LoadUri>https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/emailverification.html</LoadUri>
+     <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+     <DataUri>urn:com:microsoft:aad:b2c:elements:contract:selfasserted:2.1.0</DataUri>
+     <Metadata>
+       <Item Key="DisplayName">Email Verification</Item>
+     </Metadata>
+   </ContentDefinition>
+   ```
+
+2. **Add Email Verification Technical Profile** (after line 173, before closing `</TechnicalProfiles>`):
    ```xml
    <!-- Email verification technical profile -->
    <TechnicalProfile Id="LocalAccount-EmailVerification">
      <DisplayName>Email Verification</DisplayName>
      <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
      <Metadata>
-       <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
+       <Item Key="ContentDefinitionReferenceId">api.localaccount.emailverification</Item>
        <Item Key="EnforceEmailVerification">true</Item>
        <Item Key="setting.showCancelButton">false</Item>
      </Metadata>
@@ -164,7 +223,7 @@
    </TechnicalProfile>
    ```
 
-2. **Update REST-ValidateInvitation Technical Profile** (lines 112-119):
+3. **Update REST-ValidateInvitation Technical Profile** (lines 112-119):
    - Initially return only email and isValid (no sensitive data)
    - Remove these OutputClaims initially:
      ```xml
@@ -175,7 +234,7 @@
      <OutputClaim ClaimTypeReferenceId="extension_TenantId" PartnerClaimType="targetTenantId" />
      ```
 
-3. **Add New REST Profile for Post-Verification** (after REST-ValidateInvitation):
+4. **Add New REST Profile for Post-Verification** (after REST-ValidateInvitation):
    ```xml
    <TechnicalProfile Id="REST-GetInvitationDetails">
      <DisplayName>Get Full Invitation Details After Verification</DisplayName>
@@ -201,11 +260,11 @@
    </TechnicalProfile>
    ```
 
-4. **Update LocalAccount-SetPasswordForDisabledAccount** (line 248):
+5. **Update LocalAccount-SetPasswordForDisabledAccount** (line 248):
    - Change: `<Item Key="EnforceEmailVerification">false</Item>`
    - To: `<Item Key="EnforceEmailVerification">true</Item>`
 
-5. **Update User Journey** (insert new steps after Step 3):
+6. **Update User Journey** (insert new steps after Step 3):
    ```xml
    <!-- Step 4: Email verification -->
    <OrchestrationStep Order="4" Type="ClaimsExchange">
@@ -237,12 +296,7 @@
    ```
    - Renumber all subsequent steps (current Step 4 becomes Step 6, etc.)
 
-6. **Update B2CValidateInvitationEndpoint.cs**:
-   - Check for presence of `verifiedEmail` claim in request
-   - If present, return full invitation details
-   - If not present, return only email and isValid
-
-**🧪 Test Point 3.2:**
+**🧪 Test Point 3.6:**
 - Access invitation URL from different browser/incognito
 - Verify page shows only "Email verification required" message
 - No personal information visible

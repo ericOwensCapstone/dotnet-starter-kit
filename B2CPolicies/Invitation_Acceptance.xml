@@ -85,6 +85,15 @@
             <Item Key="DisplayName">Error page</Item>
           </Metadata>
         </ContentDefinition>
+
+        <ContentDefinition Id="api.localaccount.emailverification">
+          <LoadUri>https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/emailverification.html</LoadUri>
+          <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+          <DataUri>urn:com:microsoft:aad:b2c:elements:contract:selfasserted:2.1.0</DataUri>
+          <Metadata>
+            <Item Key="DisplayName">Email Verification</Item>
+          </Metadata>
+        </ContentDefinition>
       </ContentDefinitions>
     </BuildingBlocks>
 
@@ -111,6 +120,25 @@
             <OutputClaims>
               <OutputClaim ClaimTypeReferenceId="isValidInvitation" PartnerClaimType="isValid" />
               <OutputClaim ClaimTypeReferenceId="email" PartnerClaimType="email" />
+              <!-- Removed sensitive claims - will be fetched after email verification -->
+            </OutputClaims>
+            <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+          </TechnicalProfile>
+
+          <TechnicalProfile Id="REST-GetInvitationDetails">
+            <DisplayName>Get Full Invitation Details After Verification</DisplayName>
+            <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.RestfulProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <Metadata>
+              <Item Key="ServiceUrl">https://eric-owens.ngrok.io/api/public/b2c/invitations/validate/{invitationToken}</Item>
+              <Item Key="SendClaimsIn">QueryString</Item>
+              <Item Key="AuthenticationType">None</Item>
+              <Item Key="AllowInsecureAuthInProduction">false</Item>
+            </Metadata>
+            <InputClaims>
+              <InputClaim ClaimTypeReferenceId="invitationToken" />
+              <InputClaim ClaimTypeReferenceId="email" PartnerClaimType="verifiedEmail" />
+            </InputClaims>
+            <OutputClaims>
               <OutputClaim ClaimTypeReferenceId="displayName" PartnerClaimType="displayName" />
               <OutputClaim ClaimTypeReferenceId="givenName" PartnerClaimType="firstName" />
               <OutputClaim ClaimTypeReferenceId="surname" PartnerClaimType="lastName" />
@@ -170,6 +198,24 @@
               <DisplayClaim ClaimTypeReferenceId="errorMessage" />
             </DisplayClaims>
             <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+          </TechnicalProfile>
+
+          <!-- Email verification technical profile -->
+          <TechnicalProfile Id="LocalAccount-EmailVerification">
+            <DisplayName>Email Verification</DisplayName>
+            <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <Metadata>
+              <Item Key="ContentDefinitionReferenceId">api.localaccount.emailverification</Item>
+              <Item Key="EnforceEmailVerification">true</Item>
+              <Item Key="setting.showCancelButton">false</Item>
+            </Metadata>
+            <InputClaims>
+              <InputClaim ClaimTypeReferenceId="email" />
+            </InputClaims>
+            <OutputClaims>
+              <OutputClaim ClaimTypeReferenceId="email" PartnerClaimType="Verified.Email" Required="true" />
+            </OutputClaims>
+            <UseTechnicalProfileForSessionManagement ReferenceId="SM-AAD" />
           </TechnicalProfile>
 
         </TechnicalProfiles>
@@ -257,8 +303,6 @@
             </InputClaims>
             <DisplayClaims>
               <DisplayClaim ClaimTypeReferenceId="email" Required="true" />
-              <DisplayClaim ClaimTypeReferenceId="givenName" Required="true" />
-              <DisplayClaim ClaimTypeReferenceId="surname" Required="true" />
               <DisplayClaim ClaimTypeReferenceId="newPassword" Required="true" />
               <DisplayClaim ClaimTypeReferenceId="reenterPassword" Required="true" />
             </DisplayClaims>
@@ -279,6 +323,36 @@
             <UseTechnicalProfileForSessionManagement ReferenceId="SM-AAD" />
           </TechnicalProfile>
 
+        </TechnicalProfiles>
+      </ClaimsProvider>
+      <!-- Override AAD technical profile to not check if account is enabled -->
+      <ClaimsProvider>
+        <DisplayName>Azure Active Directory</DisplayName>
+        <TechnicalProfiles>
+          <TechnicalProfile Id="AAD-UserReadUsingEmailAddress-ForInvitation">
+            <Metadata>
+              <Item Key="Operation">Read</Item>
+              <Item Key="RaiseErrorIfClaimsPrincipalDoesNotExist">true</Item>
+            </Metadata>
+            <IncludeInSso>false</IncludeInSso>
+            <InputClaims>
+              <InputClaim ClaimTypeReferenceId="email" PartnerClaimType="signInNames.emailAddress" Required="true" />
+            </InputClaims>
+            <OutputClaims>
+              <OutputClaim ClaimTypeReferenceId="objectId" />
+              <OutputClaim ClaimTypeReferenceId="authenticationSource" DefaultValue="localAccountAuthentication" />
+              <OutputClaim ClaimTypeReferenceId="userPrincipalName" />
+              <OutputClaim ClaimTypeReferenceId="displayName" />
+              <OutputClaim ClaimTypeReferenceId="accountEnabled" />
+              <OutputClaim ClaimTypeReferenceId="otherMails" />
+              <OutputClaim ClaimTypeReferenceId="signInNames.emailAddress" />
+              <OutputClaim ClaimTypeReferenceId="givenName" />
+              <OutputClaim ClaimTypeReferenceId="surname" />
+              <OutputClaim ClaimTypeReferenceId="extension_TenantId" />
+            </OutputClaims>
+            <!-- Remove the OutputClaimsTransformations that asserts accountEnabled is true -->
+            <IncludeTechnicalProfile ReferenceId="AAD-Common" />
+          </TechnicalProfile>
         </TechnicalProfiles>
       </ClaimsProvider>
     </ClaimsProviders>
@@ -315,7 +389,7 @@
             </ClaimsExchanges>
           </OrchestrationStep>
 
-          <!-- Step 4: Check if user already exists by objectId -->
+          <!-- Step 4: Email verification -->
           <OrchestrationStep Order="4" Type="ClaimsExchange">
             <Preconditions>
               <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
@@ -323,18 +397,42 @@
                 <Value>True</Value>
                 <Action>SkipThisOrchestrationStep</Action>
               </Precondition>
-              <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
-                <Value>objectId</Value>
+            </Preconditions>
+            <ClaimsExchanges>
+              <ClaimsExchange Id="EmailVerification" TechnicalProfileReferenceId="LocalAccount-EmailVerification" />
+            </ClaimsExchanges>
+          </OrchestrationStep>
+
+          <!-- Step 5: Get full invitation details after email verified -->
+          <OrchestrationStep Order="5" Type="ClaimsExchange">
+            <Preconditions>
+              <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                <Value>isValidInvitation</Value>
+                <Value>True</Value>
                 <Action>SkipThisOrchestrationStep</Action>
               </Precondition>
             </Preconditions>
             <ClaimsExchanges>
-              <ClaimsExchange Id="AADUserReadUsingObjectId" TechnicalProfileReferenceId="AAD-UserReadUsingObjectId" />
+              <ClaimsExchange Id="GetInvitationDetails" TechnicalProfileReferenceId="REST-GetInvitationDetails" />
             </ClaimsExchanges>
           </OrchestrationStep>
 
-          <!-- Step 5: If user exists (disabled), show password setup form -->
-          <OrchestrationStep Order="5" Type="ClaimsExchange">
+          <!-- Step 6: Read user from B2C by email to get objectId -->
+          <OrchestrationStep Order="6" Type="ClaimsExchange">
+            <Preconditions>
+              <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                <Value>isValidInvitation</Value>
+                <Value>True</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+              </Precondition>
+            </Preconditions>
+            <ClaimsExchanges>
+              <ClaimsExchange Id="AADUserReadUsingEmail" TechnicalProfileReferenceId="AAD-UserReadUsingEmailAddress-ForInvitation" />
+            </ClaimsExchanges>
+          </OrchestrationStep>
+
+          <!-- Step 7: If user exists (disabled), show password setup form -->
+          <OrchestrationStep Order="7" Type="ClaimsExchange">
             <Preconditions>
               <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
                 <Value>objectId</Value>
@@ -351,8 +449,8 @@
             </ClaimsExchanges>
           </OrchestrationStep>
 
-          <!-- Step 6: If user doesn't exist, show error (system inconsistency) -->
-          <OrchestrationStep Order="6" Type="ClaimsExchange">
+          <!-- Step 8: If user doesn't exist, show error (system inconsistency) -->
+          <OrchestrationStep Order="8" Type="ClaimsExchange">
             <Preconditions>
               <Precondition Type="ClaimsExist" ExecuteActionsIf="true">
                 <Value>objectId</Value>
@@ -369,8 +467,8 @@
             </ClaimsExchanges>
           </OrchestrationStep>
 
-          <!-- Step 7: Mark invitation as accepted -->
-          <OrchestrationStep Order="7" Type="ClaimsExchange">
+          <!-- Step 9: Mark invitation as accepted -->
+          <OrchestrationStep Order="9" Type="ClaimsExchange">
             <Preconditions>
               <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
                 <Value>isValidInvitation</Value>
@@ -387,8 +485,8 @@
             </ClaimsExchanges>
           </OrchestrationStep>
 
-          <!-- Step 8: Read the full user profile -->
-          <OrchestrationStep Order="8" Type="ClaimsExchange">
+          <!-- Step 10: Read the full user profile -->
+          <OrchestrationStep Order="10" Type="ClaimsExchange">
             <Preconditions>
               <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
                 <Value>isValidInvitation</Value>
@@ -405,8 +503,8 @@
             </ClaimsExchanges>
           </OrchestrationStep>
 
-          <!-- Step 9: Issue the JWT token -->
-          <OrchestrationStep Order="9" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
+          <!-- Step 11: Issue the JWT token -->
+          <OrchestrationStep Order="11" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
 
         </OrchestrationSteps>
         <ClientDefinition ReferenceId="DefaultWeb" />

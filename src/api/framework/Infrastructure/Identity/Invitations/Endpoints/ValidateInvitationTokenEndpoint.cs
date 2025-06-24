@@ -52,14 +52,16 @@ public static class ValidateInvitationTokenEndpoint
             return Results.BadRequest("This invitation is not ready to be accepted.");
         }
 
+        // Return minimal information for security - only email and validity
+        // Full details will be provided after email verification
         var response = new InvitationValidationResponse
         {
             IsValid = true,
             Email = invitation.Email,
-            DisplayName = invitation.DisplayName,
-            TargetTenantId = invitation.TargetTenantId,
+            DisplayName = null, // Don't expose personal details before email verification
+            TargetTenantId = null, // Don't expose tenant info before email verification
             ExpiresAt = invitation.ExpiresAt,
-            InvitedBy = invitation.InvitedBy
+            InvitedBy = null // Don't expose inviter info before email verification
         };
 
         return Results.Ok(response);
@@ -70,8 +72,8 @@ public class InvitationValidationResponse
 {
     public bool IsValid { get; set; }
     public string Email { get; set; } = default!;
-    public string DisplayName { get; set; } = default!;
-    public string TargetTenantId { get; set; } = default!;
+    public string? DisplayName { get; set; }
+    public string? TargetTenantId { get; set; }
     public DateTime ExpiresAt { get; set; }
-    public string InvitedBy { get; set; } = default!;
+    public string? InvitedBy { get; set; }
 }

@@ -26,10 +26,6 @@ internal static class Extensions
         endpoints.MapB2CValidateInvitationEndpoint();
         logger?.LogInformation("B2CValidateInvitationEndpoint mapping completed");
         
-        logger?.LogInformation("Mapping B2CInvitationLandingEndpoint...");
-        endpoints.MapB2CInvitationLandingEndpoint();
-        logger?.LogInformation("B2CInvitationLandingEndpoint mapping completed");
-        
         logger?.LogInformation("Mapping B2CPreRegistrationValidationEndpoint...");
         endpoints.MapB2CPreRegistrationValidationEndpoint();
         

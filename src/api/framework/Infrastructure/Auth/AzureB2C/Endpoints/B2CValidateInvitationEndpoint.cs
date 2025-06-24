@@ -148,19 +148,36 @@ public static class B2CValidateInvitationEndpoint
                         return Results.Ok(notReadyResponse);
                     }
 
+                    // Check if this is a request after email verification
+                    var verifiedEmail = context.Request.Query["verifiedEmail"].FirstOrDefault();
+                    var hasVerifiedEmail = !string.IsNullOrEmpty(verifiedEmail);
+                    
+                    logger.LogInformation("Verified email claim present: {HasVerifiedEmail}, Value: {VerifiedEmail}", 
+                        hasVerifiedEmail, verifiedEmail);
+
                     var response = new B2CInvitationValidationResponse
                     {
                         isValid = true,
-                        email = invitation.Email,  // Real email from invitation
-                        firstName = invitation.FirstName,
-                        lastName = invitation.LastName,
-                        displayName = invitation.DisplayName,
-                        targetTenantId = invitation.TargetTenantId,
-                        expiresAt = invitation.ExpiresAt,
-                        invitedBy = invitation.InvitedBy,
-                        errorMessage = null,
-                        b2cUserId = invitation.B2CUserId  // Real B2C User ID
+                        email = invitation.Email,  // Always return email
+                        errorMessage = null
                     };
+
+                    // Only return full details after email verification
+                    if (hasVerifiedEmail && verifiedEmail.Equals(invitation.Email, StringComparison.OrdinalIgnoreCase))
+                    {
+                        logger.LogInformation("Email verified, returning full invitation details");
+                        response.firstName = invitation.FirstName;
+                        response.lastName = invitation.LastName;
+                        response.displayName = invitation.DisplayName;
+                        response.targetTenantId = invitation.TargetTenantId;
+                        response.expiresAt = invitation.ExpiresAt;
+                        response.invitedBy = invitation.InvitedBy;
+                        response.b2cUserId = invitation.B2CUserId;
+                    }
+                    else
+                    {
+                        logger.LogInformation("Email not yet verified, returning minimal information");
+                    }
 
                     logger.LogInformation("Valid invitation found for email: {Email}, tenant: {TenantId}", 
                         invitation.Email, invitation.TargetTenantId);

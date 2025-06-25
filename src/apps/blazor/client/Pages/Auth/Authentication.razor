@@ -6,32 +6,18 @@
 @using Microsoft.AspNetCore.Authorization
 @using Blazored.LocalStorage
 @using FSH.Starter.Blazor.Infrastructure.Api
+@using FSH.Starter.Blazor.Client.Components.Common
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
 @inject IServiceProvider ServiceProvider
 @inject ILocalStorageService LocalStorage
 @inject IApiClient ApiClient
+@inject AuthFlowStateService AuthFlowState
 
 @if (_isB2C && !_hasError)
 {
     @* For B2C, show a clean loading state *@
-    <style>
-        .auth-processing-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--mud-palette-background);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-        }
-    </style>
-    <div class="auth-processing-container">
-        <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
-    </div>
+    <LoadingPanel Message="@_loadingMessage" IsVisible="true" />
 }
 else if (!_isB2C || _hasError)
 {
@@ -73,6 +59,7 @@ else if (!_isB2C || _hasError)
     private bool _hasError = false;
     private string _errorMessage = string.Empty;
     private bool _isB2C = false;
+    private string _loadingMessage = "Please wait while we load your account privileges";
 
     protected override async Task OnInitializedAsync()
     {
@@ -81,6 +68,17 @@ else if (!_isB2C || _hasError)
         
         if (_isB2C)
         {
+            // Check auth flow state to set appropriate message
+            var flowState = await AuthFlowState.GetStateAsync();
+            if (flowState == FSH.Starter.Blazor.Infrastructure.Auth.AuthFlowState.ProcessingB2CReturn)
+            {
+                _loadingMessage = "Please wait while we load your account privileges";
+            }
+            else
+            {
+                await AuthFlowState.SetStateAsync(FSH.Starter.Blazor.Infrastructure.Auth.AuthFlowState.ProcessingB2CReturn);
+            }
+            
             if (Action == "login-callback")
             {
                 // Handle B2C login callback immediately in OnInitializedAsync
@@ -165,8 +163,9 @@ else if (!_isB2C || _hasError)
                                 StateHasChanged();
                                 await Task.Delay(100);
                                 
-                                Console.WriteLine("Authentication.razor: Navigating to home with force reload");
-                                Navigation.NavigateTo("/", forceLoad: true);
+                                Console.WriteLine("Authentication.razor: Navigating to home without force reload");
+                                await AuthFlowState.ClearStateAsync();
+                                Navigation.NavigateTo("/", forceLoad: false);
                                 return;
                             }
                             else
@@ -182,8 +181,9 @@ else if (!_isB2C || _hasError)
                                     StateHasChanged();
                                     await Task.Delay(100);
                                     
-                                    Console.WriteLine("Authentication.razor: Navigating to home with force reload (retry)");
-                                    Navigation.NavigateTo("/", forceLoad: true);
+                                    Console.WriteLine("Authentication.razor: Navigating to home without force reload (retry)");
+                                    await AuthFlowState.ClearStateAsync();
+                                    Navigation.NavigateTo("/", forceLoad: false);
                                     return;
                                 }
                                 else
@@ -228,7 +228,8 @@ else if (!_isB2C || _hasError)
         if (authState.User.Identity?.IsAuthenticated == true)
         {
             Console.WriteLine("Authentication.razor: User already authenticated, redirecting to home");
-            Navigation.NavigateTo("/", forceLoad: true);
+            await AuthFlowState.ClearStateAsync();
+            Navigation.NavigateTo("/", forceLoad: false);
         }
         else
         {

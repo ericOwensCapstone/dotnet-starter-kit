@@ -295,3 +295,228 @@ This document outlines a detailed plan to implement a seamless, contextual loadi
 3. Add subtle animations to the spinner or panel
 4. Consider different messages for different user roles
 5. Add offline detection and messaging
+
+## Fixing Phases - Addressing Implementation Issues
+
+### Fix Phase 1: Consolidate Loading States
+
+#### 1.1 Remove Redundant Loading States
+**Problem**: Multiple loading panels appearing at different stages
+**Solution**:
+- Remove loading state from AuthRedirect.razor (it should be invisible redirect)
+- Keep only index.html initial loading
+- Keep only Authentication.razor post-B2C loading
+- Remove intermediate loading states
+
+#### 1.2 Simplify State Management
+**Problem**: Auth flow state being set/checked too many times
+**Solution**:
+- Only set state ONCE before B2C redirect
+- Only check state ONCE after B2C return
+- Clear state immediately after checking
+- Remove all other state checks
+
+### Fix Phase 2: Fix CSS and Layout Issues
+
+#### 2.1 Fix Centering Problems
+**Problem**: Panel and spinner not properly centered
+**Solution**:
+- Review flexbox properties in LoadingPanel.razor.css
+- Ensure proper centering with `align-items: center` and `justify-content: center`
+- Fix spinner container to center the MudProgressCircular component
+- Test on different screen sizes
+
+#### 2.2 Fix Spinner Animation
+**Problem**: Spinner not clearly spinning
+**Solution**:
+- Check if MudProgressCircular is rendering correctly
+- Ensure CSS animations aren't conflicting
+- Consider using SVG animation instead of CSS for initial loader
+- Verify z-index layering isn't blocking animation
+
+#### 2.3 Ensure Consistent Cornfield Background
+**Problem**: Cornfield background missing in some states
+**Solution**:
+- Move cornfield background to LoadingPanel component itself
+- Remove separate background divs
+- Ensure background is part of the wrapper, not a separate element
+- Use same background approach everywhere
+
+### Fix Phase 3: Streamline Authentication Flow
+
+#### 3.1 Simplify Authentication.razor
+**Problem**: Too many loading states and messages
+**Solution**:
+- Show loading panel ONLY for "login-callback" action
+- Use single message: "Please wait while we setup your account"
+- Remove all console.log statements (they may be causing delays)
+- Remove unnecessary Task.Delay calls
+
+#### 3.2 Fix Home Page Loading Integration
+**Problem**: Loading text stuck in upper left, never disappears
+**Solution**:
+- Fix the LoadingPanel positioning (it's not using the component properly)
+- Ensure the panel hides after fade out
+- Remove the manual JavaScript manipulation of index.html loader
+- Use proper Blazor state management for showing/hiding
+
+### Fix Phase 4: Implement Proper Flow
+
+#### 4.1 Correct Flow Sequence
+**Desired Flow**:
+1. Initial load: index.html shows "Please wait while we load the latest updates"
+2. If no auth → Invisible redirect to B2C (no loading panel)
+3. B2C login page
+4. Return from B2C → Show "Please wait while we setup your account"
+5. Navigate to home → Same panel fades out smoothly
+
+**Implementation**:
+- index.html: Static loading (removed by Blazor when app loads)
+- AuthRedirect: NO loading panel, immediate redirect
+- Authentication: Loading panel ONLY on return from B2C
+- Home: Detect if coming from auth, show then fade loading panel
+
+#### 4.2 State Flow Corrections
+- Remove state setting from AuthRedirect
+- Set state in Authentication ONLY when showing post-B2C message
+- Check and clear state in Home.razor OnInitialized (not OnAfterRender)
+- Ensure single source of truth for loading state
+
+### Fix Phase 5: Clean Up and Optimize
+
+#### 5.1 Remove Duplicate Code
+- Consolidate all loading panel instances
+- Use single LoadingPanel component everywhere
+- Remove inline styles and temporary loading divs
+- Ensure consistent message handling
+
+#### 5.2 Performance Optimization
+- Remove unnecessary delays
+- Reduce console.log statements
+- Optimize state checks
+- Ensure smooth transitions without forced delays
+
+### Fix Phase 6: Testing and Validation
+
+#### 6.1 Test Scenarios
+1. Fresh user (no token) → Should see 2 loading states only
+2. Returning user (valid token) → Should see 1 loading state only
+3. Expired token → Should see 2 loading states only
+4. Logout and re-login → Should work same as fresh user
+
+#### 6.2 Visual Validation
+- Cornfield background visible at all times
+- Panel always centered
+- Spinner animating smoothly
+- Messages appropriate to context
+- Smooth fade transitions
+
+### Implementation Priority
+1. **Critical**: Fix Phase 3.2 (Home page loading stuck)
+2. **High**: Fix Phase 1 (Consolidate loading states)
+3. **High**: Fix Phase 2.3 (Consistent background)
+4. **Medium**: Fix Phase 2.1 & 2.2 (Centering and spinner)
+5. **Medium**: Fix Phase 4 (Proper flow)
+6. **Low**: Fix Phase 5 (Cleanup)
+
+### Key Principles for Fixes
+1. **Less is More**: Reduce the number of loading states
+2. **Consistency**: Same visual appearance everywhere
+3. **Simplicity**: Remove complex state management
+4. **Performance**: Remove unnecessary delays and checks
+5. **User Experience**: Smooth, predictable transitions
+
+## Current Implementation Issues (As Observed)
+
+### What Was Built
+1. **LoadingPanel.razor** - Component created in `/src/apps/blazor/client/Components/Common/`
+2. **AuthFlowStateService.cs** - Service moved to `/src/apps/blazor/infrastructure/Auth/`
+3. **Modified Files**:
+   - index.html - Added static loading panel
+   - AuthRedirect.razor - Added LoadingPanel (SHOULD BE REMOVED)
+   - Authentication.razor - Modified to use LoadingPanel
+   - Home.razor - Added loading logic in OnAfterRenderAsync
+   - Extensions.cs - Registered AuthFlowStateService
+
+### Namespace Issues Encountered
+- Service was initially in wrong namespace
+- Must use `FSH.Starter.Blazor.Infrastructure.Auth` namespace
+- Enum conflicts with injected service name require fully qualified names:
+  - `FSH.Starter.Blazor.Infrastructure.Auth.AuthFlowState.Initial`
+  - `FSH.Starter.Blazor.Infrastructure.Auth.AuthFlowState.ProcessingB2CReturn`
+  - `FSH.Starter.Blazor.Infrastructure.Auth.AuthFlowState.RedirectingToB2C`
+
+### Specific Problems to Fix
+
+#### 1. Home.razor Issues
+**Current Code Location**: OnAfterRenderAsync method
+**Problems**:
+- Loading panel shows in wrong position (upper left)
+- Never disappears
+- Uses JavaScript to hide index.html loader (should be automatic)
+- Checks state in OnAfterRenderAsync (should be OnInitializedAsync)
+
+**Fix Required**:
+- Move state check to OnInitializedAsync
+- Ensure LoadingPanel component is properly positioned
+- Remove JavaScript manipulation
+- Properly set IsVisible to false after delay
+
+#### 2. AuthRedirect.razor Issues
+**Current Code**: Shows LoadingPanel component
+**Problem**: Creates extra loading screen before B2C
+**Fix Required**: Remove LoadingPanel completely, keep only redirect logic
+
+#### 3. Authentication.razor Issues
+**Current Code**: Multiple state checks and messages
+**Problems**:
+- Shows loading panel for all actions
+- Wrong message ("Please wait while we load your account privileges")
+- Too many console.log statements
+- Unnecessary delays
+
+**Fix Required**:
+- Only show loading for "login-callback" action
+- Change message to "Please wait while we setup your account"
+- Remove console.log statements
+- Remove Task.Delay calls
+
+#### 4. CSS/Layout Issues
+**LoadingPanel.razor.css Problems**:
+- Spinner not centered within panel
+- Panel sometimes not centered on screen
+- Missing cornfield background in some states
+
+**Fix Required**:
+- Ensure `.loading-panel-spinner` centers MudProgressCircular
+- Verify flexbox properties on all containers
+- Move cornfield background into LoadingPanel component wrapper
+
+### Correct Implementation Flow
+
+#### Initial Load (User Not Authenticated)
+1. **index.html** shows static loader with "Please wait while we load the latest updates"
+2. **Blazor starts** → index.html loader automatically hidden by framework
+3. **App.razor** → Routes to AuthRedirect (no loading shown)
+4. **AuthRedirect** → Immediate redirect to B2C (no loading panel)
+5. **B2C Login Page** → User logs in
+6. **Return to Authentication.razor** → Shows LoadingPanel with "Please wait while we setup your account"
+7. **Navigate to Home** → LoadingPanel continues showing then fades out
+
+#### Returning User (Valid Token)
+1. **index.html** shows static loader
+2. **Blazor starts** → index.html loader hidden
+3. **App.razor** → Routes directly to Home
+4. **Home.razor** → No additional loading needed
+
+### Critical Code Locations
+- Force reload removed from: Authentication.razor lines 169 and 186
+- AuthFlowStateService registered in: Extensions.cs line 56
+- LoadingPanel used in: Authentication.razor, Home.razor (should NOT be in AuthRedirect)
+
+### Testing Validation Points
+1. Count loading screens (should be max 2 for new user, 1 for returning)
+2. Verify cornfield background always visible
+3. Check panel centering on all screens
+4. Ensure loading panel properly hides on Home page
+5. Verify no text stuck in upper left corner

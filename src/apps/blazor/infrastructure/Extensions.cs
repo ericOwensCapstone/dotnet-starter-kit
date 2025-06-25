@@ -52,6 +52,7 @@ public static class Extensions
         services.AddTransient<IClientPreferenceManager, ClientPreferenceManager>();
         services.AddTransient<IPreference, ClientPreference>();
         services.AddNotifications();
+        services.AddScoped<AuthFlowStateService>();
         return services;
 
     }

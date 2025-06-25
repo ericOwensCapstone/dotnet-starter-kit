@@ -1,0 +1,24 @@
+@namespace FSH.Starter.Blazor.Client.Components.Common
+
+<div class="loading-panel-wrapper @(IsVisible ? "visible" : "hidden")">
+    <div class="loading-panel-background"></div>
+    <div class="loading-panel-container">
+        <div class="loading-panel-content">
+            <div class="loading-panel-header">
+                <h1 class="loading-panel-title">OHD Harvest</h1>
+                <h2 class="loading-panel-subtitle">Marketplace</h2>
+            </div>
+            <div class="loading-panel-message">
+                @Message
+            </div>
+            <div class="loading-panel-spinner">
+                <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Message { get; set; } = "Please wait while we load the latest updates";
+    [Parameter] public bool IsVisible { get; set; } = true;
+}

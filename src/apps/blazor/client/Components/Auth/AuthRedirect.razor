@@ -2,27 +2,12 @@
 @inject IServiceProvider ServiceProvider
 @inject IAuthenticationService AuthenticationService
 @inject NavigationManager Navigation
+@inject AuthFlowStateService AuthFlowState
 @using FSH.Starter.Blazor.Infrastructure.Auth
 @using FSH.Starter.Blazor.Infrastructure.Api
+@using FSH.Starter.Blazor.Client.Components.Common
 
-<style>
-    .auth-redirect-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 99999;
-    }
-</style>
-
-<div class="auth-redirect-container">
-    <img src="/cornfield.png" Style="width:100vw; height:100vh; aspect-ratio:16/9; object-fit:cover; object-position:center top; opacity:1.0" />
-</div>
+<LoadingPanel Message="Please wait while we redirect you to sign in" IsVisible="true" />
 
 @code {
     protected override async Task OnInitializedAsync()
@@ -37,6 +22,9 @@
                 var uri = new Uri(Navigation.Uri);
                 if (!uri.Query.Contains("error="))
                 {
+                    // Set auth flow state before redirecting to B2C
+                    await AuthFlowState.SetStateAsync(FSH.Starter.Blazor.Infrastructure.Auth.AuthFlowState.RedirectingToB2C);
+                    
                     // For B2C, navigate to external login (B2C)
                     AuthenticationService.NavigateToExternalLogin("/");
                     return;

@@ -185,6 +185,8 @@
             text-decoration: underline;
         }
         
+
+
         /* Hide cancel button if specified in policy */
         #api button.cancel,
         #api button[aria-label="Cancel"] {
@@ -202,7 +204,74 @@
             font-weight: 500;
             color: var(--text-primary);
         }
+
+
+
+        
+        #api .intro {
+            display: none !important;
+        }
+
+        #email_intro {
+            display: none !important;
+        }
+
+        #email_label {
+            display: none !important;
+        }
+
+        .helpLink.tiny {
+            display: none !important;
+        }
+
+        #api #attributeList ul {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            list-style: none !important;
+            text-align: left !important;
+        }
+
+        #api #attributeList ul li {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            text-align: left !important;
+        }
+/* 
+        #continue {
+            display: none !important;
+        }
+
+        .verification-complete #continue {
+            display: inline-block !important;
+        } */
+
+        /* Hide Continue button by default */
+        #continue {
+            display: none !important;
+        }
+
+        /* Show Continue button when email_success is visible */
+        #email_success[aria-hidden="false"] ~ * #continue,
+        #email_success[aria-hidden="false"] ~ #continue,
+        #api #email_success[aria-hidden="false"] ~ * #continue {
+            display: inline-block !important;
+        }
+
+        /* Alternative - check if we can target by document state */
+        #api:has(#email_success[aria-hidden="false"]) #continue {
+            display: inline-block !important;
+        }
+
+        /* More specific targeting */
+        div[id="email_success"][aria-hidden="false"] ~ div #continue,
+        div[id="email_success"][aria-hidden="false"] ~ * #continue {
+            display: inline-block !important;
+        }
+
     </style>
+
 </head>
 <body>
     <div class="container">

@@ -1,4 +1,5 @@
 using FSH.Starter.Blazor.Infrastructure.Auth;
+using FSH.Starter.Blazor.Infrastructure.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -10,6 +11,7 @@ public partial class AuthenticationCallback : ComponentBase
     
     [Inject] private IAuthenticationCallbackHandler CallbackHandler { get; set; } = default!;
     [Inject] private IJSRuntime JS { get; set; } = default!;
+    [Inject] private IAuthenticationFlowState AuthFlowState { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -37,6 +39,12 @@ public partial class AuthenticationCallback : ComponentBase
         
         // Handle the authentication callback
         var result = await CallbackHandler.HandleCallbackAsync(Action, fullUri);
+        
+        // Set flag to show panel on home page if we're navigating there
+        if (result.NavigationTarget == "/" || result.NavigationTarget.StartsWith("/?"))
+        {
+            AuthFlowState.SetReturningFromAuthentication();
+        }
         
         // Navigate to the target
         Navigation.NavigateTo(result.NavigationTarget, forceLoad: false);

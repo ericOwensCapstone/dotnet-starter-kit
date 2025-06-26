@@ -1,6 +1,9 @@
 ﻿@page "/"
 @using System.Security.Claims
 @using FSH.Starter.Blazor.Client.Components.Common
+@using FSH.Starter.Blazor.Infrastructure.Services
+@inject IAuthenticationFlowState AuthFlowState
+@inject IJSRuntime JSRuntime
 <style>
     .home-page-container {
         position: fixed;
@@ -14,9 +17,110 @@
         background-repeat: no-repeat;
         z-index: -1;
     }
+
+    .auth-panel-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .auth-panel-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .auth-panel-container {
+        position: relative;
+        z-index: 1;
+        background-color: #202528;
+        border-radius: 5px;
+        box-shadow: 0px 8px 10px -5px rgba(0,0,0,0.2), 0px 16px 24px 2px rgba(0,0,0,0.14), 0px 6px 30px 5px rgba(0,0,0,0.12);
+        padding: 32px;
+        width: 400px;
+        max-width: 90vw;
+        text-align: center;
+    }
+
+    .auth-panel-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .auth-panel-title {
+        font-family: 'Roboto', sans-serif;
+        font-size: 2.125rem;
+        font-weight: 400;
+        line-height: 1.235;
+        letter-spacing: 0.00735em;
+        color: rgba(255, 255, 255, 0.70);
+        margin: 0;
+        text-align: center;
+    }
+
+    .auth-panel-message {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.70);
+        line-height: 1.5;
+        max-width: 300px;
+    }
+
+    @@media (max-width: 600px) {
+        .auth-panel-container {
+            padding: 24px;
+            width: 320px;
+        }
+        
+        .auth-panel-title {
+            font-size: 1.75rem;
+        }
+        
+        .auth-panel-message {
+            font-size: 0.875rem;
+        }
+    }
 </style>
 
 <div class="home-page-container"></div>
+
+@if (_showAuthPanel)
+{
+    <div class="auth-panel-wrapper" style="opacity: @(_opacity);" @ref="authPanelElement">
+    <div class="auth-panel-background"></div>
+    <div class="auth-panel-container">
+        <div class="auth-panel-content">
+            <h1 class="auth-panel-title">
+                OHD Harvest<br />
+                Marketplace
+            </h1>
+            <div class="auth-panel-message">
+                Welcome back!
+            </div>
+            <button @onclick="FadePanel" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Fade Out
+            </button>
+            <div style="color: white; margin-top: 10px;">
+                Debug: ShowPanel=@_showAuthPanel, Opacity=@_opacity.ToString("F2")
+            </div>
+        </div>
+    </div>
+</div>
+}
 
 <MudContainer>
     <MudGrid>
@@ -103,10 +207,51 @@
     public Task<AuthenticationState> AuthState { get; set; } = default!;
 
     public IEnumerable<Claim>? Claims { get; set; }
+    private bool _showAuthPanel = false;
+    private double _opacity = 1.0;
+    private ElementReference authPanelElement;
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthState;
         Claims = authState.User.Claims;
+
+        Console.WriteLine($"Home.OnInitializedAsync: IsReturningFromAuthentication = {AuthFlowState.IsReturningFromAuthentication}");
+
+        // Check if we're coming from authentication flow
+        if (AuthFlowState.IsReturningFromAuthentication)
+        {
+            Console.WriteLine("Home: Setting _showAuthPanel = true");
+            AuthFlowState.ClearReturningFromAuthentication();
+            _showAuthPanel = true;
+            _opacity = 1.0;
+            StateHasChanged();
+        }
+        
+        // TEMPORARY: Force panel to show for testing
+        _showAuthPanel = true;
+        _opacity = 1.0;
     }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine($"Home.OnAfterRender: firstRender={firstRender}, _showAuthPanel={_showAuthPanel}");
+    }
+
+    private async Task FadePanel()
+    {
+        Console.WriteLine("FadePanel: Starting fade");
+        // Fade from 1.0 to 0.0 over 3 seconds
+        for (double opacity = 1.0; opacity >= 0; opacity -= 0.033)
+        {
+            _opacity = opacity;
+            StateHasChanged();
+            await Task.Delay(100);
+        }
+
+        Console.WriteLine("FadePanel: Fade complete, hiding panel");
+        _showAuthPanel = false;
+        StateHasChanged();
+    }
+
 }

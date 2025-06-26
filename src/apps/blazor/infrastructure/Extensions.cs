@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using Blazored.LocalStorage;
 using FSH.Starter.Blazor.Infrastructure.Api;
+using FSH.Starter.Blazor.Infrastructure.Services;
 using FSH.Starter.Blazor.Infrastructure.Auth;
 using FSH.Starter.Blazor.Infrastructure.Auth.Jwt;
 using FSH.Starter.Blazor.Infrastructure.Notifications;
@@ -54,6 +55,7 @@ public static class Extensions
         services.AddNotifications();
         services.AddScoped<AuthFlowStateService>();
         services.AddScoped<IAuthenticationCallbackHandler, AuthenticationCallbackHandler>();
+        services.AddScoped<IAuthenticationFlowState, AuthenticationFlowState>();
         return services;
 
     }

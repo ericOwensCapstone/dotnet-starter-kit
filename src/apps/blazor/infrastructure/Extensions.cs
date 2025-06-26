@@ -53,6 +53,7 @@ public static class Extensions
         services.AddTransient<IPreference, ClientPreference>();
         services.AddNotifications();
         services.AddScoped<AuthFlowStateService>();
+        services.AddScoped<IAuthenticationCallbackHandler, AuthenticationCallbackHandler>();
         return services;
 
     }

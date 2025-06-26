@@ -1,0 +1,166 @@
+@page "/error/auth-failed"
+
+<style>
+    .error-page-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .error-page-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .error-panel-container {
+        position: relative;
+        z-index: 1;
+        background-color: #202528;
+        border-radius: 5px;
+        box-shadow: 0px 8px 10px -5px rgba(0,0,0,0.2), 0px 16px 24px 2px rgba(0,0,0,0.14), 0px 6px 30px 5px rgba(0,0,0,0.12);
+        padding: 32px;
+        min-width: 320px;
+        max-width: 90vw;
+        text-align: center;
+    }
+
+    .error-panel-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .error-panel-title {
+        font-family: 'Roboto', sans-serif;
+        font-size: 2.125rem;
+        font-weight: 400;
+        line-height: 1.235;
+        letter-spacing: 0.00735em;
+        color: rgba(255, 255, 255, 0.70);
+        margin: 0;
+        text-align: center;
+    }
+
+    .error-panel-message {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        color: #ff6b6b;
+        line-height: 1.5;
+        max-width: 400px;
+    }
+
+    .error-panel-icon {
+        color: #ff6b6b;
+        font-size: 3rem;
+    }
+
+    .error-panel-buttons {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .error-panel-button {
+        background-color: rgba(76,175,80,1);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 12px 24px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        letter-spacing: 0.02857em;
+        text-transform: uppercase;
+        cursor: pointer;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+        transition: background-color 0.2s;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .error-panel-button:hover {
+        background-color: rgba(56,142,60,1);
+    }
+
+    .error-panel-button-secondary {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.87);
+    }
+
+    .error-panel-button-secondary:hover {
+        background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .error-panel-support-text {
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.50);
+        margin-top: 8px;
+    }
+
+    @@media (max-width: 600px) {
+        .error-panel-container {
+            padding: 24px;
+            min-width: 280px;
+        }
+        
+        .error-panel-title {
+            font-size: 1.75rem;
+        }
+        
+        .error-panel-message {
+            font-size: 0.875rem;
+        }
+
+        .error-panel-buttons {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .error-panel-button {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="error-page-wrapper">
+    <div class="error-page-background"></div>
+    <div class="error-panel-container">
+        <div class="error-panel-content">
+            <h1 class="error-panel-title">
+                OHD Harvest<br />
+                Marketplace
+            </h1>
+            <div class="error-panel-icon">
+                <MudIcon Icon="@Icons.Material.Filled.ErrorOutline" />
+            </div>
+            <div class="error-panel-message">
+                @ErrorMessage
+            </div>
+            <div class="error-panel-buttons">
+                <button class="error-panel-button" @onclick="OnRetryClicked">
+                    @RetryButtonText
+                </button>
+                <button class="error-panel-button error-panel-button-secondary" @onclick="OnContactSupportClicked">
+                    Contact Support
+                </button>
+            </div>
+            <div class="error-panel-support-text">
+                @SupportMessage
+            </div>
+        </div>
+    </div>
+</div>

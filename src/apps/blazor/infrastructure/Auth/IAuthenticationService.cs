@@ -7,4 +7,6 @@ public interface IAuthenticationService
     Task LogoutAsync();
 
     Task ReLoginAsync(string returnUrl);
+    
+    Task<bool> ProcessAuthenticationCallbackAsync(string uri);
 }

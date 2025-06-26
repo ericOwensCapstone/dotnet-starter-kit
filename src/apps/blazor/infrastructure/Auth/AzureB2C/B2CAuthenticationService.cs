@@ -119,6 +119,79 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
         NavigateToExternalLogin(returnUrl);
     }
 
+    public async Task<bool> ProcessAuthenticationCallbackAsync(string uri)
+    {
+        try
+        {
+            Console.WriteLine($"B2CAuthenticationService.ProcessAuthenticationCallbackAsync: Processing URI: {uri}");
+            
+            // Extract the fragment from the URI
+            var uriObj = new Uri(uri);
+            var fragment = uriObj.Fragment;
+            
+            Console.WriteLine($"B2CAuthenticationService.ProcessAuthenticationCallbackAsync: Fragment: {fragment}");
+            
+            if (string.IsNullOrEmpty(fragment) || fragment.Length <= 1)
+            {
+                Console.WriteLine("B2CAuthenticationService.ProcessAuthenticationCallbackAsync: No fragment found");
+                return false;
+            }
+            
+            // Parse the fragment to extract tokens
+            var parameters = ParseFragment(fragment);
+            
+            Console.WriteLine($"B2CAuthenticationService.ProcessAuthenticationCallbackAsync: Parsed {parameters.Count} parameters");
+            
+            string? token = null;
+            if (parameters.TryGetValue("id_token", out var idToken))
+            {
+                token = idToken;
+                Console.WriteLine("B2CAuthenticationService.ProcessAuthenticationCallbackAsync: Found id_token");
+            }
+            else if (parameters.TryGetValue("access_token", out var accessToken))
+            {
+                token = accessToken;
+                Console.WriteLine("B2CAuthenticationService.ProcessAuthenticationCallbackAsync: Found access_token");
+            }
+            
+            if (!string.IsNullOrEmpty(token))
+            {
+                Console.WriteLine($"B2CAuthenticationService.ProcessAuthenticationCallbackAsync: Token found, length: {token.Length}");
+                return await ExchangeB2CTokenAsync(token);
+            }
+            else
+            {
+                Console.WriteLine("B2CAuthenticationService.ProcessAuthenticationCallbackAsync: No token found in fragment");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"B2CAuthenticationService.ProcessAuthenticationCallbackAsync: Error - {ex.Message}");
+        }
+        
+        return false;
+    }
+    
+    private Dictionary<string, string> ParseFragment(string fragment)
+    {
+        var result = new Dictionary<string, string>();
+        
+        if (fragment.StartsWith("#"))
+            fragment = fragment.Substring(1);
+            
+        var pairs = fragment.Split('&');
+        foreach (var pair in pairs)
+        {
+            var parts = pair.Split('=');
+            if (parts.Length == 2)
+            {
+                result[parts[0]] = Uri.UnescapeDataString(parts[1]);
+            }
+        }
+        
+        return result;
+    }
+
     public async Task<bool> ExchangeB2CTokenAsync(string b2cToken)
     {
         try

@@ -1,10 +1,6 @@
 ﻿@page "/"
 @using System.Security.Claims
 @using FSH.Starter.Blazor.Client.Components.Common
-@using FSH.Starter.Blazor.Infrastructure.Auth
-@inject IJSRuntime JS
-@inject AuthFlowStateService AuthFlowState
-
 <style>
     .home-page-container {
         position: fixed;
@@ -19,8 +15,6 @@
         z-index: -1;
     }
 </style>
-
-<LoadingPanel Message="Please wait while we load the latest updates" IsVisible="@_showLoading" />
 
 <div class="home-page-container"></div>
 
@@ -109,59 +103,10 @@
     public Task<AuthenticationState> AuthState { get; set; } = default!;
 
     public IEnumerable<Claim>? Claims { get; set; }
-    private bool _showLoading = false;
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthState;
         Claims = authState.User.Claims;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            // Check if we're coming from authentication flow
-            var flowState = await AuthFlowState.GetStateAsync();
-            if (flowState != FSH.Starter.Blazor.Infrastructure.Auth.AuthFlowState.Initial)
-            {
-                _showLoading = true;
-                StateHasChanged();
-                
-                // Clear the auth flow state
-                await AuthFlowState.ClearStateAsync();
-                
-                // Hide the initial loading panel from index.html
-                await JS.InvokeVoidAsync("eval", @"
-                    const initialLoader = document.querySelector('.initial-loading-wrapper');
-                    if (initialLoader) {
-                        initialLoader.style.transition = 'opacity 0.3s ease-in-out';
-                        initialLoader.style.opacity = '0';
-                        setTimeout(() => {
-                            initialLoader.style.display = 'none';
-                        }, 300);
-                    }
-                ");
-                
-                // Wait a bit before hiding our loading panel
-                await Task.Delay(1000);
-                _showLoading = false;
-                StateHasChanged();
-            }
-            else
-            {
-                // Just hide the initial loading panel
-                await JS.InvokeVoidAsync("eval", @"
-                    const initialLoader = document.querySelector('.initial-loading-wrapper');
-                    if (initialLoader) {
-                        initialLoader.style.transition = 'opacity 0.3s ease-in-out';
-                        initialLoader.style.opacity = '0';
-                        setTimeout(() => {
-                            initialLoader.style.display = 'none';
-                        }, 300);
-                    }
-                ");
-            }
-        }
     }
 }

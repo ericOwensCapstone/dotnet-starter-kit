@@ -17,103 +17,21 @@
     background-repeat: no-repeat;
     z-index: -1;
     }
-
-    .auth-panel-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    }
-
-    .auth-panel-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    }
-
-    .auth-panel-container {
-    position: relative;
-    z-index: 1;
-    background-color: #202528;
-    border-radius: 5px;
-    box-shadow: 0px 8px 10px -5px rgba(0,0,0,0.2), 0px 16px 24px 2px rgba(0,0,0,0.14), 0px 6px 30px 5px rgba(0,0,0,0.12);
-    padding: 32px;
-    width: 400px;
-    height: 250px;
-    max-width: 90vw;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    }
-
-    .auth-panel-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    }
-
-    .auth-panel-title {
-    font-family: 'Roboto', sans-serif;
-    font-size: 2.125rem;
-    font-weight: 400;
-    line-height: 1.235;
-    letter-spacing: 0.00735em;
-    color: rgba(255, 255, 255, 0.70);
-    margin: 0;
-    text-align: center;
-    }
-
-    .auth-panel-message {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.70);
-    line-height: 1.5;
-    max-width: 300px;
-    }
-
-    @@media (max-width: 600px) {
-    .auth-panel-container {
-    padding: 24px;
-    width: 320px;
-    height: 220px;
-    }
-
-    .auth-panel-title {
-    font-size: 1.75rem;
-    }
-
-    .auth-panel-message {
-    font-size: 0.875rem;
-    }
-    }
 </style>
 
 <div class="home-page-container"></div>
 
 @if (_showAuthPanel)
 {
-    <div class="auth-panel-wrapper" style="opacity: @(_opacity);" @ref="authPanelElement">
-        <div class="auth-panel-background"></div>
-        <div class="auth-panel-container">
-            <div class="auth-panel-content">
-                <h1 class="auth-panel-title">
+    <div class="ohd-panel-wrapper" style="opacity: @(_opacity);" @ref="authPanelElement">
+        <div class="ohd-panel-background"></div>
+        <div class="ohd-panel-container">
+            <div class="ohd-panel-content">
+                <h1 class="ohd-panel-title">
                     OHD Harvest<br />
                     Marketplace
                 </h1>
-                <div class="auth-panel-message">
+                <div class="ohd-panel-message">
                     Welcome back!
                 </div>
             </div>
@@ -222,18 +140,10 @@
 
         Console.WriteLine($"Home.OnInitializedAsync: IsReturningFromAuthentication = {AuthFlowState.IsReturningFromAuthentication}");
 
-        // Check if we're coming from authentication flow
-        if (AuthFlowState.IsReturningFromAuthentication)
-        {
-            AuthFlowState.ClearReturningFromAuthentication();
-        }
-
         if (_hasNotShownWelcomePanel)
         {
             Console.WriteLine("Home: Setting _showAuthPanel = true");           
             _showAuthPanel = true;
-
-            _hasNotShownWelcomePanel = false;
             _opacity = 1.0;
             StateHasChanged();
         }
@@ -242,11 +152,16 @@
     protected override void OnAfterRender(bool firstRender)
     {
         Console.WriteLine($"Home.OnAfterRender: firstRender={firstRender}, _showAuthPanel={_showAuthPanel}");
-        if (firstRender && _showAuthPanel)
+        if (firstRender && _showAuthPanel && !AuthFlowState.IsReturningFromAuthentication)
         {
             Console.WriteLine("Home: First render, starting fade panel");
             // Start the fade animation
             _ = FadePanel();
+        }
+        // Check if we're coming from authentication flow
+        if (AuthFlowState.IsReturningFromAuthentication)
+        {
+            AuthFlowState.ClearReturningFromAuthentication();
         }
     }
 
@@ -256,6 +171,7 @@
         // Fade from 1.0 to 0.0
         for (double opacity = 1.0; opacity >= 0; opacity -= 0.05)
         {
+            //Console.WriteLine("FadePanel: Setting opacity to " + opacity);
             _opacity = opacity;
             StateHasChanged();
             await Task.Delay(100);
@@ -263,6 +179,7 @@
 
         Console.WriteLine("FadePanel: Fade complete, hiding panel");
         _showAuthPanel = false;
+        _hasNotShownWelcomePanel = false;
         StateHasChanged();
     }
 

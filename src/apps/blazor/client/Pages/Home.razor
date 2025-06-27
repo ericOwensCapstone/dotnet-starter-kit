@@ -50,8 +50,12 @@
     box-shadow: 0px 8px 10px -5px rgba(0,0,0,0.2), 0px 16px 24px 2px rgba(0,0,0,0.14), 0px 6px 30px 5px rgba(0,0,0,0.12);
     padding: 32px;
     width: 400px;
+    height: 250px;
     max-width: 90vw;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     }
 
     .auth-panel-content {
@@ -84,6 +88,7 @@
     .auth-panel-container {
     padding: 24px;
     width: 320px;
+    height: 220px;
     }
 
     .auth-panel-title {
@@ -248,7 +253,7 @@
     private async Task FadePanel()
     {
         Console.WriteLine("FadePanel: Starting fade");
-        // Fade from 1.0 to 0.0 over 3 seconds
+        // Fade from 1.0 to 0.0
         for (double opacity = 1.0; opacity >= 0; opacity -= 0.05)
         {
             _opacity = opacity;

@@ -2118,3 +2118,419 @@ Based on the comprehensive security approach:
 - **Configurable**: Easy to enable/disable for different environments
 - **Auditable**: All access attempts logged
 - **Maintainable**: Centralized security configuration
+
+## MSAL Integration: Additional Implementation Details
+
+### 1. MSAL-Specific State Parameter Handling
+
+MSAL automatically handles state parameter generation and validation for CSRF protection:
+
+```typescript
+// MSAL automatically generates cryptographically secure state
+const loginRequest = {
+    scopes: ["openid", "profile", config.apiScope],
+    // MSAL adds state internally - no manual handling needed
+};
+
+// Access state for additional validation if needed
+msalInstance.addEventCallback((event) => {
+    if (event.eventType === EventType.LOGIN_SUCCESS) {
+        // State is validated by MSAL before this event fires
+        const state = event.payload.state;
+        // Add any application-specific state validation here
+        if (state && !validateAppSpecificState(state)) {
+            throw new Error("Invalid application state");
+        }
+    }
+});
+
+// For custom state data, use MSAL's state parameter
+const loginWithCustomState = {
+    scopes: ["openid", "profile"],
+    state: JSON.stringify({
+        returnUrl: window.location.pathname,
+        tenantHint: getCurrentTenant(),
+        timestamp: Date.now()
+    })
+};
+```
+
+### 2. MSAL Token Cache Security Configuration
+
+Configure MSAL's token cache with security in mind:
+
+```typescript
+// Secure cache configuration
+const msalConfig = {
+    auth: {
+        clientId: config.clientId,
+        authority: config.authority
+    },
+    cache: {
+        cacheLocation: "localStorage", // or "sessionStorage" for higher security
+        storeAuthStateInCookie: false, // Set to true for IE11/Edge support
+        
+        // Implement custom cache encryption
+        cachePlugin: {
+            beforeCacheAccess: async (cacheContext) => {
+                // Decrypt cache before MSAL reads
+                const encryptedCache = localStorage.getItem("msal.encrypted");
+                if (encryptedCache) {
+                    const decrypted = await decryptCache(encryptedCache);
+                    cacheContext.tokenCache.deserialize(decrypted);
+                }
+            },
+            afterCacheAccess: async (cacheContext) => {
+                // Encrypt cache after MSAL writes
+                if (cacheContext.cacheHasChanged) {
+                    const serialized = cacheContext.tokenCache.serialize();
+                    const encrypted = await encryptCache(serialized);
+                    localStorage.setItem("msal.encrypted", encrypted);
+                }
+            }
+        }
+    }
+};
+
+// Cache key isolation per tenant
+class TenantIsolatedCache {
+    constructor(private tenantId: string) {}
+    
+    getCacheKey(key: string): string {
+        return `msal.${this.tenantId}.${key}`;
+    }
+    
+    // Implement cache methods with tenant isolation
+    setItem(key: string, value: string) {
+        localStorage.setItem(this.getCacheKey(key), value);
+    }
+}
+```
+
+### 3. MSAL-Specific Rate Limiting Considerations
+
+Configure backend rate limiting to work well with MSAL's retry logic:
+
+```csharp
+// Backend rate limiting configuration
+services.AddRateLimiter(options =>
+{
+    options.AddPolicy("MSALTokenExchange", context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 10, // Higher limit for MSAL retry logic
+                Window = TimeSpan.FromMinutes(1),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 5 // Allow some queuing for retry
+            }));
+});
+
+// Frontend: Handle MSAL retry with rate limiting
+const msalInterceptor = {
+    acquireTokenSilent: async (request) => {
+        let retryCount = 0;
+        const maxRetries = 3;
+        
+        while (retryCount < maxRetries) {
+            try {
+                return await msalInstance.acquireTokenSilent(request);
+            } catch (error) {
+                if (error instanceof InteractionRequiredAuthError) {
+                    throw error; // Don't retry interaction required
+                }
+                
+                if (error.errorCode === "rate_limited") {
+                    const backoffMs = Math.pow(2, retryCount) * 1000;
+                    await new Promise(resolve => setTimeout(resolve, backoffMs));
+                    retryCount++;
+                } else {
+                    throw error;
+                }
+            }
+        }
+        throw new Error("Max retries exceeded");
+    }
+};
+```
+
+### 4. MSAL Error Handling Specifics
+
+Comprehensive MSAL error handling with device fingerprint integration:
+
+```typescript
+import { 
+    InteractionRequiredAuthError, 
+    BrowserAuthError,
+    ServerError,
+    ClientAuthError 
+} from "@azure/msal-browser";
+
+async function handleMSALError(error: any, context: AuthContext) {
+    // Log error details for monitoring
+    logger.error("MSAL Error", {
+        errorCode: error.errorCode,
+        errorMessage: error.errorMessage,
+        correlationId: error.correlationId
+    });
+    
+    if (error instanceof InteractionRequiredAuthError) {
+        // User interaction required - different handling based on error code
+        switch (error.errorCode) {
+            case "consent_required":
+            case "login_required":
+                // Redirect to login with specific prompt
+                return msalInstance.loginRedirect({
+                    scopes: context.scopes,
+                    prompt: "login"
+                });
+                
+            case "interaction_in_progress":
+                // Wait for current interaction to complete
+                await waitForInteraction();
+                return retryAuthentication(context);
+                
+            default:
+                // Generic interaction required
+                return msalInstance.loginRedirect(context.loginRequest);
+        }
+    }
+    
+    if (error instanceof BrowserAuthError) {
+        switch (error.errorCode) {
+            case "crypto_not_available":
+                // Fallback for browsers without crypto API
+                showError("Your browser doesn't support required security features");
+                break;
+                
+            case "cookies_not_supported":
+                showError("Please enable cookies for authentication");
+                break;
+        }
+    }
+    
+    if (error instanceof ServerError) {
+        // Server errors might be temporary
+        if (error.status >= 500) {
+            return scheduleRetryWithBackoff(context);
+        }
+    }
+    
+    // Integration with device fingerprint validation
+    if (error.errorCode === "device_mismatch") {
+        // Custom error from our token exchange
+        await msalInstance.clearCache();
+        return msalInstance.loginRedirect({
+            scopes: context.scopes,
+            prompt: "login",
+            extraQueryParameters: {
+                device_reset: "true"
+            }
+        });
+    }
+    
+    // Default error handling
+    showGenericError(error);
+}
+
+// Helper to differentiate retry-able errors
+function isRetryableError(error: any): boolean {
+    const retryableErrorCodes = [
+        "network_error",
+        "service_not_available", 
+        "request_timeout"
+    ];
+    
+    return error instanceof ServerError && 
+           (error.status >= 500 || retryableErrorCodes.includes(error.errorCode));
+}
+```
+
+### 5. Migration Path from Current Implementation to MSAL
+
+Step-by-step migration checklist:
+
+#### Phase 1: Preparation
+- [ ] Install MSAL dependencies: `@azure/msal-browser@^3.0.0`
+- [ ] Create feature flag: `ENABLE_MSAL_AUTH`
+- [ ] Set up parallel authentication services
+- [ ] Configure MSAL with existing B2C settings
+
+#### Phase 2: Parallel Implementation
+```typescript
+// AuthenticationService with feature flag
+export class AuthenticationService {
+    constructor(
+        private legacyB2CService: B2CAuthenticationService,
+        private msalService: MSALAuthenticationService,
+        private featureFlags: FeatureFlags
+    ) {}
+    
+    async login(returnUrl?: string) {
+        if (this.featureFlags.isEnabled('ENABLE_MSAL_AUTH')) {
+            return this.msalService.login(returnUrl);
+        }
+        return this.legacyB2CService.NavigateToExternalLogin(returnUrl);
+    }
+    
+    async getToken(): Promise<string> {
+        if (this.featureFlags.isEnabled('ENABLE_MSAL_AUTH')) {
+            const result = await this.msalService.acquireTokenSilent();
+            // Still exchange for local token during migration
+            return this.exchangeForLocalToken(result.accessToken);
+        }
+        return this.legacyB2CService.getStoredToken();
+    }
+}
+```
+
+#### Phase 3: Gradual Rollout
+```typescript
+// Percentage-based rollout
+class GradualMSALRollout {
+    isEnabledForUser(userId: string): boolean {
+        // Start with internal users
+        if (this.isInternalUser(userId)) return true;
+        
+        // Then percentage of users
+        const percentage = this.config.msalRolloutPercentage || 0;
+        const userHash = this.hashUserId(userId);
+        return (userHash % 100) < percentage;
+    }
+}
+```
+
+#### Phase 4: Data Migration
+```typescript
+// Token migration utility
+class TokenMigrationService {
+    async migrateUserTokens(userId: string) {
+        // 1. Check for existing legacy tokens
+        const legacyToken = localStorage.getItem('authToken');
+        const legacyRefresh = localStorage.getItem('refreshToken');
+        
+        if (!legacyToken) return;
+        
+        // 2. Validate tokens are still valid
+        const isValid = await this.validateLegacyToken(legacyToken);
+        if (!isValid) {
+            // Clear invalid tokens
+            this.clearLegacyTokens();
+            return;
+        }
+        
+        // 3. No direct migration - user will get new MSAL tokens on next login
+        // But preserve user session continuity
+        sessionStorage.setItem('migration.pending', 'true');
+        sessionStorage.setItem('migration.returnUrl', window.location.href);
+    }
+    
+    clearLegacyTokens() {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('permissions');
+    }
+}
+```
+
+#### Phase 5: Cleanup
+- [ ] Remove legacy B2CAuthenticationService
+- [ ] Remove legacy token storage code  
+- [ ] Update all token references to use MSAL
+- [ ] Remove feature flags
+- [ ] Update documentation
+
+### 6. MSAL Multi-Tenant Configuration
+
+Configure MSAL for multi-tenant token exchange pattern:
+
+```typescript
+// Multi-tenant MSAL configuration
+const msalMultiTenantConfig = {
+    auth: {
+        clientId: config.clientId,
+        // Use 'common' authority for multi-tenant
+        authority: `https://${config.b2cDomain}.b2clogin.com/common`,
+        knownAuthorities: [
+            `${config.b2cDomain}.b2clogin.com`
+        ],
+        // Redirect URI must be registered in B2C
+        redirectUri: window.location.origin + "/authentication/login-callback"
+    },
+    cache: {
+        cacheLocation: "localStorage"
+    }
+};
+
+// Tenant-specific login
+async function loginWithTenantHint(tenantId: string) {
+    const loginRequest = {
+        scopes: ["openid", "profile", config.apiScope],
+        // Pass tenant hint to B2C
+        extraQueryParameters: {
+            domain_hint: tenantId,
+            // Custom parameter for our token exchange
+            target_tenant: tenantId
+        }
+    };
+    
+    await msalInstance.loginRedirect(loginRequest);
+}
+
+// Token acquisition with tenant context
+async function acquireTokenForTenant(tenantId: string) {
+    const account = msalInstance.getAllAccounts()[0];
+    
+    const silentRequest = {
+        scopes: [config.apiScope],
+        account: account,
+        extraQueryParameters: {
+            target_tenant: tenantId
+        }
+    };
+    
+    try {
+        const result = await msalInstance.acquireTokenSilent(silentRequest);
+        // Exchange B2C token for tenant-specific local token
+        return await exchangeForTenantToken(result.accessToken, tenantId);
+    } catch (error) {
+        if (error instanceof InteractionRequiredAuthError) {
+            return msalInstance.acquireTokenRedirect(silentRequest);
+        }
+        throw error;
+    }
+}
+
+// Authority URL validation for multi-tenant
+class TenantAuthorityValidator {
+    validateAuthority(tenantId: string): boolean {
+        // Ensure tenant is allowed
+        const allowedTenants = this.config.allowedTenants || [];
+        if (allowedTenants.length > 0 && !allowedTenants.includes(tenantId)) {
+            return false;
+        }
+        
+        // Validate authority URL format
+        const authorityUrl = this.buildAuthorityUrl(tenantId);
+        return this.isValidB2CAuthority(authorityUrl);
+    }
+    
+    buildAuthorityUrl(tenantId: string): string {
+        // For B2C, typically use the same authority regardless of tenant
+        // Tenant context is handled in token exchange
+        return `https://${this.config.b2cDomain}.b2clogin.com/${this.config.b2cTenantId}/${this.config.policyName}`;
+    }
+}
+```
+
+### Implementation Priority
+
+1. **Critical**: Implement MSAL with proper error handling
+2. **High**: Configure secure token caching with encryption
+3. **High**: Set up migration path with feature flags
+4. **Medium**: Implement gradual rollout strategy
+5. **Medium**: Configure multi-tenant support
+6. **Low**: Optimize rate limiting for MSAL retry logic
+
+This approach ensures a smooth transition from the current custom implementation to MSAL while maintaining security and user experience.

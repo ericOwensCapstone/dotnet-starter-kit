@@ -1972,3 +1972,149 @@ async function handleAuthError(error: AuthError) {
 10. **Graceful Degradation**: Clear error handling and recovery paths
 
 This enhanced flow provides defense-in-depth security while maintaining a smooth user experience with automatic token refresh and daily re-authentication.
+
+## Additional Security Hardening
+
+### IP Restrictions for B2C Endpoints
+
+To further secure B2C endpoints from unauthorized access while allowing legitimate B2C service calls:
+
+#### 1. IP Restriction Middleware
+
+Create middleware to restrict access to B2C server-to-server endpoints:
+
+```csharp
+// src/api/framework/Infrastructure/Security/B2CIPRestrictionMiddleware.cs
+public class B2CIPRestrictionMiddleware
+{
+    private readonly HashSet<IPNetwork> _allowedNetworks;
+    private readonly IConfiguration _configuration;
+    
+    public B2CIPRestrictionMiddleware(RequestDelegate next, IConfiguration configuration)
+    {
+        _configuration = configuration;
+        _allowedNetworks = LoadAllowedNetworks();
+    }
+    
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    {
+        // Only apply to B2C server-to-server endpoints
+        if (ShouldApplyIPRestriction(context.Request.Path))
+        {
+            var remoteIp = context.Connection.RemoteIpAddress;
+            if (!IsAllowedIP(remoteIp))
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync("Forbidden");
+                return;
+            }
+        }
+        await next(context);
+    }
+    
+    private bool ShouldApplyIPRestriction(PathString path)
+    {
+        // Apply to server-to-server endpoints only
+        return path.StartsWithSegments("/api/public/b2c/invitations/validate") ||
+               path.StartsWithSegments("/api/public/b2c/invitations/post-registration");
+    }
+    
+    private HashSet<IPNetwork> LoadAllowedNetworks()
+    {
+        // Azure AD B2C IP ranges (as of 2024)
+        // Download latest from: https://www.microsoft.com/download/details.aspx?id=56519
+        var ranges = _configuration.GetSection("B2CSecurity:AllowedIPRanges").Get<string[]>() 
+            ?? new[] { "20.190.128.0/18", "40.126.0.0/18" };
+            
+        return ranges.Select(r => IPNetwork.Parse(r)).ToHashSet();
+    }
+}
+```
+
+Configuration in appsettings:
+```json
+{
+  "B2CSecurity": {
+    "EnableIPRestrictions": false, // false for dev, true for prod
+    "AllowedIPRanges": [
+      "20.190.128.0/18",
+      "40.126.0.0/18"
+      // Add more ranges from Azure IP list
+    ]
+  }
+}
+```
+
+#### 2. API Key Validation
+
+Add an additional layer of security with API key validation:
+
+```csharp
+// Update B2C endpoints to validate API key
+public static void MapB2CEndpoints(this IEndpointRouteBuilder endpoints)
+{
+    endpoints.MapPost("/api/public/b2c/invitations/validate/{token}", 
+        async (string token, HttpContext context, IConfiguration config) =>
+    {
+        // Validate API key
+        var apiKey = context.Request.Headers["X-API-Key"];
+        if (apiKey != config["B2CSecurity:ApiKey"])
+        {
+            return Results.Unauthorized();
+        }
+        
+        // Continue with invitation validation...
+    });
+}
+```
+
+Update B2C custom policy to include API key:
+```xml
+<!-- In the REST API technical profile -->
+<InputClaim ClaimTypeReferenceId="apiKey" DefaultValue="{Settings:B2CApiKey}" />
+<Header Id="X-API-Key" DataType="string" Value="{apiKey}" />
+```
+
+### Endpoint Security Summary
+
+Based on the comprehensive security approach:
+
+1. **`/api/public/b2c/invitations/validate/{token}`** 
+   - IP restriction: ✅ (B2C servers only)
+   - API key validation: ✅
+   - Purpose: B2C policy validation during signup
+
+2. **`/api/public/b2c/invitations/post-registration`**
+   - IP restriction: ✅ (B2C servers only)  
+   - API key validation: ✅
+   - Purpose: B2C policy callback after user creation
+
+3. **`/api/b2c-token`** (Corrected from `/api/public/b2c-token`)
+   - IP restriction: ❌ (accessed by user browsers)
+   - Authorization: B2C JWT validation (not public/anonymous)
+   - Should be: `[Authorize(AuthenticationSchemes = "B2CJWT")]`
+   - Purpose: Exchange B2C tokens for local JWTs
+
+4. **`/api/public/invitation/{token}`**
+   - IP restriction: ❌ (accessed via email links)
+   - Authorization: None (public invitation links)
+   - Rate limiting: ✅ (prevent token enumeration)
+   - Purpose: Landing page for invitation acceptance
+
+### Implementation Notes
+
+1. **Development Environment**: Keep IP restrictions disabled to allow local testing
+2. **Production Deployment**: 
+   - Enable IP restrictions via configuration
+   - Store API keys in Azure Key Vault
+   - Regularly update Azure IP ranges
+3. **Monitoring**: Log all blocked requests for security analysis
+4. **Rate Limiting**: Implement on all public endpoints to prevent abuse
+
+### Security Benefits
+
+- **Defense in Depth**: Multiple layers of protection
+- **Zero Trust**: Verify every request, even from B2C
+- **Configurable**: Easy to enable/disable for different environments
+- **Auditable**: All access attempts logged
+- **Maintainable**: Centralized security configuration

@@ -67,10 +67,10 @@
     }
 }
 
-/* Ensure cornfield background is preloaded */
+/* Ensure cornfield background is preloaded - using small WebP version for fast initial load */
 body::before {
     content: "";
-    background-image: url('https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield.png');
+    background-image: url('../cornfield-small.webp');
     position: absolute;
     width: 0;
     height: 0;

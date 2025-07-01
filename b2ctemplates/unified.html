@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In - OHD Harvest Marketplace</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <link rel="preload" href="https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield.png" as="image">
+    <link rel="preload" href="https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield-small.webp" as="image">
     <style>
         :root {
             --primary-color: rgba(76,175,80,1);
@@ -22,7 +22,8 @@
             margin: 0;
             padding: 0;
             background-color: var(--background-color);
-            background-image: url('https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield.png');
+            /* Start with small WebP for fast initial load */
+            background-image: url('https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield-small.webp');
             background-size: cover;
             background-position: center top;
             background-repeat: no-repeat;
@@ -32,6 +33,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        
+        /* Progressive enhancement for larger screens */
+        @media (min-width: 768px) {
+            body {
+                background-image: url('https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfield-medium.webp');
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            body {
+                background-image: url('https://ohdb2ctemplates.blob.core.windows.net/ohdb2c-templates/cornfieldreduced.webp');
+            }
         }
         
         .container {

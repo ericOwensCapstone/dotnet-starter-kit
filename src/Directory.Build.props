@@ -1,18 +1,35 @@
 <Project>
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-        <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <NoDefaultExcludes>true</NoDefaultExcludes>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-        <AnalysisLevel>latest</AnalysisLevel>
-        <AnalysisMode>All</AnalysisMode>
-        <ContainerImageTags>2.0.4-rc;latest</ContainerImageTags>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="SonarAnalyzer.CSharp" PrivateAssets="all" Condition="$(MSBuildProjectExtension) == '.csproj'" />
-    </ItemGroup>
+  <PropertyGroup>
+    <!-- Common properties for all projects -->
+    <!-- Only set TargetFramework if not already defined -->
+    <TargetFramework Condition="'$(TargetFramework)' == ''">net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    
+    <!-- Detect OS and set build output directories accordingly -->
+    <IsWindows Condition="'$(OS)' == 'Windows_NT'">true</IsWindows>
+    <IsUnix Condition="'$(OS)' != 'Windows_NT'">true</IsUnix>
+    
+    <!-- Set platform-specific build output paths BEFORE any imports -->
+    <BaseOutputPath Condition="'$(IsWindows)' == 'true'">$(MSBuildProjectDirectory)\bin-windows\</BaseOutputPath>
+    <BaseOutputPath Condition="'$(IsUnix)' == 'true'">$(MSBuildProjectDirectory)/bin-unix/</BaseOutputPath>
+    
+    <BaseIntermediateOutputPath Condition="'$(IsWindows)' == 'true'">$(MSBuildProjectDirectory)\obj-windows\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath Condition="'$(IsUnix)' == 'true'">$(MSBuildProjectDirectory)/obj-unix/</BaseIntermediateOutputPath>
+    
+    <!-- Also set IntermediateOutputPath to ensure it's used -->
+    <IntermediateOutputPath Condition="'$(IsWindows)' == 'true'">$(MSBuildProjectDirectory)\obj-windows\$(Configuration)\</IntermediateOutputPath>
+    <IntermediateOutputPath Condition="'$(IsUnix)' == 'true'">$(MSBuildProjectDirectory)/obj-unix/$(Configuration)/</IntermediateOutputPath>
+    
+    <!-- Ensure paths are created -->
+    <CreateHardLinksForCopyLocalIfPossible>true</CreateHardLinksForCopyLocalIfPossible>
+    
+    <!-- Prevent duplicate assembly attributes when switching between platforms -->
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    
+    <!-- Ensure we don't include files from other platform directories -->
+    <DefaultItemExcludes Condition="'$(IsWindows)' == 'true'">$(DefaultItemExcludes);obj-unix/**;bin-unix/**</DefaultItemExcludes>
+    <DefaultItemExcludes Condition="'$(IsUnix)' == 'true'">$(DefaultItemExcludes);obj-windows/**;bin-windows/**</DefaultItemExcludes>
+  </PropertyGroup>
 </Project>

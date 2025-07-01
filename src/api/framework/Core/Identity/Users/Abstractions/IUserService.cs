@@ -11,26 +11,6 @@ public class ToggleUserStatusCommand
     public bool ActivateUser { get; set; }
 }
 
-public class RegisterUserCommand
-{
-    public string FirstName { get; set; } = default!;
-    public string LastName { get; set; } = default!;
-    public string Email { get; set; } = default!;
-    public string UserName { get; set; } = default!;
-    public string Password { get; set; } = default!;
-    public string ConfirmPassword { get; set; } = default!;
-    public string? PhoneNumber { get; set; }
-}
-
-public class RegisterUserResponse
-{
-    public string UserId { get; set; }
-    
-    public RegisterUserResponse(string userId)
-    {
-        UserId = userId;
-    }
-}
 
 public class UpdateUserCommand
 {
@@ -76,7 +56,6 @@ public interface IUserService
     Task<UserDetail> GetAsync(string userId, CancellationToken cancellationToken);
     Task ToggleStatusAsync(ToggleUserStatusCommand request, CancellationToken cancellationToken);
     Task<string> GetOrCreateFromPrincipalAsync(ClaimsPrincipal principal);
-    Task<RegisterUserResponse> RegisterAsync(RegisterUserCommand request, string origin, CancellationToken cancellationToken);
     Task UpdateAsync(UpdateUserCommand request, string userId);
     Task DeleteAsync(string userId);
     Task<string> ConfirmEmailAsync(string userId, string code, string tenant, CancellationToken cancellationToken);

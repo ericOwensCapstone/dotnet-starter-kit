@@ -301,7 +301,7 @@ public class B2CAuthenticationService : AuthenticationStateProvider, IAuthentica
         return new AccessTokenResult(
             AccessTokenResultStatus.RequiresRedirect,
             null,
-            "/authentication/login");
+            "/");
     }
 
     public ValueTask<AccessTokenResult> RequestAccessToken(AccessTokenRequestOptions options)

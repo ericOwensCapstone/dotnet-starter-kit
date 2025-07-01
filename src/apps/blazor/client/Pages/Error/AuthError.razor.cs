@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using FSH.Starter.Blazor.Infrastructure.Auth;
 
 namespace FSH.Starter.Blazor.Client.Pages.Error;
 
 public partial class AuthError : ComponentBase
 {
     [Inject] private IJSRuntime JS { get; set; } = default!;
+    [Inject] private IAuthenticationService AuthenticationService { get; set; } = default!;
     
     protected string ErrorMessage { get; private set; } = "We were unable to complete your authentication. This could be due to an expired session or a temporary issue.";
     protected string RetryButtonText { get; private set; } = "Try Again";
@@ -13,8 +15,8 @@ public partial class AuthError : ComponentBase
 
     protected void OnRetryClicked()
     {
-        // Navigate to login to retry authentication
-        Navigation.NavigateTo("/login");
+        // Navigate directly to B2C authentication to retry
+        AuthenticationService.NavigateToExternalLogin("/", null);
     }
     
     protected async Task OnContactSupportClicked()

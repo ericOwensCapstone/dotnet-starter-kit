@@ -110,45 +110,6 @@ internal sealed partial class UserService(
         throw new NotImplementedException();
     }
 
-    public async Task<RegisterUserResponse> RegisterAsync(RegisterUserCommand request, string origin, CancellationToken cancellationToken)
-    {
-        // create user entity
-        var user = new FshUser
-        {
-            Email = request.Email,
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            UserName = request.UserName,
-            PhoneNumber = request.PhoneNumber,
-            IsActive = true,
-            EmailConfirmed = false,
-            PhoneNumberConfirmed = false,
-        };
-
-        // register user
-        var result = await userManager.CreateAsync(user, request.Password);
-        if (!result.Succeeded)
-        {
-            var errors = result.Errors.Select(error => error.Description).ToList();
-            throw new FshException("error while registering a new user", errors);
-        }
-
-        // add basic role
-        await userManager.AddToRoleAsync(user, FshRoles.Basic);
-
-        // send confirmation mail
-        if (!string.IsNullOrEmpty(user.Email))
-        {
-            string emailVerificationUri = await GetEmailVerificationUriAsync(user, origin);
-            var mailRequest = new MailRequest(
-                new Collection<string> { user.Email },
-                "Confirm Registration",
-                emailVerificationUri);
-            jobService.Enqueue("email", () => mailService.SendAsync(mailRequest, CancellationToken.None));
-        }
-
-        return new RegisterUserResponse(user.Id);
-    }
 
     public async Task ToggleStatusAsync(ToggleUserStatusCommand request, CancellationToken cancellationToken)
     {
@@ -306,5 +267,22 @@ internal sealed partial class UserService(
         }
 
         return userRoles;
+    }
+
+    // Temporary implementations for password methods - these will be removed in Phase 4
+    // when IUserService interface is updated
+    public Task ForgotPasswordAsync(ForgotPasswordCommand request, string origin, CancellationToken cancellationToken)
+    {
+        throw new NotSupportedException("Password management is handled through Azure B2C");
+    }
+
+    public Task ResetPasswordAsync(ResetPasswordCommand request, CancellationToken cancellationToken)
+    {
+        throw new NotSupportedException("Password management is handled through Azure B2C");
+    }
+
+    public Task ChangePasswordAsync(ChangePasswordCommand request, string userId)
+    {
+        throw new NotSupportedException("Password management is handled through Azure B2C");
     }
 }

@@ -1,0 +1,1477 @@
+Rebuild started at 11:45 AM...
+Restoring NuGet packages...
+To prevent NuGet from restoring packages during build, open the Visual Studio Options dialog, click on the NuGet Package Manager node and uncheck 'Allow NuGet to download missing packages during build.'
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\Shared.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\Shared.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\Infrastructure.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\Harvest.Domain.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\Ranch.Domain.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\Catalog.Domain.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\ServiceDefaults.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\Host.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\Core.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\Ranch.Application.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\Client.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\MSSQL.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\Todo.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\Infrastructure.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\Server.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\PostgreSQL.csproj...
+Assets file has not changed. Skipping assets file writing. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\project.assets.json
+Assets file has not changed. Skipping assets file writing. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\Shared.csproj (in 49 ms).
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\Shared.csproj (in 49 ms).
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\Harvest.Application.csproj...
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\Harvest.Infrastructure.csproj...
+  GET https://api.nuget.org/v3/vulnerabilities/index.json
+  OK https://api.nuget.org/v3/vulnerabilities/index.json 19ms
+  GET https://api.nuget.org/v3-vulnerabilities/2025.06.28.11.49.20/vulnerability.base.json
+  GET https://api.nuget.org/v3-vulnerabilities/2025.06.28.11.49.20/2025.07.01.11.49.28/vulnerability.update.json
+  OK https://api.nuget.org/v3-vulnerabilities/2025.06.28.11.49.20/vulnerability.base.json 34ms
+  OK https://api.nuget.org/v3-vulnerabilities/2025.06.28.11.49.20/2025.07.01.11.49.28/vulnerability.update.json 68ms
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\Ranch.Domain.csproj (in 333 ms).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\project.assets.json
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj...
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\Harvest.Domain.csproj (in 373 ms).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\project.assets.json
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\Ranch.Infrastructure.csproj...
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\Catalog.Domain.csproj (in 397 ms).
+Restoring packages for C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\Catalog.Application.csproj...
+Assets file has not changed. Skipping assets file writing. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\project.assets.json
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\Core.csproj (in 422 ms).
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\Catalog.Application.csproj (in 4 ms).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\ServiceDefaults.csproj (in 455 ms).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\obj-windows\project.assets.json
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\project.assets.json
+Assets file has not changed. Skipping assets file writing. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\Infrastructure.csproj (in 488 ms).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\Ranch.Infrastructure.csproj (in 86 ms).
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj (in 111 ms).
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\Client.csproj (in 513 ms).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\Host.csproj (in 561 ms).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\PostgreSQL.csproj (in 707 ms).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\Server.csproj (in 781 ms).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\Infrastructure.csproj (in 850 ms).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\Harvest.Infrastructure.csproj (in 848 ms).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\Todo.csproj (in 978 ms).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\MSSQL.csproj (in 1.04 sec).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\project.assets.json
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\Ranch.Application.csproj (in 1.09 sec).
+Writing assets file to disk. Path: C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\project.assets.json
+1>------ Rebuild All started: Project: Shared, Configuration: Debug Any CPU ------
+2>------ Rebuild All started: Project: Shared (Blazor\Shared), Configuration: Debug Any CPU ------
+Restored C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\Harvest.Application.csproj (in 1.08 sec).
+NuGet package restore finished.
+1>Build started 7/1/2025 11:45:48 AM.
+2>Build started 7/1/2025 11:45:48 AM.
+1>Target CoreClean:
+1>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.GeneratedMSBuildEditorConfig.editorconfig".
+1>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfoInputs.cache".
+2>Target CoreClean:
+2>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.GeneratedMSBuildEditorConfig.editorconfig".
+2>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfoInputs.cache".
+1>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs".
+1>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.csproj.CoreCompileInputs.cache".
+1>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.sourcelink.json".
+2>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs".
+2>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.csproj.CoreCompileInputs.cache".
+2>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.sourcelink.json".
+1>Target GenerateTargetFrameworkMonikerAttribute:
+1>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+2>Target GenerateTargetFrameworkMonikerAttribute:
+2>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+1>Target _GenerateSourceLinkFile:
+1>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.sourcelink.json'.
+2>Target _GenerateSourceLinkFile:
+2>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.sourcelink.json'.
+2>Target CoreCompile:
+2>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs(4,12,4,70): error CS0579: Duplicate 'global::System.Runtime.Versioning.TargetFrameworkAttribute' attribute
+2>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(14,12,14,54): error CS0579: Duplicate 'System.Reflection.AssemblyCompanyAttribute' attribute
+2>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(15,12,15,60): error CS0579: Duplicate 'System.Reflection.AssemblyConfigurationAttribute' attribute
+2>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(16,12,16,58): error CS0579: Duplicate 'System.Reflection.AssemblyFileVersionAttribute' attribute
+2>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(17,12,17,67): error CS0579: Duplicate 'System.Reflection.AssemblyInformationalVersionAttribute' attribute
+2>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(18,12,18,54): error CS0579: Duplicate 'System.Reflection.AssemblyProductAttribute' attribute
+2>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(19,12,19,52): error CS0579: Duplicate 'System.Reflection.AssemblyTitleAttribute' attribute
+2>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(20,12,20,54): error CS0579: Duplicate 'System.Reflection.AssemblyVersionAttribute' attribute
+2>  CompilerServer: server - server processed compilation - Shared (net9.0)
+1>Target CoreCompile:
+1>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs(4,12,4,70): error CS0579: Duplicate 'global::System.Runtime.Versioning.TargetFrameworkAttribute' attribute
+1>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(14,12,14,54): error CS0579: Duplicate 'System.Reflection.AssemblyCompanyAttribute' attribute
+1>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(15,12,15,60): error CS0579: Duplicate 'System.Reflection.AssemblyConfigurationAttribute' attribute
+1>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(16,12,16,58): error CS0579: Duplicate 'System.Reflection.AssemblyFileVersionAttribute' attribute
+1>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(17,12,17,67): error CS0579: Duplicate 'System.Reflection.AssemblyInformationalVersionAttribute' attribute
+1>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(18,12,18,54): error CS0579: Duplicate 'System.Reflection.AssemblyProductAttribute' attribute
+1>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(19,12,19,52): error CS0579: Duplicate 'System.Reflection.AssemblyTitleAttribute' attribute
+1>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(20,12,20,54): error CS0579: Duplicate 'System.Reflection.AssemblyVersionAttribute' attribute
+1>  CompilerServer: server - server processed compilation - Shared (net9.0)
+2>Done building target "CoreCompile" in project "Shared.csproj" -- FAILED.
+2>
+2>Done building project "Shared.csproj" -- FAILED.
+2>
+2>Build FAILED.
+2>
+2>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs(4,12,4,70): error CS0579: Duplicate 'global::System.Runtime.Versioning.TargetFrameworkAttribute' attribute
+2>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(14,12,14,54): error CS0579: Duplicate 'System.Reflection.AssemblyCompanyAttribute' attribute
+2>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(15,12,15,60): error CS0579: Duplicate 'System.Reflection.AssemblyConfigurationAttribute' attribute
+2>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(16,12,16,58): error CS0579: Duplicate 'System.Reflection.AssemblyFileVersionAttribute' attribute
+2>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(17,12,17,67): error CS0579: Duplicate 'System.Reflection.AssemblyInformationalVersionAttribute' attribute
+2>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(18,12,18,54): error CS0579: Duplicate 'System.Reflection.AssemblyProductAttribute' attribute
+2>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(19,12,19,52): error CS0579: Duplicate 'System.Reflection.AssemblyTitleAttribute' attribute
+2>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(20,12,20,54): error CS0579: Duplicate 'System.Reflection.AssemblyVersionAttribute' attribute
+2>    0 Warning(s)
+2>    8 Error(s)
+2>
+2>Time Elapsed 00:00:04.20
+1>Done building target "CoreCompile" in project "Shared.csproj" -- FAILED.
+1>
+1>Done building project "Shared.csproj" -- FAILED.
+1>
+1>Build FAILED.
+1>
+1>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs(4,12,4,70): error CS0579: Duplicate 'global::System.Runtime.Versioning.TargetFrameworkAttribute' attribute
+1>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(14,12,14,54): error CS0579: Duplicate 'System.Reflection.AssemblyCompanyAttribute' attribute
+1>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(15,12,15,60): error CS0579: Duplicate 'System.Reflection.AssemblyConfigurationAttribute' attribute
+1>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(16,12,16,58): error CS0579: Duplicate 'System.Reflection.AssemblyFileVersionAttribute' attribute
+1>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(17,12,17,67): error CS0579: Duplicate 'System.Reflection.AssemblyInformationalVersionAttribute' attribute
+1>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(18,12,18,54): error CS0579: Duplicate 'System.Reflection.AssemblyProductAttribute' attribute
+1>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(19,12,19,52): error CS0579: Duplicate 'System.Reflection.AssemblyTitleAttribute' attribute
+1>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\Shared.AssemblyInfo.cs(20,12,20,54): error CS0579: Duplicate 'System.Reflection.AssemblyVersionAttribute' attribute
+1>    0 Warning(s)
+1>    8 Error(s)
+1>
+1>Time Elapsed 00:00:04.24
+3>------ Rebuild All started: Project: Infrastructure (Blazor\Infrastructure), Configuration: Debug Any CPU ------
+4>------ Rebuild All started: Project: Core, Configuration: Debug Any CPU ------
+3>Build started 7/1/2025 11:45:53 AM.
+4>Build started 7/1/2025 11:45:53 AM.
+3>Target CoreClean:
+3>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\obj-windows\Debug\net9.0\Infrastructure.csproj.AssemblyReference.cache".
+3>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\obj-windows\Debug\net9.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig".
+3>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\obj-windows\Debug\net9.0\Infrastructure.AssemblyInfoInputs.cache".
+3>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\obj-windows\Debug\net9.0\Infrastructure.AssemblyInfo.cs".
+3>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\obj-windows\Debug\net9.0\Infrastructure.csproj.CoreCompileInputs.cache".
+3>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\obj-windows\Debug\net9.0\Infrastructure.sourcelink.json".
+3>Target _GetProjectReferenceTargetFrameworkProperties:
+4>Target CoreClean:
+4>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\Core.csproj.AssemblyReference.cache".
+4>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\Core.GeneratedMSBuildEditorConfig.editorconfig".
+4>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\Core.AssemblyInfoInputs.cache".
+4>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\Core.AssemblyInfo.cs".
+4>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\Core.csproj.CoreCompileInputs.cache".
+4>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\Core.sourcelink.json".
+4>Target _GetProjectReferenceTargetFrameworkProperties:
+3>Target ResolveProjectReferences:
+4>Target ResolveProjectReferences:
+3>Target ResolveAssemblyReferences:
+3>  Primary reference "Shared".
+3>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+3>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+3>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+3>      Reference found at search path location "".
+3>      The ImageRuntimeVersion for this reference is "".
+3>  Primary reference "FSH.Starter.Blazor.Shared".
+3>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\bin-windows\Debug\net9.0\FSH.Starter.Blazor.Shared.dll" does not exist.
+3>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\bin-windows\Debug\net9.0\FSH.Starter.Blazor.Shared.dll" does not exist.
+3>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\bin-windows\Debug\net9.0\FSH.Starter.Blazor.Shared.dll".
+3>      Reference found at search path location "".
+3>      The ImageRuntimeVersion for this reference is "".
+4>Target ResolveAssemblyReferences:
+4>  Primary reference "Shared".
+4>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+4>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+4>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+4>      Reference found at search path location "".
+4>      The ImageRuntimeVersion for this reference is "".
+4>Target GenerateTargetFrameworkMonikerAttribute:
+4>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+4>Target _GenerateSourceLinkFile:
+4>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\Core.sourcelink.json'.
+3>Target GenerateTargetFrameworkMonikerAttribute:
+3>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+3>Target _GenerateSourceLinkFile:
+3>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\obj-windows\Debug\net9.0\Infrastructure.sourcelink.json'.
+4>Target CoreCompile:
+4>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+4>  CompilerServer: server - server processed compilation - Core (net9.0)
+4>Done building target "CoreCompile" in project "Core.csproj" -- FAILED.
+4>
+4>Done building project "Core.csproj" -- FAILED.
+4>
+4>Build FAILED.
+4>
+4>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+4>    0 Warning(s)
+4>    1 Error(s)
+4>
+4>Time Elapsed 00:00:00.34
+5>------ Rebuild All started: Project: Ranch.Domain, Configuration: Debug Any CPU ------
+6>------ Rebuild All started: Project: Harvest.Domain, Configuration: Debug Any CPU ------
+7>------ Rebuild All started: Project: ServiceDefaults, Configuration: Debug Any CPU ------
+8>------ Rebuild All started: Project: Catalog.Domain, Configuration: Debug Any CPU ------
+6>Build started 7/1/2025 11:45:53 AM.
+6>Target CoreClean:
+6>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\Harvest.Domain.csproj.AssemblyReference.cache".
+6>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\Harvest.Domain.GeneratedMSBuildEditorConfig.editorconfig".
+6>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\Harvest.Domain.AssemblyInfoInputs.cache".
+6>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\Harvest.Domain.AssemblyInfo.cs".
+6>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\Harvest.Domain.csproj.CoreCompileInputs.cache".
+6>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\Harvest.Domain.sourcelink.json".
+3>Target CoreCompile:
+3>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\ref\FSH.Starter.Blazor.Shared.dll' could not be found
+3>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+3>  CompilerServer: server - server processed compilation - Infrastructure (net9.0)
+3>Done building target "CoreCompile" in project "Infrastructure.csproj" -- FAILED.
+3>
+3>Done building project "Infrastructure.csproj" -- FAILED.
+3>
+3>Build FAILED.
+3>
+3>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\ref\FSH.Starter.Blazor.Shared.dll' could not be found
+3>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+3>    0 Warning(s)
+3>    2 Error(s)
+3>
+3>Time Elapsed 00:00:00.44
+6>Target _GetProjectReferenceTargetFrameworkProperties:
+6>Target ResolveProjectReferences:
+9>------ Rebuild All started: Project: Client, Configuration: Debug Any CPU ------
+7>Build started 7/1/2025 11:45:53 AM.
+7>Target CoreClean:
+7>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ServiceDefaults.csproj.AssemblyReference.cache".
+7>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ServiceDefaults.GeneratedMSBuildEditorConfig.editorconfig".
+7>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ServiceDefaults.AssemblyInfoInputs.cache".
+7>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ServiceDefaults.AssemblyInfo.cs".
+7>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ServiceDefaults.csproj.CoreCompileInputs.cache".
+7>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ServiceDefaults.sourcelink.json".
+6>Target ResolveAssemblyReferences:
+6>  Primary reference "FSH.Framework.Core".
+6>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+6>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+6>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+6>      Reference found at search path location "".
+6>      The ImageRuntimeVersion for this reference is "".
+6>  Primary reference "Shared".
+6>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+6>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+6>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+6>      Reference found at search path location "".
+6>      The ImageRuntimeVersion for this reference is "".
+6>Target GenerateTargetFrameworkMonikerAttribute:
+6>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+6>Target _GenerateSourceLinkFile:
+6>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\Harvest.Domain.sourcelink.json'.
+6>Target CoreCompile:
+6>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+6>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+6>  CompilerServer: server - server processed compilation - Harvest.Domain (net9.0)
+6>Done building target "CoreCompile" in project "Harvest.Domain.csproj" -- FAILED.
+5>Build started 7/1/2025 11:45:54 AM.
+6>
+6>Done building project "Harvest.Domain.csproj" -- FAILED.
+6>
+6>Build FAILED.
+6>
+6>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+6>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+6>    0 Warning(s)
+6>    2 Error(s)
+6>
+6>Time Elapsed 00:00:00.50
+7>Target _GetProjectReferenceTargetFrameworkProperties:
+5>Target CoreClean:
+5>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\Ranch.Domain.csproj.AssemblyReference.cache".
+5>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\Ranch.Domain.GeneratedMSBuildEditorConfig.editorconfig".
+8>Build started 7/1/2025 11:45:54 AM.
+7>Target ResolveProjectReferences:
+5>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\Ranch.Domain.AssemblyInfoInputs.cache".
+5>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\Ranch.Domain.AssemblyInfo.cs".
+5>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\Ranch.Domain.csproj.CoreCompileInputs.cache".
+5>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\Ranch.Domain.sourcelink.json".
+7>Target ResolveAssemblyReferences:
+7>  Primary reference "FSH.Framework.Core".
+7>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+7>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+7>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+7>      Reference found at search path location "".
+7>      The ImageRuntimeVersion for this reference is "".
+7>  Primary reference "Shared".
+7>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+7>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+7>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+7>      Reference found at search path location "".
+7>      The ImageRuntimeVersion for this reference is "".
+7>Target GenerateTargetFrameworkMonikerAttribute:
+7>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+7>Target _GenerateSourceLinkFile:
+7>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ServiceDefaults.sourcelink.json'.
+8>Target CoreClean:
+8>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\Catalog.Domain.csproj.AssemblyReference.cache".
+8>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\Catalog.Domain.GeneratedMSBuildEditorConfig.editorconfig".
+8>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\Catalog.Domain.AssemblyInfoInputs.cache".
+8>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\Catalog.Domain.AssemblyInfo.cs".
+8>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\Catalog.Domain.csproj.CoreCompileInputs.cache".
+8>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\Catalog.Domain.sourcelink.json".
+5>Target _GetProjectReferenceTargetFrameworkProperties:
+7>Target CoreCompile:
+7>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+7>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+7>  CompilerServer: server - server processed compilation - ServiceDefaults (net9.0)
+7>Done building target "CoreCompile" in project "ServiceDefaults.csproj" -- FAILED.
+7>
+7>Done building project "ServiceDefaults.csproj" -- FAILED.
+7>
+7>Build FAILED.
+7>
+7>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+7>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+7>    0 Warning(s)
+7>    2 Error(s)
+7>
+7>Time Elapsed 00:00:00.67
+10>------ Rebuild All started: Project: Infrastructure (WebApi\_Framework\Infrastructure), Configuration: Debug Any CPU ------
+5>Target ResolveProjectReferences:
+9>Build started 7/1/2025 11:45:54 AM.
+10>Build started 7/1/2025 11:45:54 AM.
+8>Target _GetProjectReferenceTargetFrameworkProperties:
+10>Target CoreClean:
+10>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\Infrastructure.csproj.AssemblyReference.cache".
+10>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig".
+10>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\Infrastructure.AssemblyInfoInputs.cache".
+10>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\Infrastructure.AssemblyInfo.cs".
+10>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\Infrastructure.csproj.CoreCompileInputs.cache".
+10>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\Infrastructure.sourcelink.json".
+5>Target ResolveAssemblyReferences:
+5>  Primary reference "FSH.Framework.Core".
+5>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+5>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+5>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+5>      Reference found at search path location "".
+5>      The ImageRuntimeVersion for this reference is "".
+5>  Primary reference "Shared".
+5>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+5>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+5>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+5>      Reference found at search path location "".
+5>      The ImageRuntimeVersion for this reference is "".
+5>Target GenerateTargetFrameworkMonikerAttribute:
+5>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+8>Target ResolveProjectReferences:
+10>Target _GetProjectReferenceTargetFrameworkProperties:
+10>Target ResolveProjectReferences:
+9>Target CoreClean:
+9>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\obj-windows\Debug\net9.0\Client.csproj.AssemblyReference.cache".
+9>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\obj-windows\Debug\net9.0\Client.GeneratedMSBuildEditorConfig.editorconfig".
+9>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\obj-windows\Debug\net9.0\Client.AssemblyInfoInputs.cache".
+9>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\obj-windows\Debug\net9.0\Client.AssemblyInfo.cs".
+9>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\obj-windows\Debug\net9.0\Client.csproj.CoreCompileInputs.cache".
+9>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\obj-windows\Debug\net9.0\FSH.Starter.Blazor.Client.MvcApplicationPartsAssemblyInfo.cache".
+9>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\obj-windows\Debug\net9.0\Client.sourcelink.json".
+8>Target ResolveAssemblyReferences:
+8>  Primary reference "FSH.Framework.Core".
+8>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+8>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+8>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+8>      Reference found at search path location "".
+8>      The ImageRuntimeVersion for this reference is "".
+8>  Primary reference "Shared".
+8>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+8>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+8>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+8>      Reference found at search path location "".
+8>      The ImageRuntimeVersion for this reference is "".
+5>Target _GenerateSourceLinkFile:
+5>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\Ranch.Domain.sourcelink.json'.
+10>Target ResolveAssemblyReferences:
+10>  Primary reference "FSH.Starter.Aspire.ServiceDefaults".
+10>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+10>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+10>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll".
+10>      Reference found at search path location "".
+10>      The ImageRuntimeVersion for this reference is "".
+8>Target GenerateTargetFrameworkMonikerAttribute:
+8>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+10>  Primary reference "FSH.Framework.Core".
+10>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+10>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+10>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+10>      Reference found at search path location "".
+10>      The ImageRuntimeVersion for this reference is "".
+10>  Primary reference "Shared".
+10>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+10>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+10>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+10>      Reference found at search path location "".
+10>      The ImageRuntimeVersion for this reference is "".
+10>Target GenerateTargetFrameworkMonikerAttribute:
+10>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+10>Target _GenerateSourceLinkFile:
+10>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\Infrastructure.sourcelink.json'.
+5>Target CoreCompile:
+5>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+5>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+5>  CompilerServer: server - server processed compilation - Ranch.Domain (net9.0)
+5>Done building target "CoreCompile" in project "Ranch.Domain.csproj" -- FAILED.
+5>
+5>Done building project "Ranch.Domain.csproj" -- FAILED.
+5>
+5>Build FAILED.
+5>
+5>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+5>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+5>    0 Warning(s)
+5>    2 Error(s)
+5>
+5>Time Elapsed 00:00:01.13
+8>Target _GenerateSourceLinkFile:
+8>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\Catalog.Domain.sourcelink.json'.
+9>Target _GetProjectReferenceTargetFrameworkProperties:
+8>Target CoreCompile:
+8>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+8>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+8>  CompilerServer: server - server processed compilation - Catalog.Domain (net9.0)
+8>Done building target "CoreCompile" in project "Catalog.Domain.csproj" -- FAILED.
+8>
+8>Done building project "Catalog.Domain.csproj" -- FAILED.
+8>
+8>Build FAILED.
+8>
+8>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+8>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+8>    0 Warning(s)
+8>    2 Error(s)
+8>
+8>Time Elapsed 00:00:01.10
+11>------ Rebuild All started: Project: Catalog.Application, Configuration: Debug Any CPU ------
+9>Target ResolveProjectReferences:
+10>Target CoreCompile:
+10>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+10>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+10>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+10>  CompilerServer: server - server processed compilation - Infrastructure (net9.0)
+10>Done building target "CoreCompile" in project "Infrastructure.csproj" -- FAILED.
+10>
+10>Done building project "Infrastructure.csproj" -- FAILED.
+10>
+10>Build FAILED.
+10>
+10>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+10>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+10>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+10>    0 Warning(s)
+10>    3 Error(s)
+10>
+10>Time Elapsed 00:00:00.68
+12>------ Rebuild All started: Project: Ranch.Application, Configuration: Debug Any CPU ------
+13>------ Rebuild All started: Project: Harvest.Application, Configuration: Debug Any CPU ------
+14>------ Rebuild All started: Project: Todo (WebApi\Modules\Todo\Todo), Configuration: Debug Any CPU ------
+11>Build started 7/1/2025 11:45:55 AM.
+11>Target CoreClean:
+11>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\Catalog.Application.csproj.AssemblyReference.cache".
+11>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\Catalog.Application.GeneratedMSBuildEditorConfig.editorconfig".
+11>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\Catalog.Application.AssemblyInfoInputs.cache".
+11>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\Catalog.Application.AssemblyInfo.cs".
+11>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\Catalog.Application.csproj.CoreCompileInputs.cache".
+11>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\Catalog.Application.sourcelink.json".
+14>Build started 7/1/2025 11:45:55 AM.
+13>Build started 7/1/2025 11:45:55 AM.
+9>Target ResolveAssemblyReferences:
+9>  Primary reference "Shared".
+9>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+9>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+9>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+9>      Reference found at search path location "".
+9>      The ImageRuntimeVersion for this reference is "".
+9>  Primary reference "FSH.Starter.Blazor.Infrastructure".
+12>Build started 7/1/2025 11:45:55 AM.
+11>Target _GetProjectReferenceTargetFrameworkProperties:
+14>Target CoreClean:
+14>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\Todo.csproj.AssemblyReference.cache".
+14>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\Todo.GeneratedMSBuildEditorConfig.editorconfig".
+14>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\Todo.AssemblyInfoInputs.cache".
+14>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\Todo.AssemblyInfo.cs".
+14>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\Todo.csproj.CoreCompileInputs.cache".
+14>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\Todo.sourcelink.json".
+9>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\bin-windows\Debug\net9.0\FSH.Starter.Blazor.Infrastructure.dll" does not exist.
+9>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\bin-windows\Debug\net9.0\FSH.Starter.Blazor.Infrastructure.dll" does not exist.
+9>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\bin-windows\Debug\net9.0\FSH.Starter.Blazor.Infrastructure.dll".
+9>      Reference found at search path location "".
+9>      The ImageRuntimeVersion for this reference is "".
+9>  Primary reference "FSH.Starter.Blazor.Shared".
+9>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\bin-windows\Debug\net9.0\FSH.Starter.Blazor.Shared.dll" does not exist.
+9>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\bin-windows\Debug\net9.0\FSH.Starter.Blazor.Shared.dll" does not exist.
+9>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\bin-windows\Debug\net9.0\FSH.Starter.Blazor.Shared.dll".
+9>      Reference found at search path location "".
+9>      The ImageRuntimeVersion for this reference is "".
+13>Target CoreClean:
+13>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\Harvest.Application.csproj.AssemblyReference.cache".
+13>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\Harvest.Application.GeneratedMSBuildEditorConfig.editorconfig".
+13>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\Harvest.Application.AssemblyInfoInputs.cache".
+13>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\Harvest.Application.AssemblyInfo.cs".
+13>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\Harvest.Application.csproj.CoreCompileInputs.cache".
+13>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\Harvest.Application.sourcelink.json".
+12>Target CoreClean:
+12>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\Ranch.Application.csproj.AssemblyReference.cache".
+12>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\Ranch.Application.GeneratedMSBuildEditorConfig.editorconfig".
+12>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\Ranch.Application.AssemblyInfoInputs.cache".
+12>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\Ranch.Application.AssemblyInfo.cs".
+12>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\Ranch.Application.csproj.CoreCompileInputs.cache".
+12>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\Ranch.Application.sourcelink.json".
+14>Target _GetProjectReferenceTargetFrameworkProperties:
+13>Target _GetProjectReferenceTargetFrameworkProperties:
+11>Target ResolveProjectReferences:
+12>Target _GetProjectReferenceTargetFrameworkProperties:
+12>Target ResolveProjectReferences:
+13>Target ResolveProjectReferences:
+14>Target ResolveProjectReferences:
+11>Target ResolveAssemblyReferences:
+11>  Primary reference "FSH.Framework.Core".
+11>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+11>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+11>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+11>      Reference found at search path location "".
+11>      The ImageRuntimeVersion for this reference is "".
+11>  Primary reference "FSH.Starter.WebApi.Catalog.Domain".
+11>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll" does not exist.
+11>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll" does not exist.
+11>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll".
+11>      Reference found at search path location "".
+11>      The ImageRuntimeVersion for this reference is "".
+11>  Primary reference "Shared".
+11>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+11>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+11>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+11>      Reference found at search path location "".
+11>      The ImageRuntimeVersion for this reference is "".
+13>Target ResolveAssemblyReferences:
+13>  Primary reference "FSH.Framework.Core".
+13>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+13>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+13>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+13>      Reference found at search path location "".
+13>      The ImageRuntimeVersion for this reference is "".
+13>  Primary reference "FSH.Framework.Infrastructure".
+13>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+13>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+13>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll".
+13>      Reference found at search path location "".
+13>      The ImageRuntimeVersion for this reference is "".
+13>  Primary reference "FSH.Starter.WebApi.Harvest.Domain".
+13>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Domain.dll" does not exist.
+13>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Domain.dll" does not exist.
+13>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Domain.dll".
+13>      Reference found at search path location "".
+13>      The ImageRuntimeVersion for this reference is "".
+13>  Primary reference "FSH.Starter.Aspire.ServiceDefaults".
+13>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+13>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+13>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll".
+13>      Reference found at search path location "".
+13>      The ImageRuntimeVersion for this reference is "".
+13>  Primary reference "Shared".
+13>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+13>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+13>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+13>      Reference found at search path location "".
+13>      The ImageRuntimeVersion for this reference is "".
+11>Target GenerateTargetFrameworkMonikerAttribute:
+11>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+11>Target _GenerateSourceLinkFile:
+11>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\Catalog.Application.sourcelink.json'.
+14>Target ResolveAssemblyReferences:
+14>  Primary reference "FSH.Framework.Core".
+14>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+14>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+14>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+14>      Reference found at search path location "".
+14>      The ImageRuntimeVersion for this reference is "".
+14>  Primary reference "FSH.Framework.Infrastructure".
+14>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+14>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+14>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll".
+14>      Reference found at search path location "".
+14>      The ImageRuntimeVersion for this reference is "".
+14>  Primary reference "FSH.Starter.Aspire.ServiceDefaults".
+14>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+14>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+14>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll".
+14>      Reference found at search path location "".
+14>      The ImageRuntimeVersion for this reference is "".
+14>  Primary reference "Shared".
+14>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+14>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+14>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+14>      Reference found at search path location "".
+14>      The ImageRuntimeVersion for this reference is "".
+13>Target GenerateTargetFrameworkMonikerAttribute:
+13>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+11>Target CoreCompile:
+11>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+11>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Domain.dll' could not be found
+11>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+11>  CompilerServer: server - server processed compilation - Catalog.Application (net9.0)
+11>Done building target "CoreCompile" in project "Catalog.Application.csproj" -- FAILED.
+11>
+11>Done building project "Catalog.Application.csproj" -- FAILED.
+11>
+11>Build FAILED.
+11>
+11>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+11>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Domain.dll' could not be found
+11>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+11>    0 Warning(s)
+11>    3 Error(s)
+11>
+11>Time Elapsed 00:00:00.35
+15>------ Rebuild All started: Project: Catalog.Infrastructure, Configuration: Debug Any CPU ------
+12>Target ResolveAssemblyReferences:
+12>  Primary reference "FSH.Framework.Core".
+12>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+12>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+12>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+12>      Reference found at search path location "".
+13>Target _GenerateSourceLinkFile:
+13>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\Harvest.Application.sourcelink.json'.
+14>Target GenerateTargetFrameworkMonikerAttribute:
+14>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+15>Build started 7/1/2025 11:45:55 AM.
+12>      The ImageRuntimeVersion for this reference is "".
+12>  Primary reference "FSH.Framework.Infrastructure".
+12>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+12>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+12>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll".
+12>      Reference found at search path location "".
+12>      The ImageRuntimeVersion for this reference is "".
+12>  Primary reference "FSH.Starter.WebApi.Ranch.Domain".
+12>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Domain.dll" does not exist.
+12>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Domain.dll" does not exist.
+12>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Domain.dll".
+12>      Reference found at search path location "".
+12>      The ImageRuntimeVersion for this reference is "".
+12>  Primary reference "FSH.Starter.Aspire.ServiceDefaults".
+12>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+12>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+12>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll".
+12>      Reference found at search path location "".
+12>      The ImageRuntimeVersion for this reference is "".
+12>  Primary reference "Shared".
+12>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+12>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+12>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+12>      Reference found at search path location "".
+12>      The ImageRuntimeVersion for this reference is "".
+13>Target CoreCompile:
+13>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+13>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+13>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+13>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Domain.dll' could not be found
+13>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+13>  CompilerServer: server - server processed compilation - Harvest.Application (net9.0)
+13>Done building target "CoreCompile" in project "Harvest.Application.csproj" -- FAILED.
+13>
+13>Done building project "Harvest.Application.csproj" -- FAILED.
+13>
+13>Build FAILED.
+13>
+13>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+13>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+13>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+13>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Domain.dll' could not be found
+13>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+13>    0 Warning(s)
+13>    5 Error(s)
+13>
+13>Time Elapsed 00:00:00.54
+12>Target GenerateTargetFrameworkMonikerAttribute:
+12>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+12>Target _GenerateSourceLinkFile:
+12>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\Ranch.Application.sourcelink.json'.
+12>Target CoreCompile:
+12>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+12>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+12>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+12>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Domain.dll' could not be found
+12>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+12>  CompilerServer: server - server processed compilation - Ranch.Application (net9.0)
+12>Done building target "CoreCompile" in project "Ranch.Application.csproj" -- FAILED.
+15>Target CoreClean:
+15>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\Catalog.Infrastructure.csproj.AssemblyReference.cache".
+15>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\Catalog.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig".
+15>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\Catalog.Infrastructure.AssemblyInfoInputs.cache".
+15>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\Catalog.Infrastructure.AssemblyInfo.cs".
+15>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\Catalog.Infrastructure.csproj.CoreCompileInputs.cache".
+15>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\Catalog.Infrastructure.sourcelink.json".
+15>Target _GetProjectReferenceTargetFrameworkProperties:
+15>Target ResolveProjectReferences:
+14>Target _GenerateSourceLinkFile:
+14>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\Todo.sourcelink.json'.
+14>Target CoreCompile:
+14>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+14>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+14>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+14>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+14>  CompilerServer: server - server processed compilation - Todo (net9.0)
+14>Done building target "CoreCompile" in project "Todo.csproj" -- FAILED.
+14>
+14>Done building project "Todo.csproj" -- FAILED.
+14>
+14>Build FAILED.
+14>
+14>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+14>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+14>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+14>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+14>    0 Warning(s)
+14>    4 Error(s)
+14>
+14>Time Elapsed 00:00:00.54
+9>Target GenerateTargetFrameworkMonikerAttribute:
+9>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+16>------ Rebuild All started: Project: Harvest.Infrastructure, Configuration: Debug Any CPU ------
+12>
+12>Done building project "Ranch.Application.csproj" -- FAILED.
+12>
+12>Build FAILED.
+12>
+12>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+12>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+12>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+12>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Domain.dll' could not be found
+12>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+12>    0 Warning(s)
+12>    5 Error(s)
+12>
+12>Time Elapsed 00:00:00.54
+17>------ Rebuild All started: Project: Ranch.Infrastructure, Configuration: Debug Any CPU ------
+9>Target _DiscoverMvcApplicationParts:
+9>  C:\Program Files\dotnet\sdk\9.0.200\Sdks\Microsoft.NET.Sdk.Razor\targets\Microsoft.NET.Sdk.Razor.MvcApplicationPartsDiscovery.targets(54,5): warning RAZORSDK1007: Reference assembly C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\bin-windows\Debug\net9.0\FSH.Starter.Blazor.Infrastructure.dll could not be found. This is typically caused by build errors in referenced projects.
+16>Build started 7/1/2025 11:45:56 AM.
+17>Build started 7/1/2025 11:45:56 AM.
+9>  Creating "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\obj-windows\Debug\net9.0\FSH.Starter.Blazor.Client.MvcApplicationPartsAssemblyInfo.cache" because "AlwaysCreate" was specified.
+9>  Touching "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\obj-windows\Debug\net9.0\FSH.Starter.Blazor.Client.MvcApplicationPartsAssemblyInfo.cache".
+9>Done building target "_DiscoverMvcApplicationParts" in project "Client.csproj".
+9>Target _GenerateSourceLinkFile:
+9>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\client\obj-windows\Debug\net9.0\Client.sourcelink.json'.
+16>Target CoreClean:
+16>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\obj-windows\Debug\net9.0\Harvest.Infrastructure.csproj.AssemblyReference.cache".
+16>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\obj-windows\Debug\net9.0\Harvest.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig".
+16>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\obj-windows\Debug\net9.0\Harvest.Infrastructure.AssemblyInfoInputs.cache".
+16>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\obj-windows\Debug\net9.0\Harvest.Infrastructure.AssemblyInfo.cs".
+16>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\obj-windows\Debug\net9.0\Harvest.Infrastructure.csproj.CoreCompileInputs.cache".
+16>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\obj-windows\Debug\net9.0\Harvest.Infrastructure.sourcelink.json".
+17>Target CoreClean:
+17>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\obj-windows\Debug\net9.0\Ranch.Infrastructure.csproj.AssemblyReference.cache".
+17>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\obj-windows\Debug\net9.0\Ranch.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig".
+17>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\obj-windows\Debug\net9.0\Ranch.Infrastructure.AssemblyInfoInputs.cache".
+17>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\obj-windows\Debug\net9.0\Ranch.Infrastructure.AssemblyInfo.cs".
+17>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\obj-windows\Debug\net9.0\Ranch.Infrastructure.csproj.CoreCompileInputs.cache".
+17>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\obj-windows\Debug\net9.0\Ranch.Infrastructure.sourcelink.json".
+15>Target ResolveAssemblyReferences:
+15>  Primary reference "FSH.Framework.Infrastructure".
+15>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+15>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+15>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll".
+15>      Reference found at search path location "".
+15>      The ImageRuntimeVersion for this reference is "".
+15>  Primary reference "FSH.Starter.WebApi.Catalog.Application".
+15>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Application.dll" does not exist.
+15>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Application.dll" does not exist.
+15>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Application.dll".
+15>      Reference found at search path location "".
+15>      The ImageRuntimeVersion for this reference is "".
+15>  Primary reference "FSH.Framework.Core".
+15>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+15>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+15>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+15>      Reference found at search path location "".
+15>      The ImageRuntimeVersion for this reference is "".
+15>  Primary reference "FSH.Starter.Aspire.ServiceDefaults".
+15>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+15>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+15>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll".
+15>      Reference found at search path location "".
+15>      The ImageRuntimeVersion for this reference is "".
+15>  Primary reference "FSH.Starter.WebApi.Catalog.Domain".
+15>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll" does not exist.
+15>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll" does not exist.
+15>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll".
+15>      Reference found at search path location "".
+15>      The ImageRuntimeVersion for this reference is "".
+15>  Primary reference "Shared".
+15>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+15>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+15>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+15>      Reference found at search path location "".
+15>      The ImageRuntimeVersion for this reference is "".
+16>Target _GetProjectReferenceTargetFrameworkProperties:
+17>Target _GetProjectReferenceTargetFrameworkProperties:
+16>Target ResolveProjectReferences:
+17>Target ResolveProjectReferences:
+15>Target GenerateTargetFrameworkMonikerAttribute:
+15>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+16>Target ResolveAssemblyReferences:
+16>  Primary reference "FSH.Framework.Infrastructure".
+16>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+16>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+16>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll".
+16>      Reference found at search path location "".
+16>      The ImageRuntimeVersion for this reference is "".
+16>  Primary reference "FSH.Starter.WebApi.Harvest.Application".
+16>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Application.dll" does not exist.
+16>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Application.dll" does not exist.
+16>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Application.dll".
+16>      Reference found at search path location "".
+16>      The ImageRuntimeVersion for this reference is "".
+16>  Primary reference "FSH.Framework.Core".
+16>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+16>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+16>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+16>      Reference found at search path location "".
+16>      The ImageRuntimeVersion for this reference is "".
+16>  Primary reference "FSH.Starter.Aspire.ServiceDefaults".
+16>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+16>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+16>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll".
+16>      Reference found at search path location "".
+16>      The ImageRuntimeVersion for this reference is "".
+16>  Primary reference "FSH.Starter.WebApi.Harvest.Domain".
+16>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Domain.dll" does not exist.
+16>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Domain.dll" does not exist.
+16>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Domain.dll".
+16>      Reference found at search path location "".
+16>      The ImageRuntimeVersion for this reference is "".
+16>  Primary reference "Shared".
+16>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+16>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+16>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+16>      Reference found at search path location "".
+16>      The ImageRuntimeVersion for this reference is "".
+15>Target _GenerateSourceLinkFile:
+15>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\Catalog.Infrastructure.sourcelink.json'.
+9>Target CoreCompile:
+9>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.Blazor.Infrastructure.dll' could not be found
+9>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\ref\FSH.Starter.Blazor.Shared.dll' could not be found
+9>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+9>  CompilerServer: server - server processed compilation - Client (net9.0)
+9>Done building target "CoreCompile" in project "Client.csproj" -- FAILED.
+16>Target GenerateTargetFrameworkMonikerAttribute:
+16>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+16>Target _GenerateSourceLinkFile:
+16>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\obj-windows\Debug\net9.0\Harvest.Infrastructure.sourcelink.json'.
+9>
+9>Done building project "Client.csproj" -- FAILED.
+9>
+9>Build FAILED.
+9>
+9>C:\Program Files\dotnet\sdk\9.0.200\Sdks\Microsoft.NET.Sdk.Razor\targets\Microsoft.NET.Sdk.Razor.MvcApplicationPartsDiscovery.targets(54,5): warning RAZORSDK1007: Reference assembly C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\bin-windows\Debug\net9.0\FSH.Starter.Blazor.Infrastructure.dll could not be found. This is typically caused by build errors in referenced projects.
+9>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.Blazor.Infrastructure.dll' could not be found
+9>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\apps\blazor\shared\obj-windows\Debug\net9.0\ref\FSH.Starter.Blazor.Shared.dll' could not be found
+9>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+9>    1 Warning(s)
+9>    3 Error(s)
+9>
+9>Time Elapsed 00:00:01.76
+15>Target CoreCompile:
+15>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+15>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+15>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+15>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Application.dll' could not be found
+15>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Domain.dll' could not be found
+15>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+15>  CompilerServer: server - server processed compilation - Catalog.Infrastructure (net9.0)
+15>Done building target "CoreCompile" in project "Catalog.Infrastructure.csproj" -- FAILED.
+15>
+15>Done building project "Catalog.Infrastructure.csproj" -- FAILED.
+15>
+15>Build FAILED.
+15>
+15>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+15>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+15>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+15>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Application.dll' could not be found
+15>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Domain.dll' could not be found
+15>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+15>    0 Warning(s)
+15>    6 Error(s)
+15>
+15>Time Elapsed 00:00:00.64
+18>------ Rebuild All started: Project: MSSQL, Configuration: Debug Any CPU ------
+16>Target CoreCompile:
+16>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+16>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+16>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+16>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Application.dll' could not be found
+16>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Domain.dll' could not be found
+16>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+16>  CompilerServer: server - server processed compilation - Harvest.Infrastructure (net9.0)
+16>Done building target "CoreCompile" in project "Harvest.Infrastructure.csproj" -- FAILED.
+16>
+16>Done building project "Harvest.Infrastructure.csproj" -- FAILED.
+16>
+16>Build FAILED.
+16>
+16>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+16>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+16>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+16>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Application.dll' could not be found
+16>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Domain.dll' could not be found
+16>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+16>    0 Warning(s)
+16>    6 Error(s)
+16>
+16>Time Elapsed 00:00:00.45
+18>Build started 7/1/2025 11:45:56 AM.
+18>Target CoreClean:
+18>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\obj-windows\Debug\net9.0\MSSQL.csproj.AssemblyReference.cache".
+18>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\obj-windows\Debug\net9.0\MSSQL.GeneratedMSBuildEditorConfig.editorconfig".
+18>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\obj-windows\Debug\net9.0\MSSQL.AssemblyInfoInputs.cache".
+18>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\obj-windows\Debug\net9.0\MSSQL.AssemblyInfo.cs".
+18>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\obj-windows\Debug\net9.0\MSSQL.csproj.CoreCompileInputs.cache".
+18>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\obj-windows\Debug\net9.0\MSSQL.sourcelink.json".
+17>Target ResolveAssemblyReferences:
+17>  Primary reference "FSH.Framework.Infrastructure".
+17>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+17>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+17>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll".
+17>      Reference found at search path location "".
+17>      The ImageRuntimeVersion for this reference is "".
+17>  Primary reference "FSH.Starter.WebApi.Ranch.Application".
+17>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Application.dll" does not exist.
+17>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Application.dll" does not exist.
+17>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Application.dll".
+17>      Reference found at search path location "".
+17>      The ImageRuntimeVersion for this reference is "".
+17>  Primary reference "FSH.Framework.Core".
+17>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+17>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+17>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+17>      Reference found at search path location "".
+17>      The ImageRuntimeVersion for this reference is "".
+17>  Primary reference "FSH.Starter.Aspire.ServiceDefaults".
+17>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+17>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+17>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll".
+17>      Reference found at search path location "".
+17>      The ImageRuntimeVersion for this reference is "".
+17>  Primary reference "FSH.Starter.WebApi.Ranch.Domain".
+17>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Domain.dll" does not exist.
+17>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Domain.dll" does not exist.
+17>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Domain.dll".
+17>      Reference found at search path location "".
+17>      The ImageRuntimeVersion for this reference is "".
+17>  Primary reference "Shared".
+17>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+17>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+17>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+17>      Reference found at search path location "".
+17>      The ImageRuntimeVersion for this reference is "".
+18>Target _GetProjectReferenceTargetFrameworkProperties:
+17>Target GenerateTargetFrameworkMonikerAttribute:
+17>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+17>Target _GenerateSourceLinkFile:
+17>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\obj-windows\Debug\net9.0\Ranch.Infrastructure.sourcelink.json'.
+17>Target CoreCompile:
+17>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+17>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+17>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+17>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Application.dll' could not be found
+17>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Domain.dll' could not be found
+17>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+17>  CompilerServer: server - server processed compilation - Ranch.Infrastructure (net9.0)
+17>Done building target "CoreCompile" in project "Ranch.Infrastructure.csproj" -- FAILED.
+17>
+17>Done building project "Ranch.Infrastructure.csproj" -- FAILED.
+17>
+17>Build FAILED.
+17>
+17>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+17>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+17>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+17>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Application.dll' could not be found
+17>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Domain.dll' could not be found
+17>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+17>    0 Warning(s)
+17>    6 Error(s)
+17>
+17>Time Elapsed 00:00:00.70
+19>------ Rebuild All started: Project: PostgreSQL, Configuration: Debug Any CPU ------
+18>Target ResolveProjectReferences:
+19>Build started 7/1/2025 11:45:56 AM.
+19>Target CoreClean:
+19>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\obj-windows\Debug\net9.0\PostgreSQL.csproj.AssemblyReference.cache".
+19>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\obj-windows\Debug\net9.0\PostgreSQL.GeneratedMSBuildEditorConfig.editorconfig".
+19>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\obj-windows\Debug\net9.0\PostgreSQL.AssemblyInfoInputs.cache".
+19>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\obj-windows\Debug\net9.0\PostgreSQL.AssemblyInfo.cs".
+19>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\obj-windows\Debug\net9.0\PostgreSQL.csproj.CoreCompileInputs.cache".
+19>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\obj-windows\Debug\net9.0\PostgreSQL.sourcelink.json".
+18>Target ResolveAssemblyReferences:
+18>  Primary reference "FSH.Framework.Infrastructure".
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+18>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll".
+18>      Reference found at search path location "".
+18>      The ImageRuntimeVersion for this reference is "".
+18>  Primary reference "FSH.Starter.WebApi.Catalog.Infrastructure".
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Infrastructure.dll" does not exist.
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Infrastructure.dll" does not exist.
+18>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Infrastructure.dll".
+18>      Reference found at search path location "".
+19>Target _GetProjectReferenceTargetFrameworkProperties:
+18>      The ImageRuntimeVersion for this reference is "".
+18>  Primary reference "FSH.Starter.WebApi.Todo".
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Todo.dll" does not exist.
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Todo.dll" does not exist.
+18>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Todo.dll".
+18>      Reference found at search path location "".
+18>      The ImageRuntimeVersion for this reference is "".
+18>  Primary reference "FSH.Framework.Core".
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+18>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+18>      Reference found at search path location "".
+18>      The ImageRuntimeVersion for this reference is "".
+18>  Primary reference "FSH.Starter.Aspire.ServiceDefaults".
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+18>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll".
+18>      Reference found at search path location "".
+18>      The ImageRuntimeVersion for this reference is "".
+18>  Primary reference "FSH.Starter.WebApi.Catalog.Application".
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Application.dll" does not exist.
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Application.dll" does not exist.
+18>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Application.dll".
+18>      Reference found at search path location "".
+18>      The ImageRuntimeVersion for this reference is "".
+18>  Primary reference "FSH.Starter.WebApi.Catalog.Domain".
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll" does not exist.
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll" does not exist.
+18>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll".
+18>      Reference found at search path location "".
+18>      The ImageRuntimeVersion for this reference is "".
+18>  Primary reference "Shared".
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+18>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+18>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+18>      Reference found at search path location "".
+18>      The ImageRuntimeVersion for this reference is "".
+18>Target GenerateTargetFrameworkMonikerAttribute:
+18>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+19>Target ResolveProjectReferences:
+18>Target _GenerateSourceLinkFile:
+18>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\obj-windows\Debug\net9.0\MSSQL.sourcelink.json'.
+19>Target ResolveAssemblyReferences:
+19>  Primary reference "FSH.Framework.Infrastructure".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "FSH.Starter.WebApi.Catalog.Infrastructure".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Infrastructure.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Infrastructure.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Infrastructure.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "FSH.Starter.WebApi.Ranch.Infrastructure".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Infrastructure.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Infrastructure.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Infrastructure.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "FSH.Starter.WebApi.Harvest.Infrastructure".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Infrastructure.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Infrastructure.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Infrastructure.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "FSH.Starter.WebApi.Todo".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Todo.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Todo.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Todo.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "FSH.Framework.Core".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "FSH.Starter.Aspire.ServiceDefaults".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "FSH.Starter.WebApi.Catalog.Application".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Application.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Application.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Application.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "FSH.Starter.WebApi.Catalog.Domain".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "FSH.Starter.WebApi.Harvest.Application".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Application.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Application.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Application.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "FSH.Starter.WebApi.Harvest.Domain".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Domain.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Domain.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Domain.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "FSH.Starter.WebApi.Ranch.Application".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Application.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Application.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Application.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "FSH.Starter.WebApi.Ranch.Domain".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Domain.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Domain.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Domain.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+19>  Primary reference "Shared".
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+19>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+19>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+19>      Reference found at search path location "".
+19>      The ImageRuntimeVersion for this reference is "".
+18>Target CoreCompile:
+18>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+18>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+18>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+18>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Application.dll' could not be found
+18>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Domain.dll' could not be found
+18>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Infrastructure.dll' could not be found
+18>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Todo.dll' could not be found
+19>Target GenerateTargetFrameworkMonikerAttribute:
+19>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+19>Target _GenerateSourceLinkFile:
+19>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\obj-windows\Debug\net9.0\PostgreSQL.sourcelink.json'.
+18>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+18>  CompilerServer: server - server processed compilation - MSSQL (net9.0)
+18>Done building target "CoreCompile" in project "MSSQL.csproj" -- FAILED.
+18>
+18>Done building project "MSSQL.csproj" -- FAILED.
+18>
+18>Build FAILED.
+18>
+18>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+18>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+18>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+18>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Application.dll' could not be found
+18>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Domain.dll' could not be found
+18>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Infrastructure.dll' could not be found
+18>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Todo.dll' could not be found
+18>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+18>    0 Warning(s)
+18>    8 Error(s)
+18>
+18>Time Elapsed 00:00:00.66
+19>Target CoreCompile:
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Application.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Domain.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Infrastructure.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Application.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Domain.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Infrastructure.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Application.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Domain.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Infrastructure.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Todo.dll' could not be found
+19>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+19>  CompilerServer: server - server processed compilation - PostgreSQL (net9.0)
+19>Done building target "CoreCompile" in project "PostgreSQL.csproj" -- FAILED.
+19>
+19>Done building project "PostgreSQL.csproj" -- FAILED.
+19>
+19>Build FAILED.
+19>
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Application.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Domain.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Infrastructure.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Application.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Domain.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Infrastructure.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Application.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Domain.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Infrastructure.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Todo.dll' could not be found
+19>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+19>    0 Warning(s)
+19>    14 Error(s)
+19>
+19>Time Elapsed 00:00:00.43
+20>------ Rebuild All started: Project: Server, Configuration: Debug Any CPU ------
+20>Build started 7/1/2025 11:45:57 AM.
+20>Target CoreClean:
+20>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\obj-windows\Debug\net9.0\Server.csproj.AssemblyReference.cache".
+20>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\obj-windows\Debug\net9.0\Server.GeneratedMSBuildEditorConfig.editorconfig".
+20>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\obj-windows\Debug\net9.0\Server.AssemblyInfoInputs.cache".
+20>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\obj-windows\Debug\net9.0\Server.AssemblyInfo.cs".
+20>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\obj-windows\Debug\net9.0\Server.csproj.CoreCompileInputs.cache".
+20>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\obj-windows\Debug\net9.0\FSH.Starter.WebApi.Host.MvcApplicationPartsAssemblyInfo.cache".
+20>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\obj-windows\Debug\net9.0\Server.sourcelink.json".
+20>Target _GetProjectReferenceTargetFrameworkProperties:
+20>Target ResolveProjectReferences:
+20>Target ResolveAssemblyReferences:
+20>  Primary reference "FSH.Framework.Core".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Framework.Infrastructure".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\bin-windows\Debug\net9.0\FSH.Framework.Infrastructure.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.WebApi.Migrations.MSSQL".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Migrations.MSSQL.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Migrations.MSSQL.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Migrations.MSSQL.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.WebApi.Migrations.PostgreSQL".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Migrations.PostgreSQL.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Migrations.PostgreSQL.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Migrations.PostgreSQL.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.WebApi.Catalog.Infrastructure".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Infrastructure.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Infrastructure.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Infrastructure.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.WebApi.Ranch.Infrastructure".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Infrastructure.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Infrastructure.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Infrastructure.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.WebApi.Harvest.Infrastructure".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Infrastructure.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Infrastructure.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Infrastructure.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.WebApi.Todo".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Todo.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Todo.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Todo.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.Aspire.ServiceDefaults".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\bin-windows\Debug\net9.0\FSH.Starter.Aspire.ServiceDefaults.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.WebApi.Catalog.Application".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Application.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Application.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Application.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.WebApi.Catalog.Domain".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Catalog.Domain.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.WebApi.Harvest.Application".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Application.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Application.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Application.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.WebApi.Harvest.Domain".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Domain.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Domain.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Harvest.Domain.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.WebApi.Ranch.Application".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Application.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Application.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Application.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "FSH.Starter.WebApi.Ranch.Domain".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Domain.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Domain.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\bin-windows\Debug\net9.0\FSH.Starter.WebApi.Ranch.Domain.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>  Primary reference "Shared".
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+20>      Could not find dependent files. Expected file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll" does not exist.
+20>      Resolved file path is "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\bin-windows\Debug\net9.0\Shared.dll".
+20>      Reference found at search path location "".
+20>      The ImageRuntimeVersion for this reference is "".
+20>Target GenerateTargetFrameworkMonikerAttribute:
+20>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+20>Target CoreGenerateAssemblyInfo:
+20>  Could not infer the type of parameter "#1" because the attribute type is unknown. The value will be treated as a string.
+20>Target _DiscoverMvcApplicationParts:
+20>  C:\Program Files\dotnet\sdk\9.0.200\Sdks\Microsoft.NET.Sdk.Razor\targets\Microsoft.NET.Sdk.Razor.MvcApplicationPartsDiscovery.targets(54,5): warning RAZORSDK1007: Reference assembly C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll could not be found. This is typically caused by build errors in referenced projects.
+20>  Creating "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\obj-windows\Debug\net9.0\FSH.Starter.WebApi.Host.MvcApplicationPartsAssemblyInfo.cache" because "AlwaysCreate" was specified.
+20>  Touching "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\obj-windows\Debug\net9.0\FSH.Starter.WebApi.Host.MvcApplicationPartsAssemblyInfo.cache".
+20>Done building target "_DiscoverMvcApplicationParts" in project "Server.csproj".
+20>Target _GenerateSourceLinkFile:
+20>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\server\obj-windows\Debug\net9.0\Server.sourcelink.json'.
+20>Target CoreCompile:
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Application.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Domain.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Infrastructure.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Application.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Domain.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Infrastructure.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Migrations.MSSQL.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Migrations.PostgreSQL.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Application.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Domain.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Infrastructure.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Todo.dll' could not be found
+20>  CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+20>  CompilerServer: server - server processed compilation - Server (net9.0)
+20>Done building target "CoreCompile" in project "Server.csproj" -- FAILED.
+20>
+20>Done building project "Server.csproj" -- FAILED.
+20>
+20>Build FAILED.
+20>
+20>C:\Program Files\dotnet\sdk\9.0.200\Sdks\Microsoft.NET.Sdk.Razor\targets\Microsoft.NET.Sdk.Razor.MvcApplicationPartsDiscovery.targets(54,5): warning RAZORSDK1007: Reference assembly C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\bin-windows\Debug\net9.0\FSH.Framework.Core.dll could not be found. This is typically caused by build errors in referenced projects.
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Core\obj-windows\Debug\net9.0\ref\FSH.Framework.Core.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\framework\Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Framework.Infrastructure.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\service-defaults\obj-windows\Debug\net9.0\ref\FSH.Starter.Aspire.ServiceDefaults.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Application.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Domain.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Catalog\Catalog.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Catalog.Infrastructure.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Application.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Domain.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Harvest\Harvest.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Harvest.Infrastructure.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\MSSQL\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Migrations.MSSQL.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\migrations\PostgreSQL\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Migrations.PostgreSQL.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Application\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Application.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Domain\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Domain.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Ranch\Ranch.Infrastructure\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Ranch.Infrastructure.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\api\modules\Todo\obj-windows\Debug\net9.0\ref\FSH.Starter.WebApi.Todo.dll' could not be found
+20>CSC : error CS0006: Metadata file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\Shared\obj-windows\Debug\net9.0\ref\Shared.dll' could not be found
+20>    1 Warning(s)
+20>    16 Error(s)
+20>
+20>Time Elapsed 00:00:00.56
+21>------ Rebuild All started: Project: Host, Configuration: Debug Any CPU ------
+21>Build started 7/1/2025 11:45:58 AM.
+21>Target CoreClean:
+21>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.csproj.AssemblyReference.cache".
+21>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.GeneratedMSBuildEditorConfig.editorconfig".
+21>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfoInputs.cache".
+21>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs".
+21>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.csproj.CoreCompileInputs.cache".
+21>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Server.ProjectMetadata.g.cs".
+21>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Client.ProjectMetadata.g.cs".
+21>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\_AppHost.ProjectMetadata.g.cs".
+21>  Deleting file "C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.sourcelink.json".
+21>Target ResolveProjectReferences:
+21>Target GenerateTargetFrameworkMonikerAttribute:
+21>  Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+21>Target CoreGenerateAssemblyInfo:
+21>  Could not infer the type of parameter "#1" because the attribute type is unknown. The value will be treated as a string.
+21>  Could not infer the type of parameter "#1" because the attribute type is unknown. The value will be treated as a string.
+21>  Could not infer the type of parameter "#2" because the attribute type is unknown. The value will be treated as a string.
+21>  Could not infer the type of parameter "#1" because the attribute type is unknown. The value will be treated as a string.
+21>  Could not infer the type of parameter "#2" because the attribute type is unknown. The value will be treated as a string.
+21>  Could not infer the type of parameter "#1" because the attribute type is unknown. The value will be treated as a string.
+21>  Could not infer the type of parameter "#2" because the attribute type is unknown. The value will be treated as a string.
+21>  Could not infer the type of parameter "#1" because the attribute type is unknown. The value will be treated as a string.
+21>  Could not infer the type of parameter "#2" because the attribute type is unknown. The value will be treated as a string.
+21>  Could not infer the type of parameter "#1" because the attribute type is unknown. The value will be treated as a string.
+21>  Could not infer the type of parameter "#2" because the attribute type is unknown. The value will be treated as a string.
+21>  Could not infer the type of parameter "#1" because the attribute type is unknown. The value will be treated as a string.
+21>  Could not infer the type of parameter "#2" because the attribute type is unknown. The value will be treated as a string.
+21>Target _ValidateAspireHostProjectResources:
+21>Target _GenerateSourceLinkFile:
+21>  Updating Source Link file 'C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.sourcelink.json'.
+21>Target CoreCompile:
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs(4,12,4,70): error CS0579: Duplicate 'global::System.Runtime.Versioning.TargetFrameworkAttribute' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(14,12,14,81): error CS0579: Duplicate 'Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(27,12,27,54): error CS0579: Duplicate 'System.Reflection.AssemblyCompanyAttribute' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(28,12,28,60): error CS0579: Duplicate 'System.Reflection.AssemblyConfigurationAttribute' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(29,12,29,58): error CS0579: Duplicate 'System.Reflection.AssemblyFileVersionAttribute' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(30,12,30,67): error CS0579: Duplicate 'System.Reflection.AssemblyInformationalVersionAttribute' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(31,12,31,54): error CS0579: Duplicate 'System.Reflection.AssemblyProductAttribute' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(32,12,32,52): error CS0579: Duplicate 'System.Reflection.AssemblyTitleAttribute' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(33,12,33,54): error CS0579: Duplicate 'System.Reflection.AssemblyVersionAttribute' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Client.ProjectMetadata.g.cs(8,14,8,20): error CS0101: The namespace 'Projects' already contains a definition for 'Client'
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Server.ProjectMetadata.g.cs(8,14,8,20): error CS0101: The namespace 'Projects' already contains a definition for 'Server'
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\_AppHost.ProjectMetadata.g.cs(8,14,8,18): error CS0101: The namespace 'Projects' already contains a definition for 'Host'
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\_AppHost.ProjectMetadata.g.cs(5,2,5,47): error CS0579: Duplicate 'global::System.CodeDom.Compiler.GeneratedCode' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\_AppHost.ProjectMetadata.g.cs(6,2,6,65): error CS0579: Duplicate 'global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Client.ProjectMetadata.g.cs(5,2,5,47): error CS0579: Duplicate 'global::System.CodeDom.Compiler.GeneratedCode' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Client.ProjectMetadata.g.cs(6,2,6,65): error CS0579: Duplicate 'global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Server.ProjectMetadata.g.cs(5,2,5,47): error CS0579: Duplicate 'global::System.CodeDom.Compiler.GeneratedCode' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Server.ProjectMetadata.g.cs(6,2,6,65): error CS0579: Duplicate 'global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage' attribute
+21>  C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\_AppHost.ProjectMetadata.g.cs(10,13,10,17): error CS0111: Type 'Host' already defines a member called 'Host' with the same parameter types
+21>  CompilerServer: server - server processed compilation - Host (net9.0)
+21>Done building target "CoreCompile" in project "Host.csproj" -- FAILED.
+21>
+21>Done building project "Host.csproj" -- FAILED.
+21>
+21>Build FAILED.
+21>
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs(4,12,4,70): error CS0579: Duplicate 'global::System.Runtime.Versioning.TargetFrameworkAttribute' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(14,12,14,81): error CS0579: Duplicate 'Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(27,12,27,54): error CS0579: Duplicate 'System.Reflection.AssemblyCompanyAttribute' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(28,12,28,60): error CS0579: Duplicate 'System.Reflection.AssemblyConfigurationAttribute' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(29,12,29,58): error CS0579: Duplicate 'System.Reflection.AssemblyFileVersionAttribute' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(30,12,30,67): error CS0579: Duplicate 'System.Reflection.AssemblyInformationalVersionAttribute' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(31,12,31,54): error CS0579: Duplicate 'System.Reflection.AssemblyProductAttribute' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(32,12,32,52): error CS0579: Duplicate 'System.Reflection.AssemblyTitleAttribute' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Host.AssemblyInfo.cs(33,12,33,54): error CS0579: Duplicate 'System.Reflection.AssemblyVersionAttribute' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Client.ProjectMetadata.g.cs(8,14,8,20): error CS0101: The namespace 'Projects' already contains a definition for 'Client'
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Server.ProjectMetadata.g.cs(8,14,8,20): error CS0101: The namespace 'Projects' already contains a definition for 'Server'
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\_AppHost.ProjectMetadata.g.cs(8,14,8,18): error CS0101: The namespace 'Projects' already contains a definition for 'Host'
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\_AppHost.ProjectMetadata.g.cs(5,2,5,47): error CS0579: Duplicate 'global::System.CodeDom.Compiler.GeneratedCode' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\_AppHost.ProjectMetadata.g.cs(6,2,6,65): error CS0579: Duplicate 'global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Client.ProjectMetadata.g.cs(5,2,5,47): error CS0579: Duplicate 'global::System.CodeDom.Compiler.GeneratedCode' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Client.ProjectMetadata.g.cs(6,2,6,65): error CS0579: Duplicate 'global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Server.ProjectMetadata.g.cs(5,2,5,47): error CS0579: Duplicate 'global::System.CodeDom.Compiler.GeneratedCode' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\Server.ProjectMetadata.g.cs(6,2,6,65): error CS0579: Duplicate 'global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage' attribute
+21>C:\Users\EricOwens\Desktop\AI\randomRanch\dotnet-starter-kit\src\aspire\host\obj-windows\Debug\net9.0\Aspire\references\_AppHost.ProjectMetadata.g.cs(10,13,10,17): error CS0111: Type 'Host' already defines a member called 'Host' with the same parameter types
+21>    0 Warning(s)
+21>    19 Error(s)
+21>
+21>Time Elapsed 00:00:01.31
+========== Rebuild All: 0 succeeded, 21 failed, 0 skipped ==========
+========== Rebuild completed at 11:45 AM and took 12.861 seconds ==========

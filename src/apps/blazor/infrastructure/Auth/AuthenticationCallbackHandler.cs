@@ -23,7 +23,7 @@ public class AuthenticationCallbackHandler : IAuthenticationCallbackHandler
         if (!isB2C)
         {
             // Non-B2C authentication not supported in this implementation
-            return AuthenticationCallbackResult.FailureResult("Authentication provider not supported", "/login");
+            return AuthenticationCallbackResult.FailureResult("Authentication provider not supported", "/");
         }
         
         switch (action.ToLowerInvariant())

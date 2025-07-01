@@ -1,35 +1,10 @@
 @layout EmptyLayout
-@inject IServiceProvider ServiceProvider
 @inject IAuthenticationService AuthenticationService
-@inject NavigationManager Navigation
-@using FSH.Starter.Blazor.Infrastructure.Api
 
 @code {
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        try
-        {
-            // Check if using B2C
-            var authConfig = ServiceProvider.GetService<IAuthenticationConfigurationService>();
-            if (authConfig?.IsAzureB2C() == true)
-            {
-                // Check for error to prevent redirect loops
-                var uri = new Uri(Navigation.Uri);
-                if (!uri.Query.Contains("error="))
-                {
-                    // For B2C, navigate to external login (B2C)
-                    AuthenticationService.NavigateToExternalLogin("/");
-                    return;
-                }
-            }
-
-            // For local auth or B2C errors, navigate to login page
-            Navigation.NavigateTo("/login", forceLoad: false);
-        }
-        catch
-        {
-            // Silently handle any errors - just navigate to login
-            Navigation.NavigateTo("/login", forceLoad: false);
-        }
+        // Directly navigate to B2C authentication
+        AuthenticationService.NavigateToExternalLogin("/", null);
     }
 }

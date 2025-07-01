@@ -38,34 +38,37 @@ This document provides a comprehensive plan to remove all local authentication c
 
 ### Phase 1: Remove Client-Side Local Auth Components
 
-1. **Simplify AuthRedirect.razor**
+1. **Simplify AuthRedirect.razor** ✅ COMPLETED
    - Remove the `AuthConfigService` injection
    - Remove the conditional logic checking `IsLocalAuthentication()`
    - Always navigate to `/login` (which will be updated to always use B2C)
    - Remove any local auth-specific logic
 
-2. **Remove Local Login Page**
+2. **Remove Local Login Page** ✅ COMPLETED
    - Delete `/Pages/Auth/Login.razor` and `/Pages/Auth/Login.razor.cs`
    - Update any references to redirect to B2C login instead
 
-3. **Remove Password Management UI**
+3. **Remove Password Management UI** ✅ COMPLETED
    - Delete password change functionality from `/Pages/Personal/Security.razor`
    - Remove any UI for forgot password/reset password flows
    - Update navigation to remove password-related menu items
 
 ### Phase 2: Remove Server-Side Password Endpoints
 
-1. **Delete Password Management Endpoints**
+1. **Delete Password Management Endpoints** ✅ COMPLETED
    ```
-   - /src/api/server/Endpoints/Identity/ChangePasswordEndpoint.cs
-   - /src/api/server/Endpoints/Identity/ForgotPasswordEndpoint.cs
-   - /src/api/server/Endpoints/Identity/ResetPasswordEndpoint.cs
+   - /src/api/framework/Infrastructure/Identity/Users/Endpoints/ChangePasswordEndpoint.cs
+   - /src/api/framework/Infrastructure/Identity/Users/Endpoints/ForgotPasswordEndpoint.cs
+   - /src/api/framework/Infrastructure/Identity/Users/Endpoints/ResetPasswordEndpoint.cs
    ```
 
-2. **Modify Registration Endpoints**
-   - Delete `/src/api/server/Endpoints/Identity/RegisterUserEndpoint.cs` (local registration)
-   - Delete `/src/api/server/Endpoints/Identity/SelfRegisterEndpoint.cs`
-   - Keep only B2C user creation flows
+2. **Modify Registration Endpoints** ✅ COMPLETED
+   - Delete `/src/api/framework/Infrastructure/Identity/Users/Endpoints/RegisterUserEndpoint.cs` (local registration)
+   - Delete `/src/api/framework/Infrastructure/Identity/Users/Validators/RegisterUserCommandValidator.cs`
+   - SelfRegisterEndpoint.cs was already removed or never existed
+   - Removed RegisterAsync method from UserService and IUserService
+   - Removed RegisterUserCommand and RegisterUserResponse DTOs
+   - Updated Users.razor to remove create functionality and Create button
 
 ### Phase 3: Clean Up Authentication Services
 

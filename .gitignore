@@ -31,6 +31,12 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+
+# Platform-specific build outputs
+bin-windows/
+bin-unix/
+obj-windows/
+obj-unix/
 [Ii]mages/
 [Dd]atabases/
 

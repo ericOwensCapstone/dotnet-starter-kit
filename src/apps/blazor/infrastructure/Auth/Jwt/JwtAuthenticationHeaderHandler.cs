@@ -58,8 +58,9 @@ public class JwtAuthenticationHeaderHandler : DelegatingHandler
                     }
                 }
                 
-                Console.WriteLine($"JwtAuthenticationHeaderHandler: REDIRECTING to login from {request.RequestUri?.AbsolutePath}");
-                _navigation.NavigateTo("/login");
+                Console.WriteLine($"JwtAuthenticationHeaderHandler: REDIRECTING to authentication from {request.RequestUri?.AbsolutePath}");
+                // Navigate to a protected page to trigger authentication
+                _navigation.NavigateTo("/");
             }
         }
         else

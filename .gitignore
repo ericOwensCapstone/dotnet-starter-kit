@@ -458,3 +458,8 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 
 **/Internal/Generated
+
+# Claude AI memory files with sensitive/local information
+CLAUDE.local.md
+CLAUDE.private.md
+*.local.md

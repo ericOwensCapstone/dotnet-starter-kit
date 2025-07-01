@@ -32,7 +32,7 @@
                     Marketplace
                 </h1>
                 <div class="ohd-panel-message">
-                    Welcome back!
+                    Welcome back@(!string.IsNullOrEmpty(_userName) ? $" {_userName}" : "")!
                 </div>
             </div>
         </div>
@@ -130,6 +130,7 @@
     private bool _showAuthPanel = false;
     private double _opacity = 1.0;
     private ElementReference authPanelElement;
+    private string? _userName;
 
     private static bool _hasNotShownWelcomePanel = true;
 
@@ -137,7 +138,8 @@
     {
         var authState = await AuthState;
         Claims = authState.User.Claims;
-
+        //var tempClaims = Claims?.ToList();
+        _userName = Claims?.FirstOrDefault(c => c.Type == "fullName")?.Value;
         Console.WriteLine($"Home.OnInitializedAsync: IsReturningFromAuthentication = {AuthFlowState.IsReturningFromAuthentication}");
 
         if (_hasNotShownWelcomePanel)
